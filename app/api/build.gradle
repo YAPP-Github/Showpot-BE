@@ -1,0 +1,9 @@
+bootJar.enabled = false
+jar.enabled = true
+
+subprojects {
+    dependencies {
+        implementation project(":app:core")
+    }
+}
+

@@ -1,0 +1,10 @@
+bootJar.enabled = false
+jar.enabled = true
+
+subprojects {
+    dependencies {
+        runtimeOnly 'org.postgresql:postgresql'
+        implementation project(":app:core")
+    }
+}
+
