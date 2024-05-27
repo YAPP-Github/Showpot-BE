@@ -8,7 +8,7 @@ include(":app:domain")
 include (":app:domain:user")
 
 include (":app:api")
-include (":app:api:user_api")
+include (":app:api:user-api")
 include (":app:core")
 
 

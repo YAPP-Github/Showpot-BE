@@ -11,14 +11,11 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
 
     dependencies {
-        implementation "org.springframework.boot:spring-boot-starter-web"
-        implementation 'org.springframework.boot:spring-boot-starter-validation'
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        testImplementation "org.springframework.boot:spring-boot-starter-test"
         implementation project(":common")
     }
 }
 
 dependencies {
-    implementation project(":app:api:user_api")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation project(":app:api:user-api")
 }

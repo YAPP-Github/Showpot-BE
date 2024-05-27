@@ -1,6 +1,5 @@
 package org.example.service;
 
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.User;
 import org.example.exception.UserNotFoundException;
@@ -17,7 +16,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUserByUserId(final UUID userId) {
+    public User findUserByUserId(final String userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 }

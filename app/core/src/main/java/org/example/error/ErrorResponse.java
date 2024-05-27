@@ -1,15 +1,15 @@
 package org.example.error;
 
+import com.github.f4b6a3.ulid.Ulid;
 import jakarta.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 public record ErrorResponse(
-    UUID randomUUid,
+    Ulid fastUlid,
     String code,
     String message,
     List<Error> result
@@ -17,7 +17,7 @@ public record ErrorResponse(
 
     public static ErrorResponse fromErrorCode(final ErrorCode errorCode) {
         return new ErrorResponse(
-            UUID.randomUUID(),
+            Ulid.fast(),
             errorCode.getCode(),
             errorCode.getMessage(),
             Collections.emptyList()
@@ -27,7 +27,7 @@ public record ErrorResponse(
     public static ErrorResponse ofBindingResult(final ErrorCode errorCode,
         final BindingResult bindingResult) {
         return new ErrorResponse(
-            UUID.randomUUID(),
+            Ulid.fast(),
             errorCode.getCode(),
             errorCode.getMessage(),
             Error.fromBindingResult(bindingResult)
@@ -39,7 +39,7 @@ public record ErrorResponse(
         final String parameterName
     ) {
         return new ErrorResponse(
-            UUID.randomUUID(),
+            Ulid.fast(),
             errorCode.getCode(),
             errorCode.getMessage(),
             List.of(Error.fromParameter(parameterName))
@@ -52,7 +52,7 @@ public record ErrorResponse(
         final String value
     ) {
         return new ErrorResponse(
-            UUID.randomUUID(),
+            Ulid.fast(),
             errorCode.getCode(),
             errorCode.getMessage(),
             List.of(Error.fromType(parameterName, value))
@@ -68,7 +68,7 @@ public record ErrorResponse(
             .toList();
 
         return new ErrorResponse(
-            UUID.randomUUID(),
+            Ulid.fast(),
             errorCode.getCode(),
             errorCode.getMessage(),
             errors
