@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v0.0.1/users")
+@RequestMapping("/api/v0.0.1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -21,10 +21,9 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
         final User createdUser = request.toUser();
-        userService.signUp(createdUser);
+        final User user = userService.signUp(createdUser);
 
-        final User foundUser = userService.findUserByUserId(createdUser.getId());
-        return ResponseEntity.ok(foundUser.getNickname() + "사용자 생성 성공!");
+        return ResponseEntity.ok(user.getNickname() + "사용자 생성 성공!");
     }
 
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,7 +19,7 @@ public abstract class BaseEntity {
 
     @Id
     @Column(name = "id")
-    private String id = UlidCreator.getMonotonicUlid().toString();
+    private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     @CreatedDate
     @Column(name = "create_at", updatable = false, nullable = false)

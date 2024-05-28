@@ -1,7 +1,7 @@
-package org.example.error.exception;
+package error.exception;
 
+import error.ErrorCode;
 import lombok.Getter;
-import org.example.error.ErrorCode;
 
 @Getter
 public class BusinessException extends RuntimeException {
