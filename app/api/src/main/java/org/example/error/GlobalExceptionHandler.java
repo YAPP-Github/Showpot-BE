@@ -1,6 +1,6 @@
-package error;
+package org.example.error;
 
-import error.exception.BusinessException;
+import org.example.error.exception.BusinessException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

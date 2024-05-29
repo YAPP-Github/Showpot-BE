@@ -1,4 +1,4 @@
-package error;
+package org.example.error;
 
 import jakarta.validation.ConstraintViolation;
 import java.util.Collections;
