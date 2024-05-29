@@ -14,4 +14,8 @@ public class UserService {
     public User signUp(final User user) {
         return userUsecase.save(user);
     }
+
+    public String findNickname(final User user) {
+        return userUsecase.findNickName(user);
+    }
 }

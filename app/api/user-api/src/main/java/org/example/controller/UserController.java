@@ -22,8 +22,9 @@ public class UserController implements UserApi {
     public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
         final User createdUser = request.toUser();
         final User user = userService.signUp(createdUser);
+        final String nickName = userService.findNickname(user);
 
-        return ResponseEntity.ok(user.getNickname() + "사용자 생성 성공!");
+        return ResponseEntity.ok(nickName + "사용자 생성 성공!");
     }
 
 }

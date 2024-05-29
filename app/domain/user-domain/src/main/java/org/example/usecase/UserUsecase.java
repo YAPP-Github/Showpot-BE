@@ -11,7 +11,11 @@ public class UserUsecase {
 
     private final UserRepository userRepository;
 
-    public User save(User user) {
+    public User save(final User user) {
         return userRepository.save(user);
+    }
+
+    public String findNickName(final User user) {
+        return userRepository.findNicknameById(user.getId()).orElseThrow();
     }
 }
