@@ -17,7 +17,7 @@ allprojects {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation project(":app:api:user-api")
+    implementation project(":app:api")
 
     // docker-compose
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'

@@ -1,4 +1,4 @@
-package error;
+package org.example.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

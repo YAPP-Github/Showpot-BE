@@ -7,11 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserUsecase {
+public class UserUseCase {
 
     private final UserRepository userRepository;
 
-    public User save(User user) {
+    public User save(final User user) {
         return userRepository.save(user);
+    }
+
+    public String findNickName(final User user) {
+        return userRepository.findNicknameById(user.getId()).orElseThrow();
     }
 }

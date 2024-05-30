@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.SignUpRequest;
@@ -19,11 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
+    @Operation(summary = "유저 회원가입", description = "사용자는 회원가입을 할 수 있다.", tags = {"user"})
     public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
         final User createdUser = request.toUser();
         final User user = userService.signUp(createdUser);
+        final String nickName = userService.findNickname(user);
 
-        return ResponseEntity.ok(user.getNickname() + "사용자 생성 성공!");
+        return ResponseEntity.ok(nickName + "사용자 생성 성공!");
     }
 
 }

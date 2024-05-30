@@ -1,6 +1,6 @@
-package error.exception;
+package org.example.error.exception;
 
-import error.ErrorCode;
+import org.example.error.ErrorCode;
 import lombok.Getter;
 
 @Getter
