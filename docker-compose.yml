@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  poastgresql:
+    container_name: postgresql
+    image: postgres:14
+    environment:
+      - 'POSTGRES_DATABASE=yapp'
+      - 'POSTGRES_USER=local'
+      - 'POSTGRES_PASSWORD=local'
+    ports:
+      - '5432'
+    restart: always
