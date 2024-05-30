@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserUseCase userUsecase;
+    private final UserUseCase userUseCase;
 
     public User signUp(final User user) {
-        return userUsecase.save(user);
+        return userUseCase.save(user);
     }
 
     public String findNickname(final User user) {
-        return userUsecase.findNickName(user);
+        return userUseCase.findNickName(user);
     }
 }
