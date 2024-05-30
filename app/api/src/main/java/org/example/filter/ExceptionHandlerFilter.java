@@ -1,4 +1,4 @@
-package filter;
+package org.example.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.BusinessException;

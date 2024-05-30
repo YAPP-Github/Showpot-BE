@@ -3,8 +3,6 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
 

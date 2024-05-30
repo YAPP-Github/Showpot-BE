@@ -6,3 +6,7 @@ spring:
       stop:
         command: down
         timeout: 1m
+  security:
+    user:
+      name: user
+      password: password
