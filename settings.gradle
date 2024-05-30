@@ -1,13 +1,11 @@
 rootProject.name = 'yapp_backend'
 
-include (":common")
+include(":common")
 
 include(":app")
 
 include(":app:domain")
-include (":app:domain:user-domain")
+include(":app:domain:user-domain")
 
-include (":app:api")
-include (":app:api:user-api")
-
-
+include(":app:api")
+include(":app:api:user-api")

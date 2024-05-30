@@ -1,7 +1,10 @@
 package org.example.error;
 
-import org.example.error.exception.BusinessException;
+import exception.BusinessException;
+import exception.ErrorResponse;
+import exception.GlobalError;
 import jakarta.validation.ConstraintViolationException;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,78 +20,95 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleGlobalException(final Exception e) {
-        log.error(e.getMessage(), e);
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.businessErrorResponseBuilder()
+            .errorId(errorId)
+            .error(GlobalError.INTERNAL_SERVER_ERROR)
+            .build();
 
-        final ErrorResponse errorResponse = ErrorResponse.fromErrorCode(
-            ErrorCode.INTERNAL_SERVER_ERROR);
-        return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus())
-            .body(errorResponse);
+        log.error(errorId, e);
+
+        return ResponseEntity.internalServerError()
+            .body(response);
     }
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
-        log.error(e.getMessage(), e);
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.businessErrorResponseBuilder()
+            .errorId(errorId)
+            .error(e.error)
+            .build();
 
-        final ErrorCode errorCode = e.getErrorCode();
-        final ErrorResponse errorResponse = ErrorResponse.fromErrorCode(errorCode);
+        log.error(errorId, e);
 
-        return ResponseEntity.status(errorCode.getStatus())
-            .body(errorResponse);
+        return ResponseEntity.status(response.httpStatus())
+            .body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleRequestArgumentNotValidException(
         MethodArgumentNotValidException e
     ) {
-        log.warn(e.getMessage(), e);
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.messageCustomErrorResponseBuilder()
+            .errorId(errorId)
+            .message(e.getMessage())
+            .error(GlobalError.REQUEST_PARAM_NOT_FOUND)
+            .build();
 
-        final ErrorResponse errorResponse = ErrorResponse.ofBindingResult(
-            ErrorCode.INPUT_INVALID_VALUE_ERROR,
-            e.getBindingResult());
-        return ResponseEntity.status(ErrorCode.INPUT_INVALID_VALUE_ERROR.getStatus())
-            .body(errorResponse);
+        log.error(errorId, e);
+
+        return ResponseEntity.badRequest()
+            .body(response);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
         MissingServletRequestParameterException e
     ) {
-        log.warn(e.getMessage(), e);
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.businessErrorResponseBuilder()
+            .errorId(errorId)
+            .error(GlobalError.REQUEST_PARAM_NOT_FOUND)
+            .build();
 
-        final ErrorResponse errorResponse = ErrorResponse.fromParameter(
-            ErrorCode.REQUEST_PARAMETER_NOT_FOUND_ERROR,
-            e.getParameterName());
+        log.error(errorId, e);
 
-        return ResponseEntity.status(ErrorCode.REQUEST_PARAMETER_NOT_FOUND_ERROR.getStatus())
-            .body(errorResponse);
+        return ResponseEntity.badRequest()
+            .body(response);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
         MethodArgumentTypeMismatchException e
     ) {
-        log.warn(e.getMessage(), e);
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.businessErrorResponseBuilder()
+            .errorId(errorId)
+            .error(GlobalError.REQUEST_PARAM_TYPE_MISMATCH)
+            .build();
 
-        final ErrorResponse errorResponse = ErrorResponse.fromType(
-            ErrorCode.REQUEST_PARAMETER_TYPE_NOT_MATCH_ERROR,
-            e.getParameter().getParameterName(),
-            String.valueOf(e.getValue())
-        );
+        log.error(errorId, e);
 
-        return ResponseEntity.status(ErrorCode.REQUEST_PARAMETER_TYPE_NOT_MATCH_ERROR.getStatus())
-            .body(errorResponse);
+        return ResponseEntity.badRequest()
+            .body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<ErrorResponse> handleConstraintViolationException(
-        ConstraintViolationException e) {
-        log.warn(e.getMessage(), e);
+        ConstraintViolationException e
+    ) {
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.messageCustomErrorResponseBuilder()
+            .errorId(errorId)
+            .message(e.getMessage())
+            .error(GlobalError.INPUT_INVALID_VALUE)
+            .build();
 
-        final ErrorResponse errorResponse = ErrorResponse.ofConstraints(
-            ErrorCode.INPUT_INVALID_VALUE_ERROR,
-            e.getConstraintViolations());
+        log.error(errorId, e);
 
-        return ResponseEntity.status(ErrorCode.INPUT_INVALID_VALUE_ERROR.getStatus())
-            .body(errorResponse);
+        return ResponseEntity.badRequest()
+            .body(response);
     }
 }
