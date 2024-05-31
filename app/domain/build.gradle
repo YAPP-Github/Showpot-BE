@@ -14,18 +14,6 @@ allprojects {
         tasks.named('test') {
             useJUnitPlatform()
         }
-
-        def generated = 'src/main/generated'
-
-        tasks.withType(JavaCompile).tap {
-            configureEach {
-                options.getGeneratedSourceOutputDirectory().set(file(generated))
-            }
-        }
-
-        sourceSets {
-            main.java.srcDirs += [generated]
-        }
     }
 }
 
