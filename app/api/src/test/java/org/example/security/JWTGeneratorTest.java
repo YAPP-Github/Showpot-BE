@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.example.property.TokenProperty;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
+import org.example.security.token.JWTGenerator;
 import org.example.vo.UserRoleApiType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
