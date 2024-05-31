@@ -1,7 +1,6 @@
 package org.example.security.token;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.example.property.TokenProperty;
@@ -23,18 +22,24 @@ public class JWTGenerator {
     }
 
     private String createAccessToken(UserParam userParam, Date from) {
-        return JWT.create().withSubject("AccessToken")
-            .withClaim("claim", userParam.getTokenClaim())
-            .withExpiresAt(
+        return Jwts.builder()
+            .subject("AccessToken")
+            .claims(userParam.getTokenClaim())
+            .expiration(
                 new Date(from.getTime() + tokenProperty.accessTokenExpirationSeconds())
-            ).sign(Algorithm.HMAC512(tokenProperty.secretKey()));
+            )
+            .signWith(tokenProperty.getBASE64URLSecretKey())
+            .compact();
     }
 
     private String createRefreshToken(UserParam userParam, Date from) {
-        return JWT.create().withSubject("RefreshToken")
-            .withClaim("claim", userParam.getTokenClaim())
-            .withExpiresAt(
+        return Jwts.builder()
+            .subject("RefreshToken")
+            .claims(userParam.getTokenClaim())
+            .expiration(
                 new Date(from.getTime() + tokenProperty.refreshTokenExpirationSeconds())
-            ).sign(Algorithm.HMAC512(tokenProperty.secretKey()));
+            )
+            .signWith(tokenProperty.getBASE64URLSecretKey())
+            .compact();
     }
 }

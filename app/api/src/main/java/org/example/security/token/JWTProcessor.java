@@ -1,13 +1,14 @@
 package org.example.security.token;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import exception.BusinessException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.property.TokenProperty;
+import org.example.security.dto.UserParam;
 import org.example.security.vo.TokenError;
 import org.springframework.stereotype.Component;
 
@@ -37,15 +38,44 @@ public class JWTProcessor {
         return refresh;
     }
 
-    public DecodedJWT decodeToken(String token) {
+    public UserParam extractUserFrom(String token) {
+        Object payload = parsePayload(token);
+        return convertPayloadToUserParam(payload);
+    }
+
+    public UUID getUserIdFromExpiredToken(String token) {
         try {
-            return JWT.require(Algorithm.HMAC512(tokenProperty.secretKey()))
-                .build()
-                .verify(token);
-        } catch (TokenExpiredException e) {
+            parseToken(token);
+        } catch (ExpiredJwtException e) {
+            return UUID.fromString(e.getClaims().get("userId", String.class));
+        }
+
+        throw new BusinessException(TokenError.UNEXPIRED_TOKEN);
+    }
+
+    private Jwt<?, ?> parseToken(String token) {
+        return Jwts.parser()
+            .verifyWith(tokenProperty.getBASE64URLSecretKey())
+            .build()
+            .parse(token);
+    }
+
+    private Object parsePayload(String token) {
+        try {
+            return parseToken(token)
+                .getPayload();
+        } catch (ExpiredJwtException e) {
             throw new BusinessException(TokenError.EXPIRED_TOKEN);
         } catch (Exception e) {
             throw new BusinessException(TokenError.INVALID_TOKEN);
+        }
+    }
+
+    private UserParam convertPayloadToUserParam(Object payload) {
+        try {
+            return UserParam.fromPayload(payload);
+        } catch (Exception e) {
+            throw new BusinessException(TokenError.INVALID_CLAIM);
         }
     }
 }

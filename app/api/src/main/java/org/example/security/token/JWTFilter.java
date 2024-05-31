@@ -1,21 +1,16 @@
 package org.example.security.token;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exception.BusinessException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
-import org.example.security.vo.TokenError;
-import org.example.vo.UserRoleApiType;
+import org.example.security.dto.UserParam;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,20 +45,14 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private void handleAccessToken(HttpServletRequest request) {
         String accessToken = jwtProcessor.extractAccessToken(request);
-        DecodedJWT decodedJWT = jwtProcessor.decodeToken(accessToken);
-        saveOnSecurityContextHolder(decodedJWT);
+        UserParam userParam = jwtProcessor.extractUserFrom(accessToken);
+        saveOnSecurityContextHolder(userParam);
     }
 
-    private void saveOnSecurityContextHolder(DecodedJWT decodedJWT) {
-        Map<String, Object> claims = decodedJWT.getClaim("claim").asMap();
-
-        if (!claims.containsKey("userId") || !claims.containsKey("role")) {
-            throw new BusinessException(TokenError.INVALID_CLAIM);
-        }
-
+    private void saveOnSecurityContextHolder(UserParam userParam) {
         AuthenticatedUser authenticatedUser = AuthenticatedUser.builder()
-            .userId(UUID.fromString(claims.get("userId").toString()))
-            .role(UserRoleApiType.valueOf(claims.get("role").toString()))
+            .userId(userParam.userId())
+            .role(userParam.role())
             .build();
 
         SecurityContextHolder.getContext().setAuthentication(

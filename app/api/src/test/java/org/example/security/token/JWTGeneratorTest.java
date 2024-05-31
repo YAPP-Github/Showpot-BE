@@ -1,14 +1,12 @@
-package org.example.security;
+package org.example.security.token;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import java.util.UUID;
 import org.example.property.TokenProperty;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
-import org.example.security.token.JWTGenerator;
 import org.example.vo.UserRoleApiType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +18,7 @@ class JWTGeneratorTest {
     long twoWeeks = 1209600000L;
 
     TokenProperty tokenProperty = new TokenProperty(
-        "wehfiuhewiuhfhweiuhfiuwehifueiuwhfiuw",
+        "wehfiuhewiuhfhweiuhfiuwehifueisdfsdfsdfdsfsduwhfiuw",
         hour,
         twoWeeks
     );
@@ -38,10 +36,11 @@ class JWTGeneratorTest {
         TokenParam token = tokenGenerator.generate(userParam, beforeHour);
 
         Assertions.assertThrowsExactly(
-            TokenExpiredException.class,
-            () -> JWT.require(Algorithm.HMAC512(tokenProperty.secretKey()))
+            ExpiredJwtException.class,
+            () -> Jwts.parser()
+                .verifyWith(tokenProperty.getBASE64URLSecretKey())
                 .build()
-                .verify(token.accessToken())
+                .parse(token.accessToken())
         );
     }
 
@@ -53,9 +52,10 @@ class JWTGeneratorTest {
         TokenParam token = tokenGenerator.generate(userParam, beforeHourPlusSecond);
 
         Assertions.assertDoesNotThrow(
-            () -> JWT.require(Algorithm.HMAC512(tokenProperty.secretKey()))
+            () -> Jwts.parser()
+                .verifyWith(tokenProperty.getBASE64URLSecretKey())
                 .build()
-                .verify(token.accessToken())
+                .parse(token.accessToken())
         );
     }
 
@@ -66,10 +66,11 @@ class JWTGeneratorTest {
         TokenParam token = tokenGenerator.generate(userParam, beforeTwoWeeks);
 
         Assertions.assertThrowsExactly(
-            TokenExpiredException.class,
-            () -> JWT.require(Algorithm.HMAC512(tokenProperty.secretKey()))
+            ExpiredJwtException.class,
+            () -> Jwts.parser()
+                .verifyWith(tokenProperty.getBASE64URLSecretKey())
                 .build()
-                .verify(token.refreshToken())
+                .parse(token.refreshToken())
         );
     }
 
@@ -81,9 +82,10 @@ class JWTGeneratorTest {
         TokenParam token = tokenGenerator.generate(userParam, beforeTwoWeeksPlusSecond);
 
         Assertions.assertDoesNotThrow(
-            () -> JWT.require(Algorithm.HMAC512(tokenProperty.secretKey()))
+            () -> Jwts.parser()
+                .verifyWith(tokenProperty.getBASE64URLSecretKey())
                 .build()
-                .verify(token.refreshToken())
+                .parse(token.refreshToken())
         );
     }
 }

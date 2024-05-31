@@ -90,5 +90,27 @@ public enum TokenError implements BusinessError {
         public String getLogMessage() {
             return "토큰 claim 구성에 오류가 있습니다.";
         }
+    },
+
+    UNEXPIRED_TOKEN {
+        @Override
+        public int getHttpStatus() {
+            return 400;
+        }
+
+        @Override
+        public String getErrorCode() {
+            return "TKN-004";
+        }
+
+        @Override
+        public String getClientMessage() {
+            return "토큰의 상태와 일치하지 않는 요청입니다.";
+        }
+
+        @Override
+        public String getLogMessage() {
+            return "만료되지 않은 토큰에 대해, 만료 상황에 대한 로직이 시행되었습니다.";
+        }
     }
 }
