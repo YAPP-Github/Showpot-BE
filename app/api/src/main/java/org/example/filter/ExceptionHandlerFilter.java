@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.example.exception.GlobalError;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,6 +29,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (BusinessException e) {
             String errorId = UUID.randomUUID().toString();
+            ErrorResponse responseBody = ErrorResponse.businessErrorResponseBuilder()
+                .errorId(errorId)
+                .error(e.error)
+                .build();
+
             log.error(errorId, e);
 
             response.setStatus(e.error.getHttpStatus());
@@ -34,15 +41,24 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
             response.getWriter().write(
                 new ObjectMapper().writeValueAsString(
-                    ErrorResponse.businessErrorResponseBuilder()
-                        .errorId(errorId)
-                        .error(e.error)
-                        .build()
+                    responseBody
                 )
             );
         } catch (RuntimeException e) {
             String errorId = UUID.randomUUID().toString();
+            ErrorResponse responseBody = ErrorResponse.businessErrorResponseBuilder()
+                .errorId(errorId)
+                .error(GlobalError.INTERNAL_SERVER_ERROR)
+                .build();
+
             log.error(errorId, e);
+
+            response.setStatus(500);
+            response.setContentType("application/json; charset=UTF-8");
+
+            response.getWriter().write(
+                new ObjectMapper().writeValueAsString(responseBody)
+            );
         }
     }
 }

@@ -5,7 +5,7 @@ import org.example.entity.User;
 
 public record SignUpRequest(
 
-    @NotNull
+    @NotNull(message = "닉네임은 필수 입력값입니다.")
     String nickname
 ) {
 
