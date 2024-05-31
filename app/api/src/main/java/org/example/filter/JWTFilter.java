@@ -1,4 +1,4 @@
-package org.example.security.token;
+package org.example.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
+import org.example.security.token.JWTProcessor;
+import org.example.security.token.RefreshTokenProcessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

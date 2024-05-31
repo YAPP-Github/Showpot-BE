@@ -1,6 +1,6 @@
 package org.example.security.vo;
 
-import exception.BusinessError;
+import org.example.exception.BusinessError;
 
 public enum TokenError implements BusinessError {
 

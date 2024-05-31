@@ -1,8 +1,8 @@
 package org.example.error;
 
-import exception.BusinessException;
-import exception.ErrorResponse;
-import exception.GlobalError;
+import org.example.exception.BusinessException;
+import org.example.exception.ErrorResponse;
+import org.example.exception.GlobalError;
 import jakarta.validation.ConstraintViolationException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;

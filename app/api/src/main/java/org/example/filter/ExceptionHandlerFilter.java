@@ -1,8 +1,8 @@
 package org.example.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exception.BusinessException;
-import exception.ErrorResponse;
+import org.example.exception.BusinessException;
+import org.example.exception.ErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package org.example.security.token;
 
-import exception.BusinessException;
+import org.example.exception.BusinessException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
