@@ -25,6 +25,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Discord Message
+        if: success()
         uses: discord-actions/message@v2
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
