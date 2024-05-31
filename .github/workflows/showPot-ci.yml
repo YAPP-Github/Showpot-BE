@@ -2,7 +2,9 @@ name: ShowPot-CI
 
 on:
   pull_request:
-    branches: [ "develop" ]
+    branches:
+      - develop
+      - prod
 
 jobs:
   build:
