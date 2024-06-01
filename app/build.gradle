@@ -22,4 +22,7 @@ dependencies {
     // docker-compose
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     testAndDevelopmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+    // aws logs
+    implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
 }
