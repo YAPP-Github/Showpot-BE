@@ -1,4 +1,4 @@
-name: ShowPot-CI
+name: ShowPot-Dev-CI
 
 on:
   pull_request:

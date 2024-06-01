@@ -1,4 +1,4 @@
-name: ShowPot-CI(dev)
+name: ShowPot-Prod-CI
 
 on:
   pull_request:
