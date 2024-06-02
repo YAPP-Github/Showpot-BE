@@ -1,9 +1,8 @@
-name: ShowPot-CI
+name: ShowPot-Prod-CI
 
 on:
   pull_request:
     branches:
-      - develop
       - prod
 
 jobs:
@@ -24,6 +23,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Copy Secrets
+        env:
+          ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run:
+          echo $ACCESS_KEY > ./app/src/main/resources/application-prod.yml
+          echo $SECRET_KEY > ./app/src/main/resources/application-prod.yml
+
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
 
@@ -42,8 +49,8 @@ jobs:
         uses: sarisia/actions-status-discord@v1
         if: failure()
         with:
-           title: ❗️Backend CI failed ❗️
-           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-           color: FF0000
-           username: showPot-Bot
-           avatar_url: ${{ secrets.DISCORD_NOTIFICATION_FAILED_AVATAR_URL }}
+          title: ❗️Backend CI failed ❗️
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          color: FF0000
+          username: showPot-Bot
+          avatar_url: ${{ secrets.DISCORD_NOTIFICATION_FAILED_AVATAR_URL }}
