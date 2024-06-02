@@ -50,7 +50,7 @@ jobs:
         if: failure()
         with:
           title: ❗️Backend CI failed ❗️
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           color: FF0000
           username: showPot-Bot
           avatar_url: ${{ secrets.DISCORD_NOTIFICATION_FAILED_AVATAR_URL }}
