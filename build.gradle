@@ -1,9 +1,20 @@
 plugins {
     id 'java'
+    id 'checkstyle'
 }
 
 repositories {
     mavenCentral()
+}
+
+allprojects {
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        maxWarnings = 0
+        configFile = file("${rootDir}/config/checkstyle.xml")
+        toolVersion = '10.17.0'
+    }
 }
 
 subprojects {
