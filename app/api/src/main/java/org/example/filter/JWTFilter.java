@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
-import org.example.security.token.JWTProcessor;
+import org.example.security.token.JWTHandler;
 import org.example.security.token.RefreshTokenProcessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    private final JWTProcessor jwtProcessor;
+    private final JWTHandler jwtHandler;
     private final RefreshTokenProcessor refreshTokenProcessor;
 
     @Override
@@ -46,8 +46,8 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private void handleAccessToken(HttpServletRequest request) {
-        String accessToken = jwtProcessor.extractAccessToken(request);
-        UserParam userParam = jwtProcessor.extractUserFrom(accessToken);
+        String accessToken = jwtHandler.extractAccessToken(request);
+        UserParam userParam = jwtHandler.extractUserFrom(accessToken);
         saveOnSecurityContextHolder(userParam);
     }
 

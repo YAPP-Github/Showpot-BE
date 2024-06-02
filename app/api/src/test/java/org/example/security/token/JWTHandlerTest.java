@@ -14,14 +14,15 @@ import org.example.vo.UserRoleApiType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class JWTProcessorTest {
+@DisplayName("JWT 처리 테스트")
+class JWTHandlerTest {
 
     TokenProperty tokenProperty = new TokenProperty(
         "ahRhwlglftmrkwkfehlaussksmsdjraksrmadmfqjfrjtdlrhdkwnwlflsmswlqdptjgodqhrgkrptkftndlTDmfrjtdlek",
         3600000L,
         1209600000L
     );
-    JWTProcessor jwtProcessor = new JWTProcessor(tokenProperty);
+    JWTHandler jwtHandler = new JWTHandler(tokenProperty);
     JWTGenerator jwtGenerator = new JWTGenerator(tokenProperty);
     UserParam userParam = new UserParam(
         UUID.randomUUID(),
@@ -32,7 +33,7 @@ class JWTProcessorTest {
     @DisplayName("토큰의 claim을 추출하면 유저 정보가 반환된다.")
     void extractClaim() {
         TokenParam token = jwtGenerator.generate(userParam, new Date());
-        UserParam parsedUserParam = jwtProcessor.extractUserFrom(token.accessToken());
+        UserParam parsedUserParam = jwtHandler.extractUserFrom(token.accessToken());
 
         assertThat(parsedUserParam.userId()).isEqualTo(userParam.userId());
     }
@@ -45,7 +46,7 @@ class JWTProcessorTest {
             new Date(new Date().getTime() - tokenProperty.accessTokenExpirationSeconds())
         ).accessToken();
 
-        assertThatThrownBy(() -> jwtProcessor.extractUserFrom(expiredAccessToken))
+        assertThatThrownBy(() -> jwtHandler.extractUserFrom(expiredAccessToken))
             .isInstanceOf(BusinessException.class)
             .hasMessage(TokenError.EXPIRED_TOKEN.getClientMessage());
     }
@@ -55,7 +56,7 @@ class JWTProcessorTest {
     void makeExceptionParsingInvalidToken() {
         String invalidAccessToken = "invalidToken";
 
-        assertThatThrownBy(() -> jwtProcessor.extractUserFrom(invalidAccessToken))
+        assertThatThrownBy(() -> jwtHandler.extractUserFrom(invalidAccessToken))
             .isInstanceOf(BusinessException.class)
             .hasMessage(TokenError.INVALID_TOKEN.getClientMessage());
     }
@@ -68,7 +69,7 @@ class JWTProcessorTest {
             new Date(new Date().getTime() - tokenProperty.accessTokenExpirationSeconds())
         ).accessToken();
 
-        UUID extractedUserIdFromExpiredToken = jwtProcessor.getUserIdFromExpiredToken(expiredAccessToken);
+        UUID extractedUserIdFromExpiredToken = jwtHandler.getUserIdFromExpiredToken(expiredAccessToken);
         assertThat(extractedUserIdFromExpiredToken).isEqualTo(userParam.userId());
     }
 }

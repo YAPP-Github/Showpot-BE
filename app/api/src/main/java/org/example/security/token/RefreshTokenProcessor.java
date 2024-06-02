@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RefreshTokenProcessor {
 
-    private final JWTProcessor jwtProcessor;
+    private final JWTHandler jwtHandler;
     private final JWTGenerator jwtGenerator;
 
     public TokenParam process(HttpServletRequest request, HttpServletResponse response) {
-        String accessToken = jwtProcessor.extractAccessToken(request);
-        String refreshToken = jwtProcessor.extractRefreshToken(request);
+        String accessToken = jwtHandler.extractAccessToken(request);
+        String refreshToken = jwtHandler.extractRefreshToken(request);
 
         return new TokenParam(accessToken, refreshToken);
     }

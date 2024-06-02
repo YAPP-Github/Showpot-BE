@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JWTProcessor {
+public class JWTHandler {
 
     private final TokenProperty tokenProperty;
 
@@ -53,13 +53,6 @@ public class JWTProcessor {
         throw new BusinessException(TokenError.UNEXPIRED_TOKEN);
     }
 
-    private Jwt<?, ?> parseToken(String token) {
-        return Jwts.parser()
-            .verifyWith(tokenProperty.getBASE64URLSecretKey())
-            .build()
-            .parse(token);
-    }
-
     private Object parsePayload(String token) {
         try {
             return parseToken(token)
@@ -69,6 +62,13 @@ public class JWTProcessor {
         } catch (Exception e) {
             throw new BusinessException(TokenError.INVALID_TOKEN);
         }
+    }
+
+    private Jwt<?, ?> parseToken(String token) {
+        return Jwts.parser()
+            .verifyWith(tokenProperty.getBASE64URLSecretKey())
+            .build()
+            .parse(token);
     }
 
     private UserParam convertPayloadToUserParam(Object payload) {
