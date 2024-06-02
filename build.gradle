@@ -44,3 +44,11 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+tasks.register('installGitPreCommitHook', Copy) {
+    from new File(rootProject.rootDir, 'scripts/pre-commit')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0775
+}
+
+compileJava.dependsOn(installGitPreCommitHook)
