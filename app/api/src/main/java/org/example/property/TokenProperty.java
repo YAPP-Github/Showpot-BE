@@ -12,7 +12,7 @@ public record TokenProperty(
     Long refreshTokenExpirationSeconds
 ) {
 
-    public SecretKey getBASE64URLSecretKey() {
+    public SecretKey getBase64URLSecretKey() {
         return Keys.hmacShaKeyFor(
             Decoders.BASE64URL.decode(secretKey)
         );

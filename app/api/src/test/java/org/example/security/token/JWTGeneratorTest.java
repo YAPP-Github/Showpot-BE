@@ -39,7 +39,7 @@ class JWTGeneratorTest {
         Assertions.assertThrowsExactly(
             ExpiredJwtException.class,
             () -> Jwts.parser()
-                .verifyWith(tokenProperty.getBASE64URLSecretKey())
+                .verifyWith(tokenProperty.getBase64URLSecretKey())
                 .build()
                 .parse(token.accessToken())
         );
@@ -54,7 +54,7 @@ class JWTGeneratorTest {
 
         Assertions.assertDoesNotThrow(
             () -> Jwts.parser()
-                .verifyWith(tokenProperty.getBASE64URLSecretKey())
+                .verifyWith(tokenProperty.getBase64URLSecretKey())
                 .build()
                 .parse(token.accessToken())
         );
@@ -69,7 +69,7 @@ class JWTGeneratorTest {
         Assertions.assertThrowsExactly(
             ExpiredJwtException.class,
             () -> Jwts.parser()
-                .verifyWith(tokenProperty.getBASE64URLSecretKey())
+                .verifyWith(tokenProperty.getBase64URLSecretKey())
                 .build()
                 .parse(token.refreshToken())
         );
@@ -84,7 +84,7 @@ class JWTGeneratorTest {
 
         Assertions.assertDoesNotThrow(
             () -> Jwts.parser()
-                .verifyWith(tokenProperty.getBASE64URLSecretKey())
+                .verifyWith(tokenProperty.getBase64URLSecretKey())
                 .build()
                 .parse(token.refreshToken())
         );

@@ -1,11 +1,11 @@
 package org.example.error;
 
-import org.example.exception.BusinessException;
-import org.example.exception.ErrorResponse;
-import org.example.exception.GlobalError;
 import jakarta.validation.ConstraintViolationException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.example.exception.BusinessException;
+import org.example.exception.ErrorResponse;
+import org.example.exception.GlobalError;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;

@@ -3,9 +3,9 @@ package org.example.security.token;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.example.exception.BusinessException;
 import java.util.Date;
 import java.util.UUID;
+import org.example.exception.BusinessException;
 import org.example.property.TokenProperty;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
@@ -69,7 +69,8 @@ class JWTHandlerTest {
             new Date(new Date().getTime() - tokenProperty.accessTokenExpirationSeconds())
         ).accessToken();
 
-        UUID extractedUserIdFromExpiredToken = jwtHandler.getUserIdFromExpiredToken(expiredAccessToken);
+        UUID extractedUserIdFromExpiredToken = jwtHandler.getUserIdFromExpiredToken(
+            expiredAccessToken);
         assertThat(extractedUserIdFromExpiredToken).isEqualTo(userParam.userId());
     }
 }

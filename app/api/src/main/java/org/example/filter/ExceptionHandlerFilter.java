@@ -1,8 +1,6 @@
 package org.example.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.exception.BusinessException;
-import org.example.exception.ErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,8 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.example.exception.BusinessException;
+import org.example.exception.ErrorResponse;
 import org.example.exception.GlobalError;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

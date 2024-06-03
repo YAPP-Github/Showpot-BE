@@ -1,12 +1,12 @@
 package org.example.security.token;
 
-import org.example.exception.BusinessException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.exception.BusinessException;
 import org.example.property.TokenProperty;
 import org.example.security.dto.UserParam;
 import org.example.security.vo.TokenError;
@@ -66,7 +66,7 @@ public class JWTHandler {
 
     private Jwt<?, ?> parseToken(String token) {
         return Jwts.parser()
-            .verifyWith(tokenProperty.getBASE64URLSecretKey())
+            .verifyWith(tokenProperty.getBase64URLSecretKey())
             .build()
             .parse(token);
     }

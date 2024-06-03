@@ -28,7 +28,7 @@ public class JWTGenerator {
             .expiration(
                 new Date(from.getTime() + tokenProperty.accessTokenExpirationSeconds())
             )
-            .signWith(tokenProperty.getBASE64URLSecretKey())
+            .signWith(tokenProperty.getBase64URLSecretKey())
             .compact();
     }
 
@@ -39,7 +39,7 @@ public class JWTGenerator {
             .expiration(
                 new Date(from.getTime() + tokenProperty.refreshTokenExpirationSeconds())
             )
-            .signWith(tokenProperty.getBASE64URLSecretKey())
+            .signWith(tokenProperty.getBase64URLSecretKey())
             .compact();
     }
 }
