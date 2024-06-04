@@ -1,4 +1,4 @@
-package exception;
+package org.example.exception;
 
 public record ErrorResponse(
     String errorId,
