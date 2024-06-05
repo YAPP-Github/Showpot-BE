@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.SignUpRequest;
 import org.example.entity.User;
+import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +21,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    @Operation(summary = "유저 회원가입", description = "사용자는 회원가입을 할 수 있다.", tags = {"user"})
-    public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
+    @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.", tags = {"user"})
+    public ResponseEntity<TokenParam> signUp(@Valid @RequestBody SignUpRequest request) {
         final User createdUser = request.toUser();
-        final User user = userService.signUp(createdUser);
-        final String nickName = userService.findNickname(user);
+        TokenParam tokenParam = userService.signUp(createdUser);
 
-        return ResponseEntity.ok(nickName + "사용자 생성 성공!");
+        return ResponseEntity.ok(tokenParam);
     }
 
 }

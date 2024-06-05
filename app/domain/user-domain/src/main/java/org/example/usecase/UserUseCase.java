@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -11,6 +12,7 @@ public class UserUseCase {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public User save(final User user) {
         return userRepository.save(user);
     }

@@ -48,5 +48,6 @@ public class User extends BaseEntity {
     private User(String nickname, SocialType socialType, String socialIdentifier) {
         this.nickname = nickname;
         this.socialCredentials.put(socialType, socialIdentifier);
+        this.userRole = UserRole.USER;
     }
 }

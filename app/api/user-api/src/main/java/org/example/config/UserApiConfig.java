@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({UserDomainConfig.class, InfraStructureConfig.class})
+@Import(UserDomainConfig.class)
 @EnableConfigurationProperties(TokenProperty.class)
 @ComponentScan(basePackages = "org.example")
 public class UserApiConfig {
