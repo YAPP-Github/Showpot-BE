@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  poastgresql:
-    container_name: postgresql
+  postgresql:
+    container_name: yapp_postgresql
     image: postgres:14
     environment:
       - 'POSTGRES_DATABASE=yapp'
@@ -11,3 +11,9 @@ services:
     ports:
       - '5432'
     restart: always
+
+  redis:
+    container_name: yapp_redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"

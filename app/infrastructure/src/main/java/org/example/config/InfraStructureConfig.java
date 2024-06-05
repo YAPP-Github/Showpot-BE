@@ -1,15 +1,13 @@
 package org.example.config;
 
-import org.example.property.TokenProperty;
+import org.example.property.RedisProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({UserApiConfig.class, InfraStructureConfig.class})
-@EnableConfigurationProperties(TokenProperty.class)
+@EnableConfigurationProperties(RedisProperty.class)
 @ComponentScan(basePackages = "org.example")
-public class ApiConfig {
+public class InfraStructureConfig {
 
 }
