@@ -2,5 +2,7 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    // hypersistence utils
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.6'
     implementation project(":app:domain")
 }
