@@ -33,7 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
         FilterChain filterChain
     ) throws ServletException, IOException {
         if (request.getHeader("Refresh") != null) {
-            TokenParam token = refreshTokenProcessor.process(request, response);
+            TokenParam token = refreshTokenProcessor.reissueToken(request);
             response.getWriter().write(new ObjectMapper().writeValueAsString(token));
             return;
         }

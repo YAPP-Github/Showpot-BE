@@ -1,10 +1,11 @@
 package org.example.security.token;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.UUID;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.example.repository.RedisRepository;
 import org.example.security.dto.TokenParam;
+import org.example.security.dto.UserParam;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,13 +14,14 @@ public class RefreshTokenProcessor {
 
     private final JWTHandler jwtHandler;
     private final JWTGenerator jwtGenerator;
+    private final RedisRepository redisRepository;
 
-    public TokenParam process(HttpServletRequest request, HttpServletResponse response) {
-        String accessToken = jwtHandler.extractAccessToken(request);
+    public TokenParam reissueToken(HttpServletRequest request) {
         String refreshToken = jwtHandler.extractRefreshToken(request);
+        UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
+        TokenParam newTokenParam = jwtGenerator.generate(userParam, new Date());
 
-        UUID userIdFromExpiredToken = jwtHandler.getUserIdFromExpiredToken(refreshToken);
-
-        return new TokenParam(accessToken, refreshToken);
+        redisRepository.save(userParam.userId().toString(), newTokenParam.refreshToken());
+        return newTokenParam;
     }
 }

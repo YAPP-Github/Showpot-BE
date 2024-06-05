@@ -12,7 +12,7 @@ public class RedisRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     public final void save(String userId, String refreshToken) {
-        redisTemplate.opsForValue().set("memberId:" + userId, refreshToken, 14, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("userId:" + userId, refreshToken, 14, TimeUnit.DAYS);
     }
 
 }
