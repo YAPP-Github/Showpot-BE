@@ -1,5 +1,5 @@
 package org.example.vo;
 
-public enum SocialType {
+public enum SocialLoginType {
     GOOGLE, KAKAO, APPLE
 }

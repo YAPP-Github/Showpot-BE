@@ -2,7 +2,7 @@ package org.example.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import org.example.entity.User;
-import org.example.vo.SocialType;
+import org.example.vo.SocialLoginType;
 
 public record SignUpRequest(
 
@@ -10,7 +10,7 @@ public record SignUpRequest(
     String nickname,
 
     @NotNull(message = "소셜 타입은 필수 입력값입니다.")
-    SocialType socialType,
+    SocialLoginType socialLoginType,
 
     @NotNull(message = "소셜 식별자는 필수 입력값입니다.")
     String socialIdentifier
@@ -19,7 +19,7 @@ public record SignUpRequest(
     public User toUser() {
         return User.builder()
             .nickname(nickname)
-            .socialType(socialType)
+            .socialLoginType(socialLoginType)
             .socialIdentifier(socialIdentifier)
             .build();
     }

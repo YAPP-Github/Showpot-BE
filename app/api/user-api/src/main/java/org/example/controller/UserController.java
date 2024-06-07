@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.SignUpRequest;
@@ -21,7 +22,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.", tags = {"user"})
+    @Tag(name = "user")
+    @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.")
     public ResponseEntity<TokenParam> signUp(@Valid @RequestBody SignUpRequest request) {
         final User createdUser = request.toUser();
         TokenParam tokenParam = userService.signUp(createdUser);

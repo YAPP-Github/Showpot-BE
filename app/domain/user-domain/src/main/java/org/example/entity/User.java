@@ -1,22 +1,20 @@
 package org.example.entity;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.vo.SocialType;
+import org.example.vo.SocialCredentials;
+import org.example.vo.SocialLoginType;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
@@ -32,9 +30,9 @@ public class User extends BaseEntity {
 
     @Column(name = "fcm_token")
     private String fcmToken;
-    @Type(JsonType.class)
-    @Column(name = "social_type", columnDefinition = "jsonb")
-    private Map<SocialType, String> socialCredentials = new HashMap<>();
+
+    @Embedded
+    private SocialCredentials socialCredentials = new SocialCredentials();
 
     @Column(name = "gender")
     @Enumerated(value = EnumType.STRING)
@@ -45,9 +43,9 @@ public class User extends BaseEntity {
     private UserRole userRole;
 
     @Builder
-    private User(String nickname, SocialType socialType, String socialIdentifier) {
+    private User(String nickname, SocialLoginType socialLoginType, String socialIdentifier) {
         this.nickname = nickname;
-        this.socialCredentials.put(socialType, socialIdentifier);
+        this.socialCredentials.put(socialLoginType, socialIdentifier);
         this.userRole = UserRole.USER;
     }
 }
