@@ -1,7 +1,10 @@
-bootJar.enabled = false;
-jar.enabled = true;
+bootJar.enabled = false
+jar.enabled = true
 
 dependencies {
+    implementation project(":app:api:user-api")
+    implementation project(":app:api:common-api")
+
     implementation "org.springframework.boot:spring-boot-starter-web"
 
     //redis

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RedisRepository {
+public class LettuceRedisRepository implements RedisRepository {
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    public final void save(String userId, String refreshToken) {
+    public void save(String userId, String refreshToken) {
         stringRedisTemplate.opsForValue().set("userId:" + userId, refreshToken, 14, TimeUnit.DAYS);
     }
 
