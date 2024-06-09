@@ -19,7 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class BaseEntity implements Persistable<UUID> {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     @CreatedDate
