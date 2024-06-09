@@ -10,12 +10,13 @@ import java.util.UUID;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @EntityListeners(value = {AuditingEntityListener.class})
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Persistable<UUID> {
 
     @Id
     @Column(name = "id")
@@ -28,4 +29,9 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean isNew() {
+        return id != null;
+    }
 }

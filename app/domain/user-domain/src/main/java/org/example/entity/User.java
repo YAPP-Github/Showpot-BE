@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.vo.SocialCredentials;
+import org.example.entity.credential.SocialCredentials;
 import org.example.vo.SocialLoginType;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
