@@ -2,8 +2,6 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
-    implementation project(":app:domain:user-domain")
-
     // spring-security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 

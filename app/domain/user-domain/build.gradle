@@ -2,8 +2,9 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    implementation project(":app:domain")
+
     // hypersistence utils
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.6'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.4'
-    implementation project(":app:domain")
+
 }

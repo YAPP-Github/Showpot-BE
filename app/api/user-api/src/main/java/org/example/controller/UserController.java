@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.request.SignUpRequest;
-import org.example.entity.User;
+import org.example.dto.LoginApiDto;
+import org.example.dto.request.LoginApiRequest;
 import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,9 @@ public class UserController {
     @PostMapping("/sign-up")
     @Tag(name = "user")
     @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.")
-    public ResponseEntity<TokenParam> signUp(@Valid @RequestBody SignUpRequest request) {
-        final User createdUser = request.toUser();
-        TokenParam tokenParam = userService.signUp(createdUser);
+    public ResponseEntity<TokenParam> signUp(@Valid @RequestBody LoginApiRequest request) {
+        final LoginApiDto loginApiDto = request.toLoginApiDto();
+        TokenParam tokenParam = userService.login(loginApiDto);
 
         return ResponseEntity.ok(tokenParam);
     }

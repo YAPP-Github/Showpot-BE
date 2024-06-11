@@ -1,18 +1,17 @@
 package org.example.entity.credential;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.example.vo.SocialLoginType;
 
-public sealed interface SocialCredential permits AppleSocialCredential, GoogleSocialCredential,
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public sealed class SocialCredential permits AppleSocialCredential, GoogleSocialCredential,
     KakaoSocialCredential {
 
-
-    @JsonAnySetter
-    void put(Object socialLoginType, String socialIdentifier);
-
-    @JsonAnyGetter
-    Map<Object, String> getCredentialMap();
-
+    private SocialLoginType socialLoginType;
+    private String basicIdentifier;
 
 }

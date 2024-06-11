@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(RedisProperty.class)
 @ComponentScan(basePackages = "org.example")
-public class InfraStructureConfig {
+public class InfrastructureConfig {
 
 }
