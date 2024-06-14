@@ -25,8 +25,8 @@ public class User extends BaseEntity {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "birth")
-    private LocalDate birth;
+    @Column(name = "birth", nullable = false)
+    private LocalDate birth = LocalDate.of(0, 1, 1);
 
     @Column(name = "fcm_token")
     private String fcmToken;
@@ -35,9 +35,9 @@ public class User extends BaseEntity {
     @Column(name = "social_credentials", columnDefinition = "jsonb", nullable = false)
     private SocialCredential socialCredential;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserGender userGender;
+    private UserGender userGender = UserGender.NONE;
 
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
