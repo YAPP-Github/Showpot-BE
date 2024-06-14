@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -13,12 +14,17 @@ public class LettuceRedisRepository implements TokenRepository {
 
     @Override
     public void save(String userId, String refreshToken) {
-        stringRedisTemplate.opsForValue().set("userId:" + userId, refreshToken, 14, TimeUnit.DAYS);
+        stringRedisTemplate.opsForValue().set("RT:" + userId, refreshToken, 14, TimeUnit.DAYS);
     }
 
     @Override
-    public String getOldRefreshToken(String userId) {
-        return stringRedisTemplate.opsForValue().get("userId:" + userId);
+    public Optional<String> getOldRefreshToken(String userId) {
+        return Optional.ofNullable(stringRedisTemplate.opsForValue().get("RT:" + userId));
+    }
+
+    @Override
+    public boolean existAccessToken(String userId) {
+        return Boolean.TRUE.equals(stringRedisTemplate.hasKey("AT:" + userId));
     }
 
 }

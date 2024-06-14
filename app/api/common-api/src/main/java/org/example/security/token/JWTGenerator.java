@@ -3,10 +3,12 @@ package org.example.security.token;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.example.exception.BusinessException;
 import org.example.property.TokenProperty;
 import org.example.repository.TokenRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
+import org.example.security.vo.TokenError;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,5 +48,16 @@ public class JWTGenerator {
             )
             .signWith(tokenProperty.getBase64URLSecretKey())
             .compact();
+    }
+
+    public String getOldRefreshToken(UserParam userParam) {
+        return tokenRepository.getOldRefreshToken(userParam.userId().toString())
+            .orElseThrow(() -> new BusinessException(TokenError.WRONG_HEADER));
+    }
+
+    public void verifyLogoutAccessToken(UserParam userParam) {
+        if (tokenRepository.existAccessToken(userParam.userId().toString())) {
+            throw new BusinessException(TokenError.INVALID_TOKEN);
+        }
     }
 }
