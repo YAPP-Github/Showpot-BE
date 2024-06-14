@@ -30,6 +30,9 @@ public abstract class BaseEntity implements Persistable<UUID> {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
+
     @Override
     public boolean isNew() {
         return id != null;
