@@ -10,5 +10,5 @@ public interface TokenRepository {
 
     Optional<String> getOldRefreshToken(String userId);
 
-    boolean existAccessToken(String userId);
+    Boolean existAccessToken(String userId);
 }

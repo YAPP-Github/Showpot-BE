@@ -23,8 +23,8 @@ public class LettuceRedisRepository implements TokenRepository {
     }
 
     @Override
-    public boolean existAccessToken(String userId) {
-        return Boolean.TRUE.equals(stringRedisTemplate.hasKey("AT:" + userId));
+    public Boolean existAccessToken(String userId) {
+        return stringRedisTemplate.hasKey("AT:" + userId);
     }
 
 }
