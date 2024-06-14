@@ -1,7 +1,7 @@
 package org.example.entity;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,10 +11,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.entity.credential.SocialCredential;
+import org.example.entity.credential.SocialCredentials;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
@@ -31,9 +30,8 @@ public class User extends BaseEntity {
     @Column(name = "fcm_token")
     private String fcmToken;
 
-    @Type(JsonType.class)
-    @Column(name = "social_credentials", columnDefinition = "jsonb", nullable = false)
-    private SocialCredential socialCredential;
+    @Embedded
+    private SocialCredentials socialCredentials;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -45,9 +43,9 @@ public class User extends BaseEntity {
 
     @Builder
     private User(
-        SocialCredential socialCredential
+        SocialCredentials socialCredentials
     ) {
-        this.socialCredential = socialCredential;
+        this.socialCredentials = socialCredentials;
         this.userRole = UserRole.USER;
     }
 }
