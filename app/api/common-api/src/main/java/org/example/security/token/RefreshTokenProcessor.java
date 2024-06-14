@@ -19,6 +19,9 @@ public class RefreshTokenProcessor {
     public TokenParam reissueToken(HttpServletRequest request) {
         String refreshToken = jwtHandler.extractRefreshToken(request);
         UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
+
+        // 기존 redis의 Refresh토큰과 비교해서 맞는 refresh인지 확인 해야함
+
         TokenParam newTokenParam = jwtGenerator.generate(userParam, new Date());
 
         redisRepository.save(userParam.userId().toString(), newTokenParam.refreshToken());

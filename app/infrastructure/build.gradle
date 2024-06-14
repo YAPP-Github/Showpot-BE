@@ -1,13 +1,12 @@
 bootJar.enabled = false
 jar.enabled = true
 
+allprojects {
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter-web"
+    }
+}
+
 dependencies {
-    implementation project(":app:api:user-api")
-    implementation project(":app:api:common-api")
-
-    implementation "org.springframework.boot:spring-boot-starter-web"
-
-    //redis
-    implementation 'org.springframework.data:spring-data-redis'
-    implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
+    implementation project(":app:infrastructure:redis")
 }

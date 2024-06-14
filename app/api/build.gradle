@@ -3,6 +3,8 @@ jar.enabled = true
 
 allprojects {
     dependencies {
+        implementation project(":app:domain:common-domain")
+
         //swagger
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 

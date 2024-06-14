@@ -5,6 +5,7 @@ include(":common")
 include(":app")
 
 include(":app:domain")
+include (":app:domain:common-domain")
 include(":app:domain:user-domain")
 
 include(":app:api")
@@ -12,3 +13,4 @@ include (":app:api:common-api")
 include(":app:api:user-api")
 
 include (":app:infrastructure")
+include (":app:infrastructure:redis")
