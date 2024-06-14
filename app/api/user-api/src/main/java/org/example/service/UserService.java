@@ -3,7 +3,6 @@ package org.example.service;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.User;
-import org.example.repository.RedisRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
@@ -18,7 +17,7 @@ public class UserService {
 
     private final UserUseCase userUseCase;
     private final JWTGenerator jwtGenerator;
-    private final RedisRepository redisRepository;
+
 
     public TokenParam login(final LoginServiceRequest loginServiceRequest) {
         User createdUser = userUseCase.save(loginServiceRequest.toLoginServiceDto().toUser());
@@ -26,11 +25,8 @@ public class UserService {
             .userId(createdUser.getId())
             .role(UserRoleApiType.valueOf(createdUser.getUserRole().name()))
             .build();
-        TokenParam tokenParam = jwtGenerator.generate(userParam, new Date());
 
-        redisRepository.save(userParam.userId().toString(), tokenParam.refreshToken());
-
-        return tokenParam;
+        return jwtGenerator.generate(userParam, new Date());
     }
 
     public String findNickname(final User user) {

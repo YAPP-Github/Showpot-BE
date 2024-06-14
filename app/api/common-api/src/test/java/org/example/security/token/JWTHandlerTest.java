@@ -2,11 +2,13 @@ package org.example.security.token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 import java.util.Date;
 import java.util.UUID;
 import org.example.exception.BusinessException;
 import org.example.property.TokenProperty;
+import org.example.repository.TokenRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.vo.TokenError;
@@ -22,8 +24,9 @@ class JWTHandlerTest {
         3600000L,
         1209600000L
     );
+    TokenRepository tokenRepository = mock(TokenRepository.class);
     JWTHandler jwtHandler = new JWTHandler(tokenProperty);
-    JWTGenerator jwtGenerator = new JWTGenerator(tokenProperty);
+    JWTGenerator jwtGenerator = new JWTGenerator(tokenProperty, tokenRepository);
     UserParam userParam = new UserParam(
         UUID.randomUUID(),
         UserRoleApiType.USER

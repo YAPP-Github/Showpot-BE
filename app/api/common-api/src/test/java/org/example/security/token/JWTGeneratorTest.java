@@ -1,10 +1,13 @@
 package org.example.security.token;
 
+import static org.mockito.Mockito.mock;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import java.util.UUID;
 import org.example.property.TokenProperty;
+import org.example.repository.TokenRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.vo.UserRoleApiType;
@@ -23,8 +26,8 @@ class JWTGeneratorTest {
         hour,
         twoWeeks
     );
-
-    JWTGenerator tokenGenerator = new JWTGenerator(tokenProperty);
+    TokenRepository tokenRepository = mock(TokenRepository.class);
+    JWTGenerator tokenGenerator = new JWTGenerator(tokenProperty, tokenRepository);
     UserParam userParam = new UserParam(
         UUID.randomUUID(),
         UserRoleApiType.USER
