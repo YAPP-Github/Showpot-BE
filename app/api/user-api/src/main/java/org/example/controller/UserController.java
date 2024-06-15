@@ -25,7 +25,6 @@ public class UserController {
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "회원가입 / 로그인")
     public ResponseEntity<LoginApiResponse> signUp(@Valid @RequestBody LoginApiRequest request) {
-
         return ResponseEntity.ok(new LoginApiResponse(
             "accessToken", "refreshToken"
         ));
