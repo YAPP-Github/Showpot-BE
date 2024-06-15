@@ -12,6 +12,7 @@ include (":app:domain:show-domain")
 include(":app:api")
 include (":app:api:common-api")
 include(":app:api:user-api")
+include(":app:api:artist-api")
 
 include (":app:infrastructure")
 include (":app:infrastructure:redis")

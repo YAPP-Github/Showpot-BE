@@ -35,6 +35,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(registry ->
                 registry
                     .requestMatchers("swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers("api/v1/artists/**").hasRole("USER")
                     .anyRequest().permitAll()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

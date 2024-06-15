@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "유저")
 @RestController
-@RequestMapping("/api/v0.0.1/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/login")
-    @Tag(name = "유저")
-    @Operation(summary = "oAuth 로그인", description = "회원가입 / 로그인")
+    @Operation(summary = "로그인", description = "회원가입 / 로그인")
     public ResponseEntity<LoginApiResponse> signUp(@Valid @RequestBody LoginApiRequest request) {
 
         return ResponseEntity.ok(new LoginApiResponse(
@@ -32,7 +32,6 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    @Tag(name = "유저")
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(@Valid @RequestBody LogoutApiRequest request) {
         return ResponseEntity.noContent().build();

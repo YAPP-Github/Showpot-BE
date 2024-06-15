@@ -18,4 +18,5 @@ allprojects {
 
 dependencies {
     implementation project(":app:api:user-api")
+    implementation project(":app:api:artist-api")
 }
