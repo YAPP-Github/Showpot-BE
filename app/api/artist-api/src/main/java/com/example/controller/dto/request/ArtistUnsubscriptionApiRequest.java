@@ -1,4 +1,4 @@
-package com.example.artistapi.controller.dto.request;
+package com.example.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NotEmpty;

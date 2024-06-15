@@ -1,7 +1,7 @@
-bootJar.enabled = false
-jar.enabled = true
-
 allprojects {
+    bootJar.enabled = false
+    jar.enabled = true
+
     dependencies {
         implementation project(":app:domain:common-domain")
 
@@ -17,6 +17,8 @@ allprojects {
 }
 
 dependencies {
+    // for config registry
     implementation project(":app:api:user-api")
     implementation project(":app:api:artist-api")
+    implementation project(":app:api:genre-api")
 }

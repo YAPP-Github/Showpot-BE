@@ -1,4 +1,4 @@
-package com.example.artistapi.controller.dto.request;
+package com.example.controller.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
