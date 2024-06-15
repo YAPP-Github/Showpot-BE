@@ -8,7 +8,10 @@ public record LoginApiRequest(
     SocialLoginApiType socialType,
 
     @NotNull(message = "소셜 로그인 식별값은 필수 입력값입니다.")
-    String identifier
+    String identifier,
+
+    @NotNull(message = "소셜 로그인 식별값은 필수 입력값입니다.")
+    String fcmToken
 ) {
 
 }
