@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.request.LoginApiRequest;
-import org.example.security.dto.TokenParam;
+import org.example.controller.dto.request.LogoutApiRequest;
+import org.example.controller.dto.response.LoginApiResponse;
 import org.example.service.UserService;
-import org.example.service.dto.request.LoginServiceRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +22,19 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    @Tag(name = "user")
-    @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.")
-    public ResponseEntity<TokenParam> signUp(@Valid @RequestBody LoginApiRequest request) {
-        LoginServiceRequest loginServiceRequest = request.toLoginServiceRequest();
-        TokenParam tokenParam = userService.login(loginServiceRequest);
+    @Tag(name = "유저")
+    @Operation(summary = "oAuth 로그인", description = "회원가입 / 로그인")
+    public ResponseEntity<LoginApiResponse> signUp(@Valid @RequestBody LoginApiRequest request) {
 
-        return ResponseEntity.ok(tokenParam);
+        return ResponseEntity.ok(new LoginApiResponse(
+            "accessToken", "refreshToken"
+        ));
     }
 
+    @PostMapping("/logout")
+    @Tag(name = "유저")
+    @Operation(summary = "로그아웃")
+    public ResponseEntity<Void> logout(@Valid @RequestBody LogoutApiRequest request) {
+        return ResponseEntity.noContent().build();
+    }
 }

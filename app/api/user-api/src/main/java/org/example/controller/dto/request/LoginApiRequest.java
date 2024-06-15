@@ -1,39 +1,14 @@
 package org.example.controller.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import org.example.entity.credential.AppleSocialCredential;
-import org.example.entity.credential.GoogleSocialCredential;
-import org.example.entity.credential.KakaoSocialCredential;
-import org.example.entity.credential.SocialCredential;
-import org.example.entity.credential.SocialLoginCredential;
-import org.example.service.dto.request.LoginServiceRequest;
-import org.example.vo.SocialLoginType;
+import org.example.controller.vo.SocialLoginApiType;
 
 public record LoginApiRequest(
     @NotNull(message = "소셜 로그인 타입은 필수 입력값입니다.")
-    SocialLoginType socialLoginType,
+    SocialLoginApiType socialType,
 
     @NotNull(message = "소셜 로그인 식별값은 필수 입력값입니다.")
-    String socialLoginIdentifier
+    String identifier
 ) {
 
-    public LoginServiceRequest toLoginServiceRequest() {
-        return LoginServiceRequest.builder()
-            .socialLoginCredential(socialLoginCredential())
-            .build();
-    }
-
-    private SocialLoginCredential socialLoginCredential() {
-        SocialLoginCredential socialLoginCredential = new SocialLoginCredential();
-        socialLoginCredential.saveCredentials(socialLoginType, socialCredential());
-        return socialLoginCredential;
-    }
-
-    private SocialCredential socialCredential() {
-        return switch (socialLoginType) {
-            case GOOGLE -> new GoogleSocialCredential(socialLoginIdentifier);
-            case KAKAO -> new KakaoSocialCredential(socialLoginIdentifier);
-            case APPLE -> new AppleSocialCredential(socialLoginIdentifier);
-        };
-    }
 }
