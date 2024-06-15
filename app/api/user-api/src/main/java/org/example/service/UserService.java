@@ -23,7 +23,7 @@ public class UserService {
         User createdUser = userUseCase.save(loginServiceRequest.toUser());
         UserParam userParam = UserParam.builder()
             .userId(createdUser.getId())
-            .role(UserRoleApiType.from(createdUser))
+            .role(UserRoleApiType.from(createdUser.getUserRole()))
             .build();
 
         return jwtGenerator.generate(userParam, new Date());

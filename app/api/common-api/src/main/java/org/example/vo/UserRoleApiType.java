@@ -1,7 +1,6 @@
 package org.example.vo;
 
 import lombok.Getter;
-import org.example.entity.User;
 
 @Getter
 public enum UserRoleApiType {
@@ -15,7 +14,7 @@ public enum UserRoleApiType {
         this.authority = authority;
     }
 
-    public static UserRoleApiType from(User user) {
-        return UserRoleApiType.valueOf(user.getUserRole().name());
+    public static UserRoleApiType from(UserRole userRole) {
+        return UserRoleApiType.valueOf(userRole.name());
     }
 }
