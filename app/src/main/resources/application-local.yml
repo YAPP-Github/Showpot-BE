@@ -10,6 +10,10 @@ spring:
     user:
       name: user
       password: password
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 token:
   secret-key: ahRhwlglftmrkwkfehlaussksmsdjraksrmadmfqjfrjtdlrhdkwnwlflsmswlqdptjgodqhrgkrptkftndlTDmfrjtdlek

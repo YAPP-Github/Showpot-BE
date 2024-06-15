@@ -3,8 +3,12 @@ jar.enabled = true
 
 allprojects {
     dependencies {
+        implementation project(":app:domain:common-domain")
+
         //swagger
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+        implementation 'org.springframework.data:spring-data-commons:3.3.0'
 
         implementation "org.springframework.boot:spring-boot-starter-web"
         implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -14,12 +18,4 @@ allprojects {
 
 dependencies {
     implementation project(":app:api:user-api")
-
-    // spring-security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 }

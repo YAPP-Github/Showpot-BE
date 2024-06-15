@@ -1,0 +1,12 @@
+bootJar.enabled = false
+jar.enabled = true
+
+allprojects {
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter-web"
+    }
+}
+
+dependencies {
+    implementation project(":app:infrastructure:redis")
+}
