@@ -20,7 +20,7 @@ public class RefreshTokenProcessor {
         String refreshToken = jwtHandler.extractRefreshToken(request);
         UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
 
-        String oldRefreshToken = jwtGenerator.getOldRefreshToken(userParam);
+        String oldRefreshToken = jwtGenerator.getExistRefreshToken(userParam);
         if (!refreshToken.equals(oldRefreshToken)) {
             throw new BusinessException(TokenError.INVALID_TOKEN);
         }

@@ -1,12 +1,12 @@
 package org.example.controller.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import org.example.controller.dto.LoginApiDto;
 import org.example.entity.credential.AppleSocialCredential;
 import org.example.entity.credential.GoogleSocialCredential;
 import org.example.entity.credential.KakaoSocialCredential;
 import org.example.entity.credential.SocialCredential;
 import org.example.entity.credential.SocialCredentials;
+import org.example.service.dto.request.LoginServiceRequest;
 import org.example.vo.SocialLoginType;
 
 public record LoginApiRequest(
@@ -17,8 +17,8 @@ public record LoginApiRequest(
     String socialLoginIdentifier
 ) {
 
-    public LoginApiDto toLoginApiDto() {
-        return LoginApiDto.builder()
+    public LoginServiceRequest toLoginServiceRequest() {
+        return LoginServiceRequest.builder()
             .socialCredentials(socialCredentials())
             .build();
     }

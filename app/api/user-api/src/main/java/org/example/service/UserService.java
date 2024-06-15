@@ -20,10 +20,10 @@ public class UserService {
 
 
     public TokenParam login(final LoginServiceRequest loginServiceRequest) {
-        User createdUser = userUseCase.save(loginServiceRequest.toLoginServiceDto().toUser());
+        User createdUser = userUseCase.save(loginServiceRequest.toUser());
         UserParam userParam = UserParam.builder()
             .userId(createdUser.getId())
-            .role(UserRoleApiType.valueOf(createdUser.getUserRole().name()))
+            .role(UserRoleApiType.from(createdUser))
             .build();
 
         return jwtGenerator.generate(userParam, new Date());

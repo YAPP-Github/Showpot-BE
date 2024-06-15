@@ -50,14 +50,9 @@ public class JWTGenerator {
             .compact();
     }
 
-    public String getOldRefreshToken(UserParam userParam) {
-        return tokenRepository.getOldRefreshToken(userParam.userId().toString())
+    public String getExistRefreshToken(UserParam userParam) {
+        return tokenRepository.getExistRefreshToken(userParam.userId().toString())
             .orElseThrow(() -> new BusinessException(TokenError.WRONG_HEADER));
     }
 
-    public void verifyLogoutAccessToken(UserParam userParam) {
-        if (tokenRepository.existAccessToken(userParam.userId().toString())) {
-            throw new BusinessException(TokenError.INVALID_TOKEN);
-        }
-    }
 }

@@ -25,8 +25,7 @@ public class UserController {
     @Tag(name = "user")
     @Operation(summary = "유저 로그인", description = "사용자는 소셜 로그인을 할 수 있다.")
     public ResponseEntity<TokenParam> signUp(@Valid @RequestBody LoginApiRequest request) {
-        final LoginServiceRequest loginServiceRequest = request.toLoginApiDto()
-            .toLoginServiceRequest();
+        LoginServiceRequest loginServiceRequest = request.toLoginServiceRequest();
         TokenParam tokenParam = userService.login(loginServiceRequest);
 
         return ResponseEntity.ok(tokenParam);

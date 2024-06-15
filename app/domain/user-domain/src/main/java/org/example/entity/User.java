@@ -35,7 +35,7 @@ public class User extends BaseEntity {
 
     @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserGender userGender = UserGender.NONE;
+    private UserGender userGender = UserGender.NOT_CHOSEN;
 
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)

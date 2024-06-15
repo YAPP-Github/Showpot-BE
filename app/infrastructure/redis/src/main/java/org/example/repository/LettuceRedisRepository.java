@@ -18,7 +18,7 @@ public class LettuceRedisRepository implements TokenRepository {
     }
 
     @Override
-    public Optional<String> getOldRefreshToken(String userId) {
+    public Optional<String> getExistRefreshToken(String userId) {
         return Optional.ofNullable(stringRedisTemplate.opsForValue().get("RT:" + userId));
     }
 
