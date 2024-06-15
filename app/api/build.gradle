@@ -19,6 +19,5 @@ allprojects {
 dependencies {
     // for config registry
     implementation project(":app:api:user-api")
-    implementation project(":app:api:artist-api")
-    implementation project(":app:api:genre-api")
+    implementation project(":app:api:show-api")
 }

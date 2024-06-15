@@ -1,7 +1,7 @@
-package com.example.controller;
+package com.example.controller.genre;
 
-import com.example.controller.dto.request.ArtistSubscriptionApiRequest;
-import com.example.controller.dto.request.ArtistUnsubscriptionApiRequest;
+import com.example.controller.genre.dto.request.GenreSubscriptionApiRequest;
+import com.example.controller.genre.dto.request.GenreUnsubscriptionApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/artists")
-@Tag(name = "아티스트")
-public class ArtistController {
+@RequestMapping("/api/v1/genres")
+@Tag(name = "장르")
+public class GenreController {
 
     @PostMapping("/subscribe")
     @Operation(summary = "구독하기")
-    public ResponseEntity<Void> bulkSubscribe(
-        @Valid @RequestBody ArtistSubscriptionApiRequest request
+    public ResponseEntity<Void> subscribe(
+        @Valid @RequestBody GenreSubscriptionApiRequest request
     ) {
         return ResponseEntity.noContent().build();
     }
@@ -29,7 +29,7 @@ public class ArtistController {
     @PostMapping("/unsubscribe")
     @Operation(summary = "구독 취소하기")
     public ResponseEntity<Void> unsubscribe(
-        @Valid @RequestBody ArtistUnsubscriptionApiRequest request
+        @Valid @RequestBody GenreUnsubscriptionApiRequest request
     ) {
         return ResponseEntity.noContent().build();
     }

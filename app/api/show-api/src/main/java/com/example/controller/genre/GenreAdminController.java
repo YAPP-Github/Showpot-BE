@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller.genre;
 
 import org.springframework.web.bind.annotation.RestController;
 
