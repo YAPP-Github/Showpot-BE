@@ -53,7 +53,8 @@ public class SecurityConfig {
                     ).hasAnyRole("USER", "ADMIN")
                     .requestMatchers(
                         HttpMethod.POST,
-                        "api/v1/users/logout"
+                        "api/v1/users/logout",
+                        "api/v1/shows/**/alert"
                     ).hasAnyRole("USER", "ADMIN")
                     .requestMatchers(
                         HttpMethod.POST,

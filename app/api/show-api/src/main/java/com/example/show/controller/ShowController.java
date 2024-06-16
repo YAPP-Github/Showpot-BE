@@ -112,4 +112,12 @@ public class ShowController {
             )
         );
     }
+
+    @PostMapping("{showId}/alert")
+    @Operation(summary = "공연 알림 등록 / 취소")
+    public ResponseEntity<Void> alert(
+        @Parameter(name = "공연 ID") @PathVariable("showId") UUID showId
+    ) {
+        return ResponseEntity.noContent().build();
+    }
 }
