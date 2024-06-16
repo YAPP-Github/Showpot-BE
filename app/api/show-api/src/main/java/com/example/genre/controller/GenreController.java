@@ -1,7 +1,7 @@
-package com.example.controller.genre;
+package com.example.genre.controller;
 
-import com.example.controller.genre.dto.request.GenreSubscriptionApiRequest;
-import com.example.controller.genre.dto.request.GenreUnsubscriptionApiRequest;
+import com.example.genre.controller.dto.request.GenreSubscriptionApiRequest;
+import com.example.genre.controller.dto.request.GenreUnsubscriptionApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

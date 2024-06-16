@@ -1,6 +1,6 @@
-package com.example.controller.show;
+package com.example.show.controller;
 
-import com.example.controller.show.dto.response.ShowInterestApiResponse;
+import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

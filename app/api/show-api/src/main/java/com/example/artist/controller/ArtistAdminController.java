@@ -1,4 +1,4 @@
-package com.example.controller.artist;
+package com.example.artist.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

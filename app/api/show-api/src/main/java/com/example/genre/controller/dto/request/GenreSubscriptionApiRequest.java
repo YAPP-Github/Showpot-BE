@@ -1,4 +1,4 @@
-package com.example.controller.genre.dto.request;
+package com.example.genre.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;

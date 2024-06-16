@@ -1,4 +1,4 @@
-package com.example.controller.show;
+package com.example.show.controller;
 
 public class ShowAdminController {
 

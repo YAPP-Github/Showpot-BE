@@ -1,7 +1,7 @@
-package com.example.controller.artist;
+package com.example.artist.controller;
 
-import com.example.controller.artist.dto.request.ArtistSubscriptionApiRequest;
-import com.example.controller.artist.dto.request.ArtistUnsubscriptionApiRequest;
+import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
+import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
