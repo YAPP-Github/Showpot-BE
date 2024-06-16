@@ -48,6 +48,10 @@ public class SecurityConfig {
                         "api/v1/shows"
                     ).permitAll()
                     .requestMatchers(
+                        HttpMethod.GET,
+                        "api/v1/shows/interests"
+                    ).hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(
                         HttpMethod.POST,
                         "api/v1/users/logout"
                     ).hasAnyRole("USER", "ADMIN")

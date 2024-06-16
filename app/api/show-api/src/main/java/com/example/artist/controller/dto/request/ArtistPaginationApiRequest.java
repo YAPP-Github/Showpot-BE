@@ -11,16 +11,16 @@ public record ArtistPaginationApiRequest(
     @Parameter(description = "검색어")
     String search,
 
-    @Parameter(description = "정렬")
-    SortDirection sort,
+    @Parameter(description = "정렬 방향")
+    SortDirection sortDirection,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor
 ) {
 
     public ArtistPaginationApiRequest {
-        if (sort == null) {
-            sort = SortDirection.DESC;
+        if (sortDirection == null) {
+            sortDirection = SortDirection.DESC;
         }
     }
 }
