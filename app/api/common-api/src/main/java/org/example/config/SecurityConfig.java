@@ -6,6 +6,7 @@ import org.example.filter.ExceptionHandlerFilter;
 import org.example.filter.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,15 +32,24 @@ public class SecurityConfig {
                 corsConfigurationSource()))
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
-            .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(
+                configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authorizeHttpRequests(registry ->
                 registry
                     .requestMatchers(
                         "swagger-ui/**", "/v3/api-docs/**",
-                        "api/v1/users/login"
+                        "api/v1/users/login",
+                        "api/v1/artists"
                     ).permitAll()
-                    .requestMatchers("api/v1/artists/**").hasRole("USER")
-                    .requestMatchers("api/v1/users/logout").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "api/v1/users/logout"
+                    ).hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "api/v1/artists"
+                    ).hasRole("ADMIN")
                     .anyRequest().permitAll()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
