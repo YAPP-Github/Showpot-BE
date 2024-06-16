@@ -1,4 +1,4 @@
-package com.example.genre.controller.dto.request;
+package com.example.show.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.UUID;
@@ -6,7 +6,10 @@ import org.example.pagination.vo.SortDirection;
 import org.springdoc.core.annotations.ParameterObject;
 
 @ParameterObject
-public record GenrePaginationApiRequestParam(
+public record ShowPaginationApiRequest(
+
+    @Parameter(description = "검색어")
+    String search,
 
     @Parameter(description = "정렬")
     SortDirection sort,

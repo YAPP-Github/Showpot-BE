@@ -1,6 +1,6 @@
 package com.example.artist.controller;
 
-import com.example.artist.controller.dto.request.ArtistPaginationApiRequestParam;
+import com.example.artist.controller.dto.request.ArtistPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
 import com.example.artist.controller.dto.response.ArtistPaginationApiResponse;
@@ -28,7 +28,7 @@ public class ArtistController {
     @GetMapping
     @Operation(summary = "아티스트 목록 조회")
     public ResponseEntity<ArtistPaginationApiResponse> getArtists(
-        @RequestParam(required = false) ArtistPaginationApiRequestParam param
+        @RequestParam(required = false) ArtistPaginationApiRequest param
     ) {
         return ResponseEntity.ok(
             new ArtistPaginationApiResponse(

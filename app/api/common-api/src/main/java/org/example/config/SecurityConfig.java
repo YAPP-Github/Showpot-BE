@@ -44,7 +44,8 @@ public class SecurityConfig {
                     .requestMatchers(
                         HttpMethod.GET,
                         "api/v1/artists",
-                        "api/v1/genres"
+                        "api/v1/genres",
+                        "api/v1/shows"
                     ).permitAll()
                     .requestMatchers(
                         HttpMethod.POST,

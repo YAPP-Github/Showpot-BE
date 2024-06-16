@@ -6,7 +6,10 @@ import org.example.pagination.vo.SortDirection;
 import org.springdoc.core.annotations.ParameterObject;
 
 @ParameterObject
-public record ArtistPaginationApiRequestParam(
+public record ArtistPaginationApiRequest(
+
+    @Parameter(description = "검색어")
+    String search,
 
     @Parameter(description = "정렬")
     SortDirection sort,
@@ -15,7 +18,7 @@ public record ArtistPaginationApiRequestParam(
     UUID cursor
 ) {
 
-    public ArtistPaginationApiRequestParam {
+    public ArtistPaginationApiRequest {
         if (sort == null) {
             sort = SortDirection.DESC;
         }
