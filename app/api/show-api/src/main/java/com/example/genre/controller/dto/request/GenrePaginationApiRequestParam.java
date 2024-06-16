@@ -1,4 +1,4 @@
-package com.example.artist.controller.dto.request;
+package com.example.genre.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.UUID;
@@ -6,7 +6,7 @@ import org.example.pagination.vo.SortDirection;
 import org.springdoc.core.annotations.ParameterObject;
 
 @ParameterObject
-public record ArtistPaginationApiRequestParam(
+public record GenrePaginationApiRequestParam(
 
     @Parameter(description = "정렬")
     SortDirection sort,
@@ -15,9 +15,4 @@ public record ArtistPaginationApiRequestParam(
     UUID cursor
 ) {
 
-    public ArtistPaginationApiRequestParam {
-        if (sort == null) {
-            sort = SortDirection.DESC;
-        }
-    }
 }

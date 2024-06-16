@@ -3,8 +3,8 @@ package com.example.artist.controller;
 import com.example.artist.controller.dto.request.ArtistPaginationApiRequestParam;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
+import com.example.artist.controller.dto.response.ArtistPaginationApiResponse;
 import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
-import com.example.artist.controller.dto.response.ArtistsApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,11 +27,11 @@ public class ArtistController {
 
     @GetMapping
     @Operation(summary = "아티스트 목록 조회")
-    public ResponseEntity<ArtistsApiResponse> getArtists(
-        @RequestParam(required = false) ArtistPaginationApiRequestParam request
+    public ResponseEntity<ArtistPaginationApiResponse> getArtists(
+        @RequestParam(required = false) ArtistPaginationApiRequestParam param
     ) {
         return ResponseEntity.ok(
-            new ArtistsApiResponse(
+            new ArtistPaginationApiResponse(
                 List.of(
                     new ArtistSimpleApiResponse(
                         UUID.randomUUID(),

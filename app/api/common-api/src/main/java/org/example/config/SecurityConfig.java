@@ -39,8 +39,12 @@ public class SecurityConfig {
                 registry
                     .requestMatchers(
                         "swagger-ui/**", "/v3/api-docs/**",
-                        "api/v1/users/login",
-                        "api/v1/artists"
+                        "api/v1/users/login"
+                    ).permitAll()
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "api/v1/artists",
+                        "api/v1/genres"
                     ).permitAll()
                     .requestMatchers(
                         HttpMethod.POST,
@@ -48,9 +52,9 @@ public class SecurityConfig {
                     ).hasAnyRole("USER", "ADMIN")
                     .requestMatchers(
                         HttpMethod.POST,
-                        "api/v1/artists"
+                        "api/v1/artists",
+                        "api/v1/genres"
                     ).hasRole("ADMIN")
-                    .anyRequest().permitAll()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JWTFilter.class)
