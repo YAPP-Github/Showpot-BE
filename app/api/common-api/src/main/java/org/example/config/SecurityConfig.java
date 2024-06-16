@@ -54,12 +54,14 @@ public class SecurityConfig {
                     .requestMatchers(
                         HttpMethod.POST,
                         "api/v1/users/logout",
+                        "api/v1/shows/**/interest",
                         "api/v1/shows/**/alert"
                     ).hasAnyRole("USER", "ADMIN")
                     .requestMatchers(
                         HttpMethod.POST,
                         "api/v1/artists",
-                        "api/v1/genres"
+                        "api/v1/genres",
+                        "api/v1/shows"
                     ).hasRole("ADMIN")
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

@@ -11,7 +11,6 @@ import com.example.show.controller.dto.response.ShowPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowSimpleApiResponse;
 import com.example.show.controller.dto.response.TicketingAndShowInfoApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
@@ -71,14 +70,14 @@ public class ShowController {
     @PostMapping("{showId}/interest")
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
-        @Parameter(name = "공연 ID") @PathVariable("showId") UUID showId
+        @PathVariable("showId") UUID showId
     ) {
         return ResponseEntity.ok(
             new ShowInterestApiResponse(true)
         );
     }
 
-    @GetMapping("/interests")
+    @GetMapping("interests")
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<ShowInterestPaginationApiResponse> getInterests(
         @RequestParam(required = false) ShowInterestPaginationApiRequest param
@@ -117,7 +116,7 @@ public class ShowController {
     @GetMapping("{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
-        @Parameter(name = "공연 ID") @PathVariable("showId") UUID showId
+        @PathVariable("showId") UUID showId
     ) {
         return ResponseEntity.ok(
             new ShowDetailApiResponse(
@@ -148,7 +147,7 @@ public class ShowController {
     @PostMapping("{showId}/alert")
     @Operation(summary = "공연 알림 등록 / 취소")
     public ResponseEntity<Void> alert(
-        @Parameter(name = "공연 ID") @PathVariable("showId") UUID showId
+        @PathVariable("showId") UUID showId
     ) {
         return ResponseEntity.noContent().build();
     }
