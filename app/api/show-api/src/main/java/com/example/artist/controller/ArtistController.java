@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "아티스트")
 public class ArtistController {
 
+    private String image = "https://thumb.mtstarnews.com/06/2023/06/2023062914274537673_1.jpg";
+
     @GetMapping
     @Operation(summary = "아티스트 목록 조회")
     public ResponseEntity<ArtistPaginationApiResponse> getArtists(
@@ -36,7 +38,7 @@ public class ArtistController {
                     new ArtistSimpleApiResponse(
                         UUID.randomUUID(),
                         "윈터",
-                        "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDhfODMg%2FMDAxNzA0Njg0MzE0NTIx.ZqpnCpmoZ6PxldRyHqsHT3G2TDLQSTQv2ZWYPMDPevkg.kd3AS2NbaMWAOoA0iXgyBZHTWxOg7NO61SYnvkkydFkg.JPEG.jphair22%2F%25C0%25A9%25C5%25CD%25B4%25DC%25B9%25DF2.jpg&type=a340"
+                        image
                     )
                 ),
                 false
