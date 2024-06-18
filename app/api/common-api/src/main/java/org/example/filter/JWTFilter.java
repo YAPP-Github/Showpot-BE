@@ -13,7 +13,6 @@ import org.example.repository.TokenRepository;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
-import org.example.security.token.JWTGenerator;
 import org.example.security.token.JWTHandler;
 import org.example.security.token.RefreshTokenProcessor;
 import org.example.security.vo.TokenError;
@@ -28,7 +27,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTHandler jwtHandler;
-    private final JWTGenerator jwtGenerator;
     private final RefreshTokenProcessor refreshTokenProcessor;
     private final TokenRepository tokenRepository;
 
