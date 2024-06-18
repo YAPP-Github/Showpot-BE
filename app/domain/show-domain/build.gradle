@@ -3,7 +3,6 @@ jar.enabled = true
 
 dependencies {
     implementation project(":app:domain:common-domain")
-    implementation project(":app:domain:image-domain")
 
     // hypersistence utils
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.6'
