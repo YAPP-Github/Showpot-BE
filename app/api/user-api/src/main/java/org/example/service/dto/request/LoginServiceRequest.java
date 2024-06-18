@@ -2,16 +2,16 @@ package org.example.service.dto.request;
 
 import lombok.Builder;
 import org.example.entity.User;
-import org.example.entity.credential.SocialCredentials;
+import org.example.entity.credential.SocialLoginCredential;
 
 @Builder
 public record LoginServiceRequest(
-    SocialCredentials socialCredentials
+    SocialLoginCredential socialLoginCredential
 ) {
 
     public User toUser() {
         return User.builder()
-            .socialCredentials(socialCredentials)
+            .socialLoginCredential(socialLoginCredential)
             .build();
     }
 }

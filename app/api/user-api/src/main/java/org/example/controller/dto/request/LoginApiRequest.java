@@ -5,7 +5,7 @@ import org.example.entity.credential.AppleSocialCredential;
 import org.example.entity.credential.GoogleSocialCredential;
 import org.example.entity.credential.KakaoSocialCredential;
 import org.example.entity.credential.SocialCredential;
-import org.example.entity.credential.SocialCredentials;
+import org.example.entity.credential.SocialLoginCredential;
 import org.example.service.dto.request.LoginServiceRequest;
 import org.example.vo.SocialLoginType;
 
@@ -19,14 +19,14 @@ public record LoginApiRequest(
 
     public LoginServiceRequest toLoginServiceRequest() {
         return LoginServiceRequest.builder()
-            .socialCredentials(socialCredentials())
+            .socialLoginCredential(socialLoginCredential())
             .build();
     }
 
-    private SocialCredentials socialCredentials() {
-        SocialCredentials socialCredentials = new SocialCredentials();
-        socialCredentials.saveCredentials(socialLoginType, socialCredential());
-        return socialCredentials;
+    private SocialLoginCredential socialLoginCredential() {
+        SocialLoginCredential socialLoginCredential = new SocialLoginCredential();
+        socialLoginCredential.saveCredentials(socialLoginType, socialCredential());
+        return socialLoginCredential;
     }
 
     private SocialCredential socialCredential() {

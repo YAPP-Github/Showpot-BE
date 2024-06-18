@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "app_subscribe_genre")
 public class SubscribeGenre extends BaseEntity {
 
-
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
