@@ -1,4 +1,4 @@
-package org.example.entity.info;
+package org.example.entity.show.info;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;

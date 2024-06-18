@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entity.artist;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,18 +9,18 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.entity.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_genre")
-public class Genre extends BaseEntity {
+@Table(name = "app_artist_search")
+public class ArtistSearch extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "show_id")
-    private Show show;
-
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 }

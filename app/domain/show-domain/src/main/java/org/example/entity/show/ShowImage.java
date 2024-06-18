@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entity.show;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,16 +7,18 @@ import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.entity.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_show_artist")
-public class ShowArtist extends BaseEntity {
+@Table(name = "app_show_image")
+public class ShowImage extends BaseEntity {
+
+    @Column(name = "url", nullable = false)
+    private String url;
 
     @Column(name = "show_id", nullable = false)
     private UUID showId;
 
-    @Column(name = "artist_id", nullable = false)
-    private UUID artistId;
 }

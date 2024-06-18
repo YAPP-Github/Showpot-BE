@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entity.artist;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.entity.BaseEntity;
+import org.example.entity.show.Show;
 
 @Entity
 @Getter

@@ -1,4 +1,4 @@
-package org.example.entity.info;
+package org.example.entity.show.info;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
@@ -15,7 +15,10 @@ public class Ticketing {
     @Column(name = "ticketing", columnDefinition = "jsonb", nullable = false)
     private Map<TicketBookingSite, String> ticketingInformation = new HashMap<>();
 
-    public void saveTicketingInformation(TicketBookingSite ticketBookingSite, String ticketingSiteUrl) {
+    public void saveTicketingInformation(
+        TicketBookingSite ticketBookingSite,
+        String ticketingSiteUrl
+    ) {
         ticketingInformation.put(ticketBookingSite, ticketingSiteUrl);
     }
 }

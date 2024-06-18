@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entity.show;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,8 +12,9 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.entity.info.SeatPrice;
-import org.example.entity.info.Ticketing;
+import org.example.entity.BaseEntity;
+import org.example.entity.show.info.SeatPrice;
+import org.example.entity.show.info.Ticketing;
 
 @Entity
 @Getter
