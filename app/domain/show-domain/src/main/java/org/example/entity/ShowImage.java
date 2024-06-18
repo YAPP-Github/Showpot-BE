@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_image")
-public class Image extends BaseEntity {
+@Table(name = "app_show_image")
+public class ShowImage extends BaseEntity {
 
     @Column(name = "url", nullable = false)
     private String url;

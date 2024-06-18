@@ -40,6 +40,6 @@ public class Show extends BaseEntity {
     private Ticketing ticketing;
 
     @OneToMany(mappedBy = "app_show", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
+    private List<ShowImage> images = new ArrayList<>();
 
 }
