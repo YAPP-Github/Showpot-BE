@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "app_artist_search")
 public class ArtistSearch extends BaseEntity {
 
-    @Column(name = "artist_name", nullable = false)
-    private String artistName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id")
