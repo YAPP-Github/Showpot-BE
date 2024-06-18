@@ -8,13 +8,13 @@ import java.util.Map;
 import org.hibernate.annotations.Type;
 
 @Embeddable
-public class Price {
+public class SeatPrice {
 
     @Type(JsonType.class)
-    @Column(name = "price", columnDefinition = "jsonb", nullable = false)
+    @Column(name = "seat_price", columnDefinition = "jsonb", nullable = false)
     private Map<String, Integer> priceInformation = new HashMap<>();
 
-    public void savePriceInformation(String seatType, Integer won) {
-        priceInformation.put(seatType, won);
+    public void savePriceInformation(String seatType, Integer price) {
+        priceInformation.put(seatType, price);
     }
 }

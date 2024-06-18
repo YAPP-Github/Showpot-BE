@@ -12,7 +12,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.entity.info.Price;
+import org.example.entity.info.SeatPrice;
 import org.example.entity.info.Ticketing;
 
 @Entity
@@ -34,7 +34,7 @@ public class Show extends BaseEntity {
     private String location;
 
     @Enumerated
-    private Price price;
+    private SeatPrice seatPrice;
 
     @Enumerated
     private Ticketing ticketing;
