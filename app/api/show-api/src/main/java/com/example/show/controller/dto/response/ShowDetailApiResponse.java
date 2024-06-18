@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public record ShowDetailApiResponse(
+
+    @Schema(description = "공연 ID")
     UUID id,
+
     @Schema(description = "공연 이름")
     String name,
 
