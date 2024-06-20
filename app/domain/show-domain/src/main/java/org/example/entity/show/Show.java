@@ -1,14 +1,10 @@
 package org.example.entity.show;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,13 +30,12 @@ public class Show extends BaseEntity {
     @Column(name = "location", nullable = false)
     private String location;
 
+    @Column(name = "image", nullable = false)
+    private String image;
+
     @Enumerated
     private SeatPrice seatPrice;
 
     @Enumerated
     private Ticketing ticketing;
-
-    @OneToMany(mappedBy = "app_show", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ShowImage> images = new ArrayList<>();
-
 }
