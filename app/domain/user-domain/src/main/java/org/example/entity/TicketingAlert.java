@@ -19,7 +19,7 @@ public class TicketingAlert extends BaseEntity {
     private String name;
 
     @Column(name = "schedule_alert_time", nullable = false)
-    private LocalDateTime scheduleAlertTime;
+    private LocalDateTime alertTime;
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
