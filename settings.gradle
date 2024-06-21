@@ -7,6 +7,7 @@ include(":app")
 include(":app:domain")
 include (":app:domain:common-domain")
 include(":app:domain:user-domain")
+include (":app:domain:show-domain")
 
 include(":app:api")
 include (":app:api:common-api")

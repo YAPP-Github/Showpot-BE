@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.entity.credential.SocialCredentials;
+import org.example.entity.credential.SocialLoginCredential;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
 
@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     private String fcmToken;
 
     @Embedded
-    private SocialCredentials socialCredentials;
+    private SocialLoginCredential socialLoginCredential;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -43,9 +43,9 @@ public class User extends BaseEntity {
 
     @Builder
     private User(
-        SocialCredentials socialCredentials
+        SocialLoginCredential socialLoginCredential
     ) {
-        this.socialCredentials = socialCredentials;
+        this.socialLoginCredential = socialLoginCredential;
         this.userRole = UserRole.USER;
     }
 }
