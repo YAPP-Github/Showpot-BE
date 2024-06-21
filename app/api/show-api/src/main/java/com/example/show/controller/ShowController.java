@@ -71,7 +71,7 @@ public class ShowController {
         );
     }
 
-    @PostMapping("{showId}/interest")
+    @PostMapping("/{showId}/interest")
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
         @PathVariable("showId") UUID showId
@@ -81,7 +81,7 @@ public class ShowController {
         );
     }
 
-    @GetMapping("interests")
+    @GetMapping("/interests")
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<ShowInterestPaginationApiResponse> getInterests(
         @RequestParam(required = false) ShowInterestPaginationApiRequest param
@@ -117,7 +117,7 @@ public class ShowController {
         );
     }
 
-    @GetMapping("{showId}")
+    @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
         @PathVariable("showId") UUID showId
@@ -148,7 +148,7 @@ public class ShowController {
         );
     }
 
-    @PostMapping("{showId}/alert")
+    @PostMapping("/{showId}/alert")
     @Operation(
         summary = "공연 알림 등록 / 취소",
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
@@ -160,7 +160,7 @@ public class ShowController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("alerts")
+    @GetMapping("/alerts")
     @Operation(summary = "공연 알림 목록 조회")
     public ResponseEntity<ShowAlertPaginationApiResponse> getAlerts(
         @RequestParam(required = false) ShowInterestPaginationApiRequest param
