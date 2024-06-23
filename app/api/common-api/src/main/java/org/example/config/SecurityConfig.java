@@ -6,6 +6,7 @@ import org.example.filter.ExceptionHandlerFilter;
 import org.example.filter.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,11 +32,37 @@ public class SecurityConfig {
                 corsConfigurationSource()))
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
-            .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(
+                configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authorizeHttpRequests(registry ->
                 registry
-                    .requestMatchers("swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    .anyRequest().permitAll()
+                    .requestMatchers(
+                        "swagger-ui/**", "/v3/api-docs/**",
+                        "api/v1/users/login"
+                    ).permitAll()
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "api/v1/artists",
+                        "api/v1/genres",
+                        "api/v1/shows"
+                    ).permitAll()
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "api/v1/shows/interests"
+                    ).hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "api/v1/users/logout",
+                        "api/v1/shows/**/interest",
+                        "api/v1/shows/**/alert"
+                    ).hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "api/v1/artists",
+                        "api/v1/genres",
+                        "api/v1/shows"
+                    ).hasRole("ADMIN")
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JWTFilter.class)
