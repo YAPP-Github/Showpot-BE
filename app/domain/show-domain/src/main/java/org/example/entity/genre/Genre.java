@@ -15,7 +15,7 @@ import org.example.entity.BaseEntity;
 @Table(name = "app_genre")
 public class Genre extends BaseEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Builder
