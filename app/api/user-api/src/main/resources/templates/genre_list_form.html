@@ -1,0 +1,21 @@
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div layout:fragment="content" class="container my-3">
+  <div class="container my-3">
+    <div class="container my-3">
+    <h2 class="text-center">장르 목록</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">장르명</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="genre : ${genres}">
+        <td th:text="${genre.name}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+</html>
