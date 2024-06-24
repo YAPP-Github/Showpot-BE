@@ -22,4 +22,8 @@ public class Genre extends BaseEntity {
     private Genre(String name) {
         this.name = name;
     }
+
+    public void updateGenre(String name) {
+        this.name = name;
+    }
 }

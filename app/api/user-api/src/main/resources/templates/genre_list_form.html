@@ -1,21 +1,25 @@
 <html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content" class="container my-3">
   <div class="container my-3">
-    <div class="container my-3">
     <h2 class="text-center">장르 목록</h2>
     <table class="table table-striped">
       <thead>
       <tr>
         <th scope="col">장르명</th>
+        <th scope="col"></th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="genre : ${genres}">
         <td th:text="${genre.name}"></td>
+        <td class="text-end">
+          <form th:action="@{/api/v1/admin/genres/{id}(id=${genre.id})}" method="get">
+            <button type="submit" class="btn btn-primary">수정</button>
+          </form>
+        </td>
       </tr>
       </tbody>
     </table>
-  </div>
   </div>
 </div>
 </html>

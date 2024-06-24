@@ -1,15 +1,18 @@
 package com.example.genre.controller;
 
 import com.example.genre.controller.dto.request.GenreCreateApiForm;
+import com.example.genre.controller.dto.request.GenreUpdateApiForm;
 import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.genre.service.dto.response.GenreNameServiceFormResponse;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,14 +35,35 @@ public class GenreAdminController {
     }
 
     @GetMapping("/list")
-    public String listGenres(Model model) {
-        List<GenreNameServiceFormResponse> genreNameServiceForms = genreAdminService.getAllGenres();
+    public String findAllGenres(Model model) {
+        List<GenreNameServiceFormResponse> genreNameServiceForms = genreAdminService.findAllGenres();
         List<GenreNameApiFormResponse> genreNameApiFormResponses = genreNameServiceForms.stream()
-            .map(response -> new GenreNameApiFormResponse(response.name()))
+            .map(response -> new GenreNameApiFormResponse(response.id(), response.name()))
             .toList();
 
         model.addAttribute("genres", genreNameApiFormResponses);
         return "genre_list_form";
     }
+
+    @GetMapping("/{id}")
+    public String findGenre(@PathVariable("id") UUID id, Model model) {
+        GenreNameServiceFormResponse genreNameServiceFormResponse = genreAdminService.findGenreById(
+            id);
+        GenreNameApiFormResponse genreNameApiFormResponse = new GenreNameApiFormResponse(
+            genreNameServiceFormResponse.id(),
+            genreNameServiceFormResponse.name()
+        );
+
+        model.addAttribute("genre", genreNameApiFormResponse);
+        return "genre_form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateGenre(@PathVariable("id") UUID id,
+        @Valid GenreUpdateApiForm genreUpdateApiForm) {
+        genreAdminService.updateGenre(id, genreUpdateApiForm.toGenreUpdateServiceForm());
+        return "redirect:/api/v1/admin/genres/list";
+    }
+
 
 }
