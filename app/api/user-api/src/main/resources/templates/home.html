@@ -1,0 +1,24 @@
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div layout:fragment="content" class="container my-3">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">장르 생성</h5>
+          <p class="card-text">새로운 장르를 생성합니다.</p>
+          <a href="/api/v1/admin/genre/create" class="btn btn-primary">생성하기</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">장르 조회</h5>
+          <p class="card-text">등록된 장르를 조회합니다.</p>
+          <a href="/api/v1/admin/genre/view" class="btn btn-primary">조회하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

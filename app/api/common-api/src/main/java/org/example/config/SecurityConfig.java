@@ -39,7 +39,8 @@ public class SecurityConfig {
                 registry
                     .requestMatchers(
                         "swagger-ui/**", "/v3/api-docs/**",
-                        "api/v1/users/login"
+                        "api/v1/users/login", "api/v1/admin/**",
+                        "/css/**", "/js/**"
                     ).permitAll()
                     .requestMatchers(
                         HttpMethod.GET,
