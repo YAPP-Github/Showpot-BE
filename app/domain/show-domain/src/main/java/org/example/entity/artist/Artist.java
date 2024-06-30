@@ -14,13 +14,19 @@ import org.example.entity.BaseEntity;
 @Table(name = "app_artist")
 public class Artist extends BaseEntity {
 
-    @Column(name = "english_name", nullable = false)
-    private String englishName;
-
     @Column(name = "korean_name", nullable = false)
     private String koreanName;
 
+    @Column(name = "english_name", nullable = false)
+    private String englishName;
+
     @Column(name = "country", nullable = false)
     private String country;
+
+    @Column(name = "gender", nullable = false)
+    private ArtistGender artistGender;
+
+    @Column(name = "type", nullable = false)
+    private ArtistType artistType;
 
 }
