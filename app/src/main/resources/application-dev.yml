@@ -5,7 +5,19 @@ spring:
         enabled: true
   docker:
     compose:
-      enabled: false
+      enabled: true
+      lifecycle-management: start_and_stop
+      stop:
+        command: down
+        timeout: 1m
+  security:
+    user:
+      name: user
+      password: password
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 cloud:
   aws:
