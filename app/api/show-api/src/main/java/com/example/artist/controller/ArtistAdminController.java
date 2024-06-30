@@ -1,6 +1,7 @@
 package com.example.artist.controller;
 
 import com.example.artist.controller.dto.request.ArtistCreateApiForm;
+import com.example.artist.controller.dto.response.ArtistDetailApiFormResponse;
 import com.example.artist.service.ArtistAdminService;
 import com.example.genre.service.GenreAdminService;
 import com.example.genre.service.dto.response.GenreNameServiceFormResponse;
@@ -32,6 +33,18 @@ public class ArtistAdminController {
     @PostMapping
     public String createArtist(@Valid @ModelAttribute ArtistCreateApiForm artistCreateApiForm) {
         artistAdminService.save(artistCreateApiForm.toArtistCreateServiceForm());
-        return "redirect:/api/v1/admin/artist/list";
+        return "redirect:/api/v1/admin/artists/list";
     }
+
+    @GetMapping("/list")
+    public String findAllArtist(Model model) {
+        List<ArtistDetailApiFormResponse> artistDetailApiFormResponses = artistAdminService.findAllArtist()
+            .stream()
+            .map(ArtistDetailApiFormResponse::new)
+            .toList();
+
+        model.addAttribute("artists", artistDetailApiFormResponses);
+        return "artist_list_form";
+    }
+
 }

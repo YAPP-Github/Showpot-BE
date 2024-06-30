@@ -1,7 +1,10 @@
 package com.example.artist.service;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceForm;
+import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.entity.artist.Artist;
 import org.example.usecase.artist.ArtistUseCase;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,13 @@ public class ArtistAdminService {
     public void save(ArtistCreateServiceForm artistCreateServiceForm) {
         Artist artist = artistCreateServiceForm.toArtist();
         artistUseCase.save(artist, artistCreateServiceForm.genreIds());
+    }
+
+    public List<ArtistDetailServiceFormResponse> findAllArtist() {
+        List<ArtistDetailResponse> artistDetailResponses = artistUseCase.findAllWithGenreNames();
+        return artistDetailResponses.stream()
+            .map(ArtistDetailServiceFormResponse::new)
+            .toList();
     }
 
 }

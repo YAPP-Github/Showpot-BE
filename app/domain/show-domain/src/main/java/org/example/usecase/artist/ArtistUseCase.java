@@ -3,6 +3,7 @@ package org.example.usecase.artist;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.entity.artist.Artist;
 import org.example.event.ArtistEvent;
 import org.example.repository.artist.ArtistRepository;
@@ -23,5 +24,9 @@ public class ArtistUseCase {
         eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds));
     }
 
+    @Transactional(readOnly = true)
+    public List<ArtistDetailResponse> findAllWithGenreNames() {
+        return artistRepository.findAllWithGenreNames();
+    }
 }
 

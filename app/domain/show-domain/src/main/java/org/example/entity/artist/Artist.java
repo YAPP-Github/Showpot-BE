@@ -2,6 +2,8 @@ package org.example.entity.artist;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +29,11 @@ public class Artist extends BaseEntity {
     private String country;
 
     @Column(name = "gender", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ArtistGender artistGender;
 
     @Column(name = "type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ArtistType artistType;
 
     @Builder

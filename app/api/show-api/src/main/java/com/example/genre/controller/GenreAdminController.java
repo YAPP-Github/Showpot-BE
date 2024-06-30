@@ -38,8 +38,7 @@ public class GenreAdminController {
 
     @GetMapping("/list")
     public String findAllGenres(Model model) {
-        List<GenreNameServiceFormResponse> genreNameServiceForms = genreAdminService.findAllGenres();
-        List<GenreNameApiFormResponse> genreNameApiFormResponses = genreNameServiceForms.stream()
+        List<GenreNameApiFormResponse> genreNameApiFormResponses = genreAdminService.findAllGenres().stream()
             .map(response -> new GenreNameApiFormResponse(response.id(), response.name()))
             .toList();
 
