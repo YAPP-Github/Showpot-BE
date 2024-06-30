@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class UserAdminController {
 
-    @GetMapping("/")
+    @GetMapping
     public String home() {
         return "home";
     }

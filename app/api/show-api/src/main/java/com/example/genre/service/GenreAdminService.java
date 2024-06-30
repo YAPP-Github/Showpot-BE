@@ -30,7 +30,10 @@ public class GenreAdminService {
 
     public void updateGenre(UUID id, GenreUpdateServiceForm genreUpdateServiceForm) {
         genreUseCase.updateGenre(id, genreUpdateServiceForm.name());
+    }
 
+    public void deleteGenre(UUID id) {
+        genreUseCase.deleteGenre(id);
     }
 
     public GenreNameServiceFormResponse findGenreById(UUID id) {

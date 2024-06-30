@@ -23,13 +23,19 @@ public class GenreUseCase {
 
     @Transactional(readOnly = true)
     public List<Genre> findAllGenres() {
-        return genreRepository.findAll();
+        return genreRepository.findAllByIsDeletedFalse();
     }
 
     @Transactional
     public void updateGenre(UUID id, String name) {
         Genre genre = findGenreById(id);
         genre.updateGenre(name);
+    }
+
+    @Transactional
+    public void deleteGenre(UUID id) {
+        Genre genre = findGenreById(id);
+        genre.updateDeleteStatus(true);
     }
 
     @Transactional(readOnly = true)

@@ -11,9 +11,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -23,12 +25,12 @@ public class GenreAdminController {
 
     private final GenreAdminService genreAdminService;
 
-    @GetMapping("/")
+    @GetMapping
     public String createGenre() {
         return "genre_create_form";
     }
 
-    @PostMapping("/")
+    @PostMapping
     public String createGenre(@Valid GenreCreateApiForm genreCreateApiForm) {
         genreAdminService.save(genreCreateApiForm.toGenreCreateServiceForm());
         return "redirect:/api/v1/admin/genres/list";
@@ -58,12 +60,16 @@ public class GenreAdminController {
         return "genre_form";
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public String updateGenre(@PathVariable("id") UUID id,
         @Valid GenreUpdateApiForm genreUpdateApiForm) {
         genreAdminService.updateGenre(id, genreUpdateApiForm.toGenreUpdateServiceForm());
         return "redirect:/api/v1/admin/genres/list";
     }
 
-
+    @DeleteMapping("/{id}")
+    public String deleteGenre(@PathVariable("id") UUID id) {
+        genreAdminService.deleteGenre(id);
+        return "redirect:/api/v1/admin/genres/list";
+    }
 }
