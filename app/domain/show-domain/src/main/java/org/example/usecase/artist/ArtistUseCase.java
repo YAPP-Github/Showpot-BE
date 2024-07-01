@@ -32,17 +32,28 @@ public class ArtistUseCase {
         return artistRepository.findAllWithGenreNames();
     }
 
-    public ArtistDetailResponse findArtistById(UUID id) {
+    public ArtistDetailResponse findArtistDetailById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
             .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
     }
 
     @Transactional
     public void updateArtist(UUID id, Artist newArtist, List<UUID> genreIds) {
-        Artist artist = artistRepository.findById(id)
-            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+        Artist artist = findArtistById(id);
         artist.changeArtist(newArtist);
         eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds, EventType.UPDATE));
     }
+
+    @Transactional
+    public void deleteArtist(UUID id) {
+        Artist artist = findArtistById(id);
+        artist.updateDeleteStatus(true);
+    }
+
+    private Artist findArtistById(UUID id) {
+        return artistRepository.findById(id)
+            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+    }
+
 }
 

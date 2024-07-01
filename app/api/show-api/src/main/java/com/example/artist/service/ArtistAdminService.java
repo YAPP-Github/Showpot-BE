@@ -30,11 +30,15 @@ public class ArtistAdminService {
     }
 
     public ArtistDetailServiceFormResponse findArtistById(UUID id) {
-        return new ArtistDetailServiceFormResponse(artistUseCase.findArtistById(id));
+        return new ArtistDetailServiceFormResponse(artistUseCase.findArtistDetailById(id));
     }
 
     public void updateArtist(UUID id, ArtistUpdateServiceForm artistUpdateServiceForm) {
         Artist artist = artistUpdateServiceForm.toArtist();
         artistUseCase.updateArtist(id, artist, artistUpdateServiceForm.genreIds());
+    }
+
+    public void deleteArtist(UUID id) {
+        artistUseCase.deleteArtist(id);
     }
 }

@@ -13,6 +13,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,6 +71,12 @@ public class ArtistAdminController {
     public String updateArtist(@PathVariable("id") UUID id,
         @Valid ArtistUpdateApiForm artistUpdateApiForm) {
         artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceForm());
+        return "redirect:/api/v1/admin/artists/list";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteGenre(@PathVariable("id") UUID id) {
+        artistAdminService.deleteArtist(id);
         return "redirect:/api/v1/admin/artists/list";
     }
 
