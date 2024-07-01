@@ -3,15 +3,18 @@ package com.example.artist.controller;
 import com.example.artist.controller.dto.request.ArtistCreateApiForm;
 import com.example.artist.controller.dto.response.ArtistDetailApiFormResponse;
 import com.example.artist.service.ArtistAdminService;
+import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.genre.service.dto.response.GenreNameServiceFormResponse;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -46,5 +49,20 @@ public class ArtistAdminController {
         model.addAttribute("artists", artistDetailApiFormResponses);
         return "artist_list_form";
     }
+
+    @GetMapping("/{id}")
+    public String findArtist(@PathVariable("id") UUID id, Model model) {
+        List<GenreNameServiceFormResponse> genres = genreAdminService.findAllGenres();
+        model.addAttribute("genres", genres);
+
+        ArtistDetailServiceFormResponse artistDetailServiceFormResponse = artistAdminService.findArtistById(
+            id);
+        ArtistDetailApiFormResponse artistDetailApiFormResponse = new ArtistDetailApiFormResponse(
+            artistDetailServiceFormResponse);
+        model.addAttribute("artist", artistDetailApiFormResponse);
+
+        return "artist_form";
+    }
+
 
 }

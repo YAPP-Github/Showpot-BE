@@ -5,7 +5,9 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.entity.artist.Artist;
+import org.example.error.ArtistError;
 import org.example.event.ArtistEvent;
+import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ArtistUseCase {
 
     private final ArtistRepository artistRepository;
@@ -24,9 +27,13 @@ public class ArtistUseCase {
         eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds));
     }
 
-    @Transactional(readOnly = true)
     public List<ArtistDetailResponse> findAllWithGenreNames() {
         return artistRepository.findAllWithGenreNames();
+    }
+
+    public ArtistDetailResponse findArtistById(UUID id) {
+        return artistRepository.findArtistWithGenreNamesById(id)
+            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
     }
 }
 

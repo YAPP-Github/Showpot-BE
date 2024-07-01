@@ -3,6 +3,7 @@ package com.example.artist.service;
 import com.example.artist.service.dto.request.ArtistCreateServiceForm;
 import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.entity.artist.Artist;
@@ -27,4 +28,7 @@ public class ArtistAdminService {
             .toList();
     }
 
+    public ArtistDetailServiceFormResponse findArtistById(UUID id) {
+        return new ArtistDetailServiceFormResponse(artistUseCase.findArtistById(id));
+    }
 }

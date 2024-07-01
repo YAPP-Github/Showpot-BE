@@ -1,9 +1,4 @@
 <html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-  <meta charset="UTF-8">
-  <title>아티스트 목록</title>
-</head>
-<body>
 <div layout:fragment="content" class="container my-3">
   <div class="container my-3">
     <h2 class="text-center">아티스트 목록</h2>
@@ -20,6 +15,7 @@
       </thead>
       <tbody>
       <tr th:each="artist : ${artists}">
+        <td th:text="${artist.id}" hidden="hidden"></td>
         <td th:text="${artist.koreanName}"></td>
         <td th:text="${artist.englishName}"></td>
         <td th:text="${artist.country}"></td>
@@ -63,5 +59,4 @@
     }
   }
 </script>
-</body>
 </html>
