@@ -1,6 +1,7 @@
 package com.example.artist.service;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceForm;
+import com.example.artist.service.dto.request.ArtistUpdateServiceForm;
 import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
 import java.util.List;
 import java.util.UUID;
@@ -30,5 +31,10 @@ public class ArtistAdminService {
 
     public ArtistDetailServiceFormResponse findArtistById(UUID id) {
         return new ArtistDetailServiceFormResponse(artistUseCase.findArtistById(id));
+    }
+
+    public void updateArtist(UUID id, ArtistUpdateServiceForm artistUpdateServiceForm) {
+        Artist artist = artistUpdateServiceForm.toArtist();
+        artistUseCase.updateArtist(id, artist, artistUpdateServiceForm.genreIds());
     }
 }

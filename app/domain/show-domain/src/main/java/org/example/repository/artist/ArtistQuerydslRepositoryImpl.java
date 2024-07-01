@@ -25,8 +25,12 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public List<ArtistDetailResponse> findAllWithGenreNames() {
         return jpaQueryFactory
             .from(artist)
-            .innerJoin(artistGenre).on(artist.id.eq(artistGenre.artistId))
-            .innerJoin(genre).on(artistGenre.genreId.eq(genre.id))
+            .innerJoin(artistGenre)
+            .on(artist.id.eq(artistGenre.artistId)
+                .and(artistGenre.isDeleted.isFalse()))
+            .innerJoin(genre).on(artistGenre.genreId.eq(genre.id)
+                .and(genre.isDeleted.isFalse()))
+            .where(artist.isDeleted.isFalse())
             .transform(
                 groupBy(artist.id).list(
                     Projections.constructor(
@@ -47,9 +51,13 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public Optional<ArtistDetailResponse> findArtistWithGenreNamesById(UUID id) {
         return Optional.ofNullable(jpaQueryFactory
             .from(artist)
-            .innerJoin(artistGenre).on(artist.id.eq(artistGenre.artistId))
-            .innerJoin(genre).on(artistGenre.genreId.eq(genre.id))
+            .innerJoin(artistGenre)
+            .on(artist.id.eq(artistGenre.artistId)
+                .and(artistGenre.isDeleted.isFalse()))
+            .innerJoin(genre).on(artistGenre.genreId.eq(genre.id)
+                .and(genre.isDeleted.isFalse()))
             .where(artist.id.eq(id))
+            .where(artist.isDeleted.isFalse())
             .transform(
                 groupBy(artist.id).as(
                     Projections.constructor(
@@ -61,13 +69,11 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                         artist.artistGender,
                         artist.artistType,
                         list(genre.name)
-
                     )
                 )
             )
             .get(id)
         );
-
     }
 
 }

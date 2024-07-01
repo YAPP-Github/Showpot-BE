@@ -1,6 +1,7 @@
 package com.example.artist.controller;
 
 import com.example.artist.controller.dto.request.ArtistCreateApiForm;
+import com.example.artist.controller.dto.request.ArtistUpdateApiForm;
 import com.example.artist.controller.dto.response.ArtistDetailApiFormResponse;
 import com.example.artist.service.ArtistAdminService;
 import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -64,5 +66,11 @@ public class ArtistAdminController {
         return "artist_form";
     }
 
+    @PutMapping("/{id}")
+    public String updateArtist(@PathVariable("id") UUID id,
+        @Valid ArtistUpdateApiForm artistUpdateApiForm) {
+        artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceForm());
+        return "redirect:/api/v1/admin/artists/list";
+    }
 
 }

@@ -7,6 +7,7 @@ import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.entity.artist.Artist;
 import org.example.error.ArtistError;
 import org.example.event.ArtistEvent;
+import org.example.event.ArtistEvent.EventType;
 import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,7 +25,7 @@ public class ArtistUseCase {
     @Transactional
     public void save(Artist artist, List<UUID> genreIds) {
         artistRepository.save(artist);
-        eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds));
+        eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds, EventType.SAVE));
     }
 
     public List<ArtistDetailResponse> findAllWithGenreNames() {
@@ -34,6 +35,14 @@ public class ArtistUseCase {
     public ArtistDetailResponse findArtistById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
             .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+    }
+
+    @Transactional
+    public void updateArtist(UUID id, Artist newArtist, List<UUID> genreIds) {
+        Artist artist = artistRepository.findById(id)
+            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+        artist.changeArtist(newArtist);
+        eventPublisher.publishEvent(new ArtistEvent(this, artist, genreIds, EventType.UPDATE));
     }
 }
 

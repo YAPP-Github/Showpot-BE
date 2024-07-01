@@ -54,4 +54,12 @@ public class Artist extends BaseEntity {
                 .build())
             .toList();
     }
+
+    public void changeArtist(Artist newArtist) {
+        this.koreanName = newArtist.koreanName;
+        this.englishName = newArtist.englishName;
+        this.country = newArtist.country;
+        this.artistGender = newArtist.artistGender;
+        this.artistType = newArtist.artistType;
+    }
 }
