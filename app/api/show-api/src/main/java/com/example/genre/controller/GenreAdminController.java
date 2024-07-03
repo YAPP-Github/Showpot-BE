@@ -4,7 +4,7 @@ import com.example.genre.controller.dto.request.GenreCreateApiForm;
 import com.example.genre.controller.dto.request.GenreUpdateApiForm;
 import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
 import com.example.genre.service.GenreAdminService;
-import com.example.genre.service.dto.response.GenreNameServiceFormResponse;
+import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class GenreAdminController {
 
     @PostMapping
     public String createGenre(@Valid GenreCreateApiForm genreCreateApiForm) {
-        genreAdminService.save(genreCreateApiForm.toGenreCreateServiceForm());
+        genreAdminService.save(genreCreateApiForm.toGenreCreateServiceRequest());
         return "redirect:/admin/genres/list";
     }
 
@@ -48,11 +48,11 @@ public class GenreAdminController {
 
     @GetMapping("/{id}")
     public String findGenre(@PathVariable("id") UUID id, Model model) {
-        GenreNameServiceFormResponse genreNameServiceFormResponse = genreAdminService.findGenreById(
+        GenreNameServiceResponse genreNameServiceResponse = genreAdminService.findGenreById(
             id);
         GenreNameApiFormResponse genreNameApiFormResponse = new GenreNameApiFormResponse(
-            genreNameServiceFormResponse.id(),
-            genreNameServiceFormResponse.name()
+            genreNameServiceResponse.id(),
+            genreNameServiceResponse.name()
         );
 
         model.addAttribute("genre", genreNameApiFormResponse);
@@ -62,7 +62,7 @@ public class GenreAdminController {
     @PutMapping("/{id}")
     public String updateGenre(@PathVariable("id") UUID id,
         @Valid GenreUpdateApiForm genreUpdateApiForm) {
-        genreAdminService.updateGenre(id, genreUpdateApiForm.toGenreUpdateServiceForm());
+        genreAdminService.updateGenre(id, genreUpdateApiForm.toGenreUpdateServiceRequest());
         return "redirect:/admin/genres/list";
     }
 

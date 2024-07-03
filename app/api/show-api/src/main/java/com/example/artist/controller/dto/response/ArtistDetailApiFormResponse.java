@@ -1,6 +1,6 @@
 package com.example.artist.controller.dto.response;
 
-import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
+import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import java.util.List;
@@ -19,15 +19,15 @@ public record ArtistDetailApiFormResponse(
 ) {
 
     public ArtistDetailApiFormResponse(
-        ArtistDetailServiceFormResponse artistDetailServiceFormResponse) {
+        ArtistDetailServiceResponse artistDetailServiceResponse) {
         this(
-            artistDetailServiceFormResponse.id(),
-            artistDetailServiceFormResponse.koreanName(),
-            artistDetailServiceFormResponse.englishName(),
-            artistDetailServiceFormResponse.country(),
-            artistDetailServiceFormResponse.artistGenderApiType(),
-            artistDetailServiceFormResponse.artistApiType(),
-            artistDetailServiceFormResponse.genreNames()
+            artistDetailServiceResponse.id(),
+            artistDetailServiceResponse.koreanName(),
+            artistDetailServiceResponse.englishName(),
+            artistDetailServiceResponse.country(),
+            artistDetailServiceResponse.artistGenderApiType(),
+            artistDetailServiceResponse.artistApiType(),
+            artistDetailServiceResponse.genreNames()
         );
     }
 

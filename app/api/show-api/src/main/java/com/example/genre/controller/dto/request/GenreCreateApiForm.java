@@ -1,6 +1,6 @@
 package com.example.genre.controller.dto.request;
 
-import com.example.genre.service.dto.request.GenreCreateServiceForm;
+import com.example.genre.service.dto.request.GenreCreateServiceRequest;
 import jakarta.validation.constraints.NotNull;
 
 public record GenreCreateApiForm(
@@ -8,8 +8,8 @@ public record GenreCreateApiForm(
     String name
 ) {
 
-    public GenreCreateServiceForm toGenreCreateServiceForm() {
-        return new GenreCreateServiceForm(name);
+    public GenreCreateServiceRequest toGenreCreateServiceRequest() {
+        return new GenreCreateServiceRequest(name);
 
     }
 }

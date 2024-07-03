@@ -1,6 +1,6 @@
 package com.example.genre.controller.dto.request;
 
-import com.example.genre.service.dto.request.GenreUpdateServiceForm;
+import com.example.genre.service.dto.request.GenreUpdateServiceRequest;
 import jakarta.validation.constraints.NotNull;
 
 public record GenreUpdateApiForm(
@@ -8,8 +8,8 @@ public record GenreUpdateApiForm(
     String name
 ) {
 
-    public GenreUpdateServiceForm toGenreUpdateServiceForm() {
-        return new GenreUpdateServiceForm(name);
+    public GenreUpdateServiceRequest toGenreUpdateServiceRequest() {
+        return new GenreUpdateServiceRequest(name);
 
     }
 }

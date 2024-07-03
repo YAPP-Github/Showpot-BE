@@ -2,7 +2,7 @@ package com.example.genre.service.dto.response;
 
 import java.util.UUID;
 
-public record GenreNameServiceFormResponse(
+public record GenreNameServiceResponse(
     UUID id,
     String name
 ) {

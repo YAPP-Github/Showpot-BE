@@ -4,9 +4,9 @@ import com.example.artist.controller.dto.request.ArtistCreateApiForm;
 import com.example.artist.controller.dto.request.ArtistUpdateApiForm;
 import com.example.artist.controller.dto.response.ArtistDetailApiFormResponse;
 import com.example.artist.service.ArtistAdminService;
-import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
+import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.genre.service.GenreAdminService;
-import com.example.genre.service.dto.response.GenreNameServiceFormResponse;
+import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -31,14 +31,14 @@ public class ArtistAdminController {
 
     @GetMapping
     public String createArtist(Model model) {
-        List<GenreNameServiceFormResponse> genres = genreAdminService.findAllGenres();
+        List<GenreNameServiceResponse> genres = genreAdminService.findAllGenres();
         model.addAttribute("genres", genres);
         return "artist_create_form";
     }
 
     @PostMapping
     public String createArtist(@Valid @ModelAttribute ArtistCreateApiForm artistCreateApiForm) {
-        artistAdminService.save(artistCreateApiForm.toArtistCreateServiceForm());
+        artistAdminService.save(artistCreateApiForm.toArtistCreateServiceRequest());
         return "redirect:/admin/artists/list";
     }
 
@@ -55,13 +55,13 @@ public class ArtistAdminController {
 
     @GetMapping("/{id}")
     public String findArtist(@PathVariable("id") UUID id, Model model) {
-        List<GenreNameServiceFormResponse> genres = genreAdminService.findAllGenres();
+        List<GenreNameServiceResponse> genres = genreAdminService.findAllGenres();
         model.addAttribute("genres", genres);
 
-        ArtistDetailServiceFormResponse artistDetailServiceFormResponse = artistAdminService.findArtistById(
+        ArtistDetailServiceResponse artistDetailServiceResponse = artistAdminService.findArtistById(
             id);
         ArtistDetailApiFormResponse artistDetailApiFormResponse = new ArtistDetailApiFormResponse(
-            artistDetailServiceFormResponse);
+            artistDetailServiceResponse);
         model.addAttribute("artist", artistDetailApiFormResponse);
 
         return "artist_form";
@@ -70,7 +70,7 @@ public class ArtistAdminController {
     @PutMapping("/{id}")
     public String updateArtist(@PathVariable("id") UUID id,
         @Valid ArtistUpdateApiForm artistUpdateApiForm) {
-        artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceForm());
+        artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceRequest());
         return "redirect:/admin/artists/list";
     }
 

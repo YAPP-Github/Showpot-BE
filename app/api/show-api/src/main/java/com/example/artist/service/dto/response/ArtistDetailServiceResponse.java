@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.example.dto.artist.response.ArtistDetailResponse;
 
-public record ArtistDetailServiceFormResponse(
+public record ArtistDetailServiceResponse(
     UUID id,
     String koreanName,
     String englishName,
@@ -16,7 +16,7 @@ public record ArtistDetailServiceFormResponse(
     List<String> genreNames
 ) {
 
-    public ArtistDetailServiceFormResponse(ArtistDetailResponse artistDetailResponse) {
+    public ArtistDetailServiceResponse(ArtistDetailResponse artistDetailResponse) {
         this(
             artistDetailResponse.id(),
             artistDetailResponse.koreanName(),

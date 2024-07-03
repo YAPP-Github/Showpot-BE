@@ -1,6 +1,6 @@
 package com.example.artist.controller.dto.request;
 
-import com.example.artist.service.dto.request.ArtistCreateServiceForm;
+import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import jakarta.validation.constraints.NotNull;
@@ -27,8 +27,8 @@ public record ArtistCreateApiForm(
     List<UUID> genreIds
 ) {
 
-    public ArtistCreateServiceForm toArtistCreateServiceForm() {
-        return ArtistCreateServiceForm.builder()
+    public ArtistCreateServiceRequest toArtistCreateServiceRequest() {
+        return ArtistCreateServiceRequest.builder()
             .koreanName(koreanName)
             .englishName(englishName)
             .country(country)

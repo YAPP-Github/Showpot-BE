@@ -1,6 +1,6 @@
 package com.example.artist.controller.dto.request;
 
-import com.example.artist.service.dto.request.ArtistUpdateServiceForm;
+import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import jakarta.validation.constraints.NotNull;
@@ -27,8 +27,8 @@ public record ArtistUpdateApiForm(
     List<UUID> genreIds
 ) {
 
-    public ArtistUpdateServiceForm toArtistUpdateServiceForm() {
-        return ArtistUpdateServiceForm.builder()
+    public ArtistUpdateServiceRequest toArtistUpdateServiceRequest() {
+        return ArtistUpdateServiceRequest.builder()
             .koreanName(koreanName)
             .englishName(englishName)
             .country(country)

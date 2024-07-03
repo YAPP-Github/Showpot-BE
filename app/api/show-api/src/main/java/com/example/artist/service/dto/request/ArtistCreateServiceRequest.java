@@ -10,7 +10,7 @@ import org.example.entity.artist.ArtistGender;
 import org.example.entity.artist.ArtistType;
 
 @Builder
-public record ArtistUpdateServiceForm(
+public record ArtistCreateServiceRequest(
     String koreanName,
     String englishName,
     String country,

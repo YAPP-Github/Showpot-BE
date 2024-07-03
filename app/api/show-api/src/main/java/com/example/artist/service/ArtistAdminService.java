@@ -1,8 +1,8 @@
 package com.example.artist.service;
 
-import com.example.artist.service.dto.request.ArtistCreateServiceForm;
-import com.example.artist.service.dto.request.ArtistUpdateServiceForm;
-import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
+import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
+import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
+import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +17,25 @@ public class ArtistAdminService {
 
     private final ArtistUseCase artistUseCase;
 
-    public void save(ArtistCreateServiceForm artistCreateServiceForm) {
-        Artist artist = artistCreateServiceForm.toArtist();
-        artistUseCase.save(artist, artistCreateServiceForm.genreIds());
+    public void save(ArtistCreateServiceRequest artistCreateServiceRequest) {
+        Artist artist = artistCreateServiceRequest.toArtist();
+        artistUseCase.save(artist, artistCreateServiceRequest.genreIds());
     }
 
-    public List<ArtistDetailServiceFormResponse> findAllArtist() {
+    public List<ArtistDetailServiceResponse> findAllArtist() {
         List<ArtistDetailResponse> artistDetailResponses = artistUseCase.findAllWithGenreNames();
         return artistDetailResponses.stream()
-            .map(ArtistDetailServiceFormResponse::new)
+            .map(ArtistDetailServiceResponse::new)
             .toList();
     }
 
-    public ArtistDetailServiceFormResponse findArtistById(UUID id) {
-        return new ArtistDetailServiceFormResponse(artistUseCase.findArtistDetailById(id));
+    public ArtistDetailServiceResponse findArtistById(UUID id) {
+        return new ArtistDetailServiceResponse(artistUseCase.findArtistDetailById(id));
     }
 
-    public void updateArtist(UUID id, ArtistUpdateServiceForm artistUpdateServiceForm) {
-        Artist artist = artistUpdateServiceForm.toArtist();
-        artistUseCase.updateArtist(id, artist, artistUpdateServiceForm.genreIds());
+    public void updateArtist(UUID id, ArtistUpdateServiceRequest artistUpdateServiceRequest) {
+        Artist artist = artistUpdateServiceRequest.toArtist();
+        artistUseCase.updateArtist(id, artist, artistUpdateServiceRequest.genreIds());
     }
 
     public void deleteArtist(UUID id) {
