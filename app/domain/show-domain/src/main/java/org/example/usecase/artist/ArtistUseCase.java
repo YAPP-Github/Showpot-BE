@@ -47,7 +47,7 @@ public class ArtistUseCase {
     @Transactional
     public void deleteArtist(UUID id) {
         Artist artist = findArtistById(id);
-        artist.updateDeleteStatus(true);
+        artist.softDelete();
     }
 
     private Artist findArtistById(UUID id) {

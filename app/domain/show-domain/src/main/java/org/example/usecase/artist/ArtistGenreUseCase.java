@@ -2,6 +2,7 @@ package org.example.usecase.artist;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
 import org.example.repository.artist.ArtistGenreRepository;
@@ -27,6 +28,6 @@ public class ArtistGenreUseCase {
 
     @Transactional
     public void delete(List<ArtistGenre> artistGenres) {
-        artistGenres.forEach(artistGenre -> artistGenre.updateDeleteStatus(true));
+        artistGenres.forEach(BaseEntity::softDelete);
     }
 }

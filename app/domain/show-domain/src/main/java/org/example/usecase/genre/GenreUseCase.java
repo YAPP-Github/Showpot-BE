@@ -35,7 +35,7 @@ public class GenreUseCase {
     @Transactional
     public void deleteGenre(UUID id) {
         Genre genre = findGenreById(id);
-        genre.updateDeleteStatus(true);
+        genre.softDelete();
     }
 
     @Transactional(readOnly = true)
