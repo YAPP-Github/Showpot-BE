@@ -3,7 +3,7 @@
   <div class="container my-3">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <form th:action="@{/api/v1/admin/genres}" method="post">
+        <form th:action="@{/admin/genres}" method="post">
           <div th:if="${param.error}" class="alert alert-danger">
             장르명을 입력해 주세요
           </div>

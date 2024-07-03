@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin/genres")
+@RequestMapping("/admin/genres")
 public class GenreAdminController {
 
     private final GenreAdminService genreAdminService;
@@ -33,7 +33,7 @@ public class GenreAdminController {
     @PostMapping
     public String createGenre(@Valid GenreCreateApiForm genreCreateApiForm) {
         genreAdminService.save(genreCreateApiForm.toGenreCreateServiceForm());
-        return "redirect:/api/v1/admin/genres/list";
+        return "redirect:/admin/genres/list";
     }
 
     @GetMapping("/list")
@@ -63,12 +63,12 @@ public class GenreAdminController {
     public String updateGenre(@PathVariable("id") UUID id,
         @Valid GenreUpdateApiForm genreUpdateApiForm) {
         genreAdminService.updateGenre(id, genreUpdateApiForm.toGenreUpdateServiceForm());
-        return "redirect:/api/v1/admin/genres/list";
+        return "redirect:/admin/genres/list";
     }
 
     @DeleteMapping("/{id}")
     public String deleteGenre(@PathVariable("id") UUID id) {
         genreAdminService.deleteGenre(id);
-        return "redirect:/api/v1/admin/genres/list";
+        return "redirect:/admin/genres/list";
     }
 }

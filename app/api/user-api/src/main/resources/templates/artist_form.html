@@ -2,7 +2,7 @@
 <div layout:fragment="content" class="container">
   <div class="my-3">
     <h2 class="text-center">아티스트 수정</h2>
-    <form th:action="@{/api/v1/admin/artists/{id}(id=${artist.id})}" method="post">
+    <form th:action="@{/admin/artists/{id}(id=${artist.id})}" method="post">
       <input type="hidden" name="_method" value="put" />
       <div class="form-group mb-3">
         <label for="koreanName" style="font-weight: bold;">한국 이름</label>

@@ -13,10 +13,10 @@
         <td th:text="${genre.id}" hidden="hidden"></td>
         <td th:text="${genre.name}"></td>
         <td class="text-end">
-          <form th:action="@{/api/v1/admin/genres/{id}(id=${genre.id})}" method="get" style="display: inline-block;">
+          <form th:action="@{/admin/genres/{id}(id=${genre.id})}" method="get" style="display: inline-block;">
             <button type="submit" class="btn btn-primary">수정</button>
           </form>
-          <form th:action="@{/api/v1/admin/genres/{id}(id=${genre.id})}" method="post" style="display: inline-block;">
+          <form th:action="@{/admin/genres/{id}(id=${genre.id})}" method="post" style="display: inline-block;">
             <input type="hidden" name="_method" th:value="delete" />
             <button type="button" class="btn btn-danger" th:genreId="${genre.id}" onclick="deleteGenre(this.getAttribute('genreId'))">삭제</button>
           </form>
@@ -32,7 +32,7 @@
     if (confirm("정말 삭제하시겠습니까?")) {
       const form = document.createElement("form");
       form.method = "post";
-      form.action = `/api/v1/admin/genres/${id}`;
+      form.action = `/admin/genres/${id}`;
       const methodInput = document.createElement("input");
       methodInput.setAttribute("type", "hidden");
       methodInput.setAttribute("name", "_method");

@@ -2,7 +2,7 @@
 <div layout:fragment="content" class="container">
   <div class="my-3">
     <h2 class="text-center">장르 수정</h2>
-    <form th:action="@{/api/v1/admin/genres/{id}(id=${genre.id})}" method="post">
+    <form th:action="@{/admin/genres/{id}(id=${genre.id})}" method="post">
       <input type="hidden" name="_method" value="put" />
       <div class="form-group mt-3">
         <label for="name" style="font-weight: bold;">장르명</label>

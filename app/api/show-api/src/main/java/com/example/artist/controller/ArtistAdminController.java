@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin/artists")
+@RequestMapping("/admin/artists")
 public class ArtistAdminController {
 
     private final ArtistAdminService artistAdminService;
@@ -39,7 +39,7 @@ public class ArtistAdminController {
     @PostMapping
     public String createArtist(@Valid @ModelAttribute ArtistCreateApiForm artistCreateApiForm) {
         artistAdminService.save(artistCreateApiForm.toArtistCreateServiceForm());
-        return "redirect:/api/v1/admin/artists/list";
+        return "redirect:/admin/artists/list";
     }
 
     @GetMapping("/list")
@@ -71,13 +71,13 @@ public class ArtistAdminController {
     public String updateArtist(@PathVariable("id") UUID id,
         @Valid ArtistUpdateApiForm artistUpdateApiForm) {
         artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceForm());
-        return "redirect:/api/v1/admin/artists/list";
+        return "redirect:/admin/artists/list";
     }
 
     @DeleteMapping("/{id}")
     public String deleteGenre(@PathVariable("id") UUID id) {
         artistAdminService.deleteArtist(id);
-        return "redirect:/api/v1/admin/artists/list";
+        return "redirect:/admin/artists/list";
     }
 
 }
