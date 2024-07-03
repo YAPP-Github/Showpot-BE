@@ -1,5 +1,7 @@
 package com.example.artist.service.dto.request;
 
+import com.example.artist.vo.ArtistApiType;
+import com.example.artist.vo.ArtistGenderApiType;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -12,8 +14,8 @@ public record ArtistCreateServiceForm(
     String koreanName,
     String englishName,
     String country,
-    ArtistGender artistGender,
-    ArtistType artistType,
+    ArtistGenderApiType artistGenderApiType,
+    ArtistApiType artistApiType,
     List<UUID> genreIds
 ) {
 
@@ -22,8 +24,8 @@ public record ArtistCreateServiceForm(
             .koreanName(koreanName)
             .englishName(englishName)
             .country(country)
-            .artistGender(artistGender)
-            .artistType(artistType)
+            .artistGender(ArtistGender.valueOf(artistGenderApiType.name()))
+            .artistType(ArtistType.valueOf(artistApiType.name()))
             .build();
     }
 }

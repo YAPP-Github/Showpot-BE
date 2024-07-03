@@ -1,11 +1,11 @@
 package com.example.artist.controller.dto.response;
 
 import com.example.artist.service.dto.response.ArtistDetailServiceFormResponse;
+import com.example.artist.vo.ArtistApiType;
+import com.example.artist.vo.ArtistGenderApiType;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.artist.ArtistGender;
-import org.example.entity.artist.ArtistType;
 
 @Builder
 public record ArtistDetailApiFormResponse(
@@ -13,8 +13,8 @@ public record ArtistDetailApiFormResponse(
     String koreanName,
     String englishName,
     String country,
-    ArtistGender artistGender,
-    ArtistType artistType,
+    ArtistGenderApiType artistGenderApiType,
+    ArtistApiType artistApiType,
     List<String> genreNames
 ) {
 
@@ -25,8 +25,8 @@ public record ArtistDetailApiFormResponse(
             artistDetailServiceFormResponse.koreanName(),
             artistDetailServiceFormResponse.englishName(),
             artistDetailServiceFormResponse.country(),
-            artistDetailServiceFormResponse.artistGender(),
-            artistDetailServiceFormResponse.artistType(),
+            artistDetailServiceFormResponse.artistGenderApiType(),
+            artistDetailServiceFormResponse.artistApiType(),
             artistDetailServiceFormResponse.genreNames()
         );
     }

@@ -19,8 +19,8 @@
         <td th:text="${artist.koreanName}"></td>
         <td th:text="${artist.englishName}"></td>
         <td th:text="${artist.country}"></td>
-        <td th:text="${artist.artistGender}"></td>
-        <td th:text="${artist.artistType}"></td>
+        <td th:text="${artist.artistGenderApiType}"></td>
+        <td th:text="${artist.artistApiType}"></td>
         <td>
           <ul>
             <li th:each="genre : ${artist.genreNames}" th:text="${genre}"></li>
