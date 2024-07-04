@@ -21,7 +21,6 @@ public class GenreUseCase {
         genreRepository.save(genre);
     }
 
-    @Transactional(readOnly = true)
     public List<Genre> findAllGenres() {
         return genreRepository.findAllByIsDeletedFalse();
     }
@@ -38,7 +37,6 @@ public class GenreUseCase {
         genre.softDelete();
     }
 
-    @Transactional(readOnly = true)
     public Genre findGenreById(UUID id) {
         return genreRepository.findById(id)
             .orElseThrow(() -> new BusinessException(GenreError.ENTITY_NOT_FOUND_ERROR));
