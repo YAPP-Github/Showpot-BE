@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,7 +36,7 @@ public class ArtistAdminController {
     }
 
     @PostMapping
-    public String createArtist(@Valid @ModelAttribute ArtistCreateApiForm artistCreateApiForm) {
+    public String createArtist(@Valid ArtistCreateApiForm artistCreateApiForm) {
         artistAdminService.save(artistCreateApiForm.toArtistCreateServiceRequest());
         return "redirect:/admin/artists/list";
     }
