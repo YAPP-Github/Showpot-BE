@@ -56,7 +56,7 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_DEV_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
       - name: Upload files to EC2
-        uses: appleboy/scp-action@0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_DEV_HOST }}
           username: ec2-user
