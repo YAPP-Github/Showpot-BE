@@ -33,6 +33,14 @@ public abstract class BaseEntity implements Persistable<UUID> {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
+    public void softDelete() {
+        isDeleted = true;
+    }
+
+    public void revive() {
+        isDeleted = false;
+    }
+
     @Override
     public boolean isNew() {
         return id != null;
