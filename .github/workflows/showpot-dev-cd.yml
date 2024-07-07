@@ -34,19 +34,11 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Docker Login
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build Docker Image
+      - name: Prepare File for Deployment
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev
+          mkdir -p deployment
+          cp Dockerfile docker-compose.yml deployment/
+          cp -r ./app/build/libs deployment/
 
       - name: Get Github Actions IP
         id: ip
@@ -59,24 +51,31 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Add Github Actions IP to Security group
+      - name: Add Github Actions IP on Security Group
         run: |
           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_DEV_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-      - name: Deploy to EC2
+      - name: Upload files to EC2
+        uses: appleboy/scp-action@0.1.7
+        with:
+          host: ${{ secrets.EC2_DEV_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_DEV_SSH_PRIVATE_KEY }}
+          source: "deployment/*"
+          target: "/home/ec2-user/deployment/"
+
+      - name: Deploy using Docker Compose
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_DEV_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_DEV_SSH_PRIVATE_KEY }}
           script: |
-            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev
-            docker stop showpot-dev
-            docker rm showpot-dev
-            docker run -d -p 8080:8080 --name showpot-dev ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev
+            cd /home/ec2-user/deployment/
+            docker-compose down
+            docker-compose up -d --build
 
-      - name: Remove Github Actions IP From Security Group
+      - name: Remove Github Actions IP from Security Group
         if: always()
         run: |
           aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_DEV_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
