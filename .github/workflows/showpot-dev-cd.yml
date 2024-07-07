@@ -3,7 +3,7 @@ name: ShowPot-Dev-CD
 on:
   push:
     branches:
-      - develop
+      - feat-cd-dev
 
 jobs:
   build:
@@ -20,9 +20,6 @@ jobs:
           distribution: 'liberica'
           cache: gradle
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
       - name: Copy Secrets
         env:
           ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
@@ -34,3 +31,14 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
 
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev .
+
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Push Image On Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/showpot:dev

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "서버 상태 체크")
+@Tag(name = "서버 상태")
 public class HealthController {
 
     @GetMapping("/health")
