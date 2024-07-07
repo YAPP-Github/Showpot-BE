@@ -62,7 +62,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_DEV_SSH_PRIVATE_KEY }}
           source: "deployment/*"
-          target: "/home/ec2-user/deployment/"
+          target: "/home/ec2-user/"
 
       - name: Deploy using Docker Compose
         uses: appleboy/ssh-action@v1.0.3
