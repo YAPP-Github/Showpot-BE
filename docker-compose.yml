@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   postgresql:
     container_name: yapp_postgresql
