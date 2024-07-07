@@ -79,3 +79,24 @@ jobs:
         if: always()
         run: |
           aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_DEV_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      - name: Backend CD for Dev Server Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: success()
+        with:
+          title: ✅ 개발 서버 배포 프로세스가 완료되었습니다! ✅
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: "<@1084774841460215839> <@281597829636423682> 배포가 정상적으로 이뤄졌는지 확인해주세요!"
+          color: 00FF00
+          username: showPot-Bot
+          avatar_url: ${{ secrets.DISCORD_NOTIFICATION_SUCCESS_AVATAR_URL }}
+
+      - name: Backend CD for Dev Server Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: failure()
+        with:
+          title: ❗️개발 서버 배포 프로세스가 실패했습니다! ❗️
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          color: FF0000
+          username: showPot-Bot
+          avatar_url: ${{ secrets.DISCORD_NOTIFICATION_FAILED_AVATAR_URL }}
