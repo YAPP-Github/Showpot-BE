@@ -3,7 +3,7 @@ name: ShowPot-Dev-CD
 on:
   push:
     branches:
-      - feat-cd-dev
+      - develop
 
 jobs:
   build-and-docker-hub-push:
