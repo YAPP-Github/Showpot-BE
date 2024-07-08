@@ -43,6 +43,7 @@ public class SecurityConfig {
             .logout((logout) -> logout
                 .logoutUrl("/admin/logout")
                 .logoutSuccessUrl("/admin/home")
+                .invalidateHttpSession(true)
             )
             .httpBasic(AbstractHttpConfigurer::disable)
             .sessionManagement(
