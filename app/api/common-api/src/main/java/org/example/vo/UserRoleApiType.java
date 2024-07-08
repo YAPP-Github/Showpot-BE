@@ -1,6 +1,10 @@
 package org.example.vo;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Getter
 public enum UserRoleApiType {
@@ -16,5 +20,12 @@ public enum UserRoleApiType {
 
     public static UserRoleApiType from(UserRole userRole) {
         return UserRoleApiType.valueOf(userRole.name());
+    }
+
+    public List<GrantedAuthority> getAdminAuthority() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(ADMIN.authority));
+
+        return authorities;
     }
 }

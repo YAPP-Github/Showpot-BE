@@ -11,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.error.UserAdminError;
 import org.example.entity.credential.SocialLoginCredential;
+import org.example.exception.BusinessException;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
 
@@ -47,5 +49,11 @@ public class User extends BaseEntity {
     ) {
         this.socialLoginCredential = socialLoginCredential;
         this.userRole = UserRole.USER;
+    }
+
+    public void validateUserRole() {
+        if (!this.userRole.equals(UserRole.ADMIN)) {
+            throw new BusinessException(UserAdminError.ADMIN_NOT_AUTHORITY_ERROR);
+        }
     }
 }
