@@ -9,16 +9,12 @@ services:
     ports:
       - '5432:5432'
     restart: always
-    networks:
-      - app-network
 
   redis:
     container_name: yapp_redis
     image: redis:alpine
     ports:
       - '6379:6379'
-    networks:
-      - app-network
 
   app:
     image: yapp
@@ -36,8 +32,6 @@ services:
     depends_on:
       - postgresql
       - redis
-    networks:
-      - app-network
 
 networks:
   app-network:
