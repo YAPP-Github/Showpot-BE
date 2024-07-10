@@ -1,17 +1,30 @@
 package org.example.service.dto.request;
 
+import java.util.UUID;
 import lombok.Builder;
+import org.example.dto.request.LoginDomainRequest;
 import org.example.entity.User;
-import org.example.entity.credential.SocialLoginCredential;
+import org.example.vo.SocialLoginApiType;
 
 @Builder
 public record LoginServiceRequest(
-    SocialLoginCredential socialLoginCredential
+    SocialLoginApiType socialLoginType,
+    String identifier,
+    String fcmToken
 ) {
 
-    public User toUser() {
+    public User createUser() {
         return User.builder()
-            .socialLoginCredential(socialLoginCredential)
+            .nickname(UUID.randomUUID().toString())
+            .fcmToken(fcmToken)
+            .build();
+    }
+
+    public LoginDomainRequest toDomainRequest() {
+        return LoginDomainRequest.builder()
+            .socialLoginType(socialLoginType.toDomainType())
+            .identifier(identifier)
+            .fcmToken(fcmToken)
             .build();
     }
 }

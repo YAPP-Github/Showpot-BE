@@ -22,5 +22,4 @@ public class UserQuerydslRepositoryImpl implements UserQuerydslRepository {
             .fetchOne()
         );
     }
-
 }

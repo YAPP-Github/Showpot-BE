@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.request.LoginApiRequest;
 import org.example.controller.dto.request.LogoutApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
+import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +26,14 @@ public class UserController {
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "회원가입 / 로그인")
     public ResponseEntity<LoginApiResponse> signUp(@Valid @RequestBody LoginApiRequest request) {
-        return ResponseEntity.ok(new LoginApiResponse(
-            "accessToken", "refreshToken"
-        ));
+        TokenParam token = userService.login(request.toServiceType());
+
+        return ResponseEntity.ok(
+            LoginApiResponse.builder()
+                .accessToken(token.accessToken())
+                .refreshToken(token.refreshToken())
+                .build()
+        );
     }
 
     @PostMapping("/logout")

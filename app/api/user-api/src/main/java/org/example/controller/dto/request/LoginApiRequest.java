@@ -2,7 +2,8 @@ package org.example.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import org.example.controller.vo.SocialLoginApiType;
+import org.example.service.dto.request.LoginServiceRequest;
+import org.example.vo.SocialLoginApiType;
 
 public record LoginApiRequest(
 
@@ -19,4 +20,11 @@ public record LoginApiRequest(
     String fcmToken
 ) {
 
+    public LoginServiceRequest toServiceType() {
+        return LoginServiceRequest.builder()
+            .socialLoginType(socialType)
+            .identifier(identifier)
+            .fcmToken(fcmToken)
+            .build();
+    }
 }
