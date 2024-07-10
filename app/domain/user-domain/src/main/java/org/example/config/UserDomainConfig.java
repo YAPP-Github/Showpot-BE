@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ComponentScan(basePackages = "org.example")
 @EntityScan(basePackages = "org.example.entity")
-@EnableJpaRepositories(basePackages = "org.example.repository.user")
+@EnableJpaRepositories(basePackages =
+    {"org.example.repository.user", "org.example.repository.admin"})
 public class UserDomainConfig {
 
 }
