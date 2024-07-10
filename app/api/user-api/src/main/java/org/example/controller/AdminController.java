@@ -33,9 +33,4 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login_form";
-    }
-
 }
