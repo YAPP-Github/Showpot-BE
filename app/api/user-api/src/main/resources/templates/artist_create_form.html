@@ -40,7 +40,7 @@
                 <div class="form-check">
                   <label>
                     <input class="form-check-input" type="checkbox" th:id="'genre_' + ${genre.id}"
-                           name="genreIds" th:value="${genre.id}" required>
+                           name="genreIds" th:value="${genre.id}">
                   </label>
                   <label class="form-check-label" th:for="'genre_' + ${genre.id}"
                          th:text="${genre.name}"></label>
