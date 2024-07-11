@@ -5,8 +5,8 @@ import com.example.artist.controller.dto.request.ArtistUpdateApiForm;
 import com.example.artist.controller.dto.response.ArtistDetailApiFormResponse;
 import com.example.artist.service.ArtistAdminService;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
+import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
 import com.example.genre.service.GenreAdminService;
-import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +30,9 @@ public class ArtistAdminController {
 
     @GetMapping
     public String createArtist(Model model) {
-        List<GenreNameServiceResponse> genres = genreAdminService.findAllGenres();
+        List<GenreNameApiFormResponse> genres = genreAdminService.findAllGenres().stream()
+            .map(GenreNameApiFormResponse::new)
+            .toList();
         model.addAttribute("genres", genres);
         return "artist_create_form";
     }
@@ -43,7 +45,7 @@ public class ArtistAdminController {
 
     @GetMapping("/list")
     public String findAllArtist(Model model) {
-        List<ArtistDetailApiFormResponse> artistDetailApiFormResponses = artistAdminService.findAllArtist()
+        List<ArtistDetailApiFormResponse> artistDetailApiFormResponses = artistAdminService.findAllWithGenreNames()
             .stream()
             .map(ArtistDetailApiFormResponse::new)
             .toList();
@@ -54,7 +56,9 @@ public class ArtistAdminController {
 
     @GetMapping("/{id}")
     public String findArtist(@PathVariable("id") UUID id, Model model) {
-        List<GenreNameServiceResponse> genres = genreAdminService.findAllGenres();
+        List<GenreNameApiFormResponse> genres = genreAdminService.findAllGenres().stream()
+            .map(GenreNameApiFormResponse::new)
+            .toList();
         model.addAttribute("genres", genres);
 
         ArtistDetailServiceResponse artistDetailServiceResponse = artistAdminService.findArtistById(
