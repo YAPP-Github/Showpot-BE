@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
+import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
@@ -31,6 +32,10 @@ public class ArtistUseCase {
 
     public List<ArtistDetailResponse> findAllWithGenreNames() {
         return artistRepository.findAllWithGenreNames();
+    }
+
+    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+        return artistRepository.findAllArtistKoreanName();
     }
 
     public ArtistDetailResponse findArtistDetailById(UUID id) {

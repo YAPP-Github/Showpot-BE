@@ -39,20 +39,38 @@
       <textarea name="content" rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical;"></textarea>
     </div>
 
-    <!-- 공연 가수 목록 -->
+    <!-- 공연 가수 및 장르 목록 -->
     <div class="form-group mb-3">
-      <label><span style="font-weight: bold;">공연 가수 목록</span></label>
-      <div>
-        <!-- 아티스트 정보를 체크박스로 출력 -->
-        <th:block th:each="artist : ${artists}">
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" th:id="'artist_' + ${artist.id}" th:name="artistIds" th:value="${artist.id}">
-            <label class="form-check-label" th:for="'artist_' + ${artist.id}">
-              <b>가수:</b> [[${artist.koreanName}]],
-              <b>장르:</b> [[${artist.genreNames}]]
-            </label>
+      <div style="display: flex; justify-content: space-between;">
+        <!-- 공연 가수 목록 -->
+        <div style="flex: 1; margin-right: 10px;">
+          <label><span style="font-weight: bold;">공연 가수 목록</span></label>
+          <div>
+            <th:block th:each="artist : ${artists}">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" th:id="'artist_' + ${artist.id}" th:name="artistIds" th:value="${artist.id}">
+                <label class="form-check-label" th:for="'artist_' + ${artist.id}">
+                  <b>가수:</b> [[${artist.koreanName}]]
+                </label>
+              </div>
+            </th:block>
           </div>
-        </th:block>
+        </div>
+
+        <!-- 공연 장르 목록 -->
+        <div style="flex: 1; margin-left: 10px;">
+          <label><span style="font-weight: bold;">공연 장르 목록</span></label>
+          <div>
+            <th:block th:each="genre : ${genres}">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" th:id="'genre_' + ${genre.id}" th:name="genreIds" th:value="${genre.id}">
+                <label class="form-check-label" th:for="'genre_' + ${genre.id}">
+                  <b>장르:</b> [[${genre.name}]]
+                </label>
+              </div>
+            </th:block>
+          </div>
+        </div>
       </div>
     </div>
 

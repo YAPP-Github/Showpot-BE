@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
@@ -20,4 +21,10 @@ public class ShowArtist extends BaseEntity {
 
     @Column(name = "artist_id", nullable = false)
     private UUID artistId;
+
+    @Builder
+    private ShowArtist(UUID showId, UUID artistId) {
+        this.showId = showId;
+        this.artistId = artistId;
+    }
 }
