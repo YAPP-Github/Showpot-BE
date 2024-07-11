@@ -9,4 +9,5 @@ allprojects {
 
 dependencies {
     implementation project(":app:infrastructure:redis")
+    implementation project(":app:infrastructure:s3")
 }
