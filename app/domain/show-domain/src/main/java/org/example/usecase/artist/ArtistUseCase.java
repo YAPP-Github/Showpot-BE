@@ -46,7 +46,7 @@ public class ArtistUseCase {
     @Transactional
     public void updateArtist(UUID id, Artist newArtist, List<UUID> newGenreIds) {
         Artist artist = findArtistById(id);
-        artist.changeArtist(newArtist);
+        artist.changeArtistInfo(newArtist);
 
         List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistId(artist.getId());
 

@@ -71,4 +71,14 @@ public class Show extends BaseEntity {
                 .build())
             .toList();
     }
+
+    public void changeShowInfo(Show newShow) {
+        this.title = newShow.title;
+        this.content = newShow.content;
+        this.date = newShow.date;
+        this.location = newShow.location;
+        this.image = newShow.image;
+        this.seatPrice = newShow.seatPrice;
+        this.ticketing = newShow.ticketing;
+    }
 }

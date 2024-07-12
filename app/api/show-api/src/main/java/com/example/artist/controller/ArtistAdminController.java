@@ -71,8 +71,10 @@ public class ArtistAdminController {
     }
 
     @PutMapping("/{id}")
-    public String updateArtist(@PathVariable("id") UUID id,
-        @Valid ArtistUpdateApiForm artistUpdateApiForm) {
+    public String updateArtist(
+        @PathVariable("id") UUID id,
+        @Valid ArtistUpdateApiForm artistUpdateApiForm
+    ) {
         artistAdminService.updateArtist(id, artistUpdateApiForm.toArtistUpdateServiceRequest());
         return "redirect:/admin/artists/list";
     }

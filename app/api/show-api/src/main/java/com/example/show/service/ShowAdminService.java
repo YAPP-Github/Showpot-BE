@@ -3,6 +3,7 @@ package com.example.show.service;
 
 import com.example.show.component.FileUploadComponent;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
+import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.UUID;
@@ -40,5 +41,13 @@ public class ShowAdminService {
     public ShowInfoServiceResponse findShowInfo(UUID id) {
         ShowInfoResponse showInfoResponse = showUseCase.findShowInfo(id);
         return new ShowInfoServiceResponse(showInfoResponse);
+    }
+
+    public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
+        String image = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
+        Show show = showUpdateServiceRequest.toShow(image);
+
+        showUseCase.updateShow(id, show, showUpdateServiceRequest.artistIds(),
+            showUpdateServiceRequest.genreIds());
     }
 }

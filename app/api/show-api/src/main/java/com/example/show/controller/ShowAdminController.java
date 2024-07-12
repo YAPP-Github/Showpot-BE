@@ -5,6 +5,7 @@ import com.example.artist.service.ArtistAdminService;
 import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.show.controller.dto.request.ShowCreateApiForm;
+import com.example.show.controller.dto.request.ShowUpdateApiForm;
 import com.example.show.controller.dto.response.ShowInfoApiResponse;
 import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -82,5 +84,14 @@ public class ShowAdminController {
         model.addAttribute("shows", shows);
 
         return "show_form";
+    }
+
+    @PutMapping("/{id}")
+    public String updateArtist(
+        @PathVariable("id") UUID id,
+        @Valid ShowUpdateApiForm showUpdateApiForm
+    ) {
+        showAdminService.updateShow(id, showUpdateApiForm.toServiceRequest());
+        return "redirect:/admin/shows/list";
     }
 }
