@@ -1,7 +1,7 @@
 package org.example.repository.show;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
+import static com.querydsl.core.group.GroupBy.set;
 import static org.example.entity.artist.QArtist.artist;
 import static org.example.entity.genre.QGenre.genre;
 import static org.example.entity.show.QShow.show;
@@ -43,14 +43,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                         show.image,
                         show.seatPrice,
                         show.ticketing,
-                        list(
+                        set(
                             Projections.constructor(
                                 ArtistKoreanNameResponse.class,
                                 artist.id,
                                 artist.koreanName
                             )
                         ),
-                        list(
+                        set(
                             Projections.constructor(
                                 GenreNameResponse.class,
                                 genre.id,
@@ -79,14 +79,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.image,
                             show.seatPrice,
                             show.ticketing,
-                            list(
+                            set(
                                 Projections.constructor(
                                     ArtistKoreanNameResponse.class,
                                     artist.id,
                                     artist.koreanName
                                 )
                             ),
-                            list(
+                            set(
                                 Projections.constructor(
                                     GenreNameResponse.class,
                                     genre.id,

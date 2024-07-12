@@ -6,6 +6,7 @@ import com.example.show.controller.vo.SeatPriceApiType;
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.artist.response.GenreNameResponse;
@@ -40,7 +41,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<ArtistKoreanNameServiceResponse> toArtistKoreanNameServiceResponses(
-        List<ArtistKoreanNameResponse> artistKoreanNameResponses) {
+        Set<ArtistKoreanNameResponse> artistKoreanNameResponses) {
         return artistKoreanNameResponses
             .stream()
             .map(ArtistKoreanNameServiceResponse::new)
@@ -48,7 +49,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<GenreNameServiceResponse> toGenreNameServiceResponses(
-        List<GenreNameResponse> genreNameResponses) {
+        Set<GenreNameResponse> genreNameResponses) {
         return genreNameResponses
             .stream()
             .map(GenreNameServiceResponse::new)
