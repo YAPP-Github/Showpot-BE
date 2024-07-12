@@ -1,30 +1,127 @@
 <html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div layout:fragment="content" class="container my-3">
+  <div class="my-3">
+    <h2 class="text-center">공연 수정</h2>
+    <form th:action="@{/admin/shows/{id}(id=${shows.id})}" method="post">
+      <input type="hidden" name="_method" value="put" />
+
+      <!-- 제목 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">제목</span></label>
+        <input type="text" class="form-control" name="title" th:value="${shows.title}" required>
+      </div>
+
+      <!-- 내용 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">내용</span></label>
+        <textarea class="form-control" name="content" rows="5" required th:text="${shows.content}"></textarea>
+      </div>
+
+      <!-- 날짜 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">날짜</span></label>
+        <input type="date" class="form-control" name="date" th:value="${shows.date}" required>
+      </div>
+
+      <!-- 장소 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">장소</span></label>
+        <input type="text" class="form-control" name="location" th:value="${shows.location}" required>
+      </div>
+
+      <!-- 이미지 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">이미지</span></label>
+        <input type="text" class="form-control" name="image" th:value="${shows.image}" required>
+      </div>
+
+      <!-- 좌석 가격 타입 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">좌석 가격 타입</span></label>
+        <input type="text" class="form-control" name="seatPriceApiType" th:value="${shows.seatPriceApiType.priceInformation()}" required>
+      </div>
+
+      <!-- 티켓팅 타입 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">티켓팅 오픈 시간</span></label>
+        <input type="datetime-local" class="form-control" name="ticketingApiType" th:value="${shows.ticketingApiType.ticketOpenTime()}" required>
+        <label><span style="font-weight: bold;">티켓팅 사이트</span></label>
+        <input type="text" class="form-control" name="ticketingApiType" th:value="${shows.ticketingApiType.ticketingInformation()}" required>
+      </div>
+
+      <!-- 아티스트 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">아티스트</span></label>
+        <div id="showCheckboxes">
+          <div th:each="artist : ${artists}">
+            <div class="form-check">
+              <label>
+                <input class="form-check-input" type="checkbox" th:id="'artist_' + ${artist.id}"
+                       name="artistIds" th:value="${artist.id}"
+                       th:checked="${shows.artistKoreanNameResponses.contains(artist.koreanName)}">
+                <span th:text="${artist.koreanName}"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 장르 -->
+      <div class="form-group mb-3">
+        <label><span style="font-weight: bold;">장르</span></label>
+        <div id="genreCheckboxes">
+          <div th:each="genre : ${genres}">
+            <div class="form-check">
+              <label>
+                <input class="form-check-input" type="checkbox" th:id="'genre_' + ${genre.id}"
+                       name="genreIds" th:value="${genre.id}"
+                       th:checked="${shows.genreNameResponses.contains(genre.name)}">
+                <span th:text="${genre.name}"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 작업 -->
+      <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary">수정 완료</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
+
+
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content" class="container my-3" style="background-color: #ffffff; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; width: 100%; max-width: 500px;">
 
   <form action="/admin/shows" method="post" enctype="multipart/form-data" style="padding: 20px;">
-    <h2 class="text-center">추가할 공연 정보</h2>
+    <h2 class="text-center">수정할 공연 정보</h2>
     <!-- 제목 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">제목</label>
-      <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+      <input type="text" name="title" th:value="${shows.title}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
     <!-- 티켓 오픈일 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">티켓 오픈일</label>
-      <input type="datetime-local" name="ticketOpenTime" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+      <input type="datetime-local" name="ticketOpenTime" th:value="${shows.ticketingApiType.ticketOpenTime()}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
     <!-- 장소 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">장소</label>
-      <input type="text" name="location" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+      <input type="text" name="location" th:value="${shows.location}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
     <!-- 공연 날짜 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">공연 날짜</label>
-      <input type="date" name="date" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+      <input type="date" name="date"  th:value="${shows.date}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
     <!-- 포스터 업로드 -->
@@ -36,7 +133,7 @@
     <!-- 공연 내용 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">공연 내용</label>
-      <textarea name="content" rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical;"></textarea>
+      <textarea name="content" rows="4" th:text="${shows.content}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical;"></textarea>
     </div>
 
     <!-- 공연 가수 및 장르 목록 -->
@@ -96,7 +193,7 @@
 
     <!-- 제출 버튼 -->
     <div class="form-group mb-3" style="text-align: center;">
-      <button type="submit" style="padding: 10px 20px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer;">제출</button>
+      <button type="submit" style="padding: 10px 20px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer;">수정 완료</button>
     </div>
 
   </form>
@@ -135,3 +232,4 @@
   }
 </script>
 </html>
+
