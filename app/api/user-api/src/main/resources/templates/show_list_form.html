@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div layout:fragment="content" class="container my-3">
+  <div class="container my-3">
+    <h2 class="text-center">공연 목록</h2>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>제목</th>
+        <th>내용</th>
+        <th>날짜</th>
+        <th>장소</th>
+        <th>이미지</th>
+        <th>좌석 가격 타입</th>
+        <th>티켓팅 타입</th>
+        <th>아티스트</th>
+        <th>장르</th>
+        <th>작업</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="show : ${shows}">
+        <td th:text="${show.title}">제목</td>
+        <td th:text="${show.content}">내용</td>
+        <td th:text="${show.date}">날짜</td>
+        <td th:text="${show.location}">장소</td>
+        <td>
+          <img th:src="@{${show.image}}" alt="공연 이미지" width="100">
+        </td>
+        <td th:text="${show.seatPriceApiType.priceInformation()}">좌석 가격 타입</td>
+        <td>
+          티켓팅 오픈 시간: <span class="ticket-open-time" th:text="${show.ticketingApiType.ticketOpenTime()}">티켓팅 오픈 시간</span><br>
+          티켓팅 사이트: <span th:text="${show.ticketingApiType.ticketingInformation()}">티켓팅 사이트</span>
+        </td>
+        <td>
+          <ul>
+            <li th:each="artist : ${show.artistKoreanNameResponses}" th:text="${artist.koreanName}">아티스트</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li th:each="genre : ${show.genreNameResponses}" th:text="${genre.name}">장르</li>
+          </ul>
+        </td>
+        <td class="text-end">
+          <form th:action="@{/admin/shows/{id}(id=${show.id})}" method="get" style="display: inline-block;">
+            <button type="submit" class="btn btn-primary">수정</button>
+          </form>
+          <form th:action="@{/admin/shows/{id}(id=${show.id})}" method="post" style="display: inline-block;">
+            <input type="hidden" name="_method" th:value="delete"/>
+            <button type="button" class="btn btn-danger" th:attr="showId=${show.id}" onclick="deleteShow(this.getAttribute('showId'))">삭제</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script layout:fragment="script" type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    const dateElements = document.querySelectorAll(".ticket-open-time");
+    dateElements.forEach(function(element) {
+      const dateStr = element.textContent;
+      const date = new Date(dateStr);
+      element.textContent = new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date);
+    });
+  });
+
+  function deleteShow(id) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      const form = document.createElement("form");
+      form.method = "post";
+      form.action = `/admin/shows/${id}`;
+      const methodInput = document.createElement("input");
+      methodInput.setAttribute("type", "hidden");
+      methodInput.setAttribute("name", "_method");
+      methodInput.setAttribute("value", "delete");
+      form.appendChild(methodInput);
+      document.body.appendChild(form);
+      form.submit();
+    } else {
+      alert("삭제 취소");
+    }
+  }
+</script>
+</body>
+</html>
