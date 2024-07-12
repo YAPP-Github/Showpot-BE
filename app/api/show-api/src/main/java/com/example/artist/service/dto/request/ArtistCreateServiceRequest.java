@@ -8,21 +8,24 @@ import lombok.Builder;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGender;
 import org.example.entity.artist.ArtistType;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 public record ArtistCreateServiceRequest(
     String koreanName,
     String englishName,
+    MultipartFile image,
     String country,
     ArtistGenderApiType artistGenderApiType,
     ArtistApiType artistApiType,
     List<UUID> genreIds
 ) {
 
-    public Artist toArtist() {
+    public Artist toArtist(String image) {
         return Artist.builder()
             .koreanName(koreanName)
             .englishName(englishName)
+            .image(image)
             .country(country)
             .artistGender(ArtistGender.valueOf(artistGenderApiType.name()))
             .artistType(ArtistType.valueOf(artistApiType.name()))

@@ -2,7 +2,7 @@
 <div layout:fragment="content" class="container">
   <div class="my-3">
     <h2 class="text-center">아티스트 수정</h2>
-    <form th:action="@{/admin/artists/{id}(id=${artist.id})}" method="post">
+    <form th:action="@{/admin/artists/{id}(id=${artist.id})}" enctype="multipart/form-data" method="post">
       <input type="hidden" name="_method" value="put" />
       <div class="form-group mb-3">
         <label for="koreanName" style="font-weight: bold;">한국 이름</label>
@@ -11,6 +11,10 @@
       <div class="form-group mb-3">
         <label for="englishName" style="font-weight: bold;">영어 이름</label>
         <input type="text" name="englishName" id="englishName" class="form-control" th:value="${artist.englishName}" required>
+      </div>
+      <div class="mb-3">
+        <label for="image"><span style="font-weight: bold;">아티스트 이미지</span></label>
+        <input type="file" name="image" id="image" class="form-control" required>
       </div>
       <div class="form-group mb-3">
         <label for="country" style="font-weight: bold;">국적</label>

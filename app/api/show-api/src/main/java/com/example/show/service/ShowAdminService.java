@@ -1,7 +1,7 @@
 package com.example.show.service;
 
 
-import com.example.show.component.FileUploadComponent;
+import com.example.component.FileUploadComponent;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;

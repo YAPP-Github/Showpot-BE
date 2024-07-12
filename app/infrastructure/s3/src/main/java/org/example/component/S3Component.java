@@ -1,6 +1,6 @@
 package org.example.component;
 
-import com.example.show.component.FileUploadComponent;
+import com.example.component.FileUploadComponent;
 import java.io.IOException;
 import java.util.Objects;
 import org.example.config.S3Config;

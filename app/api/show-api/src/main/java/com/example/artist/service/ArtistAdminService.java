@@ -4,6 +4,7 @@ import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
+import com.example.component.FileUploadComponent;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,12 @@ import org.springframework.stereotype.Service;
 public class ArtistAdminService {
 
     private final ArtistUseCase artistUseCase;
+    private final FileUploadComponent fileUploadComponent;
 
     public void save(ArtistCreateServiceRequest artistCreateServiceRequest) {
-        Artist artist = artistCreateServiceRequest.toArtist();
+        String image = fileUploadComponent.uploadFile("artist", artistCreateServiceRequest.image());
+
+        Artist artist = artistCreateServiceRequest.toArtist(image);
         artistUseCase.save(artist, artistCreateServiceRequest.genreIds());
     }
 
@@ -43,7 +47,9 @@ public class ArtistAdminService {
     }
 
     public void updateArtist(UUID id, ArtistUpdateServiceRequest artistUpdateServiceRequest) {
-        Artist artist = artistUpdateServiceRequest.toArtist();
+        String image = fileUploadComponent.uploadFile("artist", artistUpdateServiceRequest.image());
+
+        Artist artist = artistUpdateServiceRequest.toArtist(image);
         artistUseCase.updateArtist(id, artist, artistUpdateServiceRequest.genreIds());
     }
 

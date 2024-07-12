@@ -1,4 +1,4 @@
-package com.example.show.component;
+package com.example.component;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

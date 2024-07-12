@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 public record ArtistCreateApiForm(
     @NotBlank(message = "아티스트의 한국 이름은 필수 요청값 입니다.")
@@ -14,6 +15,9 @@ public record ArtistCreateApiForm(
 
     @NotBlank(message = "아티스트의 영어 이름은 필수 요청값 입니다.")
     String englishName,
+
+    @NotNull(message = "아티스트의 이미지는 필수 요청값 입니다.")
+    MultipartFile image,
 
     @NotBlank(message = "아티스트의 국적은 필수 요청값 입니다.")
     String country,
@@ -32,6 +36,7 @@ public record ArtistCreateApiForm(
         return ArtistCreateServiceRequest.builder()
             .koreanName(koreanName)
             .englishName(englishName)
+            .image(image)
             .country(country)
             .artistGenderApiType(artistGenderApiType)
             .artistApiType(artistApiType)

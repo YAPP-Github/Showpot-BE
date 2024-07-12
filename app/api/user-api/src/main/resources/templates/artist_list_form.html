@@ -7,6 +7,7 @@
       <tr>
         <th scope="col">아티스트 한국 이름</th>
         <th scope="col">아티스트 영어 이름</th>
+        <th scope="col">아티스트 이미지</th>
         <th scope="col">국적</th>
         <th scope="col">성별</th>
         <th scope="col">타입</th>
@@ -18,6 +19,9 @@
         <td th:text="${artist.id}" hidden="hidden"></td>
         <td th:text="${artist.koreanName}"></td>
         <td th:text="${artist.englishName}"></td>
+        <td>
+          <img th:src="@{${artist.image}}" alt="아티스트 이미지" width="100">
+        </td>
         <td th:text="${artist.country}"></td>
         <td>
           <div th:switch="${artist.artistGenderApiType.name()}">
