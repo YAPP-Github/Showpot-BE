@@ -6,11 +6,13 @@ import com.example.show.controller.vo.SeatPriceApiType;
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.artist.response.GenreNameResponse;
 import org.example.dto.artist.response.ShowInfoResponse;
 
 public record ShowInfoServiceResponse(
+    UUID id,
     String title,
     String content,
     LocalDate date,
@@ -24,6 +26,7 @@ public record ShowInfoServiceResponse(
 
     public ShowInfoServiceResponse(ShowInfoResponse showInfoResponse) {
         this(
+            showInfoResponse.id(),
             showInfoResponse.title(),
             showInfoResponse.content(),
             showInfoResponse.date(),

@@ -33,6 +33,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                 groupBy(show.id).list(
                     Projections.constructor(
                         ShowInfoResponse.class,
+                        show.id,
                         show.title,
                         show.content,
                         show.date,

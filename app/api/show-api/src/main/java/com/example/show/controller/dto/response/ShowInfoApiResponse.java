@@ -7,9 +7,11 @@ import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public record ShowInfoApiResponse(
 
+    UUID id,
     String title,
     String content,
     LocalDate date,
@@ -23,6 +25,7 @@ public record ShowInfoApiResponse(
 ) {
     public ShowInfoApiResponse(ShowInfoServiceResponse showInfoServiceResponse) {
         this(
+            showInfoServiceResponse.id(),
             showInfoServiceResponse.title(),
             showInfoServiceResponse.content(),
             showInfoServiceResponse.date(),
