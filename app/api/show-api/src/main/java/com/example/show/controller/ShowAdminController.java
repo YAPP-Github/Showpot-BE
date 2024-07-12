@@ -7,12 +7,15 @@ import com.example.genre.service.GenreAdminService;
 import com.example.show.controller.dto.request.ShowCreateApiForm;
 import com.example.show.controller.dto.response.ShowInfoApiResponse;
 import com.example.show.service.ShowAdminService;
+import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -57,5 +60,27 @@ public class ShowAdminController {
 
         model.addAttribute("shows", shows);
         return "show_list_form";
+    }
+
+    @GetMapping("/{id}")
+    public String findShow(@PathVariable("id") UUID id, Model model) {
+        List<ArtistKoreanNameApiResponse> artists = artistAdminService.findAllArtistKoreanName()
+            .stream()
+            .map(ArtistKoreanNameApiResponse::new)
+            .toList();
+
+        List<GenreNameApiFormResponse> genres = genreAdminService.findAllGenres()
+            .stream()
+            .map(GenreNameApiFormResponse::new)
+            .toList();
+
+        ShowInfoServiceResponse showInfoServiceResponse = showAdminService.findShowInfo(id);
+        ShowInfoApiResponse shows = new ShowInfoApiResponse(showInfoServiceResponse);
+
+        model.addAttribute("artists", artists);
+        model.addAttribute("genres", genres);
+        model.addAttribute("shows", shows);
+
+        return "show_form";
     }
 }

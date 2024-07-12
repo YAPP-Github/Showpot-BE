@@ -48,7 +48,6 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return Optional.ofNullable(
             createArtistJoinArtistGenreAndGenreQuery()
                 .where(artist.id.eq(id))
-                .where(artist.isDeleted.isFalse())
                 .transform(
                     groupBy(artist.id).as(
                         Projections.constructor(

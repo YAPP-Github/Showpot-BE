@@ -7,6 +7,8 @@ import org.example.dto.artist.response.ShowInfoResponse;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
+import org.example.error.ShowError;
+import org.example.exception.BusinessException;
 import org.example.repository.show.ShowArtistRepository;
 import org.example.repository.show.ShowGenreRepository;
 import org.example.repository.show.ShowRepository;
@@ -34,5 +36,10 @@ public class ShowUseCase {
 
     public List<ShowInfoResponse> findAllShowInfos() {
         return showRepository.findAllShowInfos();
+    }
+
+    public ShowInfoResponse findShowInfo(UUID id) {
+        return showRepository.findShowInfoById(id)
+            .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
     }
 }

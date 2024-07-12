@@ -13,6 +13,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.artist.response.GenreNameResponse;
@@ -58,6 +60,44 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                     )
                 )
             );
+    }
+
+    @Override
+    public Optional<ShowInfoResponse> findShowInfoById(UUID id) {
+        return Optional.ofNullable(
+            createShowJoinArtistAndGenreQuery()
+                .where(show.id.eq(id))
+                .transform(
+                    groupBy(show.id).as(
+                        Projections.constructor(
+                            ShowInfoResponse.class,
+                            show.id,
+                            show.title,
+                            show.content,
+                            show.date,
+                            show.location,
+                            show.image,
+                            show.seatPrice,
+                            show.ticketing,
+                            list(
+                                Projections.constructor(
+                                    ArtistKoreanNameResponse.class,
+                                    artist.id,
+                                    artist.koreanName
+                                )
+                            ),
+                            list(
+                                Projections.constructor(
+                                    GenreNameResponse.class,
+                                    genre.id,
+                                    genre.name
+                                )
+                            )
+                        )
+                    )
+                )
+                .get(id)
+        );
     }
 
     private JPAQuery<Show> createShowJoinArtistAndGenreQuery() {
