@@ -2,12 +2,21 @@ package org.example.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "s3")
+@ConfigurationProperties(prefix = "cloud.aws")
 public record S3Property(
-    String accessKey,
-    String secretKey,
+    Credentials credentials,
     String region,
-    String bucket
+    S3 s3
 ) {
 
+    public record Credentials(
+        String accessKey,
+        String secretKey
+    ) {
+    }
+
+    public record S3(
+        String bucket
+    ) {
+    }
 }

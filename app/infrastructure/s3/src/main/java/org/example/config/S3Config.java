@@ -15,7 +15,7 @@ public class S3Config {
 
     private final S3Property s3Property;
 
-    @Bean
+    @Bean(name = "s3Client")
     public S3Client s3Client() {
         return S3Client.builder()
             .credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials()))
@@ -25,13 +25,13 @@ public class S3Config {
 
     private AwsBasicCredentials awsBasicCredentials() {
         return AwsBasicCredentials.create(
-            s3Property.accessKey(),
-            s3Property.secretKey()
+            s3Property.credentials().accessKey(),
+            s3Property.credentials().secretKey()
         );
     }
 
     public String getBucketName() {
-        return s3Property.bucket();
+        return s3Property.s3().bucket();
     }
 
 }

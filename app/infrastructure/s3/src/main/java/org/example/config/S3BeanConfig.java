@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(S3Property.class)
-@ComponentScan(basePackages = {"org.example", "org.example.config"})
+@ComponentScan(basePackages = {"org.example"})
 public class S3BeanConfig {
 
 }

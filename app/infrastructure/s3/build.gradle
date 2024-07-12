@@ -5,5 +5,5 @@ dependencies {
     implementation project(":app:api:show-api")
 
     //aws s3
-    implementation 'software.amazon.awssdk:s3:2.21.46'
+    implementation 'software.amazon.awssdk:s3:2.26.19'
 }
