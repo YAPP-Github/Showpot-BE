@@ -28,4 +28,12 @@ public class Ticketing {
     ) {
         ticketingInformation.put(ticketBookingSite, ticketingSiteUrl);
     }
+
+    public LocalDateTime getTicketOpenTime() {
+        return ticketOpenTime;
+    }
+
+    public Map<String, String> getTicketingInformation() {
+        return new HashMap<>(ticketingInformation);
+    }
 }

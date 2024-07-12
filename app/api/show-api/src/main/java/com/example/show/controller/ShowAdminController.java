@@ -5,6 +5,7 @@ import com.example.artist.service.ArtistAdminService;
 import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.show.controller.dto.request.ShowCreateApiForm;
+import com.example.show.controller.dto.response.ShowInfoApiResponse;
 import com.example.show.service.ShowAdminService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ShowAdminController {
     private final GenreAdminService genreAdminService;
 
     @GetMapping
-    public String createArtist(Model model) {
+    public String createShow(Model model) {
         List<ArtistKoreanNameApiResponse> artists = artistAdminService.findAllArtistKoreanName()
             .stream()
             .map(ArtistKoreanNameApiResponse::new)
@@ -42,9 +43,19 @@ public class ShowAdminController {
     }
 
     @PostMapping
-    public String createArtist(@Valid ShowCreateApiForm showCreateApiForm) {
+    public String createShow(@Valid ShowCreateApiForm showCreateApiForm) {
         showAdminService.save(showCreateApiForm.toServiceRequest());
         return "redirect:/admin/shows/list";
     }
 
+    @GetMapping("/list")
+    public String findAllShow(Model model) {
+        List<ShowInfoApiResponse> shows = showAdminService.findAllShowInfos()
+            .stream()
+            .map(ShowInfoApiResponse::new)
+            .toList();
+
+        model.addAttribute("shows", shows);
+        return "show_list_form";
+    }
 }

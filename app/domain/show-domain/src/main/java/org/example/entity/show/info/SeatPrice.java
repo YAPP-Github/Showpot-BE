@@ -17,4 +17,8 @@ public class SeatPrice {
     public void savePriceInformation(String seatType, Integer price) {
         priceInformation.put(seatType, price);
     }
+
+    public Map<String, Integer> getPriceInformation() {
+        return new HashMap<>(priceInformation);
+    }
 }

@@ -3,7 +3,10 @@ package com.example.show.service;
 
 import com.example.show.component.FileUploadComponent;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
+import com.example.show.service.dto.response.ShowInfoServiceResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.response.ShowInfoResponse;
 import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
@@ -26,4 +29,10 @@ public class ShowAdminService {
         );
     }
 
+    public List<ShowInfoServiceResponse> findAllShowInfos() {
+        List<ShowInfoResponse> showInfoResponses = showUseCase.findAllShowInfos();
+        return showInfoResponses.stream()
+            .map(ShowInfoServiceResponse::new)
+            .toList();
+    }
 }

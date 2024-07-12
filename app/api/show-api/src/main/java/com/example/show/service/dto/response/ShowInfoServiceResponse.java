@@ -1,0 +1,54 @@
+package com.example.show.service.dto.response;
+
+import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
+import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.show.controller.vo.SeatPriceApiType;
+import com.example.show.controller.vo.TicketingApiType;
+import java.time.LocalDate;
+import java.util.List;
+import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.GenreNameResponse;
+import org.example.dto.artist.response.ShowInfoResponse;
+
+public record ShowInfoServiceResponse(
+    String title,
+    String content,
+    LocalDate date,
+    String location,
+    String image,
+    SeatPriceApiType seatPriceApiType,
+    TicketingApiType ticketingApiType,
+    List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
+    List<GenreNameServiceResponse> genreNameResponses
+) {
+
+    public ShowInfoServiceResponse(ShowInfoResponse showInfoResponse) {
+        this(
+            showInfoResponse.title(),
+            showInfoResponse.content(),
+            showInfoResponse.date(),
+            showInfoResponse.location(),
+            showInfoResponse.image(),
+            SeatPriceApiType.from(showInfoResponse.seatPrice()),
+            TicketingApiType.from(showInfoResponse.ticketing()),
+            toArtistKoreanNameServiceResponses(showInfoResponse.artistKoreanNameResponses()),
+            toGenreNameServiceResponses(showInfoResponse.genreNameResponses())
+        );
+    }
+
+    private static List<ArtistKoreanNameServiceResponse> toArtistKoreanNameServiceResponses(
+        List<ArtistKoreanNameResponse> artistKoreanNameResponses) {
+        return artistKoreanNameResponses
+            .stream()
+            .map(ArtistKoreanNameServiceResponse::new)
+            .toList();
+    }
+
+    private static List<GenreNameServiceResponse> toGenreNameServiceResponses(
+        List<GenreNameResponse> genreNameResponses) {
+        return genreNameResponses
+            .stream()
+            .map(GenreNameServiceResponse::new)
+            .toList();
+    }
+}

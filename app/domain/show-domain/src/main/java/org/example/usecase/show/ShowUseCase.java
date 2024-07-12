@@ -3,6 +3,7 @@ package org.example.usecase.show;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.response.ShowInfoResponse;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
@@ -31,4 +32,7 @@ public class ShowUseCase {
         showGenreRepository.saveAll(showGenres);
     }
 
+    public List<ShowInfoResponse> findAllShowInfos() {
+        return showRepository.findAllShowInfos();
+    }
 }
