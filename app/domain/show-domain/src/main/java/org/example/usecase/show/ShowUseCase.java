@@ -89,6 +89,12 @@ public class ShowUseCase {
         showGenresToRemove.forEach(BaseEntity::softDelete);
     }
 
+    @Transactional
+    public void deleteShow(UUID id) {
+        Show show = findShowById(id);
+        show.softDelete();
+    }
+
 
     private Show findShowById(UUID id) {
         return showRepository.findById(id)

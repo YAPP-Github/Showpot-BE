@@ -50,4 +50,8 @@ public class ShowAdminService {
         showUseCase.updateShow(id, show, showUpdateServiceRequest.artistIds(),
             showUpdateServiceRequest.genreIds());
     }
+
+    public void deleteShow(UUID id) {
+        showUseCase.deleteShow(id);
+    }
 }

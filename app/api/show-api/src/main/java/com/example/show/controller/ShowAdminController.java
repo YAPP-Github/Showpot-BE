@@ -15,6 +15,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,6 +93,12 @@ public class ShowAdminController {
         @Valid ShowUpdateApiForm showUpdateApiForm
     ) {
         showAdminService.updateShow(id, showUpdateApiForm.toServiceRequest());
+        return "redirect:/admin/shows/list";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteShow(@PathVariable("id") UUID id) {
+        showAdminService.deleteShow(id);
         return "redirect:/admin/shows/list";
     }
 }
