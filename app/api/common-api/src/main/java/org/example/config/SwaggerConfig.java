@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,7 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
             .info(getInfo())
+            .addServersItem(getCurrentServerUrl())
             .addSecurityItem(getSecurityRequirement())
             .components(
                 new Components().addSecuritySchemes(
@@ -33,6 +35,10 @@ public class SwaggerConfig {
             .description("공연 정보 제공 및 공유 서비스")
             .version("v0.0.1")
             .license(getLicense());
+    }
+
+    private Server getCurrentServerUrl() {
+        return new Server().url("/");
     }
 
     private SecurityRequirement getSecurityRequirement() {
