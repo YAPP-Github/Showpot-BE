@@ -26,7 +26,4 @@ dependencies {
 
     // aws logs
     implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
-
-    //aws s3
-    implementation 'software.amazon.awssdk:s3:2.26.19'
 }

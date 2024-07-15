@@ -1,5 +1,8 @@
 package org.example.component;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.component.FileUploadComponent;
 import java.io.IOException;
 import java.util.Objects;
@@ -9,20 +12,16 @@ import org.example.exception.BusinessException;
 import org.example.util.FileName;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Component
 public class S3Component implements FileUploadComponent {
 
-    private final S3Client s3Client;
+    private final AmazonS3 amazonS3;
     private final String bucket;
 
-    public S3Component(S3Config s3Config, S3Client s3Client) {
+    public S3Component(S3Config s3Config, AmazonS3 amazonS3) {
         this.bucket = s3Config.getBucketName();
-        this.s3Client = s3Client;
+        this.amazonS3 = amazonS3;
     }
 
 
@@ -32,26 +31,28 @@ public class S3Component implements FileUploadComponent {
             Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
         try {
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucket)
-                .contentType(multipartFile.getContentType())
-                .contentLength(multipartFile.getSize())
-                .key(fileName)
-                .build();
-            RequestBody requestBody = RequestBody.fromBytes(multipartFile.getBytes());
-            s3Client.putObject(putObjectRequest, requestBody);
+            amazonS3.putObject(getPutObjectRequest(multipartFile, fileName));
         } catch (IOException e) {
             throw new BusinessException(S3Error.FILE_UPLOAD_ERROR);
         }
 
-        return s3Client.utilities().getUrl(getUrlRequest(fileName)).toString();
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-    private GetUrlRequest getUrlRequest(String fileName) {
-        return GetUrlRequest.builder()
-            .bucket(bucket)
-            .key(fileName)
-            .build();
+    private PutObjectRequest getPutObjectRequest(MultipartFile multipartFile, String fileName)
+        throws IOException {
+        return new PutObjectRequest(
+            bucket,
+            fileName,
+            multipartFile.getInputStream(),
+            getObjectMetadata(multipartFile)
+        );
     }
 
+    private ObjectMetadata getObjectMetadata(MultipartFile multipartFile) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(multipartFile.getContentType());
+        objectMetadata.setContentLength(multipartFile.getSize());
+        return objectMetadata;
+    }
 }
