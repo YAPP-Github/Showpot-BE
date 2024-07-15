@@ -1,6 +1,9 @@
 name: ShowPot-Dev-CD
 
 on:
+  pull_request:
+    branches:
+      - 'hotfix/**'
   push:
     branches:
       - develop
