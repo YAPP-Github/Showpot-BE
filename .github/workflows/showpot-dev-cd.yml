@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - feat-env-setting
 
 jobs:
   build-and-deploy:
@@ -36,9 +37,9 @@ jobs:
 
       - name: Prepare File for Deployment
         run: |
-          mkdir -p deployment
+          mkdir -p deployment/app/build/libs
           cp Dockerfile docker-compose.yml deployment/
-          cp -r ./app deployment/
+          cp -r ./app/build/libs deployment/app/build
 
       - name: Get Github Actions IP
         id: ip
