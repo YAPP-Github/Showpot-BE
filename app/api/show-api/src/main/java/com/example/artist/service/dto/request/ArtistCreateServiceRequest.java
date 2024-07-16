@@ -21,11 +21,11 @@ public record ArtistCreateServiceRequest(
     List<UUID> genreIds
 ) {
 
-    public Artist toArtist(String image) {
+    public Artist toArtistWithImageUrl(String imageUrl) {
         return Artist.builder()
             .koreanName(koreanName)
             .englishName(englishName)
-            .image(image)
+            .image(imageUrl)
             .country(country)
             .artistGender(ArtistGender.valueOf(artistGenderApiType.name()))
             .artistType(ArtistType.valueOf(artistApiType.name()))

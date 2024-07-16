@@ -25,13 +25,13 @@ public record ShowCreateServiceRequest(
     List<UUID> genreIds
 ) {
 
-    public Show toShow(String image) {
+    public Show toShowWithImageUrl(String imageUrl) {
         return Show.builder()
             .title(title)
             .content(content)
             .date(date)
             .location(location)
-            .image(image)
+            .image(imageUrl)
             .seatPrice(getSeatPrice())
             .ticketing(getTicketing())
             .build();

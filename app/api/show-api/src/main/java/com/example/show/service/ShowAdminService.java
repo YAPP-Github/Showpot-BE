@@ -21,8 +21,8 @@ public class ShowAdminService {
     private final FileUploadComponent fileUploadComponent;
 
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
-        String image = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
-        Show show = showCreateServiceRequest.toShow(image);
+        String imageUrl = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
+        Show show = showCreateServiceRequest.toShowWithImageUrl(imageUrl);
 
         showUseCase.save(
             show,
@@ -44,8 +44,8 @@ public class ShowAdminService {
     }
 
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
-        String image = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
-        Show show = showUpdateServiceRequest.toShow(image);
+        String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
+        Show show = showUpdateServiceRequest.toShowWithImageUrl(imageUrl);
 
         showUseCase.updateShow(id, show, showUpdateServiceRequest.artistIds(),
             showUpdateServiceRequest.genreIds());
