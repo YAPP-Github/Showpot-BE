@@ -60,21 +60,21 @@ public record ShowCreateApiForm(
             .date(date)
             .location(location)
             .post(post)
-            .seatInfoApiResponse(getSeatPriceApiType())
-            .ticketingInfoApiResponse(getTicketingApiType())
+            .seatInfoApiResponse(getSeatInfoApiResponse())
+            .ticketingInfoApiResponse(getTicketingInfoApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
     }
 
-    private SeatInfoApiResponse getSeatPriceApiType() {
+    private SeatInfoApiResponse getSeatInfoApiResponse() {
         Map<String, Integer> priceInformation = IntStream.range(0, seatTypes.size())
             .boxed()
             .collect(Collectors.toMap(seatTypes::get, pricesPerSeatType::get));
         return new SeatInfoApiResponse(priceInformation);
     }
 
-    private TicketingInfoApiResponse getTicketingApiType() {
+    private TicketingInfoApiResponse getTicketingInfoApiResponse() {
         Map<String, String> ticketingInformation = IntStream.range(0, ticketBookingSites.size())
             .boxed()
             .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
