@@ -6,5 +6,7 @@ import org.example.entity.show.ShowArtist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShowArtistRepository extends JpaRepository<ShowArtist, UUID> {
-    List<ShowArtist> findAllByShowId(UUID id);
+    List<ShowArtist> findAllByShowId(UUID showId);
+
+    List<ShowArtist> findAllByArtistId(UUID artistId);
 }

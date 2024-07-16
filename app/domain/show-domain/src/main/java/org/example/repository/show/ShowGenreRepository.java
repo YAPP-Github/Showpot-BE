@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShowGenreRepository extends JpaRepository<ShowGenre, UUID> {
 
-    List<ShowGenre> findAllByShowId(UUID id);
+    List<ShowGenre> findAllByShowId(UUID showId);
+
+    List<ShowGenre> findAllByGenreId(UUID genreId);
 }

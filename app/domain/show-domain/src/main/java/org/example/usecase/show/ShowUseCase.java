@@ -93,6 +93,12 @@ public class ShowUseCase {
     public void deleteShow(UUID id) {
         Show show = findShowById(id);
         show.softDelete();
+
+        List<ShowArtist> showArtists = showArtistRepository.findAllByShowId(show.getId());
+        showArtists.forEach(BaseEntity::softDelete);
+
+        List<ShowGenre> showGenres = showGenreRepository.findAllByShowId(show.getId());
+        showGenres.forEach(BaseEntity::softDelete);
     }
 
 

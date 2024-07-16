@@ -8,10 +8,12 @@ import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
+import org.example.entity.show.ShowArtist;
 import org.example.error.ArtistError;
 import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistGenreRepository;
 import org.example.repository.artist.ArtistRepository;
+import org.example.repository.show.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ public class ArtistUseCase {
 
     private final ArtistRepository artistRepository;
     private final ArtistGenreRepository artistGenreRepository;
+    private final ShowArtistRepository showArtistRepository;
 
     @Transactional
     public void save(Artist artist, List<UUID> genreIds) {
@@ -70,6 +73,12 @@ public class ArtistUseCase {
     public void deleteArtist(UUID id) {
         Artist artist = findArtistById(id);
         artist.softDelete();
+
+        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistId(artist.getId());
+        artistGenres.forEach(BaseEntity::softDelete);
+
+        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistId(artist.getId());
+        showArtists.forEach(BaseEntity::softDelete);
     }
 
     private Artist findArtistById(UUID id) {
