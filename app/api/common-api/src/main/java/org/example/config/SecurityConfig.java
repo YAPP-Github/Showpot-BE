@@ -1,5 +1,7 @@
 package org.example.config;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.example.filter.ExceptionHandlerFilter;
@@ -13,6 +15,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatchers;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -28,47 +32,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .csrf(AbstractHttpConfigurer::disable)
-            .cors(corsConfigurer -> corsConfigurer.configurationSource(
-                corsConfigurationSource()))
-            .formLogin(AbstractHttpConfigurer::disable)
+            .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
             .httpBasic(AbstractHttpConfigurer::disable)
             .sessionManagement(
                 configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .authorizeHttpRequests(registry ->
-                registry
-                    .requestMatchers(
-                        "/health",
-                        "/swagger-ui/**", "/v3/api-docs/**",
-                        "/api/v1/users/login", "/admin/**",
-                        "/css/**", "/js/**"
-                    ).permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/api/v1/artists",
-                        "/api/v1/genres",
-                        "/api/v1/shows"
-                    ).permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/api/v1/shows/interests"
-                    ).hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(
-                        HttpMethod.POST,
-                        "/api/v1/users/logout",
-                        "/api/v1/shows/**/interest",
-                        "/api/v1/shows/**/alert"
-                    ).hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(
-                        HttpMethod.POST,
-                        "/api/v1/artists",
-                        "/api/v1/genres",
-                        "/api/v1/shows"
-                    ).hasRole("ADMIN")
-                    .requestMatchers(
-                        HttpMethod.DELETE,
-                        "/api/v1/admin/genres/**"
-                    ).hasRole("ADMIN")
+            .authorizeHttpRequests(registry -> registry
+                .requestMatchers(notRequireAuthenticationMatcher())
+                .permitAll()
+                .requestMatchers(requireUserAndAdminAuthenticationMatcher())
+                .hasAnyRole("USER", "ADMIN")
+                .anyRequest()
+                .hasAnyRole("ADMIN")
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JWTFilter.class)
@@ -83,5 +58,30 @@ public class SecurityConfig {
             config.setAllowedOriginPatterns(Collections.singletonList("*"));
             return config;
         };
+    }
+
+    private RequestMatcher notRequireAuthenticationMatcher() {
+        return RequestMatchers.anyOf(
+            antMatcher("/swagger-ui/**"),
+            antMatcher("/v3/api-docs/**"),
+            antMatcher("/admin/**"),
+            antMatcher("/css/**"),
+            antMatcher("/js/**"),
+            antMatcher(HttpMethod.POST, "/api/v1/users/login"),
+            antMatcher(HttpMethod.POST, "/admin/signup"),
+            antMatcher(HttpMethod.GET, "/admin/home"),
+            antMatcher(HttpMethod.GET, "/api/v1/artists"),
+            antMatcher(HttpMethod.GET, "/api/v1/genres"),
+            antMatcher(HttpMethod.GET, "/api/v1/shows")
+        );
+    }
+
+    private RequestMatcher requireUserAndAdminAuthenticationMatcher() {
+        return RequestMatchers.anyOf(
+            antMatcher(HttpMethod.GET, "/api/v1/shows/interests"),
+            antMatcher(HttpMethod.POST, "/api/v1/users/logout"),
+            antMatcher(HttpMethod.POST, "/api/v1/shows/**/interest"),
+            antMatcher(HttpMethod.POST, "/api/v1/shows/**/alert")
+        );
     }
 }
