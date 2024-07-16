@@ -22,15 +22,3 @@ spring:
 token:
   secret-key: ahRhwlglftmrkwkfehlaussksmsdjraksrmadmfqjfrjtdlrhdkwnwlflsmswlqdptjgodqhrgkrptkftndlTDmfrjtdlek
   access-token-expiration-seconds: 3600000 # 1hour = 1000(=1s) * 60 * 60
-  refresh-token-expiration-seconds: 1209600000 # 2weeks = 1000(=1s) * 60 * 60 * 24 * 14
-
-cloud:
-  aws:
-    credentials:
-      accessKey: ${ACCESS_KEY}
-      secretKey: ${SECRET_KEY}
-    region: ${REGION}
-    s3:
-      bucket: ${BUCKET}
-    stack:
-      auto: false

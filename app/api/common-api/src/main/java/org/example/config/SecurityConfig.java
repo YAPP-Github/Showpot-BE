@@ -37,13 +37,13 @@ public class SecurityConfig {
             .sessionManagement(
                 configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .authorizeHttpRequests(registry ->
-                registry
-                    .requestMatchers(notRequireAuthenticationMatcher())
-                    .permitAll()
-                    .requestMatchers(requireUserAndAdminAuthenticationMatcher())
-                    .hasAnyRole("USER", "ADMIN")
-                    .anyRequest().hasAnyRole("ADMIN")
+            .authorizeHttpRequests(registry -> registry
+                .requestMatchers(notRequireAuthenticationMatcher())
+                .permitAll()
+                .requestMatchers(requireUserAndAdminAuthenticationMatcher())
+                .hasAnyRole("USER", "ADMIN")
+                .anyRequest()
+                .hasAnyRole("ADMIN")
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JWTFilter.class)
@@ -69,6 +69,7 @@ public class SecurityConfig {
             antMatcher("/js/**"),
             antMatcher(HttpMethod.POST, "/api/v1/users/login"),
             antMatcher(HttpMethod.POST, "/admin/login"),
+            antMatcher(HttpMethod.POST, "/admin/signup"),
             antMatcher(HttpMethod.GET, "/admin/home"),
             antMatcher(HttpMethod.GET, "/api/v1/artists"),
             antMatcher(HttpMethod.GET, "/api/v1/genres"),
