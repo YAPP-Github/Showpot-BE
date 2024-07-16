@@ -38,9 +38,9 @@ public class SecurityConfig {
                 configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(registry -> registry
-                .requestMatchers(notRequireAuthenticationMatcher())
+                .requestMatchers(getMatcherForAnyone())
                 .permitAll()
-                .requestMatchers(requireUserAndAdminAuthenticationMatcher())
+                .requestMatchers(getMatcherForUserAndAdmin())
                 .hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .hasAnyRole("ADMIN")
@@ -60,7 +60,7 @@ public class SecurityConfig {
         };
     }
 
-    private RequestMatcher notRequireAuthenticationMatcher() {
+    private RequestMatcher getMatcherForAnyone() {
         return RequestMatchers.anyOf(
             antMatcher("/swagger-ui/**"),
             antMatcher("/v3/api-docs/**"),
@@ -77,7 +77,7 @@ public class SecurityConfig {
         );
     }
 
-    private RequestMatcher requireUserAndAdminAuthenticationMatcher() {
+    private RequestMatcher getMatcherForUserAndAdmin() {
         return RequestMatchers.anyOf(
             antMatcher(HttpMethod.GET, "/api/v1/shows/interests"),
             antMatcher(HttpMethod.POST, "/api/v1/users/logout"),
