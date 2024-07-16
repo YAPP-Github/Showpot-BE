@@ -1,7 +1,7 @@
 package com.example.show.controller.dto.request;
 
-import com.example.show.controller.vo.SeatPriceApiType;
-import com.example.show.controller.vo.TicketingApiType;
+import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -60,25 +60,25 @@ public record ShowCreateApiForm(
             .date(date)
             .location(location)
             .post(post)
-            .seatPriceApiType(getSeatPriceApiType())
-            .ticketingApiType(getTicketingApiType())
+            .seatInfoApiResponse(getSeatPriceApiType())
+            .ticketingInfoApiResponse(getTicketingApiType())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
     }
 
-    private SeatPriceApiType getSeatPriceApiType() {
+    private SeatInfoApiResponse getSeatPriceApiType() {
         Map<String, Integer> priceInformation = IntStream.range(0, seatTypes.size())
             .boxed()
             .collect(Collectors.toMap(seatTypes::get, pricesPerSeatType::get));
-        return new SeatPriceApiType(priceInformation);
+        return new SeatInfoApiResponse(priceInformation);
     }
 
-    private TicketingApiType getTicketingApiType() {
+    private TicketingInfoApiResponse getTicketingApiType() {
         Map<String, String> ticketingInformation = IntStream.range(0, ticketBookingSites.size())
             .boxed()
             .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
-        return new TicketingApiType(ticketOpenTime, ticketingInformation);
+        return new TicketingInfoApiResponse(ticketOpenTime, ticketingInformation);
     }
 
 }

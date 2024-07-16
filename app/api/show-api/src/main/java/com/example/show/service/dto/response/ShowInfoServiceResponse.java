@@ -2,8 +2,8 @@ package com.example.show.service.dto.response;
 
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
-import com.example.show.controller.vo.SeatPriceApiType;
-import com.example.show.controller.vo.TicketingApiType;
+import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -19,8 +19,8 @@ public record ShowInfoServiceResponse(
     LocalDate date,
     String location,
     String image,
-    SeatPriceApiType seatPriceApiType,
-    TicketingApiType ticketingApiType,
+    SeatInfoApiResponse seatInfoApiResponse,
+    TicketingInfoApiResponse ticketingInfoApiResponse,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
 ) {
@@ -33,8 +33,8 @@ public record ShowInfoServiceResponse(
             showInfoResponse.date(),
             showInfoResponse.location(),
             showInfoResponse.image(),
-            SeatPriceApiType.from(showInfoResponse.seatPrice()),
-            TicketingApiType.from(showInfoResponse.ticketing()),
+            SeatInfoApiResponse.from(showInfoResponse.seatPrice()),
+            TicketingInfoApiResponse.from(showInfoResponse.ticketing()),
             toArtistKoreanNameServiceResponses(showInfoResponse.artistKoreanNameResponses()),
             toGenreNameServiceResponses(showInfoResponse.genreNameResponses())
         );

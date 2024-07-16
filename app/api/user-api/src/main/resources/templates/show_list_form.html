@@ -27,10 +27,10 @@
         <td>
           <img th:src="@{${show.image}}" alt="공연 이미지" width="100">
         </td>
-        <td th:text="${show.seatPriceApiType.priceInformation()}">좌석 가격 타입</td>
+        <td th:text="${show.seatInfoApiResponse.priceInformation()}">좌석 가격 타입</td>
         <td>
-          티켓팅 오픈 시간: <span class="ticket-open-time" th:text="${show.ticketingApiType.ticketOpenTime()}">티켓팅 오픈 시간</span><br>
-          티켓팅 사이트: <span th:text="${show.ticketingApiType.ticketingInformation()}">티켓팅 사이트</span>
+          티켓팅 오픈 시간: <span class="ticket-open-time" th:text="${show.ticketingInfoApiResponse.ticketOpenTime()}">티켓팅 오픈 시간</span><br>
+          티켓팅 사이트: <span th:text="${show.ticketingInfoApiResponse.ticketingInformation()}">티켓팅 사이트</span>
         </td>
         <td>
           <ul>

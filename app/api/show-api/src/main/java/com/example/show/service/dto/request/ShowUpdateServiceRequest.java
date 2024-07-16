@@ -1,7 +1,7 @@
 package com.example.show.service.dto.request;
 
-import com.example.show.controller.vo.SeatPriceApiType;
-import com.example.show.controller.vo.TicketingApiType;
+import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -19,8 +19,8 @@ public record ShowUpdateServiceRequest(
     LocalDate date,
     String location,
     MultipartFile post,
-    SeatPriceApiType seatPriceApiType,
-    TicketingApiType ticketingApiType,
+    SeatInfoApiResponse seatInfoApiResponse,
+    TicketingInfoApiResponse ticketingInfoApiResponse,
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
@@ -39,15 +39,15 @@ public record ShowUpdateServiceRequest(
 
     private SeatPrice getSeatPrice() {
         SeatPrice seatPrice = new SeatPrice();
-        seatPriceApiType.priceInformation().forEach(seatPrice::savePriceInformation);
+        seatInfoApiResponse.priceInformation().forEach(seatPrice::savePriceInformation);
 
         return seatPrice;
     }
 
     private Ticketing getTicketing() {
         Ticketing ticketing = new Ticketing();
-        ticketing.saveTicketOpenTime(ticketingApiType.ticketOpenTime());
-        ticketingApiType.ticketingInformation().forEach(ticketing::saveTicketingInformation);
+        ticketing.saveTicketOpenTime(ticketingInfoApiResponse.ticketOpenTime());
+        ticketingInfoApiResponse.ticketingInformation().forEach(ticketing::saveTicketingInformation);
 
         return ticketing;
     }

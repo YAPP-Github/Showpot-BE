@@ -12,7 +12,7 @@
     <!-- 티켓 오픈일 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">티켓 오픈일</label>
-      <input type="datetime-local" name="ticketOpenTime" th:value="${shows.ticketingApiType.ticketOpenTime()}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+      <input type="datetime-local" name="ticketOpenTime" th:value="${shows.ticketingInfoApiResponse.ticketOpenTime()}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
     <!-- 장소 입력 -->
