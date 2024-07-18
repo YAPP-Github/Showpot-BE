@@ -24,6 +24,4 @@ public enum S3Error implements BusinessError {
             return "S3에 파일 업로드 실패 오류";
         }
     }
-
-
 }
