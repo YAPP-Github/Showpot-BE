@@ -23,6 +23,7 @@ public class UserUseCase {
         return userRepository.save(user);
     }
 
+    @Transactional
     public User findUser(LoginDomainRequest request) {
         SocialLogin socialLogin = socialLoginRepository.findBySocialLoginTypeAndIdentifier(
             request.socialLoginType(),
