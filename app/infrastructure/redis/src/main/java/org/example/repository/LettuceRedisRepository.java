@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -27,4 +28,8 @@ public class LettuceRedisRepository implements TokenRepository {
         return stringRedisTemplate.hasKey("AT:" + userId);
     }
 
+    @Override
+    public void delete(UUID userId) {
+        stringRedisTemplate.delete("RT:" + userId);
+    }
 }
