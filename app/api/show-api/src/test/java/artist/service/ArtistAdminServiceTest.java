@@ -19,7 +19,7 @@ import org.example.usecase.artist.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ArtistAdminServiceTest {
+class ArtistAdminServiceTest {
 
     private final ArtistUseCase artistUseCase = mock(ArtistUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);

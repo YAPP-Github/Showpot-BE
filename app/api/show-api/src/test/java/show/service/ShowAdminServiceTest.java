@@ -19,7 +19,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import show.fixture.dto.ShowDtoFixture;
 
-public class ShowAdminServiceTest {
+class ShowAdminServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);
