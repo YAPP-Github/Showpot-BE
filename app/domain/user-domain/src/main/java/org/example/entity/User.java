@@ -16,7 +16,7 @@ import org.example.vo.UserRole;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_user")
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Column(name = "nickname")

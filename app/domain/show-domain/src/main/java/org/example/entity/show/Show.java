@@ -18,7 +18,7 @@ import org.example.entity.show.info.Ticketing;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_show")
+@Table(name = "show")
 public class Show extends BaseEntity {
 
     @Column(name = "title", nullable = false)

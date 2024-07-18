@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_interest_show")
+@Table(name = "interest_show")
 public class InterestShow extends BaseEntity {
 
     @Column(name = "user_id", nullable = false)

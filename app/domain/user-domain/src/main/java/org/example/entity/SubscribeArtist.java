@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_subscribe_artist")
+@Table(name = "subscribe_artist")
 public class SubscribeArtist extends BaseEntity {
 
     @Column(name = "user_id", nullable = false)

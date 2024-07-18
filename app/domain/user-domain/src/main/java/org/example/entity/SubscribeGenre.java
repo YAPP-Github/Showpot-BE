@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_subscribe_genre")
+@Table(name = "subscribe_genre")
 public class SubscribeGenre extends BaseEntity {
 
     @Column(name = "user_id", nullable = false)

@@ -17,7 +17,7 @@ import org.example.vo.SocialLoginType;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
-    name = "app_social_login",
+    name = "social_login",
     indexes = {
         @Index(
             name = "unq_social_login_type_identifier",

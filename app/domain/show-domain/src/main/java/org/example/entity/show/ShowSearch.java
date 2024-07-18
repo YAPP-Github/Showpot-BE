@@ -14,7 +14,7 @@ import org.example.entity.BaseEntity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_show_search")
+@Table(name = "show_search")
 public class ShowSearch extends BaseEntity {
 
     @Column(name = "name", nullable = false)
