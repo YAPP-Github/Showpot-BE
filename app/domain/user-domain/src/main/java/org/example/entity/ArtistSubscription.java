@@ -1,6 +1,5 @@
 package org.example.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "subscribe_artist")
-public class SubscribeArtist extends BaseEntity {
+@Table(name = "artist_subscription")
+public class ArtistSubscription extends BaseEntity {
 
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private UUID userId;
 
-    @Column(name = "artist_id", nullable = false)
+    @Column(nullable = false)
     private UUID artistId;
 
 }
