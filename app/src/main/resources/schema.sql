@@ -1,3 +1,24 @@
+alter table if exists artist_search
+drop constraint if exists FKiec9ag58p2jrlpfcx9xo5t4sw;
+alter table if exists show_search
+drop constraint if exists FKs3eb48envj41jwv25dt8uwfhh;
+
+drop table if exists admin cascade;
+drop table if exists artist cascade;
+drop table if exists artist_genre cascade;
+drop table if exists artist_search cascade;
+drop table if exists genre cascade;
+drop table if exists interest_show cascade;
+drop table if exists show cascade;
+drop table if exists show_artist cascade;
+drop table if exists show_genre cascade;
+drop table if exists show_search cascade;
+drop table if exists social_login cascade;
+drop table if exists subscribe_artist cascade;
+drop table if exists subscribe_genre cascade;
+drop table if exists ticketing_alert cascade;
+drop table if exists users cascade;
+
 create table admin
 (
     is_deleted boolean      not null,
@@ -37,7 +58,7 @@ create table artist_search
     is_deleted boolean      not null,
     create_at  timestamp(6) not null,
     updated_at timestamp(6) not null,
-    artist_id  uuid,
+    artist_id  uuid         not null,
     id         uuid         not null,
     name       varchar(255) not null,
     primary key (id)
@@ -103,7 +124,7 @@ create table show_search
     create_at  timestamp(6) not null,
     updated_at timestamp(6) not null,
     id         uuid         not null,
-    show_id    uuid,
+    show_id    uuid         not null,
     name       varchar(255) not null,
     primary key (id)
 );
@@ -158,9 +179,9 @@ create table users
     create_at  timestamp(6) not null,
     updated_at timestamp(6) not null,
     id         uuid         not null,
-    fcm_token  varchar(255),
+    fcm_token  varchar(255) not null,
     gender     varchar(255) not null check (gender in ('MAN', 'WOMAN', 'NOT_CHOSEN')),
-    nickname   varchar(255),
+    nickname   varchar(255) not null,
     role       varchar(255) not null check (role in ('GUEST', 'USER', 'ADMIN')),
     primary key (id)
 );

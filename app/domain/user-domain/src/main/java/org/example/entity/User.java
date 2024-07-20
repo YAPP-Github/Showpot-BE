@@ -19,10 +19,10 @@ import org.example.vo.UserRole;
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
-    @Column(name = "fcm_token")
+    @Column(name = "fcm_token", nullable = false)
     private String fcmToken;
 
     @Column(name = "birth", nullable = false)
