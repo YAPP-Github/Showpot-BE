@@ -18,14 +18,3 @@ spring:
     redis:
       host: localhost
       port: 6379
-
-cloud:
-  aws:
-    credentials:
-      accessKey: ${ACCESS_KEY}
-      secretKey: ${SECRET_KEY}
-    region: ${REGION}
-    s3:
-      bucket: ${BUCKET}
-    stack:
-      auto: false

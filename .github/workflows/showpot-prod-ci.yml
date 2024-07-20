@@ -32,8 +32,8 @@ jobs:
         run:
           echo $ACCESS_KEY > ./app/src/main/resources/application-prod.yml
           echo $SECRET_KEY > ./app/src/main/resources/application-prod.yml
-          echo $REGION > ./app/src/main/resources/application-prod.yml
-          echo $BUCKET > ./app/src/main/resources/application-prod.yml
+          echo $REGION > ./app/src/main/resources/application-cloud-prod.yml
+          echo $BUCKET > ./app/src/main/resources/application-cloud-prod.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
