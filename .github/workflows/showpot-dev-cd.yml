@@ -43,7 +43,7 @@ jobs:
       - name: Prepare File for Deployment
         run: |
           mkdir -p deployment/app/build/libs
-          cp dockerfile-dev docker-compose-dev.yml ./app/src/main/resources/application-cloud-dev.yml deployment/
+          cp dockerfile-dev docker-compose-dev.yml deployment/
           cp -r ./app/build/libs deployment/app/build
 
       - name: Get Github Actions IP
