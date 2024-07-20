@@ -1,10 +1,13 @@
 package org.example.usecase;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.LoginDomainRequest;
 import org.example.entity.SocialLogin;
 import org.example.entity.User;
+import org.example.error.UserError;
+import org.example.exception.BusinessException;
 import org.example.repository.user.SocialLoginRepository;
 import org.example.repository.user.UserRepository;
 import org.springframework.stereotype.Component;
@@ -40,5 +43,14 @@ public class UserUseCase {
 
     public String findNickName(final User user) {
         return userRepository.findNicknameById(user.getId()).orElseThrow();
+    }
+
+    @Transactional
+    public void deleteUser(UUID userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+            new BusinessException(UserError.NOT_FOUND_USER)
+        );
+
+        user.softDelete();
     }
 }

@@ -8,7 +8,7 @@ import org.example.property.TokenProperty;
 import org.example.repository.TokenRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
-import org.example.security.vo.TokenError;
+import org.example.security.error.TokenError;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,4 +1,4 @@
-package org.example.security.vo;
+package org.example.security.error;
 
 import org.example.exception.BusinessError;
 

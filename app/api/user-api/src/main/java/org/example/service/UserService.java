@@ -33,6 +33,11 @@ public class UserService {
         refreshTokenProcessor.deleteRefreshToken(userId);
     }
 
+    public void withdraw(UUID userId) {
+        refreshTokenProcessor.deleteRefreshToken(userId);
+        userUseCase.deleteUser(userId);
+    }
+
     private User getUser(LoginServiceRequest request) {
         try {
             return userUseCase.findUser(request.toDomainRequest());

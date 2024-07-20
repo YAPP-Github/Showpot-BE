@@ -2,26 +2,27 @@ package org.example.error;
 
 import org.example.exception.BusinessError;
 
-public enum AdminError implements BusinessError {
-    EMAIL_DUPLICATED_ERROR {
+public enum UserError implements BusinessError {
+
+    NOT_FOUND_USER {
         @Override
         public int getHttpStatus() {
-            return 409;
+            return 404;
         }
 
         @Override
         public String getErrorCode() {
-            return "ADM-001";
+            return "USR-001";
         }
 
         @Override
         public String getClientMessage() {
-            return "이 이메일은 이미 사용 중입니다. 다른 이메일을 입력해 주세요.";
+            return "존재하지 않는 유저입니다.";
         }
 
         @Override
         public String getLogMessage() {
-            return "데이터베이스에 이미 존재하는 이메일로 요청이 들어왔습니다.";
+            return "조회 대상 유저가 존재하지 않습니다.";
         }
     }
 }
