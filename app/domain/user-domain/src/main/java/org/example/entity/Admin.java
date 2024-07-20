@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_admin")
+@Table(name = "admin")
 public class Admin extends BaseEntity {
 
     @Column(name = "email", unique = true, nullable = false)

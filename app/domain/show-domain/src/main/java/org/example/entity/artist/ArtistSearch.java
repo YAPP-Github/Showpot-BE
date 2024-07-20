@@ -14,7 +14,7 @@ import org.example.entity.BaseEntity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_artist_search")
+@Table(name = "artist_search")
 public class ArtistSearch extends BaseEntity {
 
     @Column(name = "name", nullable = false)

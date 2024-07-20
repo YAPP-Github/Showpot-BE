@@ -1,0 +1,24 @@
+services:
+  postgresql:
+    container_name: yapp_postgresql
+    image: postgres:14
+    environment:
+      POSTGRES_DB: yapp
+      POSTGRES_USER: yapp
+      POSTGRES_PASSWORD: yapp
+    ports:
+      - '5432:5432'
+    restart: always
+    networks:
+      - app-network
+
+  redis:
+    container_name: yapp_redis
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    networks:
+      - app-network
+
+networks:
+  app-network:

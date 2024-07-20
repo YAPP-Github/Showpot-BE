@@ -6,5 +6,4 @@ import java.util.UUID;
 public interface UserQuerydslRepository {
 
     Optional<String> findNicknameById(final UUID id);
-
 }

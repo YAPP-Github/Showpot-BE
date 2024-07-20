@@ -24,6 +24,4 @@ public enum AdminError implements BusinessError {
             return "데이터베이스에 이미 존재하는 이메일로 요청이 들어왔습니다.";
         }
     }
-
-
 }

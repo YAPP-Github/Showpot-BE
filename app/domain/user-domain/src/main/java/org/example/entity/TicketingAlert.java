@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "app_ticketing_alert")
+@Table(name = "ticketing_alert")
 public class TicketingAlert extends BaseEntity {
 
     @Column(name = "name", nullable = false)
