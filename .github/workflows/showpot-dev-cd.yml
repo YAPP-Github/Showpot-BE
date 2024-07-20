@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   build-and-deploy:
@@ -35,8 +32,8 @@ jobs:
         run:
           echo $ACCESS_KEY > ./app/src/main/resources/application-dev.yml
           echo $SECRET_KEY > ./app/src/main/resources/application-dev.yml
-          echo $REGION > ./app/src/main/resources/application-dev.yml
-          echo $BUCKET > ./app/src/main/resources/application-dev.yml
+          echo $REGION > ./app/src/main/resources/application-cloud-dev.yml
+          echo $BUCKET > ./app/src/main/resources/application-cloud-dev.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
