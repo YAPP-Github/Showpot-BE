@@ -5,5 +5,5 @@ spring:
     active: local
     group:
       local: domain-local, cloud-local
-      dev: domain-dev
-      prod: domain-prod
+      dev: domain-dev, cloud-dev
+      prod: domain-prod, cloud-prod
