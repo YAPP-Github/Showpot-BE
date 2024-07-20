@@ -3,19 +3,23 @@
   <div class="container my-3">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <form th:action="@{/admin/artists}" method="post">
+        <form th:action="@{/admin/artists}" enctype="multipart/form-data" method="post">
           <div class="mb-3">
             <h2 class="text-center">추가할 아티스트</h2>
             <label for="koreanName"><span style="font-weight: bold;">아티스트 한국 이름</span></label>
-            <input type="text" name="koreanName" id="koreanName" class="form-control" placeholder="아티스트의 한국 이름을 입력하세요.">
+            <input type="text" name="koreanName" id="koreanName" class="form-control" required placeholder="아티스트의 한국 이름을 입력하세요.">
           </div>
           <div class="mb-3">
             <label for="englishName"><span style="font-weight: bold;">아티스트 영어 이름</span></label>
-            <input type="text" name="englishName" id="englishName" class="form-control" placeholder="아티스트의 영어 이름을 입력하세요.">
+            <input type="text" name="englishName" id="englishName" class="form-control" required placeholder="아티스트의 영어 이름을 입력하세요.">
+          </div>
+          <div class="mb-3">
+            <label for="image"><span style="font-weight: bold;">아티스트 이미지</span></label>
+            <input type="file" name="image" id="image" class="form-control" required>
           </div>
           <div class="mb-3">
             <label for="country"><span style="font-weight: bold;">국적</span></label>
-            <input type="text" name="country" id="country" class="form-control" placeholder="아티스트의 국적을 입력하세요.">
+            <input type="text" name="country" id="country" class="form-control" required placeholder="아티스트의 국적을 입력하세요.">
           </div>
           <div class="mb-3">
             <label for="artistGenderApiType"><span style="font-weight: bold;">성별</span></label>

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(RedisBeanConfig.class)
+@Import({RedisConfig.class, S3Config.class})
 public class InfrastructureConfig {
 
 }

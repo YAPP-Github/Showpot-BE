@@ -1,0 +1,137 @@
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div layout:fragment="content" class="container my-3" style="background-color: #ffffff; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; width: 100%; max-width: 500px;">
+
+  <form action="/admin/shows" method="post" enctype="multipart/form-data" style="padding: 20px;">
+    <h2 class="text-center">추가할 공연 정보</h2>
+    <!-- 제목 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">제목</label>
+      <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+    </div>
+
+    <!-- 티켓 오픈일 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">티켓 오픈일</label>
+      <input type="datetime-local" name="ticketOpenTime" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+    </div>
+
+    <!-- 장소 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">장소</label>
+      <input type="text" name="location" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+    </div>
+
+    <!-- 공연 날짜 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">공연 날짜</label>
+      <input type="date" name="date" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+    </div>
+
+    <!-- 포스터 업로드 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">포스터</label>
+      <input type="file" name="post" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+    </div>
+
+    <!-- 공연 내용 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">공연 내용</label>
+      <textarea name="content" rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical;"></textarea>
+    </div>
+
+    <!-- 공연 가수 및 장르 목록 -->
+    <div class="form-group mb-3">
+      <div style="display: flex; justify-content: space-between;">
+        <!-- 공연 가수 목록 -->
+        <div style="flex: 1; margin-right: 10px;">
+          <label><span style="font-weight: bold;">공연 아티스트 목록</span></label>
+          <div>
+            <th:block th:each="artist : ${artists}">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" th:id="'artist_' + ${artist.id}" th:name="artistIds" th:value="${artist.id}">
+                <label class="form-check-label" th:for="'artist_' + ${artist.id}">
+                  <b>가수:</b> [[${artist.koreanName}]]
+                </label>
+              </div>
+            </th:block>
+          </div>
+        </div>
+
+        <!-- 공연 장르 목록 -->
+        <div style="flex: 1; margin-left: 10px;">
+          <label><span style="font-weight: bold;">공연 장르 목록</span></label>
+          <div>
+            <th:block th:each="genre : ${genres}">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" th:id="'genre_' + ${genre.id}" th:name="genreIds" th:value="${genre.id}">
+                <label class="form-check-label" th:for="'genre_' + ${genre.id}">
+                  <b>장르:</b> [[${genre.name}]]
+                </label>
+              </div>
+            </th:block>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 좌석별 가격 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">좌석별 가격</label>
+      <div id="priceFieldsContainer">
+        <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="addPriceField()">좌석 추가</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 티켓팅 사이트 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">티켓팅 사이트</label>
+      <div id="ticketingFieldsContainer">
+        <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="addTicketingField()">티켓팅 사이트 추가</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 제출 버튼 -->
+    <div class="form-group mb-3" style="text-align: center;">
+      <button type="submit" style="padding: 10px 20px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer;">제출</button>
+    </div>
+
+  </form>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+  function addPriceField() {
+    const container = document.getElementById('priceFieldsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'form-group';
+    newField.innerHTML = `
+        <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+          <input type="text" class="form-control" name="seatTypes" id="seatTypes" required style="width: 150px;" placeholder="좌석 타입">
+          <input type="number" class="form-control" name="pricesPerSeatType" id="pricesPerSeatType" required style="width: 100px;" placeholder="금액">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
+        </div>
+      `;
+    container.appendChild(newField);
+  }
+
+  function addTicketingField() {
+    const container = document.getElementById('ticketingFieldsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'form-group';
+    newField.innerHTML = `
+      <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+        <input type="text" class="form-control" name="ticketBookingSites" id="ticketBookingSites" required style="width: 150px;" placeholder="티켓팅 사이트">
+        <input type="url" class="form-control" name="ticketingSiteUrls" id="ticketingSiteUrls" required style="width: 150px;" placeholder="URL">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
+      </div>
+    `;
+    container.appendChild(newField);
+  }
+
+  function removeField(button) {
+    button.parentElement.parentElement.remove();
+  }
+</script>
+</html>

@@ -2,7 +2,9 @@ package org.example.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.property.RedisProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -10,6 +12,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 @Configuration
+@EnableConfigurationProperties(RedisProperty.class)
+@ComponentScan(basePackages = "org.example")
 @RequiredArgsConstructor
 public class RedisConfig {
 

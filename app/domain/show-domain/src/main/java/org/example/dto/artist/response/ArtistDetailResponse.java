@@ -9,6 +9,7 @@ public record ArtistDetailResponse(
     UUID id,
     String koreanName,
     String englishName,
+    String image,
     String country,
     ArtistGender artistGender,
     ArtistType artistType,

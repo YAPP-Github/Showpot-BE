@@ -25,6 +25,9 @@ public class Artist extends BaseEntity {
     @Column(name = "english_name", nullable = false)
     private String englishName;
 
+    @Column(name = "image", nullable = false)
+    private String image;
+
     @Column(name = "country", nullable = false)
     private String country;
 
@@ -37,10 +40,11 @@ public class Artist extends BaseEntity {
     private ArtistType artistType;
 
     @Builder
-    private Artist(String koreanName, String englishName, String country, ArtistGender artistGender,
+    private Artist(String koreanName, String englishName, String image, String country, ArtistGender artistGender,
         ArtistType artistType) {
         this.koreanName = koreanName;
         this.englishName = englishName;
+        this.image = image;
         this.country = country;
         this.artistGender = artistGender;
         this.artistType = artistType;
@@ -55,9 +59,10 @@ public class Artist extends BaseEntity {
             .toList();
     }
 
-    public void changeArtist(Artist newArtist) {
+    public void changeArtistInfo(Artist newArtist) {
         this.koreanName = newArtist.koreanName;
         this.englishName = newArtist.englishName;
+        this.image = newArtist.image;
         this.country = newArtist.country;
         this.artistGender = newArtist.artistGender;
         this.artistType = newArtist.artistType;

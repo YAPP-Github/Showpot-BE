@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
+import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,6 +34,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                         artist.id,
                         artist.koreanName,
                         artist.englishName,
+                        artist.image,
                         artist.country,
                         artist.artistGender,
                         artist.artistType,
@@ -47,7 +49,6 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return Optional.ofNullable(
             createArtistJoinArtistGenreAndGenreQuery()
                 .where(artist.id.eq(id))
-                .where(artist.isDeleted.isFalse())
                 .transform(
                     groupBy(artist.id).as(
                         Projections.constructor(
@@ -55,6 +56,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                             artist.id,
                             artist.koreanName,
                             artist.englishName,
+                            artist.image,
                             artist.country,
                             artist.artistGender,
                             artist.artistType,
@@ -83,4 +85,17 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
 
+    @Override
+    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+        return jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    ArtistKoreanNameResponse.class,
+                    artist.id,
+                    artist.koreanName
+                )
+            )
+            .from(artist)
+            .fetch();
+    }
 }
