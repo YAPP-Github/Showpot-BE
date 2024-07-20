@@ -37,6 +37,7 @@ jobs:
           echo "cloud.aws.credentials.secretKey: $SECRET_KEY" >> ./app/src/main/resources/application-cloud-dev.yml
           echo "cloud.aws.region: $REGION" >> ./app/src/main/resources/application-cloud-dev.yml
           echo "cloud.aws.s3.bucket: $BUCKET" >> ./app/src/main/resources/application-cloud-dev.yml
+          cat ./app/src/main/resources/application-cloud-dev.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build

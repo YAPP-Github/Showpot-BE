@@ -30,11 +30,11 @@ jobs:
           REGION: ${{ secrets.AWS_REGION }}
           BUCKET: ${{ secrets.AWS_BUCKET }}
         run: |
-          echo "cloud.aws.credentials.accessKey: $ACCESS_KEY" >> ./app/src/main/resources/application-cloud-dev.yml
-          echo "cloud.aws.credentials.secretKey: $SECRET_KEY" >> ./app/src/main/resources/application-cloud-dev.yml
-          echo "cloud.aws.region: $REGION" >> ./app/src/main/resources/application-cloud-dev.yml
-          echo "cloud.aws.s3.bucket: $BUCKET" >> ./app/src/main/resources/application-cloud-dev.yml
-          cat ./app/src/main/resources/application-cloud-dev.yml
+          echo "cloud.aws.credentials.accessKey: $ACCESS_KEY" >> ./app/src/main/resources/application-cloud-prod.yml
+          echo "cloud.aws.credentials.secretKey: $SECRET_KEY" >> ./app/src/main/resources/application-cloud-prod.yml
+          echo "cloud.aws.region: $REGION" >> ./app/src/main/resources/application-cloud-prod.yml
+          echo "cloud.aws.s3.bucket: $BUCKET" >> ./app/src/main/resources/application-cloud-prod.yml
+          cat ./app/src/main/resources/application-cloud-prod.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
