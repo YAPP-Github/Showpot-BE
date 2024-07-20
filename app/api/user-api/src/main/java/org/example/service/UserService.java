@@ -23,7 +23,7 @@ public class UserService {
     private final JWTGenerator jwtGenerator;
     private final TokenProcessor tokenProcessor;
 
-    public TokenParam login(final LoginServiceRequest loginServiceRequest) {
+    public TokenParam login(LoginServiceRequest loginServiceRequest) {
         User user = getUser(loginServiceRequest);
         var userParam = UserParam.from(user);
 

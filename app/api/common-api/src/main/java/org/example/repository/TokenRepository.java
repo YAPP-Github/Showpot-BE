@@ -9,11 +9,11 @@ public interface TokenRepository {
 
     void saveBlacklistAccessToken(UUID userId, String accessToken);
 
-    void saveRefreshToken(String userId, String refreshToken);
+    void saveRefreshToken(UUID userId, String refreshToken);
 
     Optional<String> getExistRefreshToken(String userId);
 
-    boolean existAccessToken(UUID userId, String accessToken);
+    boolean existAccessTokenInBlacklist(UUID userId, String accessToken);
 
-    void delete(UUID userId);
+    void deleteRefreshToken(UUID userId);
 }

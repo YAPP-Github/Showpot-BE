@@ -22,7 +22,7 @@ public class JWTGenerator {
             .refreshToken(createRefreshToken(userParam, from))
             .build();
 
-        tokenRepository.saveRefreshToken(userParam.userId().toString(), tokenParam.refreshToken());
+        tokenRepository.saveRefreshToken(userParam.userId(), tokenParam.refreshToken());
         return tokenParam;
     }
 

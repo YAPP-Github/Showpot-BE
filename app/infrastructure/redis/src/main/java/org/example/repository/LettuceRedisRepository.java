@@ -16,13 +16,13 @@ public class LettuceRedisRepository implements TokenRepository {
     @Override
     public void saveBlacklistAccessToken(UUID userId, String accessToken) {
         stringRedisTemplate.opsForValue()
-            .set("AT:" + accessToken, userId.toString(), 14, TimeUnit.DAYS);
+            .set("AT:" + userId.toString(), accessToken, 1, TimeUnit.HOURS);
     }
 
     @Override
-    public void saveRefreshToken(String userId, String refreshToken) {
+    public void saveRefreshToken(UUID userId, String refreshToken) {
         stringRedisTemplate.opsForValue()
-            .set("RT:" + userId, refreshToken, 14, TimeUnit.DAYS);
+            .set("RT:" + userId.toString(), refreshToken, 14, TimeUnit.DAYS);
     }
 
     @Override
@@ -31,17 +31,17 @@ public class LettuceRedisRepository implements TokenRepository {
     }
 
     @Override
-    public boolean existAccessToken(UUID userId, String accessToken) {
-        String existAccessKey = stringRedisTemplate.opsForValue().get("AT:" + accessToken);
+    public boolean existAccessTokenInBlacklist(UUID userId, String accessToken) {
+        String existAccessKey = stringRedisTemplate.opsForValue().get("AT:" + userId);
         if (existAccessKey == null) {
             return false;
         }
 
-        return existAccessKey.equals(userId.toString());
+        return existAccessKey.equals(accessToken);
     }
 
     @Override
-    public void delete(UUID userId) {
+    public void deleteRefreshToken(UUID userId) {
         stringRedisTemplate.delete("RT:" + userId);
     }
 }
