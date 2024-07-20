@@ -24,16 +24,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Copy Secrets
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './app/src/main/resources/application-dev.yml, ./app/src/main/resources/application-cloud-dev.yml'
         env:
-          ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          REGION: ${{ secrets.AWS_REGION }}
-          BUCKET: ${{ secrets.AWS_BUCKET }}
-        run:
-          echo $ACCESS_KEY > ./app/src/main/resources/application-dev.yml
-          echo $SECRET_KEY > ./app/src/main/resources/application-dev.yml
-          echo $REGION > ./app/src/main/resources/application-cloud-dev.yml
-          echo $BUCKET > ./app/src/main/resources/application-cloud-dev.yml
+          token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.region: ${{ secrets.AWS_REGION }}
+          cloud.aws.s3.bucket: ${{ secrets.AWS_BUCKET }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
@@ -41,7 +40,7 @@ jobs:
       - name: Prepare File for Deployment
         run: |
           mkdir -p deployment/app/build/libs
-          cp Dockerfile docker-compose.yml deployment/
+          cp dockerfile-dev docker-compose-dev.yml deployment/
           cp -r ./app/build/libs deployment/app/build
 
       - name: Get Github Actions IP
@@ -76,9 +75,9 @@ jobs:
           key: ${{ secrets.EC2_DEV_SSH_PRIVATE_KEY }}
           script: |
             cd /home/ec2-user/deployment/
-            docker-compose down
+            docker-compose -f docker-compose-dev.yml down
             docker system prune -f
-            docker-compose up -d --build
+            docker-compose -f docker-compose-dev.yml up -d --build
 
       - name: Remove Github Actions IP from Security Group
         if: always()

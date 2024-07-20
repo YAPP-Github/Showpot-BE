@@ -24,7 +24,7 @@ services:
     image: yapp
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile-dev
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/yapp
       SPRING_DATASOURCE_USERNAME: yapp
