@@ -32,10 +32,10 @@ jobs:
         with:
           files: ./app/src/main/resources/application-cloud-dev.yml
         env:
-          ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          REGION: ${{ secrets.AWS_REGION }}
-          BUCKET: ${{ secrets.AWS_BUCKET }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.region: ${{ secrets.AWS_REGION }}
+          cloud.aws.s3.bucket: ${{ secrets.AWS_BUCKET }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
