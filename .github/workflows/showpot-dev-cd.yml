@@ -30,7 +30,7 @@ jobs:
       - name: Copy Secrets
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./app/src/main/resources/application-cloud-dev.yml
+          files: './app/src/main/resources/application-cloud-dev.yml'
         env:
           ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
