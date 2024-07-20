@@ -27,9 +27,13 @@ jobs:
         env:
           ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          REGION: ${{ secrets.AWS_REGION }}
+          BUCKET: ${{ secrets.AWS_BUCKET }}
         run:
           echo $ACCESS_KEY > ./app/src/main/resources/application-prod.yml
           echo $SECRET_KEY > ./app/src/main/resources/application-prod.yml
+          echo $REGION > ./app/src/main/resources/application-prod.yml
+          echo $BUCKET > ./app/src/main/resources/application-prod.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
