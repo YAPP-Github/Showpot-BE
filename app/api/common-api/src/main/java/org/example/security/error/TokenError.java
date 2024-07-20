@@ -112,5 +112,27 @@ public enum TokenError implements BusinessError {
         public String getLogMessage() {
             return "만료되지 않은 토큰에 대해, 만료 상황에 대한 로직이 시행되었습니다.";
         }
+    },
+
+    BLACKLIST_ACCESS_TOKEN {
+        @Override
+        public int getHttpStatus() {
+            return 401;
+        }
+
+        @Override
+        public String getErrorCode() {
+            return "TKN-005";
+        }
+
+        @Override
+        public String getClientMessage() {
+            return "유효하지 않은 토큰입니다.";
+        }
+
+        @Override
+        public String getLogMessage() {
+            return "블랙리스트에 등록된 토큰입니다.";
+        }
     }
 }

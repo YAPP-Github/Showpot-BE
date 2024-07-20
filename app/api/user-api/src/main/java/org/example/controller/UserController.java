@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.request.LoginApiRequest;
+import org.example.controller.dto.request.LogoutApiRequest;
+import org.example.controller.dto.request.WithdrawalApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
@@ -39,15 +41,21 @@ public class UserController {
 
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
-    public ResponseEntity<Void> logout(@AuthenticationPrincipal AuthenticatedUser user) {
-        userService.logout(user.userId());
+    public ResponseEntity<Void> logout(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @RequestBody LogoutApiRequest request
+    ) {
+        userService.logout(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/withdrawal")
     @Operation(summary = "회원탈퇴")
-    public ResponseEntity<Void> withdraw(@AuthenticationPrincipal AuthenticatedUser user) {
-        userService.withdraw(user.userId());
+    public ResponseEntity<Void> withdraw(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @RequestBody WithdrawalApiRequest request
+    ) {
+        userService.withdraw(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
     }
 }

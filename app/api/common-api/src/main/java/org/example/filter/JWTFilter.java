@@ -15,7 +15,7 @@ import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.error.TokenError;
 import org.example.security.token.JWTHandler;
-import org.example.security.token.RefreshTokenProcessor;
+import org.example.security.token.TokenProcessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +27,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTHandler jwtHandler;
-    private final RefreshTokenProcessor refreshTokenProcessor;
+    private final TokenProcessor tokenProcessor;
     private final TokenRepository tokenRepository;
 
     @Override
@@ -37,7 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
         FilterChain filterChain
     ) throws ServletException, IOException {
         if (request.getHeader("Refresh") != null) {
-            TokenParam token = refreshTokenProcessor.reissueToken(request);
+            TokenParam token = tokenProcessor.reissueToken(request);
             response.getWriter().write(new ObjectMapper().writeValueAsString(token));
             return;
         }
@@ -52,13 +52,13 @@ public class JWTFilter extends OncePerRequestFilter {
     private void handleAccessToken(HttpServletRequest request) {
         String accessToken = jwtHandler.extractAccessToken(request);
         UserParam userParam = jwtHandler.extractUserFrom(accessToken);
-        verifyLogoutAccessToken(userParam);
+        verifyAccessTokenBlacklist(userParam, accessToken);
         saveOnSecurityContextHolder(userParam);
     }
 
-    public void verifyLogoutAccessToken(UserParam userParam) {
-        if (tokenRepository.existAccessToken(userParam.userId().toString())) {
-            throw new BusinessException(TokenError.INVALID_TOKEN);
+    private void verifyAccessTokenBlacklist(UserParam userParam, String accessKey) {
+        if (tokenRepository.existAccessToken(userParam.userId(), accessKey)) {
+            throw new BusinessException(TokenError.BLACKLIST_ACCESS_TOKEN);
         }
     }
 

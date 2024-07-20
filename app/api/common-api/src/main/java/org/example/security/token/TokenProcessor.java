@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.exception.BusinessException;
+import org.example.property.TokenProperty;
 import org.example.repository.TokenRepository;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RefreshTokenProcessor {
+public class TokenProcessor {
 
+    private final TokenProperty tokenProperty;
     private final JWTHandler jwtHandler;
     private final JWTGenerator jwtGenerator;
     private final TokenRepository tokenRepository;
@@ -23,7 +25,7 @@ public class RefreshTokenProcessor {
         String refreshToken = jwtHandler.extractRefreshToken(request);
         UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
 
-        String oldRefreshToken = jwtGenerator.getExistRefreshToken(userParam);
+        String oldRefreshToken = getExistRefreshToken(userParam);
         if (!refreshToken.equals(oldRefreshToken)) {
             throw new BusinessException(TokenError.INVALID_TOKEN);
         }
@@ -31,7 +33,16 @@ public class RefreshTokenProcessor {
         return jwtGenerator.generate(userParam, new Date());
     }
 
-    public void deleteRefreshToken(UUID userId) {
+    public void makeAccessTokenBlacklistAndDeleteRefreshToken(
+        String accessToken,
+        UUID userId
+    ) {
+        tokenRepository.saveBlacklistAccessToken(userId, accessToken);
         tokenRepository.delete(userId);
+    }
+
+    private String getExistRefreshToken(UserParam userParam) {
+        return tokenRepository.getExistRefreshToken(userParam.userId().toString())
+            .orElseThrow(() -> new BusinessException(TokenError.WRONG_HEADER));
     }
 }

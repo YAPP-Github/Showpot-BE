@@ -2,15 +2,16 @@ package org.example.service;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.SocialLogin;
 import org.example.entity.User;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
-import org.example.security.token.RefreshTokenProcessor;
+import org.example.security.token.TokenProcessor;
 import org.example.service.dto.request.LoginServiceRequest;
+import org.example.service.dto.request.LogoutServiceRequest;
+import org.example.service.dto.request.WithdrawalServiceRequest;
 import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     private final UserUseCase userUseCase;
     private final JWTGenerator jwtGenerator;
-    private final RefreshTokenProcessor refreshTokenProcessor;
+    private final TokenProcessor tokenProcessor;
 
     public TokenParam login(final LoginServiceRequest loginServiceRequest) {
         User user = getUser(loginServiceRequest);
@@ -29,13 +30,19 @@ public class UserService {
         return jwtGenerator.generate(userParam, new Date());
     }
 
-    public void logout(UUID userId) {
-        refreshTokenProcessor.deleteRefreshToken(userId);
+    public void logout(LogoutServiceRequest request) {
+        tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
+            request.accessToken(),
+            request.userId()
+        );
     }
 
-    public void withdraw(UUID userId) {
-        refreshTokenProcessor.deleteRefreshToken(userId);
-        userUseCase.deleteUser(userId);
+    public void withdraw(WithdrawalServiceRequest request) {
+        tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
+            request.accessToken(),
+            request.userId()
+        );
+        userUseCase.deleteUser(request.userId());
     }
 
     private User getUser(LoginServiceRequest request) {
