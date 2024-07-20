@@ -26,8 +26,9 @@ jobs:
       - name: Copy Secrets
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./app/src/main/resources/application-cloud-dev.yml
+          files: './app/src/main/resources/application-dev.yml, ./app/src/main/resources/application-cloud-dev.yml'
         env:
+          token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
           cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
           cloud.aws.region: ${{ secrets.AWS_REGION }}
