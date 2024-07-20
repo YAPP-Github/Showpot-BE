@@ -36,6 +36,10 @@ public class UserUseCase {
         User user = userRepository.findById(socialLogin.getUserId())
             .orElseThrow(NoSuchElementException::new);
 
+        if (user.isWithdrew()) {
+            throw new BusinessException(UserError.WITHDREW_USER_LOGIN);
+        }
+
         user.dirtyCheckFcmToken(request.fcmToken());
 
         return user;

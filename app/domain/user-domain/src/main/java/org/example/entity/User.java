@@ -53,4 +53,8 @@ public class User extends BaseEntity {
             this.fcmToken = fcmToken;
         }
     }
+
+    public boolean isWithdrew() {
+        return this.getIsDeleted();
+    }
 }

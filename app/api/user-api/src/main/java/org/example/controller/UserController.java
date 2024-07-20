@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/withdraw")
+    @PostMapping("/withdrawal")
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(@AuthenticationPrincipal AuthenticatedUser user) {
         userService.withdraw(user.userId());
