@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - develop
-      - fix/docker-profile
-  pull_request:
-    branches:
-      - fix/docker-profile
 
 jobs:
   build-and-deploy:
