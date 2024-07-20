@@ -78,7 +78,7 @@ public enum TokenError implements BusinessError {
 
         @Override
         public String getErrorCode() {
-            return "TKN-003";
+            return "TKN-004";
         }
 
         @Override
@@ -100,7 +100,7 @@ public enum TokenError implements BusinessError {
 
         @Override
         public String getErrorCode() {
-            return "TKN-004";
+            return "TKN-005";
         }
 
         @Override
@@ -122,7 +122,7 @@ public enum TokenError implements BusinessError {
 
         @Override
         public String getErrorCode() {
-            return "TKN-005";
+            return "TKN-006";
         }
 
         @Override
