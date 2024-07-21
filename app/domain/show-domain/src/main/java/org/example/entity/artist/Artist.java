@@ -40,8 +40,14 @@ public class Artist extends BaseEntity {
     private ArtistType artistType;
 
     @Builder
-    private Artist(String koreanName, String englishName, String image, String country, ArtistGender artistGender,
-        ArtistType artistType) {
+    private Artist(
+        String koreanName,
+        String englishName,
+        String image,
+        String country,
+        ArtistGender artistGender,
+        ArtistType artistType
+    ) {
         this.koreanName = koreanName;
         this.englishName = englishName;
         this.image = image;

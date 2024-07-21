@@ -28,7 +28,7 @@ import org.example.vo.SocialLoginType;
 )
 public class SocialLogin extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private SocialLoginType socialLoginType;
 

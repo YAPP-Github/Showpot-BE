@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/yapp
+    username: yapp
+    password: yapp
+    driver-class-name: org.postgresql.Driver

@@ -1,4 +1,4 @@
-package show.fixture;
+package org.example.fixture;
 
 import java.time.LocalDate;
 import org.example.entity.show.Show;

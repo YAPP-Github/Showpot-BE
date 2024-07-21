@@ -1,4 +1,4 @@
-package show.domain;
+package org.example.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
+import org.example.fixture.ShowFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import show.fixture.ShowFixture;
 
 class ShowTest {
 

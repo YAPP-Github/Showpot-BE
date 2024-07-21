@@ -1,5 +1,5 @@
 dependencies {
     implementation project(":app:domain:show-domain")
-
+    implementation project(":app:domain:user-domain")
     implementation project(':app:api:common-api')
 }
