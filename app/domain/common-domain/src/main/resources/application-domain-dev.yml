@@ -3,6 +3,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    open-in-view: false
   datasource:
     url: ${APPLICATION_DATASOURCE_URL_DEV}
     username: ${APPLICATION_DATASOURCE_USERNAME}
