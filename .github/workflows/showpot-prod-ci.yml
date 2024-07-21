@@ -26,12 +26,16 @@ jobs:
       - name: Copy Secrets
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./app/src/main/resources/application-cloud-prod.yml
+          files: './app/src/main/resources/application-prod.yml, ./app/src/main/resources/application-cloud-prod.yml, ./app/domain/common-domain/src/main/resources/application-domain-prod.yml'
         env:
+          token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
           cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
           cloud.aws.region: ${{ secrets.AWS_REGION }}
           cloud.aws.s3.bucket: ${{ secrets.AWS_BUCKET }}
+          spring.datasource.url: ${{ secrets.APPLICATION_DATASOURCE_URL_PROD }}
+          spring.datasource.username: ${{ secrets.APPLICATION_DATASOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build

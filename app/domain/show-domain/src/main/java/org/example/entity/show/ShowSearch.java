@@ -21,7 +21,7 @@ public class ShowSearch extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "show_id")
+    @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
 }
