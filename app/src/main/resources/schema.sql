@@ -1,7 +1,7 @@
 alter table if exists artist_search
-drop constraint if exists FKiec9ag58p2jrlpfcx9xo5t4sw;
+drop constraint if exists fk_artist_artist_search;
 alter table if exists show_search
-drop constraint if exists FKs3eb48envj41jwv25dt8uwfhh;
+drop constraint if exists fk_show_show_search;
 
 drop table if exists admin cascade;
 drop table if exists artist cascade;
@@ -186,6 +186,6 @@ create table users
     primary key (id)
 );
 alter table if exists artist_search
-    add foreign key (artist_id) references artist;
+    add constraint fk_artist_artist_search foreign key (artist_id) references artist;
 alter table if exists show_search
-    add foreign key (show_id) references show;
+    add constraint fk_show_show_search foreign key (show_id) references show;
