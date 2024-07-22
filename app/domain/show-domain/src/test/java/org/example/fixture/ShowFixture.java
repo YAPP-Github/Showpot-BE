@@ -1,6 +1,8 @@
 package org.example.fixture;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.example.entity.show.Show;
 import org.example.entity.show.info.SeatPrice;
 import org.example.entity.show.info.Ticketing;
@@ -24,6 +26,8 @@ public class ShowFixture {
     }
 
     private static Ticketing getTicketing() {
-        return new Ticketing();
+        Ticketing ticketing = new Ticketing();
+        ticketing.saveTicketOpenTime(LocalDateTime.of(LocalDate.EPOCH, LocalTime.MIDNIGHT));
+        return ticketing;
     }
 }
