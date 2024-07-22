@@ -26,7 +26,7 @@ public class ShowSearchRepositoryTest extends QueryTest {
 
     @Test
     @DisplayName("공연이름과 일치하는 공연을 검색할 수 있다.")
-    void searchArtistByKoreanNameAndEnglishName() {
+    void searchShowByShowName() {
         //given
         Show show = ShowFixture.show();
         showRepository.save(show);
