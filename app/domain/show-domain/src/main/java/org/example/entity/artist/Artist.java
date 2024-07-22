@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
+import org.example.util.StringNormalizer;
 
 @Entity
 @Getter
@@ -57,6 +58,20 @@ public class Artist extends BaseEntity {
                 .genreId(genreId)
                 .build())
             .toList();
+    }
+
+    public List<ArtistSearch> toArtistSearch() {
+        return List.of(
+            createArtistSearch(StringNormalizer.removeWhitespaceAndLowerCase(koreanName)),
+            createArtistSearch(StringNormalizer.removeWhitespaceAndLowerCase(englishName))
+        );
+    }
+
+    private ArtistSearch createArtistSearch(String name) {
+        return ArtistSearch.builder()
+            .name(name)
+            .artist(this)
+            .build();
     }
 
     public void changeArtistInfo(Artist newArtist) {

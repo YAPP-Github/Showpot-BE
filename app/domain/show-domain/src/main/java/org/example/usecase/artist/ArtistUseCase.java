@@ -8,11 +8,13 @@ import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
+import org.example.entity.artist.ArtistSearch;
 import org.example.entity.show.ShowArtist;
 import org.example.error.ArtistError;
 import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistGenreRepository;
 import org.example.repository.artist.ArtistRepository;
+import org.example.repository.artist.ArtistSearchRepository;
 import org.example.repository.show.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +24,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArtistUseCase {
 
     private final ArtistRepository artistRepository;
+    private final ArtistSearchRepository artistSearchRepository;
     private final ArtistGenreRepository artistGenreRepository;
     private final ShowArtistRepository showArtistRepository;
 
     @Transactional
     public void save(Artist artist, List<UUID> genreIds) {
         artistRepository.save(artist);
+
+        List<ArtistSearch> artistSearches = artist.toArtistSearch();
+        artistSearchRepository.saveAll(artistSearches);
 
         List<ArtistGenre> artistGenres = artist.toArtistGenre(genreIds);
         artistGenreRepository.saveAll(artistGenres);
