@@ -93,11 +93,9 @@ public class ArtistUseCase {
             .orElseThrow(() -> new BusinessException(ArtistError.SEARCH_NOT_FOUND_ERROR));
     }
 
-
     private Artist findArtistById(UUID id) {
         return artistRepository.findById(id)
             .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
     }
-
 }
 

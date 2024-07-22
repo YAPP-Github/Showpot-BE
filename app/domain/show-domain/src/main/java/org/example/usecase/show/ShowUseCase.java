@@ -3,7 +3,8 @@ package org.example.usecase.show;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.response.ShowInfoResponse;
+import org.example.dto.show.ShowInfoResponse;
+import org.example.dto.show.ShowSearchResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -102,6 +103,11 @@ public class ShowUseCase {
 
         List<ShowGenre> showGenres = showGenreRepository.findAllByShowId(show.getId());
         showGenres.forEach(BaseEntity::softDelete);
+    }
+
+    public ShowSearchResponse searchShow(String name) {
+        return showSearchRepository.searchShow(name)
+            .orElseThrow(() -> new BusinessException(ShowError.SEARCH_NOT_FOUND_ERROR));
     }
 
 

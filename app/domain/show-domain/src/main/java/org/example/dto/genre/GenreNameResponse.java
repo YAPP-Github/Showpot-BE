@@ -1,4 +1,4 @@
-package org.example.dto.artist.response;
+package org.example.dto.genre;
 
 import java.util.UUID;
 

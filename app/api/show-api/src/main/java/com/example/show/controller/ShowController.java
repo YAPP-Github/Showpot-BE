@@ -10,15 +10,19 @@ import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowInterestPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiResponse;
+import com.example.show.controller.dto.response.ShowSearchApiResponse;
 import com.example.show.controller.dto.response.ShowSimpleApiResponse;
 import com.example.show.controller.dto.response.TicketingAndShowInfoApiResponse;
+import com.example.show.service.ShowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.security.dto.AuthenticatedUser;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/shows")
 @Tag(name = "공연")
 public class ShowController {
+
+    private final ShowService showService;
 
     private String image = "https://thumb.mtstarnews.com/06/2023/06/2023062914274537673_1.jpg";
 
@@ -194,5 +200,17 @@ public class ShowController {
                 false
             )
         );
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "검색하기")
+    public ResponseEntity<ShowSearchApiResponse> search(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @RequestParam(value = "name") String name
+    ) {
+        ShowSearchApiResponse showSearchApiResponse = new ShowSearchApiResponse(
+            showService.searchShow(name));
+
+        return ResponseEntity.ok(showSearchApiResponse);
     }
 }

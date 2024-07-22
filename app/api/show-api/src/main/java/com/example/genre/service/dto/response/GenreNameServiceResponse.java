@@ -1,7 +1,7 @@
 package com.example.genre.service.dto.response;
 
 import java.util.UUID;
-import org.example.dto.artist.response.GenreNameResponse;
+import org.example.dto.genre.GenreNameResponse;
 
 public record GenreNameServiceResponse(
     UUID id,
