@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.info.SeatPrice;
 import org.example.entity.show.info.Ticketing;
+import org.example.util.StringNormalizer;
 
 @Entity
 @Getter
@@ -70,6 +71,13 @@ public class Show extends BaseEntity {
                 .genreId(genreId)
                 .build())
             .toList();
+    }
+
+    public ShowSearch toShowSearch() {
+        return ShowSearch.builder()
+            .name(StringNormalizer.removeWhitespaceAndLowerCase(title))
+            .show(this)
+            .build();
     }
 
     public void changeShowInfo(Show newShow) {

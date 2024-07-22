@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
@@ -24,4 +25,9 @@ public class ShowSearch extends BaseEntity {
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
+    @Builder
+    private ShowSearch(String name, Show show) {
+        this.name = name;
+        this.show = show;
+    }
 }

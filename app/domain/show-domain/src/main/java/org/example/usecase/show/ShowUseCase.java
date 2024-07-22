@@ -13,6 +13,7 @@ import org.example.exception.BusinessException;
 import org.example.repository.show.ShowArtistRepository;
 import org.example.repository.show.ShowGenreRepository;
 import org.example.repository.show.ShowRepository;
+import org.example.repository.show.ShowSearchRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShowUseCase {
 
     private final ShowRepository showRepository;
+    private final ShowSearchRepository showSearchRepository;
     private final ShowArtistRepository showArtistRepository;
     private final ShowGenreRepository showGenreRepository;
 
     @Transactional
     public void save(Show show, List<UUID> artistIds, List<UUID> genreIds) {
         showRepository.save(show);
+        showSearchRepository.save(show.toShowSearch());
 
         List<ShowArtist> showArtists = show.toShowArtist(artistIds);
         showArtistRepository.saveAll(showArtists);
