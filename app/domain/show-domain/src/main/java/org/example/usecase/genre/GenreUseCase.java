@@ -9,7 +9,7 @@ import org.example.entity.genre.Genre;
 import org.example.entity.show.ShowGenre;
 import org.example.error.GenreError;
 import org.example.exception.BusinessException;
-import org.example.repository.artist.ArtistGenreRepository;
+import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
 import org.example.repository.show.ShowGenreRepository;
 import org.springframework.stereotype.Component;

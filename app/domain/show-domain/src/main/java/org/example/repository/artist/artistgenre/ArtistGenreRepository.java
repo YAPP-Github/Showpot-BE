@@ -1,4 +1,4 @@
-package org.example.repository.artist;
+package org.example.repository.artist.artistgenre;
 
 import java.util.List;
 import java.util.UUID;

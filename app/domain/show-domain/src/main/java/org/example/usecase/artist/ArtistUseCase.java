@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistSearchResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
@@ -12,9 +13,9 @@ import org.example.entity.artist.ArtistSearch;
 import org.example.entity.show.ShowArtist;
 import org.example.error.ArtistError;
 import org.example.exception.BusinessException;
-import org.example.repository.artist.ArtistGenreRepository;
 import org.example.repository.artist.ArtistRepository;
-import org.example.repository.artist.ArtistSearchRepository;
+import org.example.repository.artist.artistgenre.ArtistGenreRepository;
+import org.example.repository.artist.artistsearch.ArtistSearchRepository;
 import org.example.repository.show.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,6 +87,12 @@ public class ArtistUseCase {
         List<ShowArtist> showArtists = showArtistRepository.findAllByArtistId(artist.getId());
         showArtists.forEach(BaseEntity::softDelete);
     }
+
+    public ArtistSearchResponse searchArtist(String name) {
+        return artistSearchRepository.searchArtist(name)
+            .orElseThrow(() -> new BusinessException(ArtistError.SEARCH_NOT_FOUND_ERROR));
+    }
+
 
     private Artist findArtistById(UUID id) {
         return artistRepository.findById(id)
