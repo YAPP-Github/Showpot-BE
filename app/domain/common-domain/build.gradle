@@ -1,6 +1,3 @@
-bootJar.enabled = false
-jar.enabled = true
-
 dependencies {
     //ulid
     implementation 'com.github.f4b6a3:ulid-creator:5.2.3'
