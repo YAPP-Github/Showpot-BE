@@ -85,7 +85,8 @@ public class SecurityConfig {
             antMatcher(HttpMethod.POST, "/api/v1/shows/**/interest"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/**/alert"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/**"),
-            antMatcher(HttpMethod.POST, "/api/v1/artists/subscribe")
+            antMatcher(HttpMethod.POST, "/api/v1/artists/subscribe"),
+            antMatcher(HttpMethod.POST, "/api/v1/artists/unsubscribe")
         );
     }
 }

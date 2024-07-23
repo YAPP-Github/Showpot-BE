@@ -1,7 +1,9 @@
 package com.example.artist.service;
 
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
+import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
+import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,22 +25,38 @@ public class ArtistService {
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
-        List<Artist> existArtists = artistUseCase.findAllArtistInIds(request.artistIds());
+        List<Artist> existArtistsInRequest = artistUseCase.findAllArtistInIds(request.artistIds());
+        List<UUID> existArtistIdsInRequest = existArtistsInRequest.stream()
+            .map(Artist::getId)
+            .toList();
 
-        List<ArtistSubscription> newArtistSubscription = getNewArtistSubscription(
-            existArtists,
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.subscribe(
+            existArtistIdsInRequest,
             request.userId()
         );
 
-        artistSubscriptionUseCase.subscribe(newArtistSubscription);
-
         return ArtistSubscriptionServiceResponse.builder()
             .successSubscriptionArtistIds(
-                newArtistSubscription.stream()
+                subscriptions.stream()
                     .map(ArtistSubscription::getArtistId)
                     .toList()
-            )
-            .build();
+            ).build();
+    }
+
+    public ArtistUnsubscriptionServiceResponse unsubscribe(
+        ArtistUnsubscriptionServiceRequest request
+    ) {
+        List<ArtistSubscription> unsubscribedArtists = artistSubscriptionUseCase.unsubscribe(
+            request.artistIds(),
+            request.userId()
+        );
+
+        return ArtistUnsubscriptionServiceResponse.builder()
+            .successUnsubscriptionArtistIds(
+                unsubscribedArtists.stream()
+                    .map(ArtistSubscription::getArtistId)
+                    .toList()
+            ).build();
     }
 
     private List<ArtistSubscription> getNewArtistSubscription(

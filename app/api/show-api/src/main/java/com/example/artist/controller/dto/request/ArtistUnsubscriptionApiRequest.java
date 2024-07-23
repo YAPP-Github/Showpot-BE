@@ -1,5 +1,6 @@
 package com.example.artist.controller.dto.request;
 
+import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -12,4 +13,10 @@ public record ArtistUnsubscriptionApiRequest(
     List<UUID> artistIds
 ) {
 
+    public ArtistUnsubscriptionServiceRequest toServiceRequest(UUID userId) {
+        return ArtistUnsubscriptionServiceRequest.builder()
+            .artistIds(artistIds())
+            .userId(userId)
+            .build();
+    }
 }

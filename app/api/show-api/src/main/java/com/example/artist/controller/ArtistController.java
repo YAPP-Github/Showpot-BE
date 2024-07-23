@@ -6,6 +6,7 @@ import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
 import com.example.artist.controller.dto.response.ArtistPaginationApiResponse;
 import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
 import com.example.artist.controller.dto.response.ArtistSubscriptionApiResponse;
+import com.example.artist.controller.dto.response.ArtistUnsubscriptionApiResponse;
 import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -67,9 +68,15 @@ public class ArtistController {
 
     @PostMapping("/unsubscribe")
     @Operation(summary = "구독 취소하기")
-    public ResponseEntity<Void> unsubscribe(
+    public ResponseEntity<ArtistUnsubscriptionApiResponse> unsubscribe(
+        @AuthenticationPrincipal AuthenticatedUser user,
         @Valid @RequestBody ArtistUnsubscriptionApiRequest request
     ) {
-        return ResponseEntity.noContent().build();
+        ;
+        return ResponseEntity.ok(
+            ArtistUnsubscriptionApiResponse.from(
+                artistService.unsubscribe(request.toServiceRequest(user.userId()))
+            )
+        );
     }
 }
