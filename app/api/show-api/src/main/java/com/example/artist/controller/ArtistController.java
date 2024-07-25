@@ -1,7 +1,9 @@
 package com.example.artist.controller;
 
+import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.request.ArtistPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
+import com.example.artist.controller.dto.request.ArtistSubscriptionPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
 import com.example.artist.controller.dto.response.ArtistPaginationApiResponse;
 import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
@@ -14,7 +16,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +54,25 @@ public class ArtistController {
                 ),
                 false
             )
+        );
+    }
+
+    @GetMapping("/subscriptions")
+    @Operation(summary = "구독한 아티스트 목록 조회")
+    public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> getSubscribedArtists(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject ArtistSubscriptionPaginationApiRequest request
+    ) {
+        var response = artistService.findArtistSubscriptions(request.toServiceRequest(user.userId()));
+        var data = response.data().stream()
+            .map(ArtistSubscriptionPaginationApiParam::of)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<ArtistSubscriptionPaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
         );
     }
 

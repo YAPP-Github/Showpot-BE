@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.entity.artist.Artist;
-import org.example.entity.artist.ArtistGender;
-import org.example.entity.artist.ArtistType;
+import org.example.vo.ArtistGender;
+import org.example.vo.ArtistType;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder

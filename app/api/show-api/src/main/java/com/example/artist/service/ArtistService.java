@@ -1,13 +1,14 @@
 package com.example.artist.service;
 
+import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
+import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
+import com.example.artist.service.dto.response.ArtistSubscriptionPaginationServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.entity.ArtistSubscription;
@@ -59,29 +60,29 @@ public class ArtistService {
             ).build();
     }
 
-    private List<ArtistSubscription> getNewArtistSubscription(
-        List<Artist> artists,
-        UUID userId
+    public ArtistSubscriptionPaginationServiceResponse findArtistSubscriptions(
+        ArtistSubscriptionPaginationServiceRequest request
     ) {
-        var existSubscriptionByArtistId = getExistSubscriptionByArtistId(userId);
-        return artists.stream()
-            .filter(artist -> !existSubscriptionByArtistId.containsKey(artist.getId()))
-            .map(artist ->
-                ArtistSubscription.builder()
-                    .artistId(artist.getId())
-                    .userId(userId)
-                    .build()
-            ).toList();
-    }
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(request.userId());
+        List<UUID> subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
 
-    private Map<UUID, ArtistSubscription> getExistSubscriptionByArtistId(UUID userId) {
-        return artistSubscriptionUseCase.findSubscriptionList(userId)
-            .stream()
-            .collect(
-                Collectors.toMap(
-                    ArtistSubscription::getArtistId,
-                    artistSubscription -> artistSubscription
-                )
-            );
+        if (subscriptionArtistIds.isEmpty()) {
+            return ArtistSubscriptionPaginationServiceResponse.builder()
+                .data(List.of())
+                .hasNext(false)
+                .build();
+        }
+
+        var response = artistUseCase.findAllArtistInCursorPagination(request.toDomainRequest(subscriptionArtistIds));
+        List<ArtistSubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(ArtistSubscriptionPaginationServiceParam::new)
+            .toList();
+
+        return ArtistSubscriptionPaginationServiceResponse.builder()
+            .data(data)
+            .hasNext(response.hasNext())
+            .build();
     }
 }

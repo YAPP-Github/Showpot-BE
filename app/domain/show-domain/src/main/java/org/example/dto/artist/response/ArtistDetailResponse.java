@@ -2,8 +2,8 @@ package org.example.dto.artist.response;
 
 import java.util.List;
 import java.util.UUID;
-import org.example.entity.artist.ArtistGender;
-import org.example.entity.artist.ArtistType;
+import org.example.vo.ArtistGender;
+import org.example.vo.ArtistType;
 
 public record ArtistDetailResponse(
     UUID id,

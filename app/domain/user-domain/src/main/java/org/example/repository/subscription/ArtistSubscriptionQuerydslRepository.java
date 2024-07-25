@@ -7,6 +7,4 @@ import org.example.entity.ArtistSubscription;
 public interface ArtistSubscriptionQuerydslRepository {
 
     List<ArtistSubscription> findSubscriptionList(UUID userId);
-
-    List<ArtistSubscription> findUnsubscriptionList(UUID userId);
 }

@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ArtistSubscriptionQuerydslRepositoryImpl
-    implements ArtistSubscriptionQuerydslRepository {
+public class ArtistSubscriptionQuerydslRepositoryImpl implements ArtistSubscriptionQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -21,14 +20,6 @@ public class ArtistSubscriptionQuerydslRepositoryImpl
         return jpaQueryFactory.selectFrom(artistSubscription)
             .where(artistSubscription.userId.eq(userId)
                 .and(artistSubscription.isDeleted.eq(false))
-            ).fetch();
-    }
-
-    @Override
-    public List<ArtistSubscription> findUnsubscriptionList(UUID userId) {
-        return jpaQueryFactory.selectFrom(artistSubscription)
-            .where(artistSubscription.userId.eq(userId)
-                .and(artistSubscription.isDeleted.eq(true))
             ).fetch();
     }
 }
