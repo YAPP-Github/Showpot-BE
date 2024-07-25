@@ -11,7 +11,8 @@ allprojects {
         annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
         annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 
-        testImplementation "org.springframework.boot:spring-boot-starter-test"
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.17.2'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
 
         tasks.named('test') {
             useJUnitPlatform()

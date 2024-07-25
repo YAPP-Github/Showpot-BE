@@ -1,5 +1,6 @@
 package com.example.artist.controller.dto.request;
 
+import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -11,4 +12,7 @@ public record ArtistSubscriptionApiRequest(
     List<UUID> artistIds
 ) {
 
+    public ArtistSubscriptionServiceRequest toServiceRequest(UUID userId) {
+        return new ArtistSubscriptionServiceRequest(artistIds, userId);
+    }
 }

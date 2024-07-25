@@ -38,7 +38,7 @@ jobs:
           spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew clean build
+        run: ./gradlew clean build -Dspring.profiles.active=dev
 
       - name: Backend CI Discord Notification
         uses: sarisia/actions-status-discord@v1

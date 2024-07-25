@@ -16,6 +16,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.entity.artist.Artist;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -68,6 +69,28 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         );
     }
 
+    @Override
+    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+        return jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    ArtistKoreanNameResponse.class,
+                    artist.id,
+                    artist.koreanName
+                )
+            )
+            .from(artist)
+            .fetch();
+    }
+
+    @Override
+    public List<Artist> findAllInIds(List<UUID> ids) {
+        return jpaQueryFactory
+            .selectFrom(artist)
+            .where(artist.id.in(ids))
+            .fetch();
+    }
+
     private JPAQuery<?> createArtistJoinArtistGenreAndGenreQuery() {
         return jpaQueryFactory
             .selectFrom(artist)
@@ -82,20 +105,5 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
 
     private BooleanExpression isGenreEqualArtistIdAndIsDeletedFalse() {
         return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
-    }
-
-
-    @Override
-    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
-        return jpaQueryFactory
-            .select(
-                Projections.constructor(
-                    ArtistKoreanNameResponse.class,
-                    artist.id,
-                    artist.koreanName
-                )
-            )
-            .from(artist)
-            .fetch();
     }
 }
