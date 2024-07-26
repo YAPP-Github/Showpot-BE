@@ -6,6 +6,7 @@ import com.example.genre.controller.dto.request.GenreUnsubscriptionApiRequest;
 import com.example.genre.controller.dto.response.GenrePaginationApiResponse;
 import com.example.genre.controller.dto.response.GenreSimpleApiResponse;
 import com.example.genre.controller.dto.response.GenreSubscriptionApiResponse;
+import com.example.genre.controller.dto.response.GenreUnSubscriptionApiResponse;
 import com.example.genre.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -76,9 +77,14 @@ public class GenreController {
 
     @PostMapping("/unsubscribe")
     @Operation(summary = "구독 취소하기")
-    public ResponseEntity<Void> unsubscribe(
+    public ResponseEntity<GenreUnSubscriptionApiResponse> unsubscribe(
+        @AuthenticationPrincipal AuthenticatedUser user,
         @Valid @RequestBody GenreUnsubscriptionApiRequest request
     ) {
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+            GenreUnSubscriptionApiResponse.from(
+                genreService.unsubscribe(request.toServiceRequest(user.userId()))
+            )
+        );
     }
 }

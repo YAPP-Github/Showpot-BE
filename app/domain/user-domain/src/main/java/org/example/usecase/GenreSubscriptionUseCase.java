@@ -22,4 +22,16 @@ public class GenreSubscriptionUseCase {
     public List<GenreSubscription> findSubscriptionList(UUID userId) {
         return genreSubscriptionRepository.findByUserId(userId);
     }
+
+    @Transactional
+    public List<GenreSubscription> unsubscribe(List<UUID> genreIds, UUID userId) {
+        var subscriptions = genreSubscriptionRepository.findSubscriptionsByUserId(userId);
+        var filteredSubscription = subscriptions.stream()
+            .filter(it -> genreIds.contains(it.getGenreId()))
+            .toList();
+
+        filteredSubscription.forEach(GenreSubscription::unsubscribe);
+
+        return filteredSubscription;
+    }
 }

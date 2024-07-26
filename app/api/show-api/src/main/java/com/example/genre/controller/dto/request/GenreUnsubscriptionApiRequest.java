@@ -1,5 +1,6 @@
 package com.example.genre.controller.dto.request;
 
+import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -11,4 +12,7 @@ public record GenreUnsubscriptionApiRequest(
     List<UUID> genreIds
 ) {
 
+    public GenreUnsubscriptionServiceRequest toServiceRequest(UUID userId) {
+        return new GenreUnsubscriptionServiceRequest(genreIds, userId);
+    }
 }

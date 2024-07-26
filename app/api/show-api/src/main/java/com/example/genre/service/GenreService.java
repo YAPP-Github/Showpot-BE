@@ -1,7 +1,9 @@
 package com.example.genre.service;
 
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
+import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
+import com.example.genre.service.dto.response.GenreUnSubscriptionServiceResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -63,5 +65,19 @@ public class GenreService {
                     genreSubscription -> genreSubscription
                 )
             );
+    }
+
+    public GenreUnSubscriptionServiceResponse unsubscribe(
+        GenreUnsubscriptionServiceRequest request) {
+        List<GenreSubscription> unsubscribedGenre = genreSubscriptionUseCase.unsubscribe(
+            request.genreIds(), request.userId());
+
+        return GenreUnSubscriptionServiceResponse.builder()
+            .successUnSubscriptionGenreIds(
+                unsubscribedGenre.stream()
+                    .map(GenreSubscription::getGenreId)
+                    .toList()
+            )
+            .build();
     }
 }
