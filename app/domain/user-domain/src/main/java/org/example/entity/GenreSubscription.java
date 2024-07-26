@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "subscribe_genre")
-public class SubscribeGenre extends BaseEntity {
+@Table(name = "genre_subscription")
+public class GenreSubscription extends BaseEntity {
 
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private UUID userId;
 
-    @Column(name = "genre_id", nullable = false)
+    @Column(nullable = false)
     private UUID genreId;
 }

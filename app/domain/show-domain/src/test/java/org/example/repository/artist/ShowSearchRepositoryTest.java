@@ -1,4 +1,4 @@
-package org.example.repository;
+package org.example.repository.artist;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

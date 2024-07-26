@@ -12,6 +12,9 @@ allprojects {
 
     dependencies {
         implementation project(":common")
+
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+        testImplementation "org.testcontainers:postgresql:1.20.0"
     }
 }
 

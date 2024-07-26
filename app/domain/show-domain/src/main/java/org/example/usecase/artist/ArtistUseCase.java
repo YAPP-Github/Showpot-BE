@@ -53,6 +53,10 @@ public class ArtistUseCase {
             .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
     }
 
+    public List<Artist> findAllArtistInIds(List<UUID> ids) {
+        return artistRepository.findAllInIds(ids);
+    }
+
     @Transactional
     public void updateArtist(UUID id, Artist newArtist, List<UUID> newGenreIds) {
         Artist artist = findArtistById(id);
