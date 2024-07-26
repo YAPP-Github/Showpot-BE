@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArtistService {
 
-
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
 
@@ -53,9 +52,9 @@ public class ArtistService {
         List<Artist> artists,
         UUID userId
     ) {
-        var existSubscriptionByArtistId = getExistSubscriptionByArtistId(userId);
+        var existSubscriptionByUserId = getExistSubscriptionByUserId(userId);
         return artists.stream()
-            .filter(artist -> !existSubscriptionByArtistId.containsKey(artist.getId()))
+            .filter(artist -> !existSubscriptionByUserId.containsKey(artist.getId()))
             .map(artist ->
                 ArtistSubscription.builder()
                     .artistId(artist.getId())
@@ -64,7 +63,7 @@ public class ArtistService {
             ).toList();
     }
 
-    private Map<UUID, ArtistSubscription> getExistSubscriptionByArtistId(UUID userId) {
+    private Map<UUID, ArtistSubscription> getExistSubscriptionByUserId(UUID userId) {
         return artistSubscriptionUseCase.findSubscriptionList(userId)
             .stream()
             .collect(

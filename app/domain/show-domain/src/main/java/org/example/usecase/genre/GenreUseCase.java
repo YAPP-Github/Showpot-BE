@@ -54,4 +54,8 @@ public class GenreUseCase {
         return genreRepository.findById(id)
             .orElseThrow(() -> new BusinessException(GenreError.ENTITY_NOT_FOUND_ERROR));
     }
+
+    public List<Genre> findAllGenresInIds(List<UUID> genreIds) {
+        return genreRepository.findAllInId(genreIds);
+    }
 }

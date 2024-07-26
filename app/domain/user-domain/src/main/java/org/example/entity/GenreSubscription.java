@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +20,10 @@ public class GenreSubscription extends BaseEntity {
 
     @Column(nullable = false)
     private UUID genreId;
+
+    @Builder
+    private GenreSubscription(UUID userId, UUID genreId) {
+        this.userId = userId;
+        this.genreId = genreId;
+    }
 }
