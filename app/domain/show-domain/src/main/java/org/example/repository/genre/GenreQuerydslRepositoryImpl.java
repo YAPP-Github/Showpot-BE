@@ -14,6 +14,7 @@ import org.example.dto.genre.request.GenreSubscriptionPaginationRequest;
 import org.example.dto.genre.response.GenreSubscribeResponse;
 import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
 import org.example.entity.genre.Genre;
+import org.example.querydsl.BooleanStatus;
 import org.example.util.SliceUtil;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,7 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
     public List<Genre> findAllInId(List<UUID> ids) {
         return jpaQueryFactory
             .selectFrom(genre)
-            .where(genre.id.in(ids))
+            .where(genre.id.in(ids).and(BooleanStatus.getGenreIsDeletedFalse()))
             .fetch();
     }
 
@@ -70,7 +71,7 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = genre.isDeleted.isFalse();
+        BooleanExpression defaultPredicate = BooleanStatus.getArtistIsDeletedFalse();
 
         return cursor == null ? defaultPredicate : genre.id.gt(cursor).and(defaultPredicate);
     }

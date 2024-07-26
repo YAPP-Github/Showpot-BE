@@ -1,4 +1,4 @@
-package org.example.repository.show;
+package org.example.repository.show.showsearch;
 
 import java.util.UUID;
 import org.example.entity.show.ShowSearch;

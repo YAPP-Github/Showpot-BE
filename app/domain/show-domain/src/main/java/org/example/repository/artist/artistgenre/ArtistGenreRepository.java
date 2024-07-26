@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArtistGenreRepository extends JpaRepository<ArtistGenre, UUID> {
 
-    List<ArtistGenre> findAllByArtistId(UUID artistId);
+    List<ArtistGenre> findAllByArtistIdAndIsDeletedFalse(UUID artistId);
 
-    List<ArtistGenre> findAllByGenreId(UUID genreId);
+    List<ArtistGenre> findAllByGenreIdAndIsDeletedFalse(UUID genreId);
 }

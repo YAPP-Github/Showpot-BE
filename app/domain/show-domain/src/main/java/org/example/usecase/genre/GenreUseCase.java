@@ -13,7 +13,7 @@ import org.example.error.GenreError;
 import org.example.exception.BusinessException;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
-import org.example.repository.show.ShowGenreRepository;
+import org.example.repository.show.showgenre.ShowGenreRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,10 +45,10 @@ public class GenreUseCase {
         Genre genre = findGenreById(id);
         genre.softDelete();
 
-        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByGenreId(genre.getId());
+        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByGenreIdAndIsDeletedFalse(genre.getId());
         artistGenres.forEach(BaseEntity::softDelete);
 
-        List<ShowGenre> showGenres = showGenreRepository.findAllByGenreId(genre.getId());
+        List<ShowGenre> showGenres = showGenreRepository.findAllByGenreIdAndIsDeletedFalse(genre.getId());
         showGenres.forEach(BaseEntity::softDelete);
     }
 

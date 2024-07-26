@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.entity.artist.Artist;
+import org.example.querydsl.BooleanStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -80,6 +81,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                 )
             )
             .from(artist)
+            .where(BooleanStatus.getArtistIsDeletedFalse())
             .fetch();
     }
 
@@ -87,7 +89,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public List<Artist> findAllInIds(List<UUID> ids) {
         return jpaQueryFactory
             .selectFrom(artist)
-            .where(artist.id.in(ids))
+            .where(artist.id.in(ids).and(BooleanStatus.getArtistIsDeletedFalse()))
             .fetch();
     }
 
@@ -96,14 +98,14 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
             .selectFrom(artist)
             .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
             .join(genre).on(isGenreEqualArtistIdAndIsDeletedFalse())
-            .where(artist.isDeleted.isFalse());
+            .where(BooleanStatus.getArtistIsDeletedFalse());
     }
 
     private BooleanExpression isArtistGenreEqualArtistIdAndIsDeletedFalse() {
-        return artistGenre.artistId.eq(artist.id).and(artistGenre.isDeleted.isFalse());
+        return artistGenre.artistId.eq(artist.id).and(BooleanStatus.getArtistIsDeletedFalse());
     }
 
     private BooleanExpression isGenreEqualArtistIdAndIsDeletedFalse() {
-        return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
+        return artistGenre.genreId.eq(genre.id).and(BooleanStatus.getGenreIsDeletedFalse());
     }
 }

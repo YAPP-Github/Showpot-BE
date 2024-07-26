@@ -20,6 +20,7 @@ import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.genre.response.GenreNameResponse;
 import org.example.dto.show.ShowInfoResponse;
 import org.example.entity.show.Show;
+import org.example.querydsl.BooleanStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -111,19 +112,19 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     private BooleanExpression isShowArtistEqualShowIdAndIsDeletedFalse() {
-        return showArtist.showId.eq(show.id).and(showArtist.isDeleted.isFalse());
+        return showArtist.showId.eq(show.id).and(BooleanStatus.getShowArtistIsDeletedFalse());
     }
 
     private BooleanExpression isArtistIdEqualShowArtistAndIsDeletedFalse() {
-        return artist.id.eq(showArtist.artistId).and(artist.isDeleted.isFalse());
+        return artist.id.eq(showArtist.artistId).and(BooleanStatus.getArtistIsDeletedFalse());
     }
 
     private BooleanExpression isShowGenreEqualShowIdAndIsDeletedFalse() {
-        return showGenre.showId.eq(show.id).and(showGenre.isDeleted.isFalse());
+        return showGenre.showId.eq(show.id).and(BooleanStatus.getShowGenreIsDeletedFalse());
     }
 
     private BooleanExpression isGenreIdEqualShowGenreAndIsDeletedFalse() {
-        return genre.id.eq(showGenre.genreId).and(genre.isDeleted.isFalse());
+        return genre.id.eq(showGenre.genreId).and(BooleanStatus.getGenreIsDeletedFalse());
     }
 
 }

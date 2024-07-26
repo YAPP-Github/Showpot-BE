@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistSearchResponse;
+import org.example.querydsl.BooleanStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,8 +30,9 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
                 )
                 .from(artistSearch)
                 .join(artistSearch.artist, artist)
-                .where(artistSearch.name.like(name + "%").and(artistSearch.isDeleted.isFalse()))
-                .where(artist.isDeleted.isFalse())
+                .where(artistSearch.name.like(name + "%")
+                    .and(BooleanStatus.getArtistSearchIsDeletedFalse()))
+                .where(BooleanStatus.getArtistIsDeletedFalse())
                 .fetchFirst()
         );
     }
