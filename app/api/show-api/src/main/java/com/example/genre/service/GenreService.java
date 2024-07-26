@@ -1,7 +1,10 @@
 package com.example.genre.service;
 
+import com.example.genre.service.dto.request.GenreSubscriptionPaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
+import com.example.genre.service.dto.response.GenreSubscribeServiceResponse;
+import com.example.genre.service.dto.response.GenreSubscriptionPaginationServiceResponse;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnSubscriptionServiceResponse;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
 import org.example.usecase.GenreSubscriptionUseCase;
@@ -78,6 +82,33 @@ public class GenreService {
                     .map(GenreSubscription::getGenreId)
                     .toList()
             )
+            .build();
+    }
+
+    public GenreSubscriptionPaginationServiceResponse findGenreSubscriptions(
+        GenreSubscriptionPaginationServiceRequest request) {
+        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptionList(
+            request.userId());
+        List<UUID> subscriptionGenreIds = subscriptions.stream()
+            .map(GenreSubscription::getGenreId)
+            .toList();
+
+        if (subscriptionGenreIds.isEmpty()) {
+            return GenreSubscriptionPaginationServiceResponse.builder()
+                .data(List.of())
+                .hasNext(false)
+                .build();
+        }
+
+        GenreSubscriptionPaginationResponse response = genreUseCase.findGenreSubscriptionsWithCursorPagination(
+            request.toDomainRequest(subscriptionGenreIds));
+        List<GenreSubscribeServiceResponse> data = response.data().stream()
+            .map(GenreSubscribeServiceResponse::new)
+            .toList();
+
+        return GenreSubscriptionPaginationServiceResponse.builder()
+            .data(data)
+            .hasNext(response.hasNext())
             .build();
     }
 }

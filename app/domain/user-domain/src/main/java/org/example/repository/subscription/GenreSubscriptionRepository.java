@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface GenreSubscriptionRepository extends JpaRepository<GenreSubscription, UUID>,
     GenreSubscriptionQuerydslRepository {
 
-    List<GenreSubscription> findByUserId(UUID userId);
+    List<GenreSubscription> findByUserIdAndIsDeletedFalse(UUID userId);
 }

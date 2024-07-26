@@ -1,4 +1,4 @@
-package org.example.dto.genre;
+package org.example.dto.genre.response;
 
 import java.util.UUID;
 

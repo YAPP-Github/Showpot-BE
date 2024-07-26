@@ -20,7 +20,7 @@ public class GenreSubscriptionUseCase {
     }
 
     public List<GenreSubscription> findSubscriptionList(UUID userId) {
-        return genreSubscriptionRepository.findByUserId(userId);
+        return genreSubscriptionRepository.findByUserIdAndIsDeletedFalse(userId);
     }
 
     @Transactional

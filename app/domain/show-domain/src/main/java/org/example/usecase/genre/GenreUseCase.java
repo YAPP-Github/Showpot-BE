@@ -3,6 +3,8 @@ package org.example.usecase.genre;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.genre.request.GenreSubscriptionPaginationRequest;
+import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.genre.Genre;
@@ -57,5 +59,10 @@ public class GenreUseCase {
 
     public List<Genre> findAllGenresInIds(List<UUID> genreIds) {
         return genreRepository.findAllInId(genreIds);
+    }
+
+    public GenreSubscriptionPaginationResponse findGenreSubscriptionsWithCursorPagination(
+        GenreSubscriptionPaginationRequest request) {
+        return genreRepository.findAllWithCursorPagination(request);
     }
 }

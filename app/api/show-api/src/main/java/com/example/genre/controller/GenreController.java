@@ -2,9 +2,11 @@ package com.example.genre.controller;
 
 import com.example.genre.controller.dto.request.GenrePaginationApiRequest;
 import com.example.genre.controller.dto.request.GenreSubscriptionApiRequest;
+import com.example.genre.controller.dto.request.GenreSubscriptionPaginationApiRequest;
 import com.example.genre.controller.dto.request.GenreUnsubscriptionApiRequest;
 import com.example.genre.controller.dto.response.GenrePaginationApiResponse;
 import com.example.genre.controller.dto.response.GenreSimpleApiResponse;
+import com.example.genre.controller.dto.response.GenreSubscribeApiResponse;
 import com.example.genre.controller.dto.response.GenreSubscriptionApiResponse;
 import com.example.genre.controller.dto.response.GenreUnSubscriptionApiResponse;
 import com.example.genre.service.GenreService;
@@ -14,7 +16,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +63,25 @@ public class GenreController {
                 ),
                 false
             )
+        );
+    }
+
+    @GetMapping("/subscriptions")
+    @Operation(summary = "구독한 장르 목록 조회")
+    public ResponseEntity<PaginationApiResponse<GenreSubscribeApiResponse>> getSubscribedGenres(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject GenreSubscriptionPaginationApiRequest request
+    ) {
+        var response = genreService.findGenreSubscriptions(request.toServiceRequest(user.userId()));
+        var data = response.data().stream()
+            .map(GenreSubscribeApiResponse::new)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<GenreSubscribeApiResponse>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
         );
     }
 
