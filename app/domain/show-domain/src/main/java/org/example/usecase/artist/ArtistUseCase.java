@@ -1,13 +1,14 @@
 package org.example.usecase.artist;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailPaginationResponse;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.artist.response.ArtistSearchResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
@@ -59,7 +60,8 @@ public class ArtistUseCase {
         return artistRepository.findAllInIds(ids);
     }
 
-    public ArtistDetailPaginationResponse findAllArtistInCursorPagination(ArtistPaginationDomainRequest request) {
+    public ArtistDetailPaginationResponse findAllArtistInCursorPagination(
+        ArtistPaginationDomainRequest request) {
         return artistRepository.findAllWithCursorPagination(request);
     }
 
@@ -98,14 +100,14 @@ public class ArtistUseCase {
         showArtists.forEach(BaseEntity::softDelete);
     }
 
-    public ArtistSearchResponse searchArtist(String name) {
-        return artistSearchRepository.searchArtist(name)
-            .orElseThrow(() -> new BusinessException(ArtistError.SEARCH_NOT_FOUND_ERROR));
+    public ArtistDetailPaginationResponse searchArtist(
+        ArtistSearchPaginationDomainRequest request) {
+        return artistSearchRepository.searchArtist(request);
     }
 
     private Artist findArtistById(UUID id) {
         return artistRepository.findById(id)
-            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+            .orElseThrow(NoSuchElementException::new);
     }
 }
 

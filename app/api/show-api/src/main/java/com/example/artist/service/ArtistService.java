@@ -1,25 +1,23 @@
 package com.example.artist.service;
 
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
+import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
-import com.example.artist.service.dto.response.ArtistSearchServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionPaginationServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
 import org.example.usecase.ArtistSubscriptionUseCase;
 import org.example.usecase.artist.ArtistUseCase;
-import org.example.util.StringNormalizer;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -28,9 +26,15 @@ public class ArtistService {
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
 
-    public ArtistSearchServiceResponse searchArtist(String name) {
-        String searchName = StringNormalizer.removeWhitespaceAndLowerCase(name);
-        return new ArtistSearchServiceResponse(artistUseCase.searchArtist(searchName));
+    public PaginationServiceResponse<ArtistSubscriptionPaginationServiceParam> searchArtist(
+        ArtistSearchPaginationServiceRequest request) {
+        var response = artistUseCase.searchArtist(request.toDomainRequest());
+
+        List<ArtistSubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(ArtistSubscriptionPaginationServiceParam::new)
+            .toList();
+
+        return PaginationServiceResponse.of(data, response.hasNext());
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
