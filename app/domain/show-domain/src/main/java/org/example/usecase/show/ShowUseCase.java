@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.show.ShowInfoResponse;
-import org.example.dto.show.ShowSearchDomainResponse;
+import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
+import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -106,8 +107,9 @@ public class ShowUseCase {
         showGenres.forEach(BaseEntity::softDelete);
     }
 
-    public ShowSearchDomainResponse searchShow(String name) {
-        return showSearchRepository.searchShow(name).orElseThrow(NoSuchElementException::new);
+    public ShowSearchPaginationDomainResponse searchShow(
+        ShowSearchPaginationDomainRequest request) {
+        return showSearchRepository.searchShow(request);
     }
 
 

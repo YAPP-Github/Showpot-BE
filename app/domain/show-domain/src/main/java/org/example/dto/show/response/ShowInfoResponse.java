@@ -1,4 +1,4 @@
-package org.example.dto.show;
+package org.example.dto.show.response;
 
 import java.time.LocalDate;
 import java.util.Set;

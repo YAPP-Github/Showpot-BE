@@ -1,10 +1,10 @@
-package com.example.show.service.dto.response;
+package com.example.show.service.dto.param;
 
 import java.time.LocalDate;
 import java.util.UUID;
-import org.example.dto.show.ShowSearchDomainResponse;
+import org.example.dto.show.response.ShowSearchDomainResponse;
 
-public record ShowSearchServiceResponse(
+public record ShowSearchPaginationServiceParam(
     UUID id,
     String title,
     LocalDate date,
@@ -12,17 +12,7 @@ public record ShowSearchServiceResponse(
     String image
 ) {
 
-    public ShowSearchServiceResponse() {
-        this(
-            null,
-            "",
-            null,
-            "",
-            ""
-        );
-    }
-
-    public ShowSearchServiceResponse(ShowSearchDomainResponse showSearchDomainResponse) {
+    public ShowSearchPaginationServiceParam(ShowSearchDomainResponse showSearchDomainResponse) {
         this(
             showSearchDomainResponse.id(),
             showSearchDomainResponse.title(),
