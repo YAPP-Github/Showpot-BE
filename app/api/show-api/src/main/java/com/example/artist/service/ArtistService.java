@@ -1,5 +1,6 @@
 package com.example.artist.service;
 
+import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
@@ -25,12 +26,12 @@ public class ArtistService {
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
 
-    public PaginationServiceResponse<ArtistSubscriptionPaginationServiceParam> searchArtist(
+    public PaginationServiceResponse<ArtistSearchPaginationServiceParam> searchArtist(
         ArtistSearchPaginationServiceRequest request) {
         var response = artistUseCase.searchArtist(request.toDomainRequest());
 
-        List<ArtistSubscriptionPaginationServiceParam> data = response.data().stream()
-            .map(ArtistSubscriptionPaginationServiceParam::new)
+        List<ArtistSearchPaginationServiceParam> data = response.data().stream()
+            .map(ArtistSearchPaginationServiceParam::new)
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());

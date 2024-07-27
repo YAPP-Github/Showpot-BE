@@ -1,5 +1,6 @@
 package com.example.artist.controller;
 
+import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
@@ -105,17 +106,17 @@ public class ArtistController {
 
     @GetMapping("/search")
     @Operation(summary = "검색하기")
-    public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> search(
+    public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
         var response = artistService.searchArtist(request.toServiceRequest());
         var data = response.data().stream()
-            .map(ArtistSubscriptionPaginationApiParam::from)
+            .map(ArtistSearchPaginationApiParam::from)
             .toList();
 
         return ResponseEntity.ok(
-            PaginationApiResponse.<ArtistSubscriptionPaginationApiParam>builder()
+            PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()
