@@ -19,7 +19,7 @@ public class ArtistSubscriptionQuerydslRepositoryImpl implements ArtistSubscript
     public List<ArtistSubscription> findSubscriptionList(UUID userId) {
         return jpaQueryFactory.selectFrom(artistSubscription)
             .where(artistSubscription.userId.eq(userId)
-                .and(artistSubscription.isDeleted.eq(false))
+                .and(artistSubscription.isDeleted.isFalse())
             ).fetch();
     }
 }

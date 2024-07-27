@@ -65,7 +65,7 @@ public class ArtistController {
     ) {
         var response = artistService.findArtistSubscriptions(request.toServiceRequest(user.userId()));
         var data = response.data().stream()
-            .map(ArtistSubscriptionPaginationApiParam::of)
+            .map(ArtistSubscriptionPaginationApiParam::from)
             .toList();
 
         return ResponseEntity.ok(

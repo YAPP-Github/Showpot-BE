@@ -15,7 +15,7 @@ public record ArtistSubscriptionPaginationApiParam(
     String englishName
 ) {
 
-    public static ArtistSubscriptionPaginationApiParam of(ArtistSubscriptionPaginationServiceParam param) {
+    public static ArtistSubscriptionPaginationApiParam from(ArtistSubscriptionPaginationServiceParam param) {
         return new ArtistSubscriptionPaginationApiParam(
             param.artistId(),
             param.artistImageUrl(),
