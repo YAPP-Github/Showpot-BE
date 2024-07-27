@@ -5,7 +5,6 @@ import com.example.artist.service.dto.request.ArtistSearchPaginationServiceReque
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
-import com.example.artist.service.dto.response.ArtistSubscriptionPaginationServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import java.util.List;
@@ -72,7 +71,7 @@ public class ArtistService {
             ).build();
     }
 
-    public ArtistSubscriptionPaginationServiceResponse findArtistSubscriptions(
+    public PaginationServiceResponse<ArtistSubscriptionPaginationServiceParam> findArtistSubscriptions(
         ArtistSubscriptionPaginationServiceRequest request
     ) {
         List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
@@ -82,10 +81,7 @@ public class ArtistService {
             .toList();
 
         if (subscriptionArtistIds.isEmpty()) {
-            return ArtistSubscriptionPaginationServiceResponse.builder()
-                .data(List.of())
-                .hasNext(false)
-                .build();
+            return PaginationServiceResponse.of(List.of(), false);
         }
 
         var response = artistUseCase.findAllArtistInCursorPagination(
@@ -94,9 +90,6 @@ public class ArtistService {
             .map(ArtistSubscriptionPaginationServiceParam::new)
             .toList();
 
-        return ArtistSubscriptionPaginationServiceResponse.builder()
-            .data(data)
-            .hasNext(response.hasNext())
-            .build();
+        return PaginationServiceResponse.of(data, response.hasNext());
     }
 }
