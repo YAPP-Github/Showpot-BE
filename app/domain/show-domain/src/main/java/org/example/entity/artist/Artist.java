@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
+import org.example.vo.ArtistGender;
+import org.example.vo.ArtistType;
 
 @Entity
 @Getter
