@@ -1,4 +1,4 @@
-package org.example.entity.artist;
+package org.example.vo;
 
 public enum ArtistType {
     SOLO, GROUP

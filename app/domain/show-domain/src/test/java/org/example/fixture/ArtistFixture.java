@@ -1,8 +1,8 @@
 package org.example.fixture;
 
 import org.example.entity.artist.Artist;
-import org.example.entity.artist.ArtistGender;
-import org.example.entity.artist.ArtistType;
+import org.example.vo.ArtistGender;
+import org.example.vo.ArtistType;
 
 public class ArtistFixture {
 

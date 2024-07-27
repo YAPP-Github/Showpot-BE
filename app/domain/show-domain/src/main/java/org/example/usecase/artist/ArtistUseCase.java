@@ -3,6 +3,8 @@ package org.example.usecase.artist;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.request.ArtistPaginationDomainRequest;
+import org.example.dto.artist.response.ArtistDetailPaginationResponse;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.artist.response.ArtistSearchResponse;
@@ -55,6 +57,10 @@ public class ArtistUseCase {
 
     public List<Artist> findAllArtistInIds(List<UUID> ids) {
         return artistRepository.findAllInIds(ids);
+    }
+
+    public ArtistDetailPaginationResponse findAllArtistInCursorPagination(ArtistPaginationDomainRequest request) {
+        return artistRepository.findAllWithCursorPagination(request);
     }
 
     @Transactional
