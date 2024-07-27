@@ -2,7 +2,7 @@ package com.example.show.service.dto.response;
 
 import java.time.LocalDate;
 import java.util.UUID;
-import org.example.dto.show.ShowSearchResponse;
+import org.example.dto.show.ShowSearchDomainResponse;
 
 public record ShowSearchServiceResponse(
     UUID id,
@@ -12,13 +12,23 @@ public record ShowSearchServiceResponse(
     String image
 ) {
 
-    public ShowSearchServiceResponse(ShowSearchResponse showSearchResponse) {
+    public ShowSearchServiceResponse() {
         this(
-            showSearchResponse.id(),
-            showSearchResponse.title(),
-            showSearchResponse.date(),
-            showSearchResponse.location(),
-            showSearchResponse.image()
+            null,
+            "",
+            null,
+            "",
+            ""
+        );
+    }
+
+    public ShowSearchServiceResponse(ShowSearchDomainResponse showSearchDomainResponse) {
+        this(
+            showSearchDomainResponse.id(),
+            showSearchDomainResponse.title(),
+            showSearchDomainResponse.date(),
+            showSearchDomainResponse.location(),
+            showSearchDomainResponse.image()
         );
     }
 }

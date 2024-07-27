@@ -1,10 +1,11 @@
 package org.example.usecase.show;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.ShowInfoResponse;
-import org.example.dto.show.ShowSearchResponse;
+import org.example.dto.show.ShowSearchDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -105,14 +106,12 @@ public class ShowUseCase {
         showGenres.forEach(BaseEntity::softDelete);
     }
 
-    public ShowSearchResponse searchShow(String name) {
-        return showSearchRepository.searchShow(name)
-            .orElseThrow(() -> new BusinessException(ShowError.SEARCH_NOT_FOUND_ERROR));
+    public ShowSearchDomainResponse searchShow(String name) {
+        return showSearchRepository.searchShow(name).orElseThrow(NoSuchElementException::new);
     }
 
 
     private Show findShowById(UUID id) {
-        return showRepository.findById(id)
-            .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
+        return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

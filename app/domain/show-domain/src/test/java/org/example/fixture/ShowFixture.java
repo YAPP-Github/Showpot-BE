@@ -9,7 +9,7 @@ import org.example.entity.show.info.Ticketing;
 
 public class ShowFixture {
 
-    public static Show show() {
+    public static Show deafultShow() {
         return Show.builder()
             .title("test_title")
             .content("test_content")

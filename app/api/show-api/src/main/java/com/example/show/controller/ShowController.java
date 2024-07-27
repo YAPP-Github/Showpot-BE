@@ -209,7 +209,8 @@ public class ShowController {
         @RequestParam(value = "name") String name
     ) {
         ShowSearchApiResponse showSearchApiResponse = new ShowSearchApiResponse(
-            showService.searchShow(name));
+            showService.searchShow(name)
+        );
 
         return ResponseEntity.ok(showSearchApiResponse);
     }

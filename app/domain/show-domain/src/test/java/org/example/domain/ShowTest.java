@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 class ShowTest {
 
-    private final Show show = ShowFixture.show();
+    private final Show show = ShowFixture.deafultShow();
 
     @Test
     @DisplayName("아티스트 아이디들로 ShowArtist들을 생성할 수 있다.")

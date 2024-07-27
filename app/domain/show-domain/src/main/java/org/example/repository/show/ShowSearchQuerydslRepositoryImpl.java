@@ -7,7 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.show.ShowSearchResponse;
+import org.example.dto.show.ShowSearchDomainResponse;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,11 +17,11 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<ShowSearchResponse> searchShow(String name) {
+    public Optional<ShowSearchDomainResponse> searchShow(String name) {
         return Optional.ofNullable(
             jpaQueryFactory.select(
                     Projections.constructor(
-                        ShowSearchResponse.class,
+                        ShowSearchDomainResponse.class,
                         show.id,
                         show.title,
                         show.date,

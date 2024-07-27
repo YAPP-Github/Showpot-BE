@@ -3,7 +3,7 @@ package org.example.dto.show;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ShowSearchResponse(
+public record ShowSearchDomainResponse(
     UUID id,
     String title,
     LocalDate date,

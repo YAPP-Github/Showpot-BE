@@ -6,7 +6,7 @@ import org.example.entity.artist.ArtistType;
 
 public class ArtistFixture {
 
-    public static Artist artist() {
+    public static Artist womanGroup() {
         return Artist.builder()
             .koreanName("아이브")
             .englishName("IVE")

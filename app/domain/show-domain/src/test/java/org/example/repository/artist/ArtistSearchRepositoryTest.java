@@ -9,7 +9,6 @@ import org.example.dto.artist.response.ArtistSearchResponse;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistSearch;
 import org.example.fixture.ArtistFixture;
-import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistsearch.ArtistSearchRepository;
 import org.example.util.StringNormalizer;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,7 @@ class ArtistSearchRepositoryTest extends QueryTest {
     @DisplayName("한국이름, 영어이름과 일치하는 아티스트를 검색할 수 있다.")
     void searchArtistByKoreanNameAndEnglishName(String name) {
         //given
-        Artist artist = ArtistFixture.artist();
+        Artist artist = ArtistFixture.womanGroup();
         artistRepository.save(artist);
 
         List<ArtistSearch> artistSearches = artist.toArtistSearch();
