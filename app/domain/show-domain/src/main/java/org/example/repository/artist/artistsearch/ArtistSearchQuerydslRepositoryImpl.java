@@ -44,8 +44,10 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .fetch();
 
-        Slice<SimpleArtistResponse> simpleArtistSlices = SliceUtil.makeSlice(request.size(),
-            result);
+        Slice<SimpleArtistResponse> simpleArtistSlices = SliceUtil.makeSlice(
+            request.size(),
+            result
+        );
 
         return ArtistDetailPaginationResponse.builder()
             .data(simpleArtistSlices.getContent())

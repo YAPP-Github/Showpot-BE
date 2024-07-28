@@ -9,7 +9,8 @@ public record GenreSubscriptionPaginationApiParam(
 ) {
 
     public GenreSubscriptionPaginationApiParam(
-        GenreSubscriptionPaginationServiceParam response) {
+        GenreSubscriptionPaginationServiceParam response
+    ) {
         this(
             response.id(),
             response.name()
