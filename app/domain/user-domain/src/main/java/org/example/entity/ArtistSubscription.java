@@ -26,4 +26,12 @@ public class ArtistSubscription extends BaseEntity {
         this.userId = userId;
         this.artistId = artistId;
     }
+
+    public void subscribe() {
+        this.revive();
+    }
+
+    public void unsubscribe() {
+        this.softDelete();
+    }
 }

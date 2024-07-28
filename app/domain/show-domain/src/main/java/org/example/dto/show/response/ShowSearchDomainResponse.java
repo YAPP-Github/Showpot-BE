@@ -1,9 +1,9 @@
-package org.example.dto.show;
+package org.example.dto.show.response;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record ShowSearchResponse(
+public record ShowSearchDomainResponse(
     UUID id,
     String title,
     LocalDate date,

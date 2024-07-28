@@ -2,15 +2,15 @@ package com.example.show.controller;
 
 import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
 import com.example.genre.controller.dto.response.GenreSimpleApiResponse;
+import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
 import com.example.show.controller.dto.request.ShowAlertRegistrationApiRequest;
 import com.example.show.controller.dto.request.ShowInterestPaginationApiRequest;
-import com.example.show.controller.dto.request.ShowPaginationApiRequest;
+import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.response.ShowAlertPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowInterestPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiResponse;
-import com.example.show.controller.dto.response.ShowSearchApiResponse;
 import com.example.show.controller.dto.response.ShowSimpleApiResponse;
 import com.example.show.controller.dto.response.TicketingAndShowInfoApiResponse;
 import com.example.show.service.ShowService;
@@ -20,7 +20,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +46,7 @@ public class ShowController {
     @GetMapping
     @Operation(summary = "공연 목록 조회")
     public ResponseEntity<ShowPaginationApiResponse> getShows(
-        @RequestParam(required = false) ShowPaginationApiRequest param
+        @RequestParam(required = false) ShowSearchPaginationApiRequest param
     ) {
         return ResponseEntity.ok(
             new ShowPaginationApiResponse(
@@ -204,13 +206,21 @@ public class ShowController {
 
     @GetMapping("/search")
     @Operation(summary = "검색하기")
-    public ResponseEntity<ShowSearchApiResponse> search(
+    public ResponseEntity<PaginationApiResponse<ShowSearchPaginationApiParam>> search(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestParam(value = "name") String name
+        @ParameterObject ShowSearchPaginationApiRequest request
     ) {
-        ShowSearchApiResponse showSearchApiResponse = new ShowSearchApiResponse(
-            showService.searchShow(name));
+        var response = showService.searchShow(request.toServiceRequest());
 
-        return ResponseEntity.ok(showSearchApiResponse);
+        var data = response.data().stream()
+            .map(ShowSearchPaginationApiParam::from)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<ShowSearchPaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
+        );
     }
 }

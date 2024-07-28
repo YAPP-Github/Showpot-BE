@@ -1,9 +1,9 @@
 package org.example.repository.show.showsearch;
 
-import java.util.Optional;
-import org.example.dto.show.ShowSearchResponse;
+import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
+import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 
 public interface ShowSearchQuerydslRepository {
 
-    Optional<ShowSearchResponse> searchShow(String name);
+    ShowSearchPaginationDomainResponse searchShow(ShowSearchPaginationDomainRequest request);
 }

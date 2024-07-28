@@ -24,8 +24,8 @@ class ArtistRepositoryTest extends QueryTest {
     void find_all_in() {
         var artists = artistRepository.saveAll(
             List.of(
-                ArtistFixture.artist(),
-                ArtistFixture.artist()
+                ArtistFixture.womanGroup(),
+                ArtistFixture.womanGroup()
             )
         );
 

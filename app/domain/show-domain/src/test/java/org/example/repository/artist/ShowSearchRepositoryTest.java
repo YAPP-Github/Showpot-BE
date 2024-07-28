@@ -2,9 +2,9 @@ package org.example.repository.artist;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
 import org.example.QueryTest;
-import org.example.dto.show.ShowSearchResponse;
+import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
+import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowSearch;
 import org.example.fixture.ShowFixture;
@@ -28,19 +28,23 @@ public class ShowSearchRepositoryTest extends QueryTest {
     @DisplayName("공연이름과 일치하는 공연을 검색할 수 있다.")
     void searchShowByShowName() {
         //given
-        Show show = ShowFixture.show();
+        Show show = ShowFixture.deafultShow();
         showRepository.save(show);
 
         ShowSearch showSearch = show.toShowSearch();
         showSearchRepository.save(showSearch);
 
-        String searchName = StringNormalizer.removeWhitespaceAndLowerCase(show.getTitle());
+        ShowSearchPaginationDomainRequest request = ShowSearchPaginationDomainRequest.builder()
+            .cursor(null)
+            .size(2)
+            .search(StringNormalizer.removeWhitespaceAndLowerCase(show.getTitle()))
+            .build();
 
         //when
-        Optional<ShowSearchResponse> result = showSearchRepository.searchShow(searchName);
+        ShowSearchPaginationDomainResponse result = showSearchRepository.searchShow(request);
 
         //then
-        assertThat(result).isNotEmpty();
+        assertThat(result.data()).isNotEmpty();
     }
 
 }

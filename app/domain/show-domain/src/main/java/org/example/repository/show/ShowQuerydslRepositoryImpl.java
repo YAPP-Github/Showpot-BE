@@ -18,7 +18,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.genre.response.GenreNameResponse;
-import org.example.dto.show.ShowInfoResponse;
+import org.example.dto.show.response.ShowInfoResponse;
 import org.example.entity.show.Show;
 import org.example.querydsl.BooleanStatus;
 import org.springframework.stereotype.Repository;

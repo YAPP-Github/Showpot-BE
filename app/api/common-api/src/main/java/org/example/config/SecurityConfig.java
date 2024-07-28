@@ -84,14 +84,15 @@ public class SecurityConfig {
             antMatcher(HttpMethod.POST, "/api/v1/users/withdrawal"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/**/interest"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/**/alert"),
-            antMatcher(HttpMethod.GET, "/api/v1/shows/**"),
-            antMatcher(HttpMethod.POST, "/api/v1/genres/**"),
-            antMatcher(HttpMethod.GET, "/api/v1/artists/**"),
-            antMatcher(HttpMethod.POST, "/api/v1/genres/**"),
+            antMatcher(HttpMethod.GET, "/api/v1/shows/search/**"),
             antMatcher(HttpMethod.POST, "/api/v1/artists/subscribe"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/subscribe"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/unsubscribe"),
-            antMatcher(HttpMethod.GET, "/api/v1/genres/subscriptions")
+            antMatcher(HttpMethod.GET, "/api/v1/genres/subscriptions"),
+            antMatcher(HttpMethod.GET, "/api/v1/artists/subscribed"),
+            antMatcher(HttpMethod.POST, "/api/v1/artists/subscribe"),
+            antMatcher(HttpMethod.POST, "/api/v1/artists/unsubscribe"),
+            antMatcher(HttpMethod.GET, "/api/v1/artists/search/**")
         );
     }
 }

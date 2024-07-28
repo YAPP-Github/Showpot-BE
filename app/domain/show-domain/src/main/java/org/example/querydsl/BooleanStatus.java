@@ -3,6 +3,7 @@ package org.example.querydsl;
 import static org.example.entity.artist.QArtist.artist;
 import static org.example.entity.artist.QArtistSearch.artistSearch;
 import static org.example.entity.genre.QGenre.genre;
+import static org.example.entity.show.QShow.show;
 import static org.example.entity.show.QShowArtist.showArtist;
 import static org.example.entity.show.QShowGenre.showGenre;
 import static org.example.entity.show.QShowSearch.showSearch;
@@ -21,6 +22,10 @@ public class BooleanStatus {
 
     public static BooleanExpression getGenreIsDeletedFalse() {
         return genre.isDeleted.isFalse();
+    }
+
+    public static BooleanExpression getShowIsDeletedFalse() {
+        return show.isDeleted.isFalse();
     }
 
     public static BooleanExpression getShowArtistIsDeletedFalse() {

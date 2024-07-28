@@ -8,7 +8,7 @@ import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.show.ShowInfoResponse;
+import org.example.dto.show.response.ShowInfoResponse;
 import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
