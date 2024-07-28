@@ -1,9 +1,12 @@
 package org.example.usecase.show;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.response.ShowInfoResponse;
+import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
+import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -13,6 +16,7 @@ import org.example.exception.BusinessException;
 import org.example.repository.show.ShowArtistRepository;
 import org.example.repository.show.ShowGenreRepository;
 import org.example.repository.show.ShowRepository;
+import org.example.repository.show.ShowSearchRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShowUseCase {
 
     private final ShowRepository showRepository;
+    private final ShowSearchRepository showSearchRepository;
     private final ShowArtistRepository showArtistRepository;
     private final ShowGenreRepository showGenreRepository;
 
     @Transactional
     public void save(Show show, List<UUID> artistIds, List<UUID> genreIds) {
         showRepository.save(show);
+        showSearchRepository.save(show.toShowSearch());
 
         List<ShowArtist> showArtists = show.toShowArtist(artistIds);
         showArtistRepository.saveAll(showArtists);
@@ -101,9 +107,13 @@ public class ShowUseCase {
         showGenres.forEach(BaseEntity::softDelete);
     }
 
+    public ShowSearchPaginationDomainResponse searchShow(
+        ShowSearchPaginationDomainRequest request) {
+        return showSearchRepository.searchShow(request);
+    }
+
 
     private Show findShowById(UUID id) {
-        return showRepository.findById(id)
-            .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
+        return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

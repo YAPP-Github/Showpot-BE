@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
@@ -23,4 +24,10 @@ public class ArtistSearch extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
+
+    @Builder
+    private ArtistSearch(String name, Artist artist) {
+        this.name = name;
+        this.artist = artist;
+    }
 }

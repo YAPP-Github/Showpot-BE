@@ -24,4 +24,26 @@ public enum ShowError implements BusinessError {
             return "요청 값이 잘못 처리되었습니다.";
         }
     },
+
+    SEARCH_NOT_FOUND_ERROR {
+        @Override
+        public int getHttpStatus() {
+            return 400;
+        }
+
+        @Override
+        public String getErrorCode() {
+            return "SHW-002";
+        }
+
+        @Override
+        public String getClientMessage() {
+            return "검색 조건이 일치하지 않습니다.";
+        }
+
+        @Override
+        public String getLogMessage() {
+            return "검색 요청 값이 잘못 처리되었습니다.";
+        }
+    }
 }

@@ -5,21 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.example.QueryTest;
 import org.example.entity.artist.Artist;
 import org.example.fixture.ArtistFixture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@DataJpaTest
-@Testcontainers
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-class ArtistRepositoryTest {
+
+class ArtistRepositoryTest extends QueryTest {
 
     @Autowired
     private ArtistRepository artistRepository;
@@ -29,8 +24,8 @@ class ArtistRepositoryTest {
     void find_all_in() {
         var artists = artistRepository.saveAll(
             List.of(
-                ArtistFixture.test(),
-                ArtistFixture.test()
+                ArtistFixture.womanGroup(),
+                ArtistFixture.womanGroup()
             )
         );
 

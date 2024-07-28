@@ -1,7 +1,8 @@
 package com.example.artist.controller;
 
+import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
-import com.example.artist.controller.dto.request.ArtistPaginationApiRequest;
+import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
@@ -35,13 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArtistController {
 
     private final ArtistService artistService;
-
     private String image = "https://thumb.mtstarnews.com/06/2023/06/2023062914274537673_1.jpg";
 
     @GetMapping
     @Operation(summary = "아티스트 목록 조회")
     public ResponseEntity<ArtistPaginationApiResponse> getArtists(
-        @RequestParam(required = false) ArtistPaginationApiRequest param
+        @RequestParam(required = false) ArtistSearchPaginationApiRequest param
     ) {
         return ResponseEntity.ok(
             new ArtistPaginationApiResponse(
@@ -63,7 +63,8 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistSubscriptionPaginationApiRequest request
     ) {
-        var response = artistService.findArtistSubscriptions(request.toServiceRequest(user.userId()));
+        var response = artistService.findArtistSubscriptions(
+            request.toServiceRequest(user.userId()));
         var data = response.data().stream()
             .map(ArtistSubscriptionPaginationApiParam::from)
             .toList();
@@ -100,6 +101,25 @@ public class ArtistController {
             ArtistUnsubscriptionApiResponse.from(
                 artistService.unsubscribe(request.toServiceRequest(user.userId()))
             )
+        );
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "검색하기")
+    public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject ArtistSearchPaginationApiRequest request
+    ) {
+        var response = artistService.searchArtist(request.toServiceRequest());
+        var data = response.data().stream()
+            .map(ArtistSearchPaginationApiParam::from)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
         );
     }
 }

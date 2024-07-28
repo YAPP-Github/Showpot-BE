@@ -6,7 +6,7 @@ import org.example.vo.ArtistType;
 
 public class ArtistFixture {
 
-    public static Artist test() {
+    public static Artist womanGroup() {
         return Artist.builder()
             .koreanName("아이브")
             .englishName("IVE")
