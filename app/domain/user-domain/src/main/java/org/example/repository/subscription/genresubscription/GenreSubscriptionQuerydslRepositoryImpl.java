@@ -1,4 +1,4 @@
-package org.example.repository.subscription;
+package org.example.repository.subscription.genresubscription;
 
 import static org.example.entity.QGenreSubscription.genreSubscription;
 

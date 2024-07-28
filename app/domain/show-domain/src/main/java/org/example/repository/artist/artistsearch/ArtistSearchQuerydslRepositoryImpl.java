@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailPaginationResponse;
 import org.example.dto.artist.response.SimpleArtistResponse;
+import org.example.querydsl.BooleanStatus;
 import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.springframework.data.domain.Slice;
@@ -53,7 +54,8 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = artist.isDeleted.isFalse();
+        BooleanExpression defaultPredicate = BooleanStatus.getArtistIsDeletedFalse()
+            .and(BooleanStatus.getArtistSearchIsDeletedFalse());
 
         return cursor == null ? defaultPredicate : artist.id.gt(cursor).and(defaultPredicate);
     }

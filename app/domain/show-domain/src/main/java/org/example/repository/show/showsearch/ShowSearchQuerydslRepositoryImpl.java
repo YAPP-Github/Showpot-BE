@@ -56,7 +56,8 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = BooleanStatus.getShowIsDeletedFalse();
+        BooleanExpression defaultPredicate = BooleanStatus.getShowIsDeletedFalse()
+            .and(BooleanStatus.getShowSearchIsDeletedFalse());
 
         return cursor == null ? defaultPredicate : show.id.gt(cursor).and(defaultPredicate);
     }

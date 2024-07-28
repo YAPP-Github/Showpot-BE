@@ -98,6 +98,9 @@ public class ArtistUseCase {
 
         List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
         showArtists.forEach(BaseEntity::softDelete);
+
+        List<ArtistSearch> artistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        artistSearches.forEach(BaseEntity::softDelete);
     }
 
     public ArtistDetailPaginationResponse searchArtist(

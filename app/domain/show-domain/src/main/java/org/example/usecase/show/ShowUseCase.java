@@ -11,6 +11,7 @@ import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
+import org.example.entity.show.ShowSearch;
 import org.example.error.ShowError;
 import org.example.exception.BusinessException;
 import org.example.repository.show.ShowRepository;
@@ -102,13 +103,14 @@ public class ShowUseCase {
         Show show = findShowById(id);
         show.softDelete();
 
-        List<ShowArtist> showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
+        List<ShowArtist> showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
         showArtists.forEach(BaseEntity::softDelete);
 
-        List<ShowGenre> showGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
+        List<ShowGenre> showGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
         showGenres.forEach(BaseEntity::softDelete);
+
+        List<ShowSearch> showSearches = showSearchRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
+        showSearches.forEach(BaseEntity::softDelete);
     }
 
     public ShowSearchPaginationDomainResponse searchShow(

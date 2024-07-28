@@ -1,4 +1,4 @@
-package org.example.repository.subscription;
+package org.example.repository.subscription.artistsubscription;
 
 import java.util.List;
 import java.util.UUID;

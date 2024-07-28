@@ -1,4 +1,4 @@
-package org.example.repository.subscription;
+package org.example.repository.subscription.artistsubscription;
 
 import static org.example.entity.QArtistSubscription.artistSubscription;
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.GenreSubscription;
-import org.example.repository.subscription.GenreSubscriptionRepository;
+import org.example.repository.subscription.genresubscription.GenreSubscriptionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
