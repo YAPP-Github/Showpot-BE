@@ -5,8 +5,8 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record GenreUnSubscriptionServiceResponse(
-    List<UUID> successUnSubscriptionGenreIds
+public record GenreUnsubscriptionServiceResponse(
+    List<UUID> successUnsubscriptionGenreIds
 ) {
 
 }

@@ -10,9 +10,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.request.GenreSubscriptionPaginationRequest;
-import org.example.dto.genre.response.GenreSubscribeResponse;
-import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
+import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
+import org.example.dto.genre.response.GenreSubscriptionDomainResponse;
+import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
 import org.example.entity.genre.Genre;
 import org.example.querydsl.BooleanStatus;
 import org.example.util.SliceUtil;
@@ -34,11 +34,11 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
     }
 
     @Override
-    public GenreSubscriptionPaginationResponse findAllWithCursorPagination(
-        GenreSubscriptionPaginationRequest request) {
-        List<GenreSubscribeResponse> genreSubscribeResponses = jpaQueryFactory.select(
+    public GenreSubscriptionPaginationDomainResponse findAllWithCursorPagination(
+        GenreSubscriptionPaginationDomainRequest request) {
+        List<GenreSubscriptionDomainResponse> genreSubscribeResponses = jpaQueryFactory.select(
                 Projections.constructor(
-                    GenreSubscribeResponse.class,
+                    GenreSubscriptionDomainResponse.class,
                     genre.id,
                     genre.name
                 )
@@ -47,10 +47,10 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
             .limit(request.size() + 1)
             .fetch();
 
-        Slice<GenreSubscribeResponse> genreSubscribeSlices = SliceUtil.makeSlice(request.size(),
+        Slice<GenreSubscriptionDomainResponse> genreSubscribeSlices = SliceUtil.makeSlice(request.size(),
             genreSubscribeResponses);
 
-        return GenreSubscriptionPaginationResponse.builder()
+        return GenreSubscriptionPaginationDomainResponse.builder()
             .data(genreSubscribeSlices.getContent())
             .hasNext(genreSubscribeSlices.hasNext())
             .build();

@@ -1,18 +1,16 @@
 package com.example.genre.service;
 
+import com.example.genre.service.dto.param.GenreSubscriptionPaginationServiceParam;
 import com.example.genre.service.dto.request.GenreSubscriptionPaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
-import com.example.genre.service.dto.response.GenreSubscribeServiceResponse;
-import com.example.genre.service.dto.response.GenreSubscriptionPaginationServiceResponse;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
-import com.example.genre.service.dto.response.GenreUnSubscriptionServiceResponse;
+import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
+import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
+import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
 import org.example.usecase.GenreSubscriptionUseCase;
@@ -27,88 +25,57 @@ public class GenreService {
     private final GenreSubscriptionUseCase genreSubscriptionUseCase;
 
     public GenreSubscriptionServiceResponse subscribe(GenreSubscriptionServiceRequest request) {
-        List<Genre> existGenres = genreUseCase.findAllGenresInIds(request.genreIds());
+        List<Genre> existGenresInRequest = genreUseCase.findAllGenresInIds(request.genreIds());
+        List<UUID> existGenreIdsInRequest = existGenresInRequest.stream()
+            .map(Genre::getId)
+            .toList();
 
-        List<GenreSubscription> newGenreSubscription = getNewGenreSubscription(
-            existGenres,
+        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.subscribe(
+            existGenreIdsInRequest,
             request.userId()
         );
 
-        genreSubscriptionUseCase.subscribe(newGenreSubscription);
-
         return GenreSubscriptionServiceResponse.builder()
             .successSubscriptionGenreIds(
-                newGenreSubscription.stream()
+                subscriptions.stream()
                     .map(GenreSubscription::getGenreId)
                     .toList()
             )
             .build();
     }
 
-    private List<GenreSubscription> getNewGenreSubscription(
-        List<Genre> genres,
-        UUID userId
-    ) {
-        var existSubscriptionByUserId = getExistSubscriptionByUserId(userId);
-        return genres.stream()
-            .filter(genre -> !existSubscriptionByUserId.containsKey(genre.getId()))
-            .map(genre ->
-                GenreSubscription.builder()
-                    .genreId(genre.getId())
-                    .userId(userId)
-                    .build()
-            ).toList();
-    }
-
-    private Map<UUID, GenreSubscription> getExistSubscriptionByUserId(UUID userId) {
-        return genreSubscriptionUseCase.findSubscriptionList(userId)
-            .stream()
-            .collect(
-                Collectors.toMap(
-                    GenreSubscription::getGenreId,
-                    genreSubscription -> genreSubscription
-                )
-            );
-    }
-
-    public GenreUnSubscriptionServiceResponse unsubscribe(
+    public GenreUnsubscriptionServiceResponse unsubscribe(
         GenreUnsubscriptionServiceRequest request) {
-        List<GenreSubscription> unsubscribedGenre = genreSubscriptionUseCase.unsubscribe(
+        List<GenreSubscription> unsubscriptionGenres = genreSubscriptionUseCase.unsubscribe(
             request.genreIds(), request.userId());
 
-        return GenreUnSubscriptionServiceResponse.builder()
-            .successUnSubscriptionGenreIds(
-                unsubscribedGenre.stream()
+        return GenreUnsubscriptionServiceResponse.builder()
+            .successUnsubscriptionGenreIds(
+                unsubscriptionGenres.stream()
                     .map(GenreSubscription::getGenreId)
                     .toList()
             )
             .build();
     }
 
-    public GenreSubscriptionPaginationServiceResponse findGenreSubscriptions(
+    public PaginationServiceResponse<GenreSubscriptionPaginationServiceParam> findGenreSubscriptions(
         GenreSubscriptionPaginationServiceRequest request) {
-        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptionList(
+        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(
             request.userId());
         List<UUID> subscriptionGenreIds = subscriptions.stream()
             .map(GenreSubscription::getGenreId)
             .toList();
 
         if (subscriptionGenreIds.isEmpty()) {
-            return GenreSubscriptionPaginationServiceResponse.builder()
-                .data(List.of())
-                .hasNext(false)
-                .build();
+            return PaginationServiceResponse.of(List.of(), false);
         }
 
-        GenreSubscriptionPaginationResponse response = genreUseCase.findGenreSubscriptionsWithCursorPagination(
+        GenreSubscriptionPaginationDomainResponse response = genreUseCase.findGenreSubscriptionsWithCursorPagination(
             request.toDomainRequest(subscriptionGenreIds));
-        List<GenreSubscribeServiceResponse> data = response.data().stream()
-            .map(GenreSubscribeServiceResponse::new)
+        List<GenreSubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(GenreSubscriptionPaginationServiceParam::new)
             .toList();
 
-        return GenreSubscriptionPaginationServiceResponse.builder()
-            .data(data)
-            .hasNext(response.hasNext())
-            .build();
+        return PaginationServiceResponse.of(data, response.hasNext());
     }
 }

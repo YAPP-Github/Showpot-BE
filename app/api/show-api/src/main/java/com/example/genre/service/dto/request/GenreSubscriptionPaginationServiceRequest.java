@@ -3,7 +3,7 @@ package com.example.genre.service.dto.request;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.genre.request.GenreSubscriptionPaginationRequest;
+import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
 
 @Builder
 public record GenreSubscriptionPaginationServiceRequest(
@@ -13,8 +13,8 @@ public record GenreSubscriptionPaginationServiceRequest(
 ) {
 
 
-    public GenreSubscriptionPaginationRequest toDomainRequest(List<UUID> genreIds) {
-        return GenreSubscriptionPaginationRequest.builder()
+    public GenreSubscriptionPaginationDomainRequest toDomainRequest(List<UUID> genreIds) {
+        return GenreSubscriptionPaginationDomainRequest.builder()
             .cursor(cursor)
             .size(size)
             .userId(userId)

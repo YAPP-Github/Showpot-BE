@@ -4,9 +4,9 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record GenreSubscriptionPaginationResponse(
+public record GenreSubscriptionPaginationDomainResponse(
     boolean hasNext,
-    List<GenreSubscribeResponse> data
+    List<GenreSubscriptionDomainResponse> data
 ) {
 
 }

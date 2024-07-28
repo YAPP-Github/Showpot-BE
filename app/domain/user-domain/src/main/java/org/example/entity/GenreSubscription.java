@@ -27,6 +27,10 @@ public class GenreSubscription extends BaseEntity {
         this.genreId = genreId;
     }
 
+    public void subscribe() {
+        this.revive();
+    }
+
     public void unsubscribe() {
         this.softDelete();
     }

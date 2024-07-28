@@ -3,8 +3,8 @@ package org.example.usecase.genre;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.request.GenreSubscriptionPaginationRequest;
-import org.example.dto.genre.response.GenreSubscriptionPaginationResponse;
+import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
+import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.genre.Genre;
@@ -61,8 +61,8 @@ public class GenreUseCase {
         return genreRepository.findAllInId(genreIds);
     }
 
-    public GenreSubscriptionPaginationResponse findGenreSubscriptionsWithCursorPagination(
-        GenreSubscriptionPaginationRequest request) {
+    public GenreSubscriptionPaginationDomainResponse findGenreSubscriptionsWithCursorPagination(
+        GenreSubscriptionPaginationDomainRequest request) {
         return genreRepository.findAllWithCursorPagination(request);
     }
 }

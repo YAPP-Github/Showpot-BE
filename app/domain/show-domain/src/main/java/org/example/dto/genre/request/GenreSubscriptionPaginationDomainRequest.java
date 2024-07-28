@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record GenreSubscriptionPaginationRequest(
+public record GenreSubscriptionPaginationDomainRequest(
     UUID cursor,
     int size,
     UUID userId,
