@@ -62,7 +62,8 @@ public class GenreUseCase {
     }
 
     public GenreSubscriptionPaginationDomainResponse findGenreSubscriptionsWithCursorPagination(
-        GenreSubscriptionPaginationDomainRequest request) {
+        GenreSubscriptionPaginationDomainRequest request
+    ) {
         return genreRepository.findAllWithCursorPagination(request);
     }
 }

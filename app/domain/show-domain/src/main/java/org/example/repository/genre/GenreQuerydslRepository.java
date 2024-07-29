@@ -11,5 +11,6 @@ public interface GenreQuerydslRepository {
     List<Genre> findAllInId(List<UUID> ids);
 
     GenreSubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        GenreSubscriptionPaginationDomainRequest request);
+        GenreSubscriptionPaginationDomainRequest request
+    );
 }
