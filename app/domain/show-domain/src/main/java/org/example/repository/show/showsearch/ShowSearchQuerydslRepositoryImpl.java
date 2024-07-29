@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.response.ShowSearchDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
-import org.example.querydsl.BooleanStatus;
 import org.example.util.SliceUtil;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
@@ -56,8 +55,8 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = BooleanStatus.getShowIsDeletedFalse()
-            .and(BooleanStatus.getShowSearchIsDeletedFalse());
+        BooleanExpression defaultPredicate = show.isDeleted.isFalse()
+            .and(showSearch.isDeleted.isFalse());
 
         return cursor == null ? defaultPredicate : show.id.gt(cursor).and(defaultPredicate);
     }

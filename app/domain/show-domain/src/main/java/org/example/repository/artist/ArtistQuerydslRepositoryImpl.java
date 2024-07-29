@@ -23,7 +23,6 @@ import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.artist.response.SimpleArtistResponse;
 import org.example.entity.artist.Artist;
-import org.example.querydsl.BooleanStatus;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.springframework.stereotype.Repository;
 
@@ -88,7 +87,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                 )
             )
             .from(artist)
-            .where(BooleanStatus.getArtistIsDeletedFalse())
+            .where(artist.isDeleted.isFalse())
             .fetch();
     }
 
@@ -96,12 +95,14 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public List<Artist> findAllInIds(List<UUID> ids) {
         return jpaQueryFactory
             .selectFrom(artist)
-            .where(artist.id.in(ids).and(BooleanStatus.getArtistIsDeletedFalse()))
+            .where(artist.id.in(ids).and(artist.isDeleted.isFalse()))
             .fetch();
     }
 
     @Override
-    public ArtistDetailPaginationResponse findAllWithCursorPagination(ArtistPaginationDomainRequest request) {
+    public ArtistDetailPaginationResponse findAllWithCursorPagination(
+        ArtistPaginationDomainRequest request
+    ) {
         List<SimpleArtistResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
                     SimpleArtistResponse.class,
@@ -127,16 +128,16 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return jpaQueryFactory
             .selectFrom(artist)
             .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
-            .join(genre).on(isGenreEqualArtistIdAndIsDeletedFalse())
-            .where(BooleanStatus.getArtistIsDeletedFalse());
+            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
+            .where(artist.isDeleted.isFalse());
     }
 
     private BooleanExpression isArtistGenreEqualArtistIdAndIsDeletedFalse() {
-        return artistGenre.artistId.eq(artist.id).and(BooleanStatus.getArtistIsDeletedFalse());
+        return artistGenre.artistId.eq(artist.id).and(artistGenre.isDeleted.isFalse());
     }
 
-    private BooleanExpression isGenreEqualArtistIdAndIsDeletedFalse() {
-        return artistGenre.genreId.eq(genre.id).and(BooleanStatus.getGenreIsDeletedFalse());
+    private BooleanExpression isArtistGenreEqualGenreIdAndIsDeletedFalse() {
+        return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
     }
 
     private BooleanBuilder getWhereClauseInCursorPagination(
@@ -154,7 +155,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = BooleanStatus.getArtistIsDeletedFalse();
+        BooleanExpression defaultPredicate = artist.isDeleted.isFalse();
 
         return cursor == null ? defaultPredicate : artist.id.gt(cursor).and(defaultPredicate);
     }
