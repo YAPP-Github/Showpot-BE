@@ -2,9 +2,11 @@ package com.example.artist.service;
 
 import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
+import com.example.artist.service.dto.param.ArtistUnsubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
+import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
@@ -89,6 +91,24 @@ public class ArtistService {
             request.toDomainRequest(subscriptionArtistIds));
         List<ArtistSubscriptionPaginationServiceParam> data = response.data().stream()
             .map(ArtistSubscriptionPaginationServiceParam::new)
+            .toList();
+
+        return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public PaginationServiceResponse<ArtistUnsubscriptionPaginationServiceParam> findArtistUnsubscriptions(
+        ArtistUnsubscriptionPaginationServiceRequest request
+    ) {
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            request.userId());
+        List<UUID> subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+
+        var response = artistUseCase.findAllArtistInCursorPagination(
+            request.toDomainRequest(subscriptionArtistIds));
+        List<ArtistUnsubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(ArtistUnsubscriptionPaginationServiceParam::new)
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());

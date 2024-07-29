@@ -17,13 +17,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.request.ArtistPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
+import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.artist.response.SimpleArtistResponse;
+import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
+import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
+import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
 import org.example.entity.artist.Artist;
+import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -100,27 +105,60 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     @Override
-    public ArtistDetailPaginationResponse findAllWithCursorPagination(
-        ArtistPaginationDomainRequest request
+    public ArtistSubscriptionPaginationDomainResponse findAllWithCursorPagination(
+        ArtistSubscriptionPaginationDomainRequest request
     ) {
-        List<SimpleArtistResponse> result = jpaQueryFactory.select(
+        List<ArtistSubscriptionDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
-                    SimpleArtistResponse.class,
+                    ArtistSubscriptionDomainResponse.class,
                     artist.id,
                     artist.koreanName,
                     artist.englishName,
                     artist.image
                 )
             ).from(artist)
-            .where(getWhereClauseInCursorPagination(request.cursor(), request.artistIds()))
+            .where(getWhereClauseInCursorPaginationWithSubscription(request.cursor(), request.artistIds()))
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .limit(request.size() + 1)
             .fetch();
 
-        boolean hasNext = result.size() == request.size() + 1;
-        return ArtistDetailPaginationResponse.builder()
-            .data(hasNext ? result.subList(0, request.size()) : result)
-            .hasNext(hasNext)
+        Slice<ArtistSubscriptionDomainResponse> responses = SliceUtil.makeSlice(
+            request.size(),
+            result
+        );
+
+        return ArtistSubscriptionPaginationDomainResponse.builder()
+            .data(responses.getContent())
+            .hasNext(responses.hasNext())
+            .build();
+    }
+
+    @Override
+    public ArtistUnsubscriptionPaginationDomainResponse findAllWithCursorPagination(
+        ArtistUnsubscriptionPaginationDomainRequest request
+    ) {
+        List<ArtistUnsubscriptionDomainResponse> result = jpaQueryFactory.select(
+                Projections.constructor(
+                    ArtistUnsubscriptionDomainResponse.class,
+                    artist.id,
+                    artist.koreanName,
+                    artist.englishName,
+                    artist.image
+                )
+            ).from(artist)
+            .where(getWhereClauseInCursorPaginationWithUnsubscription(request.cursor(), request.artistIds()))
+            .orderBy(getOrderSpecifier(request.sortStandard()))
+            .limit(request.size() + 1)
+            .fetch();
+
+        Slice<ArtistUnsubscriptionDomainResponse> responses = SliceUtil.makeSlice(
+            request.size(),
+            result
+        );
+
+        return ArtistUnsubscriptionPaginationDomainResponse.builder()
+            .data(responses.getContent())
+            .hasNext(responses.hasNext())
             .build();
     }
 
@@ -140,7 +178,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
     }
 
-    private BooleanBuilder getWhereClauseInCursorPagination(
+    private BooleanBuilder getWhereClauseInCursorPaginationWithSubscription(
         UUID cursor,
         List<UUID> artistIds
     ) {
@@ -152,6 +190,20 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         }
 
         return whereClause.and(artist.id.in(artistIds));
+    }
+
+    private BooleanBuilder getWhereClauseInCursorPaginationWithUnsubscription(
+        UUID cursor,
+        List<UUID> artistIds
+    ) {
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(getDefaultPredicateInCursorPagination(cursor));
+
+        if (artistIds.isEmpty()) {
+            return whereClause;
+        }
+
+        return whereClause.and(artist.id.notIn(artistIds));
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {

@@ -6,7 +6,7 @@ import lombok.Builder;
 import org.example.vo.ArtistSortStandardDomainType;
 
 @Builder
-public record ArtistPaginationDomainRequest(
+public record ArtistSubscriptionPaginationDomainRequest(
     int size,
     ArtistSortStandardDomainType sortStandard,
     UUID cursor,

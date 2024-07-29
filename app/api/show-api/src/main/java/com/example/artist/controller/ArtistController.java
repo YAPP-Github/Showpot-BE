@@ -2,20 +2,18 @@ package com.example.artist.controller;
 
 import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
+import com.example.artist.controller.dto.param.ArtistUnsubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
-import com.example.artist.controller.dto.response.ArtistPaginationApiResponse;
-import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
+import com.example.artist.controller.dto.request.ArtistUnsubscriptionPaginationApiRequest;
 import com.example.artist.controller.dto.response.ArtistSubscriptionApiResponse;
 import com.example.artist.controller.dto.response.ArtistUnsubscriptionApiResponse;
 import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,24 +33,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArtistController {
 
     private final ArtistService artistService;
-    private String image = "https://thumb.mtstarnews.com/06/2023/06/2023062914274537673_1.jpg";
 
     @GetMapping
-    @Operation(summary = "아티스트 목록 조회")
-    public ResponseEntity<ArtistPaginationApiResponse> getArtists(
-        @RequestParam(required = false) ArtistSearchPaginationApiRequest param
+    @Operation(summary = "구독하지 않은 아티스트 목록 조회")
+    public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
+        var response = artistService.findArtistUnsubscriptions(
+            request.toServiceRequest(user.userId()));
+        var data = response.data().stream()
+            .map(ArtistUnsubscriptionPaginationApiParam::from)
+            .toList();
+
         return ResponseEntity.ok(
-            new ArtistPaginationApiResponse(
-                List.of(
-                    new ArtistSimpleApiResponse(
-                        UUID.randomUUID(),
-                        "윈터",
-                        image
-                    )
-                ),
-                false
-            )
+            PaginationApiResponse.<ArtistUnsubscriptionPaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
         );
     }
 

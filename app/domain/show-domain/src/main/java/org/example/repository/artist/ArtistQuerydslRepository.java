@@ -3,10 +3,12 @@ package org.example.repository.artist;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.example.dto.artist.request.ArtistPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
+import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailResponse;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 
 public interface ArtistQuerydslRepository {
@@ -19,5 +21,11 @@ public interface ArtistQuerydslRepository {
 
     List<Artist> findAllInIds(List<UUID> ids);
 
-    ArtistDetailPaginationResponse findAllWithCursorPagination(ArtistPaginationDomainRequest request);
+    ArtistSubscriptionPaginationDomainResponse findAllWithCursorPagination(
+        ArtistSubscriptionPaginationDomainRequest request
+    );
+
+    ArtistUnsubscriptionPaginationDomainResponse findAllWithCursorPagination(
+        ArtistUnsubscriptionPaginationDomainRequest request
+    );
 }
