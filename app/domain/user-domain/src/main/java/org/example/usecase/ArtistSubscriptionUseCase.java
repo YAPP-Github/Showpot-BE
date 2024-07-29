@@ -6,7 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.ArtistSubscription;
-import org.example.repository.subscription.ArtistSubscriptionRepository;
+import org.example.repository.subscription.artistsubscription.ArtistSubscriptionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

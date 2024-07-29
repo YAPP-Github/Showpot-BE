@@ -87,6 +87,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                 )
             )
             .from(artist)
+            .where(artist.isDeleted.isFalse())
             .fetch();
     }
 
@@ -94,12 +95,14 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public List<Artist> findAllInIds(List<UUID> ids) {
         return jpaQueryFactory
             .selectFrom(artist)
-            .where(artist.id.in(ids))
+            .where(artist.id.in(ids).and(artist.isDeleted.isFalse()))
             .fetch();
     }
 
     @Override
-    public ArtistDetailPaginationResponse findAllWithCursorPagination(ArtistPaginationDomainRequest request) {
+    public ArtistDetailPaginationResponse findAllWithCursorPagination(
+        ArtistPaginationDomainRequest request
+    ) {
         List<SimpleArtistResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
                     SimpleArtistResponse.class,
@@ -125,7 +128,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return jpaQueryFactory
             .selectFrom(artist)
             .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
-            .join(genre).on(isGenreEqualArtistIdAndIsDeletedFalse())
+            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
             .where(artist.isDeleted.isFalse());
     }
 
@@ -133,7 +136,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return artistGenre.artistId.eq(artist.id).and(artistGenre.isDeleted.isFalse());
     }
 
-    private BooleanExpression isGenreEqualArtistIdAndIsDeletedFalse() {
+    private BooleanExpression isArtistGenreEqualGenreIdAndIsDeletedFalse() {
         return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
     }
 

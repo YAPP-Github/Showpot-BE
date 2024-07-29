@@ -9,7 +9,7 @@ import org.example.entity.show.Show;
 import org.example.entity.show.ShowSearch;
 import org.example.fixture.ShowFixture;
 import org.example.repository.show.ShowRepository;
-import org.example.repository.show.ShowSearchRepository;
+import org.example.repository.show.showsearch.ShowSearchRepository;
 import org.example.util.StringNormalizer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

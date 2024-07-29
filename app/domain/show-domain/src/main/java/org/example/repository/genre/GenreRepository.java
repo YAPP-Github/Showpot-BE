@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.example.entity.genre.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface GenreRepository extends JpaRepository<Genre, UUID> {
+public interface GenreRepository extends JpaRepository<Genre, UUID>, GenreQuerydslRepository {
 
     List<Genre> findAllByIsDeletedFalse();
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.genre.GenreNameResponse;
+import org.example.dto.genre.response.GenreNameResponse;
 import org.example.dto.show.response.ShowInfoResponse;
 
 public record ShowInfoServiceResponse(

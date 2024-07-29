@@ -43,8 +43,10 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .fetch();
 
-        Slice<SimpleArtistResponse> simpleArtistSlices = SliceUtil.makeSlice(request.size(),
-            result);
+        Slice<SimpleArtistResponse> simpleArtistSlices = SliceUtil.makeSlice(
+            request.size(),
+            result
+        );
 
         return ArtistDetailPaginationResponse.builder()
             .data(simpleArtistSlices.getContent())
@@ -53,7 +55,8 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = artist.isDeleted.isFalse();
+        BooleanExpression defaultPredicate = artist.isDeleted.isFalse()
+            .and(artistSearch.isDeleted.isFalse());
 
         return cursor == null ? defaultPredicate : artist.id.gt(cursor).and(defaultPredicate);
     }

@@ -1,4 +1,4 @@
-package org.example.repository.show;
+package org.example.repository.show.showsearch;
 
 import static org.example.entity.show.QShow.show;
 import static org.example.entity.show.QShowSearch.showSearch;
@@ -55,7 +55,8 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = show.isDeleted.isFalse();
+        BooleanExpression defaultPredicate = show.isDeleted.isFalse()
+            .and(showSearch.isDeleted.isFalse());
 
         return cursor == null ? defaultPredicate : show.id.gt(cursor).and(defaultPredicate);
     }

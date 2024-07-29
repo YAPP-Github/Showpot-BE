@@ -19,7 +19,7 @@ import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.artist.artistsearch.ArtistSearchRepository;
-import org.example.repository.show.ShowArtistRepository;
+import org.example.repository.show.showartist.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +70,7 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.changeArtistInfo(newArtist);
 
-        List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistId(artist.getId());
+        List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
 
         List<UUID> currentGenreIds = currentGenres.stream()
             .map(ArtistGenre::getGenreId)
@@ -93,11 +93,14 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.softDelete();
 
-        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistId(artist.getId());
+        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
         artistGenres.forEach(BaseEntity::softDelete);
 
-        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistId(artist.getId());
+        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
         showArtists.forEach(BaseEntity::softDelete);
+
+        List<ArtistSearch> artistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        artistSearches.forEach(BaseEntity::softDelete);
     }
 
     public ArtistDetailPaginationResponse searchArtist(

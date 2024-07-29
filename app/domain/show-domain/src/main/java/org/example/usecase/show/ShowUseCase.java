@@ -11,12 +11,13 @@ import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
+import org.example.entity.show.ShowSearch;
 import org.example.error.ShowError;
 import org.example.exception.BusinessException;
-import org.example.repository.show.ShowArtistRepository;
-import org.example.repository.show.ShowGenreRepository;
 import org.example.repository.show.ShowRepository;
-import org.example.repository.show.ShowSearchRepository;
+import org.example.repository.show.showartist.ShowArtistRepository;
+import org.example.repository.show.showgenre.ShowGenreRepository;
+import org.example.repository.show.showsearch.ShowSearchRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,8 @@ public class ShowUseCase {
     }
 
     private void updateShowArtist(List<UUID> newArtistIds, Show show) {
-        List<ShowArtist> currentShowArtists = showArtistRepository.findAllByShowId(show.getId());
+        List<ShowArtist> currentShowArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
+            show.getId());
         List<UUID> currentArtistIds = currentShowArtists.stream()
             .map(ShowArtist::getArtistId)
             .toList();
@@ -78,7 +80,8 @@ public class ShowUseCase {
     }
 
     private void updateShowGenre(List<UUID> newGenreIds, Show show) {
-        List<ShowGenre> currentShowGenres = showGenreRepository.findAllByShowId(show.getId());
+        List<ShowGenre> currentShowGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(
+            show.getId());
         List<UUID> currentGenreIds = currentShowGenres.stream()
             .map(ShowGenre::getGenreId)
             .toList();
@@ -100,11 +103,14 @@ public class ShowUseCase {
         Show show = findShowById(id);
         show.softDelete();
 
-        List<ShowArtist> showArtists = showArtistRepository.findAllByShowId(show.getId());
+        List<ShowArtist> showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
         showArtists.forEach(BaseEntity::softDelete);
 
-        List<ShowGenre> showGenres = showGenreRepository.findAllByShowId(show.getId());
+        List<ShowGenre> showGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
         showGenres.forEach(BaseEntity::softDelete);
+
+        List<ShowSearch> showSearches = showSearchRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
+        showSearches.forEach(BaseEntity::softDelete);
     }
 
     public ShowSearchPaginationDomainResponse searchShow(
