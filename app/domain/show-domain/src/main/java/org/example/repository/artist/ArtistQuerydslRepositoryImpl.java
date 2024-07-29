@@ -19,8 +19,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
@@ -38,12 +38,12 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ArtistDetailResponse> findAllWithGenreNames() {
+    public List<ArtistDetailDomainResponse> findAllWithGenreNames() {
         return createArtistJoinArtistGenreAndGenreQuery()
             .transform(
                 groupBy(artist.id).list(
                     Projections.constructor(
-                        ArtistDetailResponse.class,
+                        ArtistDetailDomainResponse.class,
                         artist.id,
                         artist.koreanName,
                         artist.englishName,
@@ -58,14 +58,14 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     @Override
-    public Optional<ArtistDetailResponse> findArtistWithGenreNamesById(UUID id) {
+    public Optional<ArtistDetailDomainResponse> findArtistWithGenreNamesById(UUID id) {
         return Optional.ofNullable(
             createArtistJoinArtistGenreAndGenreQuery()
                 .where(artist.id.eq(id))
                 .transform(
                     groupBy(artist.id).as(
                         Projections.constructor(
-                            ArtistDetailResponse.class,
+                            ArtistDetailDomainResponse.class,
                             artist.id,
                             artist.koreanName,
                             artist.englishName,
@@ -82,11 +82,11 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     @Override
-    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+    public List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName() {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
-                    ArtistKoreanNameResponse.class,
+                    ArtistKoreanNameDomainResponse.class,
                     artist.id,
                     artist.koreanName
                 )

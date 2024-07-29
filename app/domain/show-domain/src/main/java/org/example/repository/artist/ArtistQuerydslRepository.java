@@ -5,19 +5,19 @@ import java.util.Optional;
 import java.util.UUID;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 
 public interface ArtistQuerydslRepository {
 
-    List<ArtistDetailResponse> findAllWithGenreNames();
+    List<ArtistDetailDomainResponse> findAllWithGenreNames();
 
-    Optional<ArtistDetailResponse> findArtistWithGenreNamesById(UUID id);
+    Optional<ArtistDetailDomainResponse> findArtistWithGenreNamesById(UUID id);
 
-    List<ArtistKoreanNameResponse> findAllArtistKoreanName();
+    List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName();
 
     List<Artist> findAllInIds(List<UUID> ids);
 

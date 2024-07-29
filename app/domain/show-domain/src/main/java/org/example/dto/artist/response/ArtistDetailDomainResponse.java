@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.example.vo.ArtistGender;
 import org.example.vo.ArtistType;
 
-public record ArtistDetailResponse(
+public record ArtistDetailDomainResponse(
     UUID id,
     String koreanName,
     String englishName,

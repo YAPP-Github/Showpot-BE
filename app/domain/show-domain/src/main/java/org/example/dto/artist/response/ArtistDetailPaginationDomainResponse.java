@@ -4,8 +4,8 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record ArtistDetailPaginationResponse(
-    List<SimpleArtistResponse> data,
+public record ArtistDetailPaginationDomainResponse(
+    List<SimpleArtistDomainResponse> data,
     boolean hasNext
 ) {
 

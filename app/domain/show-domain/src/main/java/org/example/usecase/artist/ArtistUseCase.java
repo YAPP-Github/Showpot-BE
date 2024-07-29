@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
 import org.example.entity.BaseEntity;
@@ -46,15 +46,15 @@ public class ArtistUseCase {
         artistGenreRepository.saveAll(artistGenres);
     }
 
-    public List<ArtistDetailResponse> findAllWithGenreNames() {
+    public List<ArtistDetailDomainResponse> findAllWithGenreNames() {
         return artistRepository.findAllWithGenreNames();
     }
 
-    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+    public List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName() {
         return artistRepository.findAllArtistKoreanName();
     }
 
-    public ArtistDetailResponse findArtistDetailById(UUID id) {
+    public ArtistDetailDomainResponse findArtistDetailById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
             .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
     }
@@ -117,7 +117,7 @@ public class ArtistUseCase {
         artistSearches.forEach(BaseEntity::softDelete);
     }
 
-    public ArtistDetailPaginationResponse searchArtist(
+    public ArtistDetailPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request
     ) {
         return artistSearchRepository.searchArtist(request);

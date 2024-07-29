@@ -4,7 +4,7 @@ import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import java.util.List;
 import java.util.UUID;
-import org.example.dto.artist.response.ArtistDetailResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
 
 public record ArtistDetailServiceResponse(
     UUID id,
@@ -17,7 +17,7 @@ public record ArtistDetailServiceResponse(
     List<String> genreNames
 ) {
 
-    public ArtistDetailServiceResponse(ArtistDetailResponse artistDetailResponse) {
+    public ArtistDetailServiceResponse(ArtistDetailDomainResponse artistDetailResponse) {
         this(
             artistDetailResponse.id(),
             artistDetailResponse.koreanName(),

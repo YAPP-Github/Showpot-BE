@@ -8,8 +8,6 @@ import com.example.component.FileUploadComponent;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.entity.artist.Artist;
 import org.example.usecase.artist.ArtistUseCase;
 import org.springframework.stereotype.Service;
@@ -29,15 +27,13 @@ public class ArtistAdminService {
     }
 
     public List<ArtistDetailServiceResponse> findAllWithGenreNames() {
-        List<ArtistDetailResponse> artistDetailResponses = artistUseCase.findAllWithGenreNames();
-        return artistDetailResponses.stream()
+        return artistUseCase.findAllWithGenreNames().stream()
             .map(ArtistDetailServiceResponse::new)
             .toList();
     }
 
     public List<ArtistKoreanNameServiceResponse> findAllArtistKoreanName() {
-        List<ArtistKoreanNameResponse> artistKoreanNameResponses = artistUseCase.findAllArtistKoreanName();
-        return artistKoreanNameResponses.stream()
+        return artistUseCase.findAllArtistKoreanName().stream()
             .map(ArtistKoreanNameServiceResponse::new)
             .toList();
     }

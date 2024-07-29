@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.genre.response.GenreNameResponse;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.genre.response.GenreNameDomainResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 
 public record ShowInfoServiceResponse(
     UUID id,
@@ -25,7 +25,7 @@ public record ShowInfoServiceResponse(
     List<GenreNameServiceResponse> genreNameResponses
 ) {
 
-    public ShowInfoServiceResponse(ShowInfoResponse showInfoResponse) {
+    public ShowInfoServiceResponse(ShowInfoDomainResponse showInfoResponse) {
         this(
             showInfoResponse.id(),
             showInfoResponse.title(),
@@ -41,7 +41,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<ArtistKoreanNameServiceResponse> toArtistKoreanNameServiceResponses(
-        Set<ArtistKoreanNameResponse> artistKoreanNameResponses) {
+        Set<ArtistKoreanNameDomainResponse> artistKoreanNameResponses) {
         return artistKoreanNameResponses
             .stream()
             .map(ArtistKoreanNameServiceResponse::new)
@@ -49,7 +49,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<GenreNameServiceResponse> toGenreNameServiceResponses(
-        Set<GenreNameResponse> genreNameResponses) {
+        Set<GenreNameDomainResponse> genreNameResponses) {
         return genreNameResponses
             .stream()
             .map(GenreNameServiceResponse::new)

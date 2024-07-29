@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import org.example.QueryTest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
+import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistSearch;
 import org.example.fixture.ArtistFixture;
@@ -44,7 +44,7 @@ class ArtistSearchRepositoryTest extends QueryTest {
             .build();
 
         //when
-        ArtistDetailPaginationResponse result = artistSearchRepository.searchArtist(request);
+        ArtistDetailPaginationDomainResponse result = artistSearchRepository.searchArtist(request);
 
         assertThat(result.data()).isNotEmpty();
     }

@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
@@ -42,11 +42,11 @@ public class ShowUseCase {
         showGenreRepository.saveAll(showGenres);
     }
 
-    public List<ShowInfoResponse> findAllShowInfos() {
+    public List<ShowInfoDomainResponse> findAllShowInfos() {
         return showRepository.findAllShowInfos();
     }
 
-    public ShowInfoResponse findShowInfo(UUID id) {
+    public ShowInfoDomainResponse findShowInfo(UUID id) {
         return showRepository.findShowInfoById(id)
             .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
     }

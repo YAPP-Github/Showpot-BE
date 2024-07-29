@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.genre.response.GenreNameResponse;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.genre.response.GenreNameDomainResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.entity.show.Show;
 import org.springframework.stereotype.Repository;
 
@@ -29,12 +29,12 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ShowInfoResponse> findAllShowInfos() {
+    public List<ShowInfoDomainResponse> findAllShowInfos() {
         return createShowJoinArtistAndGenreQuery()
             .transform(
                 groupBy(show.id).list(
                     Projections.constructor(
-                        ShowInfoResponse.class,
+                        ShowInfoDomainResponse.class,
                         show.id,
                         show.title,
                         show.content,
@@ -45,14 +45,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                         show.ticketing,
                         set(
                             Projections.constructor(
-                                ArtistKoreanNameResponse.class,
+                                ArtistKoreanNameDomainResponse.class,
                                 artist.id,
                                 artist.koreanName
                             )
                         ),
                         set(
                             Projections.constructor(
-                                GenreNameResponse.class,
+                                GenreNameDomainResponse.class,
                                 genre.id,
                                 genre.name
                             )
@@ -63,14 +63,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     @Override
-    public Optional<ShowInfoResponse> findShowInfoById(UUID id) {
+    public Optional<ShowInfoDomainResponse> findShowInfoById(UUID id) {
         return Optional.ofNullable(
             createShowJoinArtistAndGenreQuery()
                 .where(show.id.eq(id))
                 .transform(
                     groupBy(show.id).as(
                         Projections.constructor(
-                            ShowInfoResponse.class,
+                            ShowInfoDomainResponse.class,
                             show.id,
                             show.title,
                             show.content,
@@ -81,14 +81,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.ticketing,
                             set(
                                 Projections.constructor(
-                                    ArtistKoreanNameResponse.class,
+                                    ArtistKoreanNameDomainResponse.class,
                                     artist.id,
                                     artist.koreanName
                                 )
                             ),
                             set(
                                 Projections.constructor(
-                                    GenreNameResponse.class,
+                                    GenreNameDomainResponse.class,
                                     genre.id,
                                     genre.name
                                 )
