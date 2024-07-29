@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
+import org.example.dto.genre.request.GenreUnsubscriptionPaginationDomainRequest;
 import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
+import org.example.dto.genre.response.GenreUnsubscriptionPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.genre.Genre;
@@ -61,8 +63,15 @@ public class GenreUseCase {
         return genreRepository.findAllInId(genreIds);
     }
 
-    public GenreSubscriptionPaginationDomainResponse findGenreSubscriptionsWithCursorPagination(
-        GenreSubscriptionPaginationDomainRequest request) {
+    public GenreSubscriptionPaginationDomainResponse findGenreSubscriptionWithCursorPagination(
+        GenreSubscriptionPaginationDomainRequest request
+    ) {
+        return genreRepository.findAllWithCursorPagination(request);
+    }
+
+    public GenreUnsubscriptionPaginationDomainResponse findGenreUnsubscriptionWithCursorPagination(
+        GenreUnsubscriptionPaginationDomainRequest request
+    ) {
         return genreRepository.findAllWithCursorPagination(request);
     }
 }

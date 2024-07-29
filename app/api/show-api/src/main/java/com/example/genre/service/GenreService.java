@@ -1,8 +1,10 @@
 package com.example.genre.service;
 
 import com.example.genre.service.dto.param.GenreSubscriptionPaginationServiceParam;
+import com.example.genre.service.dto.param.GenreUnsubscriptionPaginationServiceParam;
 import com.example.genre.service.dto.request.GenreSubscriptionPaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
+import com.example.genre.service.dto.request.GenreUnsubscriptionPaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
+import org.example.dto.genre.response.GenreUnsubscriptionPaginationDomainResponse;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
@@ -45,9 +48,12 @@ public class GenreService {
     }
 
     public GenreUnsubscriptionServiceResponse unsubscribe(
-        GenreUnsubscriptionServiceRequest request) {
+        GenreUnsubscriptionServiceRequest request
+    ) {
         List<GenreSubscription> unsubscriptionGenres = genreSubscriptionUseCase.unsubscribe(
-            request.genreIds(), request.userId());
+            request.genreIds(),
+            request.userId()
+        );
 
         return GenreUnsubscriptionServiceResponse.builder()
             .successUnsubscriptionGenreIds(
@@ -59,7 +65,8 @@ public class GenreService {
     }
 
     public PaginationServiceResponse<GenreSubscriptionPaginationServiceParam> findGenreSubscriptions(
-        GenreSubscriptionPaginationServiceRequest request) {
+        GenreSubscriptionPaginationServiceRequest request
+    ) {
         List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(
             request.userId());
         List<UUID> subscriptionGenreIds = subscriptions.stream()
@@ -70,12 +77,29 @@ public class GenreService {
             return PaginationServiceResponse.of(List.of(), false);
         }
 
-        GenreSubscriptionPaginationDomainResponse response = genreUseCase.findGenreSubscriptionsWithCursorPagination(
+        GenreSubscriptionPaginationDomainResponse response = genreUseCase.findGenreSubscriptionWithCursorPagination(
             request.toDomainRequest(subscriptionGenreIds));
         List<GenreSubscriptionPaginationServiceParam> data = response.data().stream()
             .map(GenreSubscriptionPaginationServiceParam::new)
             .toList();
 
+        return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public PaginationServiceResponse<GenreUnsubscriptionPaginationServiceParam> findGenreUnSubscriptions(
+        GenreUnsubscriptionPaginationServiceRequest request
+    ) {
+        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(
+            request.userId());
+        List<UUID> subscriptionGenreIds = subscriptions.stream()
+            .map(GenreSubscription::getGenreId)
+            .toList();
+
+        GenreUnsubscriptionPaginationDomainResponse response = genreUseCase.findGenreUnsubscriptionWithCursorPagination(
+            request.toDomainRequest(subscriptionGenreIds));
+        List<GenreUnsubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(GenreUnsubscriptionPaginationServiceParam::new)
+            .toList();
         return PaginationServiceResponse.of(data, response.hasNext());
     }
 }
