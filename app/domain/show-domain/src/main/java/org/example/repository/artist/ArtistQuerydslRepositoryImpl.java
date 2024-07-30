@@ -13,9 +13,11 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
@@ -171,7 +173,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     public ArtistFilterPaginationDomainResponse findAllWithCursorPagination(
         ArtistFilterPaginationDomainRequest request
     ) {
-        List<ArtistFilterDomainResponse> result = jpaQueryFactory.select(
+        List<ArtistFilterDomainResponse> result = jpaQueryFactory.selectDistinct(
                 Projections.constructor(
                     ArtistFilterDomainResponse.class,
                     artist.id,
@@ -245,21 +247,10 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(request.cursor()));
 
-        if (!request.artistIds().isEmpty()) {
-            whereClause.and(artist.id.notIn(request.artistIds()));
-        }
-
-        if (!request.genreIds().isEmpty()) {
-            whereClause.and(genre.id.in(request.genreIds()));
-        }
-
-        if (!request.artistGenders().isEmpty()) {
-            whereClause.and(artist.artistGender.in(request.artistGenders()));
-        }
-
-        if (!request.artistTypes().isEmpty()) {
-            whereClause.and(artist.artistType.in(request.artistTypes()));
-        }
+        addConditionIfNotEmpty(whereClause, artist.id::notIn, request.artistIds());
+        addConditionIfNotEmpty(whereClause, genre.id::in, request.genreIds());
+        addConditionIfNotEmpty(whereClause, artist.artistGender::in, request.artistGenders());
+        addConditionIfNotEmpty(whereClause, artist.artistType::in, request.artistTypes());
 
         return whereClause;
     }
@@ -268,6 +259,16 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         BooleanExpression defaultPredicate = artist.isDeleted.isFalse();
 
         return cursor == null ? defaultPredicate : artist.id.gt(cursor).and(defaultPredicate);
+    }
+
+    private <T> void addConditionIfNotEmpty(
+        BooleanBuilder whereClause,
+        Function<Collection<T>, BooleanExpression> conditionFunction,
+        Collection<T> values
+    ) {
+        if (!values.isEmpty()) {
+            whereClause.and(conditionFunction.apply(values));
+        }
     }
 
     private OrderSpecifier<String> getOrderSpecifier(ArtistSortStandardDomainType type) {
