@@ -5,11 +5,13 @@ import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistUnsubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.request.ArtistFilterPaginationApiRequest;
+import com.example.artist.controller.dto.request.ArtistFilterTotalCountApiRequest;
 import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistUnsubscriptionPaginationApiRequest;
+import com.example.artist.controller.dto.response.ArtistFilterTotalCountApiResponse;
 import com.example.artist.controller.dto.response.ArtistSubscriptionApiResponse;
 import com.example.artist.controller.dto.response.ArtistUnsubscriptionApiResponse;
 import com.example.artist.service.ArtistService;
@@ -138,6 +140,19 @@ public class ArtistController {
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()
+        );
+    }
+
+    @GetMapping("/filter-total-count")
+    @Operation(summary = "필터링한 데이터의 총 개수 가져오기")
+    public ResponseEntity<ArtistFilterTotalCountApiResponse> filterTotalCount(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @Valid @RequestBody ArtistFilterTotalCountApiRequest request
+    ) {
+        var response = artistService.filterArtistTotalCount(request.toServiceRequest(user.userId()));
+
+        return ResponseEntity.ok(
+            ArtistFilterTotalCountApiResponse.from(response.totalCount())
         );
     }
 }

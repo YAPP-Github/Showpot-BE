@@ -20,11 +20,13 @@ import java.util.UUID;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistFilterDomainResponse;
 import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
@@ -197,6 +199,21 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
             .build();
     }
 
+    @Override
+    public Optional<ArtistFilterTotalCountDomainResponse> findFilterArtistTotalCount(
+        ArtistFilterTotalCountDomainRequest request
+    ) {
+        List<UUID> totalCount = jpaQueryFactory
+            .selectDistinct(artist.id)
+            .from(artist)
+            .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
+            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
+            .where(getWhereClauseWithFilter(request))
+            .fetch();
+
+        return Optional.of(new ArtistFilterTotalCountDomainResponse(totalCount.size()));
+    }
+
     private JPAQuery<?> createArtistJoinArtistGenreAndGenreQuery() {
         return jpaQueryFactory
             .selectFrom(artist)
@@ -246,6 +263,20 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(request.cursor()));
+
+        addConditionIfNotEmpty(whereClause, artist.id::notIn, request.artistIds());
+        addConditionIfNotEmpty(whereClause, genre.id::in, request.genreIds());
+        addConditionIfNotEmpty(whereClause, artist.artistGender::in, request.artistGenders());
+        addConditionIfNotEmpty(whereClause, artist.artistType::in, request.artistTypes());
+
+        return whereClause;
+    }
+
+    private BooleanBuilder getWhereClauseWithFilter(
+        ArtistFilterTotalCountDomainRequest request
+    ) {
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(artist.isDeleted.isFalse());
 
         addConditionIfNotEmpty(whereClause, artist.id::notIn, request.artistIds());
         addConditionIfNotEmpty(whereClause, genre.id::in, request.genreIds());

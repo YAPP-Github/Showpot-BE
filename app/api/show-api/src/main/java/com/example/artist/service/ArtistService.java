@@ -5,14 +5,17 @@ import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistUnsubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
+import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
+import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
@@ -57,6 +60,23 @@ public class ArtistService {
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public ArtistFilterTotalCountServiceResponse filterArtistTotalCount(
+        ArtistFilterTotalCountServiceRequest request
+    ) {
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            request.userId());
+        List<UUID> subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+        try {
+            return new ArtistFilterTotalCountServiceResponse(
+                artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
+            );
+        } catch (NoSuchElementException e) {
+            return ArtistFilterTotalCountServiceResponse.noneToTalCount();
+        }
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
