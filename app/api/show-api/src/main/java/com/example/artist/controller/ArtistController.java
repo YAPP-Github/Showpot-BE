@@ -1,8 +1,10 @@
 package com.example.artist.controller;
 
+import com.example.artist.controller.dto.param.ArtistFilterPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistUnsubscriptionPaginationApiParam;
+import com.example.artist.controller.dto.request.ArtistFilterPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionPaginationApiRequest;
@@ -114,6 +116,25 @@ public class ArtistController {
 
         return ResponseEntity.ok(
             PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
+        );
+    }
+
+    @GetMapping("/filter")
+    @Operation(summary = "필터링하기")
+    public ResponseEntity<PaginationApiResponse<ArtistFilterPaginationApiParam>> filter(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @Valid @RequestBody ArtistFilterPaginationApiRequest request
+    ) {
+        var response = artistService.filterArtist(request.toServiceRequest(user.userId()));
+        var data = response.data().stream()
+            .map(ArtistFilterPaginationApiParam::from)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<ArtistFilterPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()

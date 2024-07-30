@@ -17,9 +17,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistFilterDomainResponse;
+import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
@@ -117,7 +120,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                     artist.image
                 )
             ).from(artist)
-            .where(getWhereClauseInCursorPaginationWithSubscription(request.cursor(), request.artistIds()))
+            .where(getWhereClauseInCursorPaginationWithSubscription(request.cursor(),
+                request.artistIds()))
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .limit(request.size() + 1)
             .fetch();
@@ -146,7 +150,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                     artist.image
                 )
             ).from(artist)
-            .where(getWhereClauseInCursorPaginationWithUnsubscription(request.cursor(), request.artistIds()))
+            .where(getWhereClauseInCursorPaginationWithUnsubscription(request.cursor(),
+                request.artistIds()))
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .limit(request.size() + 1)
             .fetch();
@@ -157,6 +162,34 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         );
 
         return ArtistUnsubscriptionPaginationDomainResponse.builder()
+            .data(responses.getContent())
+            .hasNext(responses.hasNext())
+            .build();
+    }
+
+    @Override
+    public ArtistFilterPaginationDomainResponse findAllWithCursorPagination(
+        ArtistFilterPaginationDomainRequest request
+    ) {
+        List<ArtistFilterDomainResponse> result = jpaQueryFactory.select(
+                Projections.constructor(
+                    ArtistFilterDomainResponse.class,
+                    artist.id,
+                    artist.koreanName,
+                    artist.englishName,
+                    artist.image
+                )
+            ).from(artist)
+            .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
+            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
+            .where(getWhereClauseInCursorPaginationWithFilter(request))
+            .limit(request.size() + 1)
+            .fetch();
+
+        Slice<ArtistFilterDomainResponse> responses = SliceUtil.makeSlice(
+            request.size(), result);
+
+        return ArtistFilterPaginationDomainResponse.builder()
             .data(responses.getContent())
             .hasNext(responses.hasNext())
             .build();
@@ -204,6 +237,31 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         }
 
         return whereClause.and(artist.id.notIn(artistIds));
+    }
+
+    private BooleanBuilder getWhereClauseInCursorPaginationWithFilter(
+        ArtistFilterPaginationDomainRequest request
+    ) {
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(getDefaultPredicateInCursorPagination(request.cursor()));
+
+        if (!request.artistIds().isEmpty()) {
+            whereClause.and(artist.id.notIn(request.artistIds()));
+        }
+
+        if (!request.genreIds().isEmpty()) {
+            whereClause.and(genre.id.in(request.genreIds()));
+        }
+
+        if (!request.artistGenders().isEmpty()) {
+            whereClause.and(artist.artistGender.in(request.artistGenders()));
+        }
+
+        if (!request.artistTypes().isEmpty()) {
+            whereClause.and(artist.artistType.in(request.artistTypes()));
+        }
+
+        return whereClause;
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {

@@ -1,8 +1,10 @@
 package com.example.artist.service;
 
+import com.example.artist.service.dto.param.ArtistFilterPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistUnsubscriptionPaginationServiceParam;
+import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
@@ -34,6 +36,24 @@ public class ArtistService {
 
         List<ArtistSearchPaginationServiceParam> data = response.data().stream()
             .map(ArtistSearchPaginationServiceParam::new)
+            .toList();
+
+        return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public PaginationServiceResponse<ArtistFilterPaginationServiceParam> filterArtist(
+        ArtistFilterPaginationServiceRequest request
+    ) {
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            request.userId());
+        List<UUID> subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+
+        var response = artistUseCase.findAllArtistInCursorPagination(
+            request.toDomainRequest(subscriptionArtistIds));
+        List<ArtistFilterPaginationServiceParam> data = response.data().stream()
+            .map(ArtistFilterPaginationServiceParam::new)
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());
