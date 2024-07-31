@@ -5,6 +5,7 @@ import com.example.artist.service.dto.request.ArtistFilterPaginationServiceReque
 import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
+import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
@@ -85,6 +86,17 @@ public class ArtistRequestDtoFixture {
         int size
     ) {
         return ArtistSubscriptionPaginationServiceRequest.builder()
+            .size(size)
+            .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
+            .cursor(UUID.randomUUID())
+            .userId(UUID.randomUUID())
+            .build();
+    }
+
+    public static ArtistUnsubscriptionPaginationServiceRequest artistUnsubscriptionPaginationServiceRequest(
+        int size
+    ) {
+        return ArtistUnsubscriptionPaginationServiceRequest.builder()
             .size(size)
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .cursor(UUID.randomUUID())

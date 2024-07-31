@@ -315,7 +315,7 @@ class ArtistServiceTest {
     }
 
     @Test
-    @DisplayName("구독한 아티스트가 없을 경우 빈 리스트를 반환하다")
+    @DisplayName("구독한 아티스트가 없을 경우 빈 리스트를 반환하다.")
     void artistSubscribeEmptyResultWithPagination() {
         //given
         int size = 2;
@@ -334,6 +334,42 @@ class ArtistServiceTest {
             soft -> {
                 soft.assertThat(result.data()).isEmpty();
                 soft.assertThat(result.hasNext()).isFalse();
+            }
+        );
+    }
+
+    @Test
+    @DisplayName("페이지네이션을 이용해 구독하지 않은 아티스트를 반환한다.")
+    void artistUnsubscribeWithPagination() {
+        //given
+        int size = 2;
+        boolean hasNext = true;
+        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationServiceRequest(size);
+        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(2);
+        given(
+            artistSubscriptionUseCase.findSubscriptionList(request.userId())
+        ).willReturn(
+            subscriptions
+        );
+
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+        given(
+            artistUseCase.findAllArtistInCursorPagination(
+                request.toDomainRequest(subscriptionArtistIds))
+        ).willReturn(
+            ArtistResponseDtoFixture.artistUnsubscriptionPaginationDomainResponse(size, hasNext)
+        );
+
+        //when
+        var result = artistService.findArtistUnsubscriptions(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result.data().size()).isEqualTo(size);
+                soft.assertThat(result.hasNext()).isEqualTo(hasNext);
             }
         );
     }

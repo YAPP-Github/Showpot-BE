@@ -9,6 +9,8 @@ import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
 import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
+import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
 import org.example.dto.artist.response.SimpleArtistDomainResponse;
 
 public class ArtistResponseDtoFixture {
@@ -74,6 +76,16 @@ public class ArtistResponseDtoFixture {
             .build();
     }
 
+    public static ArtistUnsubscriptionPaginationDomainResponse artistUnsubscriptionPaginationDomainResponse(
+        int size,
+        boolean hasNext
+    ) {
+        return ArtistUnsubscriptionPaginationDomainResponse.builder()
+            .data(artistUnsubscriptionDomainResponses(size))
+            .hasNext(hasNext)
+            .build();
+    }
+
     public static List<ArtistFilterDomainResponse> artistFilterDomainResponses(int size) {
         return IntStream.range(0, size)
             .mapToObj(i -> ArtistFilterDomainResponse.builder()
@@ -90,6 +102,19 @@ public class ArtistResponseDtoFixture {
     ) {
         return IntStream.range(0, size)
             .mapToObj(i -> ArtistSubscriptionDomainResponse.builder()
+                .id(UUID.randomUUID())
+                .koreanName(i + "testKoreanName")
+                .image(i + "testImage")
+                .englishName(i + "testEnglishName")
+                .build())
+            .toList();
+    }
+
+    public static List<ArtistUnsubscriptionDomainResponse> artistUnsubscriptionDomainResponses(
+        int size
+    ) {
+        return IntStream.range(0, size)
+            .mapToObj(i -> ArtistUnsubscriptionDomainResponse.builder()
                 .id(UUID.randomUUID())
                 .koreanName(i + "testKoreanName")
                 .image(i + "testImage")
