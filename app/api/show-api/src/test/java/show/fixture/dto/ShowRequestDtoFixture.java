@@ -3,6 +3,7 @@ package show.fixture.dto;
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
 import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
+import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class ShowDtoFixture {
+public class ShowRequestDtoFixture {
 
     private static final MockMultipartFile post = new MockMultipartFile(
         "image",
@@ -45,6 +46,17 @@ public class ShowDtoFixture {
             .ticketingInfoApiResponse(getTicketingInfoApiResponse())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
+            .build();
+    }
+
+    public static ShowSearchPaginationServiceRequest showSearchPaginationServiceRequest(
+        int size,
+        String search
+    ) {
+        return ShowSearchPaginationServiceRequest.builder()
+            .cursor(UUID.randomUUID())
+            .size(size)
+            .search(search)
             .build();
     }
 
