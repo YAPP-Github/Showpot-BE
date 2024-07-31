@@ -7,9 +7,14 @@ import static org.mockito.Mockito.mock;
 import artist.fixture.dto.ArtistRequestDtoFixture;
 import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
+import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.example.entity.ArtistSubscription;
+import org.example.entity.artist.Artist;
+import org.example.fixture.ArtistFixture;
 import org.example.fixture.ArtistSubscriptionFixture;
 import org.example.usecase.ArtistSubscriptionUseCase;
 import org.example.usecase.artist.ArtistUseCase;
@@ -205,5 +210,42 @@ class ArtistServiceTest {
 
         //then
         assertThat(result.totalCount()).isZero();
+    }
+
+    @Test
+    @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 반환한다.")
+    void artistSubscribe() {
+        //given
+        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
+        var existArtistsInRequest = ArtistFixture.artists(3);
+        given(
+            artistUseCase.findAllArtistInIds(request.artistIds())
+        ).willReturn(
+            existArtistsInRequest
+        );
+
+        var existArtistIdsInRequest = existArtistsInRequest.stream()
+            .map(Artist::getId)
+            .toList();
+        int artistSubscriptionCount = 2;
+        given(
+            artistSubscriptionUseCase.subscribe(existArtistIdsInRequest, userId)
+        ).willReturn(
+            ArtistSubscriptionFixture.artistSubscriptions(artistSubscriptionCount)
+        );
+
+        //when
+        var result = artistService.subscribe(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result).isNotNull();
+                soft.assertThat(result.successSubscriptionArtistIds().size())
+                    .isEqualTo(artistSubscriptionCount);
+            }
+        );
     }
 }

@@ -75,6 +75,8 @@ public class ArtistRequestDtoFixture {
             .build();
     }
 
+
+
     private static List<ArtistApiType> getArtistApiTypes() {
         return List.of(ArtistApiType.GROUP, ArtistApiType.SOLO);
     }
