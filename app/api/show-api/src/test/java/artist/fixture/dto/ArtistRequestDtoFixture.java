@@ -1,6 +1,7 @@
 package artist.fixture.dto;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
+import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
@@ -48,8 +49,19 @@ public class ArtistRequestDtoFixture {
         return ArtistSearchPaginationServiceRequest.builder()
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .cursor(UUID.randomUUID())
-            .size(10)
+            .size(size)
             .search(search)
+            .build();
+    }
+
+    public static ArtistFilterPaginationServiceRequest artistFilterPaginationServiceRequest(int size) {
+        return ArtistFilterPaginationServiceRequest.builder()
+            .artistGenderApiTypes(List.of(ArtistGenderApiType.MAN, ArtistGenderApiType.WOMAN))
+            .artistApiTypes(List.of(ArtistApiType.GROUP, ArtistApiType.SOLO))
+            .genreIds(List.of(UUID.randomUUID()))
+            .userId(UUID.randomUUID())
+            .cursor(UUID.randomUUID())
+            .size(size)
             .build();
     }
 }
