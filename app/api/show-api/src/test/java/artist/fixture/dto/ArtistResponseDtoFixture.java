@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterDomainResponse;
 import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.SimpleArtistDomainResponse;
 
 public class ArtistResponseDtoFixture {
@@ -53,6 +54,10 @@ public class ArtistResponseDtoFixture {
             .data(List.of())
             .hasNext(false)
             .build();
+    }
+
+    public static ArtistFilterTotalCountDomainResponse artistFilterTotalCountDomainResponse(int totalCount) {
+        return new ArtistFilterTotalCountDomainResponse(totalCount);
     }
 
     public static List<ArtistFilterDomainResponse> artistFilterDomainResponses(int size) {

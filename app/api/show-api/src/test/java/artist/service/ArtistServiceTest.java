@@ -1,5 +1,6 @@
 package artist.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -7,6 +8,7 @@ import artist.fixture.domain.ArtistSubscriptionFixture;
 import artist.fixture.dto.ArtistRequestDtoFixture;
 import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
+import java.util.NoSuchElementException;
 import org.assertj.core.api.SoftAssertions;
 import org.example.entity.ArtistSubscription;
 import org.example.usecase.ArtistSubscriptionUseCase;
@@ -90,7 +92,8 @@ class ArtistServiceTest {
             subscriptions
         );
 
-        var subscriptionArtistIds = subscriptions.stream().map(ArtistSubscription::getArtistId)
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
             .toList();
         given(
             artistUseCase.findAllArtistInCursorPagination(
@@ -125,7 +128,8 @@ class ArtistServiceTest {
             subscriptions
         );
 
-        var subscriptionArtistIds = subscriptions.stream().map(ArtistSubscription::getArtistId)
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
             .toList();
         given(
             artistUseCase.findAllArtistInCursorPagination(
@@ -145,4 +149,62 @@ class ArtistServiceTest {
             }
         );
     }
+
+    @Test
+    @DisplayName("아티스트 필터링한 총 개수를 반환한다.")
+    void artistFilterToTalCount() {
+        //given
+        var request = ArtistRequestDtoFixture.artistFilterTotalCountServiceRequest();
+        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(2);
+        given(
+            artistSubscriptionUseCase.findSubscriptionList(request.userId())
+        ).willReturn(
+            subscriptions
+        );
+
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+        int totalCount = 3;
+        given(
+            artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
+        ).willReturn(
+            ArtistResponseDtoFixture.artistFilterTotalCountDomainResponse(totalCount)
+        );
+
+        //when
+        var result = artistService.filterArtistTotalCount(request);
+
+        //then
+        assertThat(result.totalCount()).isEqualTo(totalCount);
+    }
+
+    @Test
+    @DisplayName("아티스트 필터링 후 결과가 없다면 0을 반환한다.")
+    void artistFilterTotalCountZero() {
+        //given
+        var request = ArtistRequestDtoFixture.artistFilterTotalCountServiceRequest();
+        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(2);
+        given(
+            artistSubscriptionUseCase.findSubscriptionList(request.userId())
+        ).willReturn(
+            subscriptions
+        );
+
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+        given(
+            artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
+        ).willThrow(
+            NoSuchElementException.class
+        );
+
+        //when
+        var result = artistService.filterArtistTotalCount(request);
+
+        //then
+        assertThat(result.totalCount()).isZero();
+    }
+
 }

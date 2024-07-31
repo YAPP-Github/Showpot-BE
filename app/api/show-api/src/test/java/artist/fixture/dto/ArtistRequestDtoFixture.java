@@ -2,6 +2,7 @@ package artist.fixture.dto;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
+import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
@@ -56,12 +57,29 @@ public class ArtistRequestDtoFixture {
 
     public static ArtistFilterPaginationServiceRequest artistFilterPaginationServiceRequest(int size) {
         return ArtistFilterPaginationServiceRequest.builder()
-            .artistGenderApiTypes(List.of(ArtistGenderApiType.MAN, ArtistGenderApiType.WOMAN))
-            .artistApiTypes(List.of(ArtistApiType.GROUP, ArtistApiType.SOLO))
+            .artistGenderApiTypes(getArtistGenderApiTypes())
+            .artistApiTypes(getArtistApiTypes())
             .genreIds(List.of(UUID.randomUUID()))
             .userId(UUID.randomUUID())
             .cursor(UUID.randomUUID())
             .size(size)
             .build();
+    }
+
+    public static ArtistFilterTotalCountServiceRequest artistFilterTotalCountServiceRequest() {
+        return ArtistFilterTotalCountServiceRequest.builder()
+            .artistGenderApiTypes(getArtistGenderApiTypes())
+            .artistApiTypes(getArtistApiTypes())
+            .genreIds(List.of(UUID.randomUUID()))
+            .userId(UUID.randomUUID())
+            .build();
+    }
+
+    private static List<ArtistApiType> getArtistApiTypes() {
+        return List.of(ArtistApiType.GROUP, ArtistApiType.SOLO);
+    }
+
+    private static List<ArtistGenderApiType> getArtistGenderApiTypes() {
+        return List.of(ArtistGenderApiType.MAN, ArtistGenderApiType.WOMAN);
     }
 }
