@@ -8,6 +8,7 @@ import artist.fixture.dto.ArtistRequestDtoFixture;
 import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
+import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -244,6 +245,33 @@ class ArtistServiceTest {
             soft -> {
                 soft.assertThat(result).isNotNull();
                 soft.assertThat(result.successSubscriptionArtistIds().size())
+                    .isEqualTo(artistSubscriptionCount);
+            }
+        );
+    }
+
+    @Test
+    @DisplayName("아티스트를 구독 취소하면 구독 취소 성공한 아티스트 ID들을 반환한다.")
+    void artistUnsubscribe() {
+        //given
+        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new ArtistUnsubscriptionServiceRequest(artistsId, userId);
+        int artistSubscriptionCount = 2;
+        given(
+            artistSubscriptionUseCase.unsubscribe(request.artistIds(), userId)
+        ).willReturn(
+            ArtistSubscriptionFixture.artistSubscriptions(artistSubscriptionCount)
+        );
+
+        //when
+        var result = artistService.unsubscribe(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result).isNotNull();
+                soft.assertThat(result.successUnsubscriptionArtistIds().size())
                     .isEqualTo(artistSubscriptionCount);
             }
         );
