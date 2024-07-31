@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import org.example.QueryTest;
 import org.example.entity.genre.Genre;
-import org.example.fixture.GenreFixture;
+import org.example.fixture.domain.GenreFixture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
