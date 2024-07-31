@@ -4,6 +4,7 @@ import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
+import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
@@ -46,7 +47,10 @@ public class ArtistRequestDtoFixture {
             .build();
     }
 
-    public static ArtistSearchPaginationServiceRequest artistSearchPaginationServiceRequest(int size, String search) {
+    public static ArtistSearchPaginationServiceRequest artistSearchPaginationServiceRequest(
+        int size,
+        String search
+    ) {
         return ArtistSearchPaginationServiceRequest.builder()
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .cursor(UUID.randomUUID())
@@ -55,7 +59,9 @@ public class ArtistRequestDtoFixture {
             .build();
     }
 
-    public static ArtistFilterPaginationServiceRequest artistFilterPaginationServiceRequest(int size) {
+    public static ArtistFilterPaginationServiceRequest artistFilterPaginationServiceRequest(
+        int size
+    ) {
         return ArtistFilterPaginationServiceRequest.builder()
             .artistGenderApiTypes(getArtistGenderApiTypes())
             .artistApiTypes(getArtistApiTypes())
@@ -75,7 +81,16 @@ public class ArtistRequestDtoFixture {
             .build();
     }
 
-
+    public static ArtistSubscriptionPaginationServiceRequest artistSubscriptionPaginationServiceRequest(
+        int size
+    ) {
+        return ArtistSubscriptionPaginationServiceRequest.builder()
+            .size(size)
+            .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
+            .cursor(UUID.randomUUID())
+            .userId(UUID.randomUUID())
+            .build();
+    }
 
     private static List<ArtistApiType> getArtistApiTypes() {
         return List.of(ArtistApiType.GROUP, ArtistApiType.SOLO);

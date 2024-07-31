@@ -26,7 +26,8 @@ class ArtistServiceTest {
 
     private final ArtistUseCase artistUseCase = mock(ArtistUseCase.class);
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase = mock(
-        ArtistSubscriptionUseCase.class);
+        ArtistSubscriptionUseCase.class
+    );
     private final ArtistService artistService = new ArtistService(
         artistUseCase,
         artistSubscriptionUseCase
@@ -273,6 +274,66 @@ class ArtistServiceTest {
                 soft.assertThat(result).isNotNull();
                 soft.assertThat(result.successUnsubscriptionArtistIds().size())
                     .isEqualTo(artistSubscriptionCount);
+            }
+        );
+    }
+
+    @Test
+    @DisplayName("페이지네이션을 이용해 구독한 아티스트를 반환한다.")
+    void artistSubscribeWithPagination() {
+        //given
+        int size = 2;
+        boolean hasNext = true;
+        var request = ArtistRequestDtoFixture.artistSubscriptionPaginationServiceRequest(size);
+        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(3);
+        given(
+            artistSubscriptionUseCase.findSubscriptionList(request.userId())
+        ).willReturn(
+            subscriptions
+        );
+
+        var subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
+        given(
+            artistUseCase.findAllArtistInCursorPagination(
+                request.toDomainRequest(subscriptionArtistIds))
+        ).willReturn(
+            ArtistResponseDtoFixture.artistSubscriptionPaginationDomainResponse(size, hasNext)
+        );
+
+        //when
+        var result = artistService.findArtistSubscriptions(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result.data().size()).isEqualTo(size);
+                soft.assertThat(result.hasNext()).isEqualTo(hasNext);
+            }
+        );
+    }
+
+    @Test
+    @DisplayName("구독한 아티스트가 없을 경우 빈 리스트를 반환하다")
+    void artistSubscribeEmptyResultWithPagination() {
+        //given
+        int size = 2;
+        var request = ArtistRequestDtoFixture.artistSubscriptionPaginationServiceRequest(size);
+        given(
+            artistSubscriptionUseCase.findSubscriptionList(request.userId())
+        ).willReturn(
+            List.of()
+        );
+
+        //when
+        var result = artistService.findArtistSubscriptions(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result.data()).isEmpty();
+                soft.assertThat(result.hasNext()).isFalse();
             }
         );
     }
