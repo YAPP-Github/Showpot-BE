@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import artist.fixture.dto.ArtistDtoFixture;
+import artist.fixture.dto.ArtistRequestDtoFixture;
 import com.example.artist.service.ArtistAdminService;
 import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
@@ -31,7 +31,7 @@ class ArtistAdminServiceTest {
     @DisplayName("아티스트는 업로드된 이미지 URL과 함께 생성된다.")
     void artistCreateWithUploadedImageUrl() {
         //given
-        ArtistCreateServiceRequest artistCreateServiceRequest = ArtistDtoFixture.artistCreateServiceRequest();
+        ArtistCreateServiceRequest artistCreateServiceRequest = ArtistRequestDtoFixture.artistCreateServiceRequest();
         given(
             fileUploadComponent.uploadFile(
                 "artist",
@@ -50,7 +50,7 @@ class ArtistAdminServiceTest {
     @DisplayName("아티스트는 업로드된 이미지 URL과 함께 업데이트 된다.")
     void artistUpdateWithUploadedImageUrl() {
         //given
-        ArtistUpdateServiceRequest artistUpdateServiceRequest = ArtistDtoFixture.artistUpdateServiceRequest();
+        ArtistUpdateServiceRequest artistUpdateServiceRequest = ArtistRequestDtoFixture.artistUpdateServiceRequest();
         UUID artistId = UUID.randomUUID();
         given(
             fileUploadComponent.uploadFile(

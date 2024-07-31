@@ -1,14 +1,16 @@
 package artist.fixture.dto;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
+import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
+import com.example.artist.vo.ArtistSortStandardApiType;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class ArtistDtoFixture {
+public class ArtistRequestDtoFixture {
 
     private static final MockMultipartFile image = new MockMultipartFile(
         "image",
@@ -39,6 +41,15 @@ public class ArtistDtoFixture {
             .artistGenderApiType(ArtistGenderApiType.MAN)
             .artistApiType(ArtistApiType.SOLO)
             .genreIds(List.of(UUID.randomUUID()))
+            .build();
+    }
+
+    public static ArtistSearchPaginationServiceRequest artistSearchPaginationServiceRequest(int size, String search) {
+        return ArtistSearchPaginationServiceRequest.builder()
+            .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
+            .cursor(UUID.randomUUID())
+            .size(10)
+            .search(search)
             .build();
     }
 }
