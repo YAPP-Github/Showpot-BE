@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import artist.fixture.domain.ArtistSubscriptionFixture;
 import artist.fixture.dto.ArtistRequestDtoFixture;
 import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
 import java.util.NoSuchElementException;
 import org.assertj.core.api.SoftAssertions;
 import org.example.entity.ArtistSubscription;
+import org.example.fixture.ArtistSubscriptionFixture;
 import org.example.usecase.ArtistSubscriptionUseCase;
 import org.example.usecase.artist.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
@@ -206,5 +206,4 @@ class ArtistServiceTest {
         //then
         assertThat(result.totalCount()).isZero();
     }
-
 }

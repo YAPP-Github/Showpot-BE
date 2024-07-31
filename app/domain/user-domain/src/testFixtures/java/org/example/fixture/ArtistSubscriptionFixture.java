@@ -1,4 +1,4 @@
-package artist.fixture.domain;
+package org.example.fixture;
 
 import java.util.List;
 import java.util.UUID;
