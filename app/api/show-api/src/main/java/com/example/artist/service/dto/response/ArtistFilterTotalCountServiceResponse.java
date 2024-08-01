@@ -6,7 +6,7 @@ public record ArtistFilterTotalCountServiceResponse(
     int totalCount
 ) {
 
-    public static ArtistFilterTotalCountServiceResponse noneToTalCount() {
+    public static ArtistFilterTotalCountServiceResponse noneTotalCount() {
         return new ArtistFilterTotalCountServiceResponse(0);
     }
 
