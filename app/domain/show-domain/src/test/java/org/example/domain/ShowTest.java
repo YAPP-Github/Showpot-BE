@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
-import org.example.fixture.ShowFixture;
+import org.example.fixture.domain.ShowFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -15,8 +15,8 @@ import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
-import org.example.fixture.ArtistFixture;
 import org.example.fixture.ArtistSubscriptionFixture;
+import org.example.fixture.domain.ArtistFixture;
 import org.example.usecase.ArtistSubscriptionUseCase;
 import org.example.usecase.artist.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
@@ -221,7 +221,7 @@ class ArtistServiceTest {
         List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
         UUID userId = UUID.randomUUID();
         var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
-        var existArtistsInRequest = ArtistFixture.artists(3);
+        var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
         given(
             artistUseCase.findAllArtistInIds(request.artistIds())
         ).willReturn(

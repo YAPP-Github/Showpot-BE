@@ -1,4 +1,4 @@
-package org.example.fixture;
+package org.example.fixture.domain;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -19,7 +19,7 @@ public class ArtistFixture {
             .build();
     }
 
-    public static List<Artist> artists(int size) {
+    public static List<Artist> manSoloArtists(int size) {
         return IntStream.range(0, size)
             .mapToObj(i -> Artist.builder()
                 .koreanName("testKoreanName" + i)
