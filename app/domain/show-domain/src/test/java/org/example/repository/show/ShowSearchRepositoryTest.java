@@ -1,4 +1,4 @@
-package org.example.repository.artist;
+package org.example.repository.show;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,7 @@ import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowSearch;
-import org.example.fixture.ShowFixture;
-import org.example.repository.show.ShowRepository;
+import org.example.fixture.domain.ShowFixture;
 import org.example.repository.show.showsearch.ShowSearchRepository;
 import org.example.util.StringNormalizer;
 import org.junit.jupiter.api.DisplayName;

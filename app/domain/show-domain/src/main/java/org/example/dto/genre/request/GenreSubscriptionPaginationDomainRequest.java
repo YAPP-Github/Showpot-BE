@@ -8,7 +8,6 @@ import lombok.Builder;
 public record GenreSubscriptionPaginationDomainRequest(
     UUID cursor,
     int size,
-    UUID userId,
     List<UUID> genreIds
 ) {
 

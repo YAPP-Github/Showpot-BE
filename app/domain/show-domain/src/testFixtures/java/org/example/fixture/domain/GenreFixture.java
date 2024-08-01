@@ -1,4 +1,4 @@
-package org.example.fixture;
+package org.example.fixture.domain;
 
 import java.util.List;
 import java.util.stream.IntStream;

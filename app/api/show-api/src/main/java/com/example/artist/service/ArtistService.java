@@ -34,7 +34,8 @@ public class ArtistService {
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
 
     public PaginationServiceResponse<ArtistSearchPaginationServiceParam> searchArtist(
-        ArtistSearchPaginationServiceRequest request) {
+        ArtistSearchPaginationServiceRequest request
+    ) {
         var response = artistUseCase.searchArtist(request.toDomainRequest());
 
         List<ArtistSearchPaginationServiceParam> data = response.data().stream()

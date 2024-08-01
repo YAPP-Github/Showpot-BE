@@ -235,13 +235,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         List<UUID> artistIds
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
-        whereClause.and(getDefaultPredicateInCursorPagination(cursor));
-
-        if (artistIds.isEmpty()) {
-            return whereClause;
-        }
-
-        return whereClause.and(artist.id.in(artistIds));
+        return whereClause.and(getDefaultPredicateInCursorPagination(cursor))
+            .and(artist.id.in(artistIds));
     }
 
     private BooleanBuilder getWhereClauseInCursorPaginationWithUnsubscription(

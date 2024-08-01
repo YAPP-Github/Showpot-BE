@@ -17,7 +17,6 @@ public record GenreUnsubscriptionPaginationServiceRequest(
         return GenreUnsubscriptionPaginationDomainRequest.builder()
             .cursor(cursor)
             .size(size)
-            .userId(userId)
             .genreIds(genreIds)
             .build();
     }
