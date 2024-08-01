@@ -16,7 +16,8 @@ public record ShowCreateServiceRequest(
 
     String title,
     String content,
-    LocalDate date,
+    LocalDate startDate,
+    LocalDate endDate,
     String location,
     MultipartFile post,
     SeatInfoApiResponse seatInfoApiResponse,
@@ -29,7 +30,8 @@ public record ShowCreateServiceRequest(
         return Show.builder()
             .title(title)
             .content(content)
-            .date(date)
+            .startDate(startDate)
+            .endDate(endDate)
             .location(location)
             .image(imageUrl)
             .seatPrice(getSeatPrice())

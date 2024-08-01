@@ -22,8 +22,11 @@ public record ShowCreateApiForm(
     @NotBlank(message = "공연 내용은 필수 요청값 입니다.")
     String content,
 
-    @NotNull(message = "공연 날짜는 필수 요청값 입니다.")
-    LocalDate date,
+    @NotNull(message = "공연 시작 날짜는 필수 요청값 입니다.")
+    LocalDate startDate,
+
+    @NotNull(message = "공연 종료 날짜는 필수 요청값 입니다.")
+    LocalDate endDate,
 
     @NotNull(message = "공연 장소는 필수 요청값 입니다.")
     String location,
@@ -57,7 +60,8 @@ public record ShowCreateApiForm(
         return ShowCreateServiceRequest.builder()
             .title(title)
             .content(content)
-            .date(date)
+            .startDate(startDate)
+            .endDate(endDate)
             .location(location)
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())

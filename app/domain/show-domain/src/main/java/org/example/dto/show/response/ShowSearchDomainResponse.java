@@ -6,7 +6,8 @@ import java.util.UUID;
 public record ShowSearchDomainResponse(
     UUID id,
     String title,
-    LocalDate date,
+    LocalDate startDate,
+    LocalDate endDate,
     String location,
     String image
 ) {

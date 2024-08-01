@@ -28,8 +28,11 @@ public class Show extends BaseEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
 
     @Column(name = "location", nullable = false)
     private String location;
@@ -44,11 +47,20 @@ public class Show extends BaseEntity {
     private Ticketing ticketing;
 
     @Builder
-    private Show(String title, String content, LocalDate date, String location, String image,
-        SeatPrice seatPrice, Ticketing ticketing) {
+    private Show(
+        String title,
+        String content,
+        LocalDate startDate,
+        LocalDate endDate,
+        String location,
+        String image,
+        SeatPrice seatPrice,
+        Ticketing ticketing
+    ) {
         this.title = title;
         this.content = content;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
         this.image = image;
         this.seatPrice = seatPrice;
@@ -83,7 +95,7 @@ public class Show extends BaseEntity {
     public void changeShowInfo(Show newShow) {
         this.title = newShow.title;
         this.content = newShow.content;
-        this.date = newShow.date;
+        this.startDate = newShow.startDate;
         this.location = newShow.location;
         this.image = newShow.image;
         this.seatPrice = newShow.seatPrice;
