@@ -17,7 +17,7 @@ import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import show.fixture.dto.ShowDtoFixture;
+import show.fixture.dto.ShowRequestDtoFixture;
 
 class ShowAdminServiceTest {
 
@@ -31,7 +31,7 @@ class ShowAdminServiceTest {
     @DisplayName("공연은 업로드된 이미지 URL과 함께 생성된다.")
     void showCreateWithUploadedImageUrl() {
         //given
-        ShowCreateServiceRequest showCreateServiceRequest = ShowDtoFixture.showCreateServiceRequest();
+        ShowCreateServiceRequest showCreateServiceRequest = ShowRequestDtoFixture.showCreateServiceRequest();
         given(
             fileUploadComponent.uploadFile(
                 "artist",
@@ -50,7 +50,7 @@ class ShowAdminServiceTest {
     @DisplayName("공연은 업로드된 이미지 URL과 함께 업데이트 된다.")
     void showUpdateWithUploadedImageUrl() {
         //given
-        ShowUpdateServiceRequest showUpdateServiceRequest = ShowDtoFixture.showUpdateServiceRequest();
+        ShowUpdateServiceRequest showUpdateServiceRequest = ShowRequestDtoFixture.showUpdateServiceRequest();
         UUID showId = UUID.randomUUID();
         given(
             fileUploadComponent.uploadFile(
