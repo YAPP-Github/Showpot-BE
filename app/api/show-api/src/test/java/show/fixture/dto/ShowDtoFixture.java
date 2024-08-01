@@ -1,11 +1,9 @@
 package show.fixture.dto;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,7 +27,7 @@ public class ShowDtoFixture {
             .location("test_location")
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .ticketingInfoApiResponse(getTicketingInfoApiResponse())
+            .showTicketingSiteInfos(getTicketingInfoApiResponse())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -44,7 +42,7 @@ public class ShowDtoFixture {
             .location("test_location")
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .ticketingInfoApiResponse(getTicketingInfoApiResponse())
+            .showTicketingSiteInfos(getTicketingInfoApiResponse())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -61,13 +59,10 @@ public class ShowDtoFixture {
         );
     }
 
-    private static TicketingInfoApiResponse getTicketingInfoApiResponse() {
-        return new TicketingInfoApiResponse(
-            LocalDateTime.MAX,
-            Map.of(
-                "YES24", "https://YES24URL",
-                "인터파크", "https://인터파크URL"
-            )
+    private static Map<String, String> getTicketingInfoApiResponse() {
+        return Map.of(
+            "YES24", "https://YES24URL",
+            "인터파크", "https://인터파크URL"
         );
     }
 }

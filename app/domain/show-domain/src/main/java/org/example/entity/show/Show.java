@@ -1,11 +1,14 @@
 package org.example.entity.show;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.info.SeatPrice;
-import org.example.entity.show.info.Ticketing;
 import org.example.util.StringNormalizer;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
@@ -43,8 +46,9 @@ public class Show extends BaseEntity {
     @Enumerated
     private SeatPrice seatPrice;
 
-    @Enumerated
-    private Ticketing ticketing;
+    @Type(JsonType.class)
+    @Column(name = "ticketing", columnDefinition = "jsonb", nullable = false)
+    private Map<String, String> ticketingSiteInfo = new HashMap<>();
 
     @Builder
     private Show(
@@ -55,7 +59,7 @@ public class Show extends BaseEntity {
         String location,
         String image,
         SeatPrice seatPrice,
-        Ticketing ticketing
+        Map<String, String> ticketingSiteInfo
     ) {
         this.title = title;
         this.content = content;
@@ -64,7 +68,7 @@ public class Show extends BaseEntity {
         this.location = location;
         this.image = image;
         this.seatPrice = seatPrice;
-        this.ticketing = ticketing;
+        this.ticketingSiteInfo = ticketingSiteInfo;
     }
 
     public List<ShowArtist> toShowArtist(List<UUID> artistIds) {
@@ -99,6 +103,16 @@ public class Show extends BaseEntity {
         this.location = newShow.location;
         this.image = newShow.image;
         this.seatPrice = newShow.seatPrice;
-        this.ticketing = newShow.ticketing;
+    }
+
+    public void saveTicketingInformation(
+        String ticketBookingSite,
+        String ticketingSiteUrl
+    ) {
+        ticketingSiteInfo.put(ticketBookingSite, ticketingSiteUrl);
+    }
+
+    public Map<String, String> getTicketingInformation() {
+        return new HashMap<>(ticketingSiteInfo);
     }
 }

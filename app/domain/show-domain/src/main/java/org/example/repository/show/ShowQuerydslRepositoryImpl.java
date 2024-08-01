@@ -43,7 +43,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                         show.location,
                         show.image,
                         show.seatPrice,
-                        show.ticketing,
+                        show.ticketingSiteInfo,
                         set(
                             Projections.constructor(
                                 ArtistKoreanNameResponse.class,
@@ -80,7 +80,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.location,
                             show.image,
                             show.seatPrice,
-                            show.ticketing,
+                            show.ticketingSiteInfo,
                             set(
                                 Projections.constructor(
                                     ArtistKoreanNameResponse.class,

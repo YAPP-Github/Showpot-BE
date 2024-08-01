@@ -1,7 +1,6 @@
 package com.example.show.controller.dto.request;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -65,7 +64,7 @@ public record ShowCreateApiForm(
             .location(location)
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .ticketingInfoApiResponse(getTicketingInfoApiResponse())
+            .showTicketingSiteInfos(getTicketingInfoApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
@@ -78,11 +77,9 @@ public record ShowCreateApiForm(
         return new SeatInfoApiResponse(priceInformation);
     }
 
-    private TicketingInfoApiResponse getTicketingInfoApiResponse() {
-        Map<String, String> ticketingInformation = IntStream.range(0, ticketBookingSites.size())
+    private Map<String, String> getTicketingInfoApiResponse() {
+        return IntStream.range(0, ticketBookingSites.size())
             .boxed()
             .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
-        return new TicketingInfoApiResponse(ticketOpenTime, ticketingInformation);
     }
-
 }

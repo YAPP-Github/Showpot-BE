@@ -1,14 +1,13 @@
 package com.example.show.service.dto.request;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.entity.show.Show;
 import org.example.entity.show.info.SeatPrice;
-import org.example.entity.show.info.Ticketing;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder
@@ -21,7 +20,7 @@ public record ShowCreateServiceRequest(
     String location,
     MultipartFile post,
     SeatInfoApiResponse seatInfoApiResponse,
-    TicketingInfoApiResponse ticketingInfoApiResponse,
+    Map<String, String> showTicketingSiteInfos,
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
@@ -35,7 +34,7 @@ public record ShowCreateServiceRequest(
             .location(location)
             .image(imageUrl)
             .seatPrice(getSeatPrice())
-            .ticketing(getTicketing())
+            .ticketingSiteInfo(showTicketingSiteInfos)
             .build();
     }
 
@@ -45,13 +44,4 @@ public record ShowCreateServiceRequest(
 
         return seatPrice;
     }
-
-    private Ticketing getTicketing() {
-        Ticketing ticketing = new Ticketing();
-        ticketing.saveTicketOpenTime(ticketingInfoApiResponse.ticketOpenTime());
-        ticketingInfoApiResponse.ticketingInformation().forEach(ticketing::saveTicketingInformation);
-
-        return ticketing;
-    }
-
 }

@@ -2,6 +2,7 @@ package com.example.show.controller.dto.response;
 
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.show.controller.dto.param.ShowTicketingSiteInfoApiParam;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +18,7 @@ public record ShowInfoApiResponse(
     String location,
     String image,
     SeatInfoApiResponse seatInfoApiResponse,
-    TicketingInfoApiResponse ticketingInfoApiResponse,
+    List<ShowTicketingSiteInfoApiParam> showTicketingSiteInfoApiParams,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
 
@@ -32,7 +33,9 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.location(),
             showInfoServiceResponse.image(),
             showInfoServiceResponse.seatInfoApiResponse(),
-            showInfoServiceResponse.ticketingInfoApiResponse(),
+            showInfoServiceResponse.ticketingSiteInfos().stream()
+                .map(ShowTicketingSiteInfoApiParam::from)
+                .toList(),
             showInfoServiceResponse.artistKoreanNameResponses(),
             showInfoServiceResponse.genreNameResponses()
         );

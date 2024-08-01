@@ -3,7 +3,7 @@ package com.example.show.service.dto.response;
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.controller.dto.response.TicketingInfoApiResponse;
+import com.example.show.service.dto.param.ShowTicketingSiteInfoServiceParam;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,7 @@ public record ShowInfoServiceResponse(
     String location,
     String image,
     SeatInfoApiResponse seatInfoApiResponse,
-    TicketingInfoApiResponse ticketingInfoApiResponse,
+    List<ShowTicketingSiteInfoServiceParam> ticketingSiteInfos,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
 ) {
@@ -36,7 +36,14 @@ public record ShowInfoServiceResponse(
             showInfoResponse.location(),
             showInfoResponse.image(),
             SeatInfoApiResponse.from(showInfoResponse.seatPrice()),
-            TicketingInfoApiResponse.from(showInfoResponse.ticketing()),
+            showInfoResponse.ticketingSiteInfos().keySet()
+                .stream()
+                .map(ticketingSite ->
+                    ShowTicketingSiteInfoServiceParam.from(
+                        ticketingSite,
+                        showInfoResponse.ticketingSiteInfos().get(ticketingSite)
+                    )
+                ).toList(),
             toArtistKoreanNameServiceResponses(showInfoResponse.artistKoreanNameResponses()),
             toGenreNameServiceResponses(showInfoResponse.genreNameResponses())
         );
