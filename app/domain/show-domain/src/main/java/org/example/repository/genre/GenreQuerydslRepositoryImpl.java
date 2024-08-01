@@ -110,13 +110,8 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
         List<UUID> genreIds
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
-        whereClause.and(getDefaultPredicateInCursorPagination(cursor));
-
-        if (genreIds.isEmpty()) {
-            return whereClause;
-        }
-
-        return whereClause.and(genre.id.in(genreIds));
+        return whereClause.and(getDefaultPredicateInCursorPagination(cursor))
+            .and(genre.id.in(genreIds));
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {

@@ -17,7 +17,6 @@ public record GenreSubscriptionPaginationServiceRequest(
         return GenreSubscriptionPaginationDomainRequest.builder()
             .cursor(cursor)
             .size(size)
-            .userId(userId)
             .genreIds(genreIds)
             .build();
     }
