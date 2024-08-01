@@ -1,6 +1,7 @@
 package org.example.fixture;
 
 import java.time.LocalDate;
+import java.util.Map;
 import org.example.entity.show.Show;
 import org.example.entity.show.info.SeatPrice;
 
@@ -15,10 +16,18 @@ public class ShowFixture {
             .location("test_location")
             .image("test_image")
             .seatPrice(getSeatPrice())
+            .ticketingSiteInfo(getTicketingInfos())
             .build();
     }
 
     private static SeatPrice getSeatPrice() {
         return new SeatPrice();
+    }
+
+    private static Map<String, String> getTicketingInfos() {
+        return Map.of(
+            "YES24", "https://YES24URL",
+            "인터파크", "https://인터파크URL"
+        );
     }
 }
