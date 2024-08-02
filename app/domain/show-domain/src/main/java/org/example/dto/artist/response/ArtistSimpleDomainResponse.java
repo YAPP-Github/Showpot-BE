@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record SimpleArtistDomainResponse(
+public record ArtistSimpleDomainResponse(
     UUID id,
     String koreanName,
     String englishName,

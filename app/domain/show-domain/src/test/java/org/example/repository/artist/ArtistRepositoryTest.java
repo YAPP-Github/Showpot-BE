@@ -16,6 +16,7 @@ import org.example.repository.genre.GenreRepository;
 import org.example.vo.ArtistGender;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.example.vo.ArtistType;
+import org.example.vo.SubscriptionStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,8 @@ class ArtistRepositoryTest extends QueryTest {
         artistRepository.saveAll(artists);
 
         int size = 5;
-        var request = ArtistRequestDtoFixture.artistSubscriptionPaginationDomainRequest(
+        var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
+            SubscriptionStatus.SUBSCRIBED,
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
@@ -99,7 +101,8 @@ class ArtistRepositoryTest extends QueryTest {
         artistRepository.saveAll(artists);
 
         int size = 5;
-        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationDomainRequest(
+        var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
@@ -122,7 +125,8 @@ class ArtistRepositoryTest extends QueryTest {
         artistRepository.saveAll(artists);
 
         int size = 5;
-        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationDomainRequest(
+        var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,

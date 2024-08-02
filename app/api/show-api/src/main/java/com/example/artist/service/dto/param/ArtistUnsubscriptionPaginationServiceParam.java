@@ -1,7 +1,7 @@
 package com.example.artist.service.dto.param;
 
 import java.util.UUID;
-import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 
 public record ArtistUnsubscriptionPaginationServiceParam(
     UUID artistId,
@@ -10,7 +10,7 @@ public record ArtistUnsubscriptionPaginationServiceParam(
     String artistEnglishName
 ) {
 
-    public ArtistUnsubscriptionPaginationServiceParam(ArtistUnsubscriptionDomainResponse response) {
+    public ArtistUnsubscriptionPaginationServiceParam(ArtistSimpleDomainResponse response) {
         this(
             response.id(),
             response.image(),

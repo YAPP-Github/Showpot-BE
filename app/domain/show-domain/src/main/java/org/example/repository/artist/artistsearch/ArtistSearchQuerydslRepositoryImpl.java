@@ -13,7 +13,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
-import org.example.dto.artist.response.SimpleArtistDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.springframework.data.domain.Slice;
@@ -27,9 +27,9 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
 
     public ArtistDetailPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request) {
-        List<SimpleArtistDomainResponse> result = jpaQueryFactory.select(
+        List<ArtistSimpleDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
-                    SimpleArtistDomainResponse.class,
+                    ArtistSimpleDomainResponse.class,
                     artist.id,
                     artist.koreanName,
                     artist.englishName,
@@ -43,7 +43,7 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .fetch();
 
-        Slice<SimpleArtistDomainResponse> simpleArtistSlices = SliceUtil.makeSlice(
+        Slice<ArtistSimpleDomainResponse> simpleArtistSlices = SliceUtil.makeSlice(
             request.size(),
             result
         );

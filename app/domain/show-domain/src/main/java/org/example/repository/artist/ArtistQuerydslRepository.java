@@ -5,14 +5,12 @@ import java.util.Optional;
 import java.util.UUID;
 import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
-import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
-import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
-import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
-import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 
 public interface ArtistQuerydslRepository {
@@ -25,12 +23,8 @@ public interface ArtistQuerydslRepository {
 
     List<Artist> findAllInIds(List<UUID> ids);
 
-    ArtistSubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        ArtistSubscriptionPaginationDomainRequest request
-    );
-
-    ArtistUnsubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        ArtistUnsubscriptionPaginationDomainRequest request
+    ArtistPaginationDomainResponse findAllWithCursorPagination(
+        ArtistPaginationDomainRequest request
     );
 
     ArtistFilterPaginationDomainResponse findAllWithCursorPagination(

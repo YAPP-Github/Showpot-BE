@@ -21,20 +21,18 @@ import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
-import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
-import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistFilterDomainResponse;
 import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
-import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
-import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
-import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
-import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
+import org.example.vo.SubscriptionStatus;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
@@ -112,60 +110,34 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     @Override
-    public ArtistSubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        ArtistSubscriptionPaginationDomainRequest request
+    public ArtistPaginationDomainResponse findAllWithCursorPagination(
+        ArtistPaginationDomainRequest request
     ) {
-        List<ArtistSubscriptionDomainResponse> result = jpaQueryFactory.select(
+        List<ArtistSimpleDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
-                    ArtistSubscriptionDomainResponse.class,
+                    ArtistSimpleDomainResponse.class,
                     artist.id,
                     artist.koreanName,
                     artist.englishName,
                     artist.image
                 )
             ).from(artist)
-            .where(getWhereClauseInCursorPaginationWithSubscription(request.cursor(),
-                request.artistIds()))
-            .orderBy(getOrderSpecifier(request.sortStandard()))
-            .limit(request.size() + 1)
-            .fetch();
-
-        Slice<ArtistSubscriptionDomainResponse> responses = SliceUtil.makeSlice(
-            request.size(),
-            result
-        );
-
-        return ArtistSubscriptionPaginationDomainResponse.builder()
-            .data(responses.getContent())
-            .hasNext(responses.hasNext())
-            .build();
-    }
-
-    @Override
-    public ArtistUnsubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        ArtistUnsubscriptionPaginationDomainRequest request
-    ) {
-        List<ArtistUnsubscriptionDomainResponse> result = jpaQueryFactory.select(
-                Projections.constructor(
-                    ArtistUnsubscriptionDomainResponse.class,
-                    artist.id,
-                    artist.koreanName,
-                    artist.englishName,
-                    artist.image
+            .where(getWhereClauseInCursorPagination(
+                    request.subscriptionStatus(),
+                    request.cursor(),
+                    request.artistIds()
                 )
-            ).from(artist)
-            .where(getWhereClauseInCursorPaginationWithUnsubscription(request.cursor(),
-                request.artistIds()))
+            )
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .limit(request.size() + 1)
             .fetch();
 
-        Slice<ArtistUnsubscriptionDomainResponse> responses = SliceUtil.makeSlice(
+        Slice<ArtistSimpleDomainResponse> responses = SliceUtil.makeSlice(
             request.size(),
             result
         );
 
-        return ArtistUnsubscriptionPaginationDomainResponse.builder()
+        return ArtistPaginationDomainResponse.builder()
             .data(responses.getContent())
             .hasNext(responses.hasNext())
             .build();
@@ -230,26 +202,17 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         return artistGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse());
     }
 
-    private BooleanBuilder getWhereClauseInCursorPaginationWithSubscription(
-        UUID cursor,
-        List<UUID> artistIds
-    ) {
-        BooleanBuilder whereClause = new BooleanBuilder();
-        return whereClause.and(getDefaultPredicateInCursorPagination(cursor))
-            .and(artist.id.in(artistIds));
-    }
-
-    private BooleanBuilder getWhereClauseInCursorPaginationWithUnsubscription(
+    private BooleanBuilder getWhereClauseInCursorPagination(
+        SubscriptionStatus status,
         UUID cursor,
         List<UUID> artistIds
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(cursor));
 
-        if (artistIds.isEmpty()) {
-            return whereClause;
+        if (status.equals(SubscriptionStatus.SUBSCRIBED)) {
+            return whereClause.and(artist.id.in(artistIds));
         }
-
         return whereClause.and(artist.id.notIn(artistIds));
     }
 

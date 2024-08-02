@@ -4,35 +4,23 @@ import java.util.List;
 import java.util.UUID;
 import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
-import org.example.dto.artist.request.ArtistSubscriptionPaginationDomainRequest;
-import org.example.dto.artist.request.ArtistUnsubscriptionPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.vo.ArtistGender;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.example.vo.ArtistType;
+import org.example.vo.SubscriptionStatus;
 
 public class ArtistRequestDtoFixture {
 
-    public static ArtistSubscriptionPaginationDomainRequest artistSubscriptionPaginationDomainRequest(
+    public static ArtistPaginationDomainRequest artistPaginationDomainRequest(
+        SubscriptionStatus subscriptionStatus,
         int size,
         ArtistSortStandardDomainType artistSortStandardDomainType,
         UUID cursor,
         List<UUID> artistIds
     ) {
-        return ArtistSubscriptionPaginationDomainRequest.builder()
-            .size(size)
-            .sortStandard(artistSortStandardDomainType)
-            .cursor(cursor)
-            .artistIds(artistIds)
-            .build();
-    }
-
-    public static ArtistUnsubscriptionPaginationDomainRequest artistUnsubscriptionPaginationDomainRequest(
-        int size,
-        ArtistSortStandardDomainType artistSortStandardDomainType,
-        UUID cursor,
-        List<UUID> artistIds
-    ) {
-        return ArtistUnsubscriptionPaginationDomainRequest.builder()
+        return ArtistPaginationDomainRequest.builder()
+            .subscriptionStatus(subscriptionStatus)
             .size(size)
             .sortStandard(artistSortStandardDomainType)
             .cursor(cursor)

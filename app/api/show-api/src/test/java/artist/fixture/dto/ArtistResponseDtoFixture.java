@@ -7,11 +7,8 @@ import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterDomainResponse;
 import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
-import org.example.dto.artist.response.ArtistSubscriptionDomainResponse;
-import org.example.dto.artist.response.ArtistSubscriptionPaginationDomainResponse;
-import org.example.dto.artist.response.ArtistUnsubscriptionDomainResponse;
-import org.example.dto.artist.response.ArtistUnsubscriptionPaginationDomainResponse;
-import org.example.dto.artist.response.SimpleArtistDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 
 public class ArtistResponseDtoFixture {
 
@@ -20,7 +17,7 @@ public class ArtistResponseDtoFixture {
         boolean hasNext
     ) {
         return ArtistDetailPaginationDomainResponse.builder()
-            .data(simpleArtistDomainResponses(size))
+            .data(artistSimpleDomainResponses(size))
             .hasNext(hasNext)
             .build();
     }
@@ -30,17 +27,6 @@ public class ArtistResponseDtoFixture {
             .data(List.of())
             .hasNext(false)
             .build();
-    }
-
-    public static List<SimpleArtistDomainResponse> simpleArtistDomainResponses(int size) {
-        return IntStream.range(0, size)
-            .mapToObj(i -> SimpleArtistDomainResponse.builder()
-                .id(UUID.randomUUID())
-                .koreanName(i + "testKoreanName")
-                .image(i + "testImage")
-                .englishName(i + "testEnglishName")
-                .build())
-            .toList();
     }
 
     public static ArtistFilterPaginationDomainResponse artistFilterPaginationDomainResponse(
@@ -66,22 +52,12 @@ public class ArtistResponseDtoFixture {
         return new ArtistFilterTotalCountDomainResponse(totalCount);
     }
 
-    public static ArtistSubscriptionPaginationDomainResponse artistSubscriptionPaginationDomainResponse(
+    public static ArtistPaginationDomainResponse artistPaginationDomainResponse(
         int size,
         boolean hasNext
     ) {
-        return ArtistSubscriptionPaginationDomainResponse.builder()
-            .data(artistSubscriptionDomainResponses(size))
-            .hasNext(hasNext)
-            .build();
-    }
-
-    public static ArtistUnsubscriptionPaginationDomainResponse artistUnsubscriptionPaginationDomainResponse(
-        int size,
-        boolean hasNext
-    ) {
-        return ArtistUnsubscriptionPaginationDomainResponse.builder()
-            .data(artistUnsubscriptionDomainResponses(size))
+        return ArtistPaginationDomainResponse.builder()
+            .data(artistSimpleDomainResponses(size))
             .hasNext(hasNext)
             .build();
     }
@@ -97,24 +73,11 @@ public class ArtistResponseDtoFixture {
             .toList();
     }
 
-    public static List<ArtistSubscriptionDomainResponse> artistSubscriptionDomainResponses(
+    public static List<ArtistSimpleDomainResponse> artistSimpleDomainResponses(
         int size
     ) {
         return IntStream.range(0, size)
-            .mapToObj(i -> ArtistSubscriptionDomainResponse.builder()
-                .id(UUID.randomUUID())
-                .koreanName(i + "testKoreanName")
-                .image(i + "testImage")
-                .englishName(i + "testEnglishName")
-                .build())
-            .toList();
-    }
-
-    public static List<ArtistUnsubscriptionDomainResponse> artistUnsubscriptionDomainResponses(
-        int size
-    ) {
-        return IntStream.range(0, size)
-            .mapToObj(i -> ArtistUnsubscriptionDomainResponse.builder()
+            .mapToObj(i -> ArtistSimpleDomainResponse.builder()
                 .id(UUID.randomUUID())
                 .koreanName(i + "testKoreanName")
                 .image(i + "testImage")
