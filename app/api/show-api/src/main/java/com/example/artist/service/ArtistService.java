@@ -48,11 +48,7 @@ public class ArtistService {
     public PaginationServiceResponse<ArtistFilterPaginationServiceParam> filterArtist(
         ArtistFilterPaginationServiceRequest request
     ) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
-            request.userId());
-        List<UUID> subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
+        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
 
         var response = artistUseCase.findAllArtistInCursorPagination(
             request.toDomainRequest(subscriptionArtistIds));
@@ -66,11 +62,8 @@ public class ArtistService {
     public ArtistFilterTotalCountServiceResponse filterArtistTotalCount(
         ArtistFilterTotalCountServiceRequest request
     ) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
-            request.userId());
-        List<UUID> subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
+        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
+
         try {
             return new ArtistFilterTotalCountServiceResponse(
                 artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
@@ -118,11 +111,7 @@ public class ArtistService {
     public PaginationServiceResponse<ArtistSubscriptionPaginationServiceParam> findArtistSubscriptions(
         ArtistSubscriptionPaginationServiceRequest request
     ) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
-            request.userId());
-        List<UUID> subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
+        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
 
         if (subscriptionArtistIds.isEmpty()) {
             return PaginationServiceResponse.of(List.of(), false);
@@ -140,11 +129,7 @@ public class ArtistService {
     public PaginationServiceResponse<ArtistUnsubscriptionPaginationServiceParam> findArtistUnsubscriptions(
         ArtistUnsubscriptionPaginationServiceRequest request
     ) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
-            request.userId());
-        List<UUID> subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
+        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
 
         var response = artistUseCase.findAllArtistInCursorPagination(
             request.toDomainRequest(subscriptionArtistIds));
@@ -153,5 +138,13 @@ public class ArtistService {
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    private List<UUID> getSubscriptionArtistIds(UUID userId) {
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(userId);
+
+        return subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
     }
 }
