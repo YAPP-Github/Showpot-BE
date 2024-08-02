@@ -10,6 +10,7 @@ import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.mock.web.MockMultipartFile;
@@ -86,6 +87,7 @@ public class ArtistRequestDtoFixture {
         int size
     ) {
         return ArtistSubscriptionPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.SUBSCRIBED)
             .size(size)
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .cursor(UUID.randomUUID())
@@ -97,6 +99,7 @@ public class ArtistRequestDtoFixture {
         int size
     ) {
         return ArtistUnsubscriptionPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
             .size(size)
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .cursor(UUID.randomUUID())
