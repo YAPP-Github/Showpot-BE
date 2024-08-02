@@ -66,11 +66,7 @@ public class GenreService {
     public PaginationServiceResponse<GenreSubscriptionPaginationServiceParam> findGenreSubscriptions(
         GenreSubscriptionPaginationServiceRequest request
     ) {
-        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(
-            request.userId());
-        List<UUID> subscriptionGenreIds = subscriptions.stream()
-            .map(GenreSubscription::getGenreId)
-            .toList();
+        List<UUID> subscriptionGenreIds = getSubscriptionGenreIds(request.userId());
 
         if (subscriptionGenreIds.isEmpty()) {
             return PaginationServiceResponse.of(List.of(), false);
@@ -88,11 +84,7 @@ public class GenreService {
     public PaginationServiceResponse<GenreUnsubscriptionPaginationServiceParam> findGenreUnSubscriptions(
         GenreUnsubscriptionPaginationServiceRequest request
     ) {
-        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(
-            request.userId());
-        List<UUID> subscriptionGenreIds = subscriptions.stream()
-            .map(GenreSubscription::getGenreId)
-            .toList();
+        List<UUID> subscriptionGenreIds = getSubscriptionGenreIds(request.userId());
 
         GenrePaginationDomainResponse response = genreUseCase.findGenreWithCursorPagination(
             request.toDomainRequest(subscriptionGenreIds));
@@ -100,5 +92,13 @@ public class GenreService {
             .map(GenreUnsubscriptionPaginationServiceParam::new)
             .toList();
         return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    private List<UUID> getSubscriptionGenreIds(UUID userId) {
+        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.findSubscriptions(userId);
+
+        return subscriptions.stream()
+            .map(GenreSubscription::getGenreId)
+            .toList();
     }
 }
