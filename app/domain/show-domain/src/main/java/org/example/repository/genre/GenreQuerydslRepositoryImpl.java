@@ -10,14 +10,12 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
-import org.example.dto.genre.request.GenreUnsubscriptionPaginationDomainRequest;
-import org.example.dto.genre.response.GenreSubscriptionDomainResponse;
-import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
-import org.example.dto.genre.response.GenreUnsubscriptionDomainResponse;
-import org.example.dto.genre.response.GenreUnsubscriptionPaginationDomainResponse;
+import org.example.dto.genre.request.GenrePaginationDomainRequest;
+import org.example.dto.genre.response.GenreDomainResponse;
+import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.entity.genre.Genre;
 import org.example.util.SliceUtil;
+import org.example.vo.SubscriptionStatus;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
@@ -36,82 +34,50 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
     }
 
     @Override
-    public GenreSubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        GenreSubscriptionPaginationDomainRequest request
+    public GenrePaginationDomainResponse findAllWithCursorPagination(
+        GenrePaginationDomainRequest request
     ) {
-        List<GenreSubscriptionDomainResponse> genreSubscribeResponses = jpaQueryFactory.select(
+        List<GenreDomainResponse> genreUnsubscriptionResponses = jpaQueryFactory.select(
                 Projections.constructor(
-                    GenreSubscriptionDomainResponse.class,
+                    GenreDomainResponse.class,
                     genre.id,
                     genre.name
                 )
             )
             .from(genre)
-            .where(getWhereClauseInCursorPaginationWithSubscription(request.cursor(),
-                request.genreIds()))
-            .limit(request.size() + 1)
-            .fetch();
-
-        Slice<GenreSubscriptionDomainResponse> genreSubscribeSlices = SliceUtil.makeSlice(
-            request.size(),
-            genreSubscribeResponses
-        );
-
-        return GenreSubscriptionPaginationDomainResponse.builder()
-            .data(genreSubscribeSlices.getContent())
-            .hasNext(genreSubscribeSlices.hasNext())
-            .build();
-    }
-
-    @Override
-    public GenreUnsubscriptionPaginationDomainResponse findAllWithCursorPagination(
-        GenreUnsubscriptionPaginationDomainRequest request
-    ) {
-        List<GenreUnsubscriptionDomainResponse> genreUnsubscriptionResponses = jpaQueryFactory.select(
-                Projections.constructor(
-                    GenreUnsubscriptionDomainResponse.class,
-                    genre.id,
-                    genre.name
+            .where(
+                getWhereClauseInCursorPagination(
+                    request.subscriptionStatus(),
+                    request.cursor(),
+                    request.genreIds()
                 )
             )
-            .from(genre)
-            .where(getWhereClauseInCursorPaginationWithUnsubscription(request.cursor(),
-                request.genreIds()))
             .limit(request.size() + 1)
             .fetch();
 
-        Slice<GenreUnsubscriptionDomainResponse> genreUnSubscribeSlices = SliceUtil.makeSlice(
+        Slice<GenreDomainResponse> genreUnSubscribeSlices = SliceUtil.makeSlice(
             request.size(),
             genreUnsubscriptionResponses
         );
 
-        return GenreUnsubscriptionPaginationDomainResponse.builder()
+        return GenrePaginationDomainResponse.builder()
             .data(genreUnSubscribeSlices.getContent())
             .hasNext(genreUnSubscribeSlices.hasNext())
             .build();
     }
 
-    private BooleanBuilder getWhereClauseInCursorPaginationWithUnsubscription(
+    private BooleanBuilder getWhereClauseInCursorPagination(
+        SubscriptionStatus status,
         UUID cursor,
         List<UUID> genreIds
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(cursor));
 
-        if (genreIds.isEmpty()) {
-            return whereClause;
+        if (status.equals(SubscriptionStatus.SUBSCRIBED)) {
+            return whereClause.and(genre.id.in(genreIds));
         }
-
         return whereClause.and(genre.id.notIn(genreIds));
-    }
-
-    private BooleanBuilder getWhereClauseInCursorPaginationWithSubscription(
-        UUID cursor,
-        List<UUID> genreIds
-    ) {
-        BooleanBuilder whereClause = new BooleanBuilder();
-        return whereClause.and(getDefaultPredicateInCursorPagination(cursor))
-            .and(genre.id.in(genreIds));
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {

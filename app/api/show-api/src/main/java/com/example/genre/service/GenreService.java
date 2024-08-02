@@ -11,8 +11,7 @@ import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
-import org.example.dto.genre.response.GenreUnsubscriptionPaginationDomainResponse;
+import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
@@ -77,7 +76,7 @@ public class GenreService {
             return PaginationServiceResponse.of(List.of(), false);
         }
 
-        GenreSubscriptionPaginationDomainResponse response = genreUseCase.findGenreSubscriptionWithCursorPagination(
+        GenrePaginationDomainResponse response = genreUseCase.findGenreWithCursorPagination(
             request.toDomainRequest(subscriptionGenreIds));
         List<GenreSubscriptionPaginationServiceParam> data = response.data().stream()
             .map(GenreSubscriptionPaginationServiceParam::new)
@@ -95,7 +94,7 @@ public class GenreService {
             .map(GenreSubscription::getGenreId)
             .toList();
 
-        GenreUnsubscriptionPaginationDomainResponse response = genreUseCase.findGenreUnsubscriptionWithCursorPagination(
+        GenrePaginationDomainResponse response = genreUseCase.findGenreWithCursorPagination(
             request.toDomainRequest(subscriptionGenreIds));
         List<GenreUnsubscriptionPaginationServiceParam> data = response.data().stream()
             .map(GenreUnsubscriptionPaginationServiceParam::new)

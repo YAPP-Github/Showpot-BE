@@ -1,4 +1,4 @@
-package com.example.artist.vo;
+package com.example.vo;
 
 import org.example.vo.SubscriptionStatus;
 

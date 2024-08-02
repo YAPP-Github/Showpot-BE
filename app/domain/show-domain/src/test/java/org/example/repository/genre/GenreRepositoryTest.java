@@ -9,6 +9,7 @@ import org.example.QueryTest;
 import org.example.entity.genre.Genre;
 import org.example.fixture.domain.GenreFixture;
 import org.example.fixture.dto.GenreRequestDtoFixture;
+import org.example.vo.SubscriptionStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,8 @@ class GenreRepositoryTest extends QueryTest {
         var genres = GenreFixture.genres(genreSize);
         genreRepository.saveAll(genres);
 
-        var request = GenreRequestDtoFixture.genreSubscriptionPaginationDomainRequest(
+        var request = GenreRequestDtoFixture.genrePaginationDomainRequest(
+            SubscriptionStatus.SUBSCRIBED,
             null,
             3,
             genres.stream().map(Genre::getId).toList()
@@ -79,7 +81,8 @@ class GenreRepositoryTest extends QueryTest {
         var genres = GenreFixture.genres(genreSize);
         genreRepository.saveAll(genres);
 
-        var request = GenreRequestDtoFixture.genreUnsubscriptionPaginationDomainRequest(
+        var request = GenreRequestDtoFixture.genrePaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
             null,
             3,
             List.of()
@@ -101,7 +104,8 @@ class GenreRepositoryTest extends QueryTest {
         genreRepository.saveAll(genres);
 
         var genreSubscriptionIds = genres.stream().map(Genre::getId).toList();
-        var request = GenreRequestDtoFixture.genreUnsubscriptionPaginationDomainRequest(
+        var request = GenreRequestDtoFixture.genrePaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
             null,
             3,
             genreSubscriptionIds

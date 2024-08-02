@@ -122,7 +122,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                     artist.image
                 )
             ).from(artist)
-            .where(getWhereClauseInCursorPagination(
+            .where(
+                getWhereClauseInCursorPagination(
                     request.subscriptionStatus(),
                     request.cursor(),
                     request.artistIds()

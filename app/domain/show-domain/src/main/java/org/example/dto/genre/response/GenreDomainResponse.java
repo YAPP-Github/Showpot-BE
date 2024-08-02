@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record GenreSubscriptionDomainResponse(
+public record GenreDomainResponse(
     UUID id,
     String name
 ) {

@@ -1,7 +1,7 @@
 package com.example.artist.service.dto.request;
 
 import com.example.artist.vo.ArtistSortStandardApiType;
-import com.example.artist.vo.SubscriptionStatusApiType;
+import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;

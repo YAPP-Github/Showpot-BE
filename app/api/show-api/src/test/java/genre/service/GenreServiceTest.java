@@ -100,7 +100,7 @@ class GenreServiceTest {
         //given
         int size = 2;
         boolean hasNext = true;
-        var request = GenreRequestDtoFixture.genreSubscriptionPaginationServiceRequest(size);
+        var request = GenreRequestDtoFixture.genrePaginationServiceRequest(size);
         var subscriptions = GenreSubscriptionFixture.genreSubscriptions(3);
         given(
             genreSubscriptionUseCase.findSubscriptions(request.userId())
@@ -112,10 +112,10 @@ class GenreServiceTest {
             .map(GenreSubscription::getGenreId)
             .toList();
         given(
-            genreUseCase.findGenreSubscriptionWithCursorPagination(
+            genreUseCase.findGenreWithCursorPagination(
                 request.toDomainRequest(subscriptionGenreIds))
         ).willReturn(
-            GenreResponseDtoFixture.genreSubscriptionPaginationDomainResponse(size, hasNext)
+            GenreResponseDtoFixture.genrePaginationDomainResponse(size, hasNext)
         );
 
         //when
@@ -135,7 +135,7 @@ class GenreServiceTest {
     void genreSubscribeEmptyResultWithPagination() {
         //given
         int size = 2;
-        var request = GenreRequestDtoFixture.genreSubscriptionPaginationServiceRequest(size);
+        var request = GenreRequestDtoFixture.genrePaginationServiceRequest(size);
         given(
             genreSubscriptionUseCase.findSubscriptions(request.userId())
         ).willReturn(
@@ -173,11 +173,11 @@ class GenreServiceTest {
             .toList();
 
         given(
-            genreUseCase.findGenreUnsubscriptionWithCursorPagination(
+            genreUseCase.findGenreWithCursorPagination(
                 request.toDomainRequest(subscriptionGenreIds)
             )
         ).willReturn(
-            GenreResponseDtoFixture.genreUnsubscriptionPaginationDomainResponse(size, hasNext)
+            GenreResponseDtoFixture.genrePaginationDomainResponse(size, hasNext)
         );
 
         //when

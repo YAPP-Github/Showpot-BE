@@ -3,10 +3,8 @@ package org.example.usecase.genre;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.genre.request.GenreSubscriptionPaginationDomainRequest;
-import org.example.dto.genre.request.GenreUnsubscriptionPaginationDomainRequest;
-import org.example.dto.genre.response.GenreSubscriptionPaginationDomainResponse;
-import org.example.dto.genre.response.GenreUnsubscriptionPaginationDomainResponse;
+import org.example.dto.genre.request.GenrePaginationDomainRequest;
+import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.genre.Genre;
@@ -47,10 +45,12 @@ public class GenreUseCase {
         Genre genre = findGenreById(id);
         genre.softDelete();
 
-        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByGenreIdAndIsDeletedFalse(genre.getId());
+        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByGenreIdAndIsDeletedFalse(
+            genre.getId());
         artistGenres.forEach(BaseEntity::softDelete);
 
-        List<ShowGenre> showGenres = showGenreRepository.findAllByGenreIdAndIsDeletedFalse(genre.getId());
+        List<ShowGenre> showGenres = showGenreRepository.findAllByGenreIdAndIsDeletedFalse(
+            genre.getId());
         showGenres.forEach(BaseEntity::softDelete);
     }
 
@@ -63,14 +63,8 @@ public class GenreUseCase {
         return genreRepository.findAllInId(genreIds);
     }
 
-    public GenreSubscriptionPaginationDomainResponse findGenreSubscriptionWithCursorPagination(
-        GenreSubscriptionPaginationDomainRequest request
-    ) {
-        return genreRepository.findAllWithCursorPagination(request);
-    }
-
-    public GenreUnsubscriptionPaginationDomainResponse findGenreUnsubscriptionWithCursorPagination(
-        GenreUnsubscriptionPaginationDomainRequest request
+    public GenrePaginationDomainResponse findGenreWithCursorPagination(
+        GenrePaginationDomainRequest request
     ) {
         return genreRepository.findAllWithCursorPagination(request);
     }

@@ -2,7 +2,7 @@ package com.example.artist.controller.dto.request;
 
 import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.vo.ArtistSortStandardApiType;
-import com.example.artist.vo.SubscriptionStatusApiType;
+import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
