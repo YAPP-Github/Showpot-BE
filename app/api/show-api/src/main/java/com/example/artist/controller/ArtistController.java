@@ -128,7 +128,7 @@ public class ArtistController {
     @Operation(summary = "필터링하기")
     public ResponseEntity<PaginationApiResponse<ArtistFilterPaginationApiParam>> filter(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @Valid @RequestBody ArtistFilterPaginationApiRequest request
+        @ParameterObject ArtistFilterPaginationApiRequest request
     ) {
         var response = artistService.filterArtist(request.toServiceRequest(user.userId()));
         var data = response.data().stream()

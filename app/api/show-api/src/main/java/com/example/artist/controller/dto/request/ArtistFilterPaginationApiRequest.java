@@ -5,31 +5,33 @@ import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
 import com.example.artist.vo.ArtistSortStandardApiType;
 import com.example.vo.SubscriptionStatusApiType;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 public record ArtistFilterPaginationApiRequest(
 
-    @Schema(description = "정렬 기준, default: ENGLISH_NAME_ASC")
+    @Parameter(
+        description = "정렬 기준, default: ENGLISH_NAME_ASC",
+        schema = @Schema(implementation = ArtistSortStandardApiType.class)
+    )
     ArtistSortStandardApiType sortStandard,
 
-    @Schema(description = "아티스트 성별")
+    @Parameter(description = "아티스트 성별 목록")
     List<ArtistGenderApiType> artistGenderApiTypes,
 
-    @Schema(description = "아티스트 타입")
+    @Parameter(description = "아티스트 타입 목록")
     List<ArtistApiType> artistApiTypes,
 
-    @Schema(description = "장르 ID 목록")
+    @Parameter(description = "장르 ID 목록")
     List<UUID> genreIds,
 
-    @Schema(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor,
 
-    @Schema(description = "페이지네이션 크기")
-    @NotNull(message = "페이지네이션 크기는 필수 입력값입니다.")
-    Integer size
+    @Parameter(description = "조회하는 데이터 개수", required = true)
+    int size
 ) {
 
     public ArtistFilterPaginationApiRequest {
