@@ -1,23 +1,20 @@
 package org.example.entity.show;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
-import org.example.entity.show.info.SeatPrice;
+import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.TicketingSites;
 import org.example.util.StringNormalizer;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
@@ -44,11 +41,10 @@ public class Show extends BaseEntity {
     private String image;
 
     @Enumerated
-    private SeatPrice seatPrice;
+    private SeatPrices seatPrices;
 
-    @Type(JsonType.class)
-    @Column(name = "ticketing", columnDefinition = "jsonb", nullable = false)
-    private Map<String, String> ticketingSiteInfo = new HashMap<>();
+    @Enumerated
+    private TicketingSites ticketingSites;
 
     @Builder
     private Show(
@@ -58,8 +54,8 @@ public class Show extends BaseEntity {
         LocalDate endDate,
         String location,
         String image,
-        SeatPrice seatPrice,
-        Map<String, String> ticketingSiteInfo
+        SeatPrices seatPrices,
+        TicketingSites ticketingSites
     ) {
         this.title = title;
         this.content = content;
@@ -67,8 +63,8 @@ public class Show extends BaseEntity {
         this.endDate = endDate;
         this.location = location;
         this.image = image;
-        this.seatPrice = seatPrice;
-        this.ticketingSiteInfo = ticketingSiteInfo;
+        this.seatPrices = seatPrices;
+        this.ticketingSites = ticketingSites;
     }
 
     public List<ShowArtist> toShowArtist(List<UUID> artistIds) {
@@ -102,17 +98,6 @@ public class Show extends BaseEntity {
         this.startDate = newShow.startDate;
         this.location = newShow.location;
         this.image = newShow.image;
-        this.seatPrice = newShow.seatPrice;
-    }
-
-    public void saveTicketingInformation(
-        String ticketBookingSite,
-        String ticketingSiteUrl
-    ) {
-        ticketingSiteInfo.put(ticketBookingSite, ticketingSiteUrl);
-    }
-
-    public Map<String, String> getTicketingInformation() {
-        return new HashMap<>(ticketingSiteInfo);
+        this.seatPrices = newShow.seatPrices;
     }
 }

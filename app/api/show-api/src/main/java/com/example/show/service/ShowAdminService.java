@@ -8,7 +8,7 @@ import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
@@ -32,15 +32,15 @@ public class ShowAdminService {
     }
 
     public List<ShowInfoServiceResponse> findAllShowInfos() {
-        List<ShowInfoResponse> showInfoResponses = showUseCase.findAllShowInfos();
-        return showInfoResponses.stream()
+        List<ShowInfoDomainResponse> showInfoDomainRespons = showUseCase.findAllShowInfos();
+        return showInfoDomainRespons.stream()
             .map(ShowInfoServiceResponse::new)
             .toList();
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {
-        ShowInfoResponse showInfoResponse = showUseCase.findShowInfo(id);
-        return new ShowInfoServiceResponse(showInfoResponse);
+        ShowInfoDomainResponse showInfoDomainResponse = showUseCase.findShowInfo(id);
+        return new ShowInfoServiceResponse(showInfoDomainResponse);
     }
 
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {

@@ -3,15 +3,17 @@ package com.example.show.service.dto.response;
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.service.dto.param.ShowTicketingSiteInfoServiceParam;
+import com.example.show.service.dto.param.ShowTicketingSiteServiceParam;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import lombok.Builder;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.genre.response.GenreNameResponse;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 
+@Builder
 public record ShowInfoServiceResponse(
     UUID id,
     String title,
@@ -21,31 +23,31 @@ public record ShowInfoServiceResponse(
     String location,
     String image,
     SeatInfoApiResponse seatInfoApiResponse,
-    List<ShowTicketingSiteInfoServiceParam> ticketingSiteInfos,
+    List<ShowTicketingSiteServiceParam> ticketingSiteInfos,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
 ) {
 
-    public ShowInfoServiceResponse(ShowInfoResponse showInfoResponse) {
+    public ShowInfoServiceResponse(ShowInfoDomainResponse showInfo) {
         this(
-            showInfoResponse.id(),
-            showInfoResponse.title(),
-            showInfoResponse.content(),
-            showInfoResponse.startDate(),
-            showInfoResponse.endDate(),
-            showInfoResponse.location(),
-            showInfoResponse.image(),
-            SeatInfoApiResponse.from(showInfoResponse.seatPrice()),
-            showInfoResponse.ticketingSiteInfos().keySet()
+            showInfo.id(),
+            showInfo.title(),
+            showInfo.content(),
+            showInfo.startDate(),
+            showInfo.endDate(),
+            showInfo.location(),
+            showInfo.image(),
+            SeatInfoApiResponse.from(showInfo.seatPrices()),
+            showInfo.ticketingSites().getSites()
                 .stream()
-                .map(ticketingSite ->
-                    ShowTicketingSiteInfoServiceParam.from(
-                        ticketingSite,
-                        showInfoResponse.ticketingSiteInfos().get(ticketingSite)
-                    )
+                .map(siteName ->
+                    ShowTicketingSiteServiceParam.builder()
+                        .siteName(siteName)
+                        .siteURL(showInfo.ticketingSites().getURLOrNullBy(siteName))
+                        .build()
                 ).toList(),
-            toArtistKoreanNameServiceResponses(showInfoResponse.artistKoreanNameResponses()),
-            toGenreNameServiceResponses(showInfoResponse.genreNameResponses())
+            toArtistKoreanNameServiceResponses(showInfo.artistKoreanNameResponses()),
+            toGenreNameServiceResponses(showInfo.genreNameResponses())
         );
     }
 

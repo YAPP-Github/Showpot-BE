@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.entity.show.Show;
-import org.example.entity.show.info.SeatPrice;
+import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.TicketingSites;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder
@@ -26,6 +27,9 @@ public record ShowUpdateServiceRequest(
 ) {
 
     public Show toShowWithImageUrl(String imageUrl) {
+        TicketingSites ticketingSites = new TicketingSites();
+        showTicketingSiteInfos.forEach(ticketingSites::saveTicketingSite);
+
         return Show.builder()
             .title(title)
             .content(content)
@@ -33,15 +37,15 @@ public record ShowUpdateServiceRequest(
             .endDate(endDate)
             .location(location)
             .image(imageUrl)
-            .seatPrice(getSeatPrice())
-            .ticketingSiteInfo(showTicketingSiteInfos)
+            .seatPrices(getSeatPrice())
+            .ticketingSites(ticketingSites)
             .build();
     }
 
-    private SeatPrice getSeatPrice() {
-        SeatPrice seatPrice = new SeatPrice();
-        seatInfoApiResponse.priceInformation().forEach(seatPrice::savePriceInformation);
+    private SeatPrices getSeatPrice() {
+        SeatPrices seatPrices = new SeatPrices();
+        seatInfoApiResponse.priceInformation().forEach(seatPrices::savePriceInformation);
 
-        return seatPrice;
+        return seatPrices;
     }
 }

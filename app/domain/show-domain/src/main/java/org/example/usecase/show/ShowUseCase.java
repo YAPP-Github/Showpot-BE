@@ -5,7 +5,8 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
-import org.example.dto.show.response.ShowInfoResponse;
+import org.example.dto.show.response.ShowDetailDomainResponse;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
@@ -42,18 +43,23 @@ public class ShowUseCase {
         showGenreRepository.saveAll(showGenres);
     }
 
-    public List<ShowInfoResponse> findAllShowInfos() {
+    public List<ShowInfoDomainResponse> findAllShowInfos() {
         return showRepository.findAllShowInfos();
     }
 
-    public ShowInfoResponse findShowInfo(UUID id) {
+    public ShowDetailDomainResponse findShowDetail(UUID id) {
+        return showRepository.findShowDetailById(id)
+            .orElseThrow(NoSuchElementException::new);
+    }
+
+    public ShowInfoDomainResponse findShowInfo(UUID id) {
         return showRepository.findShowInfoById(id)
             .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
     }
 
     @Transactional
     public void updateShow(UUID id, Show newShow, List<UUID> newArtistIds, List<UUID> newGenreIds) {
-        Show show = findShowById(id);
+        Show show = findShowOrThrowNoSuchElementException(id);
         show.changeShowInfo(newShow);
 
         updateShowArtist(newArtistIds, show);
@@ -100,7 +106,7 @@ public class ShowUseCase {
 
     @Transactional
     public void deleteShow(UUID id) {
-        Show show = findShowById(id);
+        Show show = findShowOrThrowNoSuchElementException(id);
         show.softDelete();
 
         List<ShowArtist> showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(show.getId());
@@ -119,7 +125,7 @@ public class ShowUseCase {
     }
 
 
-    private Show findShowById(UUID id) {
+    private Show findShowOrThrowNoSuchElementException(UUID id) {
         return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

@@ -15,7 +15,7 @@ public class ShowDtoFixture {
         "image",
         "test_image.jpg",
         "image/jpeg",
-        "test image content".getBytes()
+        "test posterImageURL content".getBytes()
     );
 
     public static ShowCreateServiceRequest showCreateServiceRequest() {
