@@ -44,7 +44,7 @@ class ArtistServiceTest {
         given(
             artistUseCase.searchArtist(request.toDomainRequest())
         ).willReturn(
-            ArtistResponseDtoFixture.artistDetailPaginationDomainResponse(size, hasNext)
+            ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
         );
 
         //when
@@ -69,7 +69,7 @@ class ArtistServiceTest {
         given(
             artistUseCase.searchArtist(request.toDomainRequest())
         ).willReturn(
-            ArtistResponseDtoFixture.emptyDataArtistDetailPaginationDomainResponse()
+            ArtistResponseDtoFixture.emptyDataArtistPaginationDomainResponse()
         );
 
         //when

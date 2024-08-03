@@ -8,7 +8,6 @@ import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
-import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
@@ -118,7 +117,7 @@ public class ArtistUseCase {
         artistSearches.forEach(BaseEntity::softDelete);
     }
 
-    public ArtistDetailPaginationDomainResponse searchArtist(
+    public ArtistPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request
     ) {
         return artistSearchRepository.searchArtist(request);

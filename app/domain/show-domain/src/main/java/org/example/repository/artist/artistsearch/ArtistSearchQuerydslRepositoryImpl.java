@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
@@ -25,7 +25,7 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public ArtistDetailPaginationDomainResponse searchArtist(
+    public ArtistPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request) {
         List<ArtistSimpleDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
@@ -48,7 +48,7 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
             result
         );
 
-        return ArtistDetailPaginationDomainResponse.builder()
+        return ArtistPaginationDomainResponse.builder()
             .data(simpleArtistSlices.getContent())
             .hasNext(simpleArtistSlices.hasNext())
             .build();

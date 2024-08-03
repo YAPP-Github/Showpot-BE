@@ -3,29 +3,11 @@ package artist.fixture.dto;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
-import org.example.dto.artist.response.ArtistDetailPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 
 public class ArtistResponseDtoFixture {
-
-    public static ArtistDetailPaginationDomainResponse artistDetailPaginationDomainResponse(
-        int size,
-        boolean hasNext
-    ) {
-        return ArtistDetailPaginationDomainResponse.builder()
-            .data(artistSimpleDomainResponses(size))
-            .hasNext(hasNext)
-            .build();
-    }
-
-    public static ArtistDetailPaginationDomainResponse emptyDataArtistDetailPaginationDomainResponse() {
-        return ArtistDetailPaginationDomainResponse.builder()
-            .data(List.of())
-            .hasNext(false)
-            .build();
-    }
 
     public static ArtistFilterTotalCountDomainResponse artistFilterTotalCountDomainResponse(
         int totalCount
