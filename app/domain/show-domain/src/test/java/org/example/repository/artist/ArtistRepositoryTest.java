@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.example.QueryTest;
+import org.example.dto.artist.request.ArtistFilterDomain;
 import org.example.entity.artist.Artist;
 import org.example.fixture.domain.ArtistFixture;
 import org.example.fixture.domain.ArtistGenreFixture;
@@ -82,7 +83,8 @@ class ArtistRepositoryTest extends QueryTest {
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
-            artists.stream().map(Artist::getId).toList()
+            artists.stream().map(Artist::getId).toList(),
+            ArtistFilterDomain.defaultArtistFilterDomain()
         );
 
         //when
@@ -106,7 +108,8 @@ class ArtistRepositoryTest extends QueryTest {
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
-            artists.stream().map(Artist::getId).toList()
+            artists.stream().map(Artist::getId).toList(),
+            ArtistFilterDomain.defaultArtistFilterDomain()
         );
 
         //when
@@ -130,7 +133,8 @@ class ArtistRepositoryTest extends QueryTest {
             size,
             ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
-            List.of()
+            List.of(),
+            ArtistFilterDomain.defaultArtistFilterDomain()
         );
 
         //when
@@ -157,13 +161,17 @@ class ArtistRepositoryTest extends QueryTest {
         );
 
         int size = 5;
-        var request = ArtistRequestDtoFixture.artistFilterPaginationDomainRequest(
-            List.of(ArtistGender.MAN, ArtistGender.WOMAN),
-            List.of(ArtistType.SOLO, ArtistType.GROUP),
-            List.of(),
-            List.of(),
+        var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
+            size,
+            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
-            size
+            List.of(),
+            ArtistFilterDomain.builder()
+                .artistGenders(List.of(ArtistGender.MAN))
+                .artistTypes(List.of(ArtistType.SOLO))
+                .genreIds(List.of())
+                .build()
         );
 
         //when
@@ -190,13 +198,17 @@ class ArtistRepositoryTest extends QueryTest {
         );
 
         int size = 5;
-        var request = ArtistRequestDtoFixture.artistFilterPaginationDomainRequest(
-            List.of(ArtistGender.MAN, ArtistGender.WOMAN),
-            List.of(ArtistType.SOLO, ArtistType.GROUP),
-            List.of(),
-            artists.stream().map(Artist::getId).toList(),
+        var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
+            SubscriptionStatus.UNSUBSCRIBED,
+            size,
+            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
             null,
-            size
+            artists.stream().map(Artist::getId).toList(),
+            ArtistFilterDomain.builder()
+                .artistGenders(List.of(ArtistGender.MAN, ArtistGender.WOMAN))
+                .artistTypes(List.of(ArtistType.SOLO, ArtistType.GROUP))
+                .genreIds(List.of())
+                .build()
         );
 
         //when

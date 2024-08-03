@@ -65,6 +65,8 @@ public class ArtistRequestDtoFixture {
         int size
     ) {
         return ArtistFilterPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
+            .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
             .artistGenderApiTypes(getArtistGenderApiTypes())
             .artistApiTypes(getArtistApiTypes())
             .genreIds(List.of(UUID.randomUUID()))

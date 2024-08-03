@@ -106,7 +106,7 @@ class ArtistServiceTest {
             artistUseCase.findAllArtistInCursorPagination(
                 request.toDomainRequest(subscriptionArtistIds))
         ).willReturn(
-            ArtistResponseDtoFixture.artistFilterPaginationDomainResponse(size, hasNext)
+            ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
         );
 
         //when
@@ -142,7 +142,7 @@ class ArtistServiceTest {
             artistUseCase.findAllArtistInCursorPagination(
                 request.toDomainRequest(subscriptionArtistIds))
         ).willReturn(
-            ArtistResponseDtoFixture.emptyDataArtistFilterPaginationDomainResponse()
+            ArtistResponseDtoFixture.emptyDataArtistPaginationDomainResponse()
         );
 
         //when

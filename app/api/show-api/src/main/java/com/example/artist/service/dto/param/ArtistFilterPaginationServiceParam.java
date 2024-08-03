@@ -1,7 +1,7 @@
 package com.example.artist.service.dto.param;
 
 import java.util.UUID;
-import org.example.dto.artist.response.ArtistFilterDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 
 public record ArtistFilterPaginationServiceParam(
     UUID artistId,
@@ -10,7 +10,7 @@ public record ArtistFilterPaginationServiceParam(
     String artistEnglishName
 ) {
 
-    public ArtistFilterPaginationServiceParam(ArtistFilterDomainResponse response) {
+    public ArtistFilterPaginationServiceParam(ArtistSimpleDomainResponse response) {
         this(
             response.id(),
             response.image(),

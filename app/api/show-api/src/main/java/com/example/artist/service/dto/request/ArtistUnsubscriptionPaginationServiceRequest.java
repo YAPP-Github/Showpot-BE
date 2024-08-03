@@ -5,6 +5,7 @@ import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
+import org.example.dto.artist.request.ArtistFilterDomain;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 
 @Builder
@@ -23,6 +24,7 @@ public record ArtistUnsubscriptionPaginationServiceRequest(
             .sortStandard(sortStandard.toDomainType())
             .artistIds(artistIds)
             .cursor(cursor)
+            .artistFilterDomain(ArtistFilterDomain.defaultArtistFilterDomain())
             .build();
     }
 }

@@ -19,12 +19,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistFilterDomain;
 import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
-import org.example.dto.artist.response.ArtistFilterDomainResponse;
-import org.example.dto.artist.response.ArtistFilterPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
@@ -126,7 +124,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
                 getWhereClauseInCursorPagination(
                     request.subscriptionStatus(),
                     request.cursor(),
-                    request.artistIds()
+                    request.artistIds(),
+                    request.artistFilterDomain()
                 )
             )
             .orderBy(getOrderSpecifier(request.sortStandard()))
@@ -139,34 +138,6 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         );
 
         return ArtistPaginationDomainResponse.builder()
-            .data(responses.getContent())
-            .hasNext(responses.hasNext())
-            .build();
-    }
-
-    @Override
-    public ArtistFilterPaginationDomainResponse findAllWithCursorPagination(
-        ArtistFilterPaginationDomainRequest request
-    ) {
-        List<ArtistFilterDomainResponse> result = jpaQueryFactory.selectDistinct(
-                Projections.constructor(
-                    ArtistFilterDomainResponse.class,
-                    artist.id,
-                    artist.koreanName,
-                    artist.englishName,
-                    artist.image
-                )
-            ).from(artist)
-            .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
-            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
-            .where(getWhereClauseInCursorPaginationWithFilter(request))
-            .limit(request.size() + 1)
-            .fetch();
-
-        Slice<ArtistFilterDomainResponse> responses = SliceUtil.makeSlice(
-            request.size(), result);
-
-        return ArtistFilterPaginationDomainResponse.builder()
             .data(responses.getContent())
             .hasNext(responses.hasNext())
             .build();
@@ -206,7 +177,8 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     private BooleanBuilder getWhereClauseInCursorPagination(
         SubscriptionStatus status,
         UUID cursor,
-        List<UUID> artistIds
+        List<UUID> artistIds,
+        ArtistFilterDomain artistFilterDomain
     ) {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(cursor));
@@ -214,19 +186,13 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         if (status.equals(SubscriptionStatus.SUBSCRIBED)) {
             return whereClause.and(artist.id.in(artistIds));
         }
-        return whereClause.and(artist.id.notIn(artistIds));
-    }
 
-    private BooleanBuilder getWhereClauseInCursorPaginationWithFilter(
-        ArtistFilterPaginationDomainRequest request
-    ) {
-        BooleanBuilder whereClause = new BooleanBuilder();
-        whereClause.and(getDefaultPredicateInCursorPagination(request.cursor()));
-
-        addConditionIfNotEmpty(whereClause, artist.id::notIn, request.artistIds());
-        addConditionIfNotEmpty(whereClause, genre.id::in, request.genreIds());
-        addConditionIfNotEmpty(whereClause, artist.artistGender::in, request.artistGenders());
-        addConditionIfNotEmpty(whereClause, artist.artistType::in, request.artistTypes());
+        if (status.equals(SubscriptionStatus.UNSUBSCRIBED)) {
+            addConditionIfNotEmpty(whereClause, artist.id::notIn, artistIds);
+            addConditionIfNotEmpty(whereClause, genre.id::in, artistFilterDomain.genreIds());
+            addConditionIfNotEmpty(whereClause, artist.artistGender::in, artistFilterDomain.artistGenders());
+            addConditionIfNotEmpty(whereClause, artist.artistType::in, artistFilterDomain.artistTypes());
+        }
 
         return whereClause;
     }

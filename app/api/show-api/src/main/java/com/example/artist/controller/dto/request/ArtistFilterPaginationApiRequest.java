@@ -3,12 +3,18 @@ package com.example.artist.controller.dto.request;
 import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
+import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 public record ArtistFilterPaginationApiRequest(
+
+    @Schema(description = "정렬 기준, default: ENGLISH_NAME_ASC")
+    ArtistSortStandardApiType sortStandard,
+
     @Schema(description = "아티스트 성별")
     List<ArtistGenderApiType> artistGenderApiTypes,
 
@@ -27,6 +33,10 @@ public record ArtistFilterPaginationApiRequest(
 ) {
 
     public ArtistFilterPaginationApiRequest {
+        if (sortStandard == null) {
+            sortStandard = ArtistSortStandardApiType.ENGLISH_NAME_ASC;
+        }
+
         if (artistGenderApiTypes == null || artistGenderApiTypes.isEmpty()) {
             artistGenderApiTypes = List.of();
         }
@@ -42,6 +52,8 @@ public record ArtistFilterPaginationApiRequest(
 
     public ArtistFilterPaginationServiceRequest toServiceRequest(UUID userId) {
         return ArtistFilterPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
+            .sortStandard(sortStandard)
             .artistGenderApiTypes(artistGenderApiTypes)
             .artistApiTypes(artistApiTypes)
             .genreIds(genreIds)

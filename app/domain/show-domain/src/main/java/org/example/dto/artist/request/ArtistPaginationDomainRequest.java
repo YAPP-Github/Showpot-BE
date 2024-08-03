@@ -12,7 +12,8 @@ public record ArtistPaginationDomainRequest(
     int size,
     ArtistSortStandardDomainType sortStandard,
     UUID cursor,
-    List<UUID> artistIds
+    List<UUID> artistIds,
+    ArtistFilterDomain artistFilterDomain
 ) {
 
 }

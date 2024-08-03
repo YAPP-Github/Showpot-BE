@@ -2,7 +2,7 @@ package org.example.fixture.dto;
 
 import java.util.List;
 import java.util.UUID;
-import org.example.dto.artist.request.ArtistFilterPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistFilterDomain;
 import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.vo.ArtistGender;
@@ -17,7 +17,8 @@ public class ArtistRequestDtoFixture {
         int size,
         ArtistSortStandardDomainType artistSortStandardDomainType,
         UUID cursor,
-        List<UUID> artistIds
+        List<UUID> artistIds,
+        ArtistFilterDomain artistFilterDomain
     ) {
         return ArtistPaginationDomainRequest.builder()
             .subscriptionStatus(subscriptionStatus)
@@ -25,24 +26,7 @@ public class ArtistRequestDtoFixture {
             .sortStandard(artistSortStandardDomainType)
             .cursor(cursor)
             .artistIds(artistIds)
-            .build();
-    }
-
-    public static ArtistFilterPaginationDomainRequest artistFilterPaginationDomainRequest(
-        List<ArtistGender> artistGenders,
-        List<ArtistType> artistTypes,
-        List<UUID> genreIds,
-        List<UUID> artistIds,
-        UUID cursor,
-        int size
-    ) {
-        return ArtistFilterPaginationDomainRequest.builder()
-            .artistGenders(artistGenders)
-            .artistTypes(artistTypes)
-            .genreIds(genreIds)
-            .artistIds(artistIds)
-            .cursor(cursor)
-            .size(size)
+            .artistFilterDomain(artistFilterDomain)
             .build();
     }
 
