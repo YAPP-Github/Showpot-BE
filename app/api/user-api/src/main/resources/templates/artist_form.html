@@ -25,6 +25,7 @@
         <select name="artistGenderApiType" id="artistGenderApiType" class="form-control">
           <option value="MAN" th:selected="${artist.artistGenderApiType} == 'MAN'">남성</option>
           <option value="WOMAN" th:selected="${artist.artistGenderApiType} == 'WOMAN'">여성</option>
+          <option value="WOMAN" th:selected="${artist.artistGenderApiType} == 'MIXED'">혼성</option>
         </select>
       </div>
       <div class="form-group mb-3">

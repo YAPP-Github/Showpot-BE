@@ -27,6 +27,7 @@
           <div th:switch="${artist.artistGenderApiType.name()}">
             <span th:case="'MAN'" th:text="'남성'"></span>
             <span th:case="'WOMAN'" th:text="'여성'"></span>
+            <span th:case="'MIXED'" th:text="'혼성'"></span>
           </div>
         </td>
         <td>
