@@ -1,6 +1,7 @@
 package show.fixture.dto;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.time.LocalDate;
@@ -27,7 +28,8 @@ public class ShowDtoFixture {
             .location("test_location")
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .showTicketingSites(getTicketingInfoApiResponse())
+            .showTicketingSites(getTicketingSites())
+            .showTicketingDates(getShowTicketingDates())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -42,7 +44,7 @@ public class ShowDtoFixture {
             .location("test_location")
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .showTicketingSiteInfos(getTicketingInfoApiResponse())
+            .showTicketingSiteInfos(getTicketingSites())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -59,10 +61,17 @@ public class ShowDtoFixture {
         );
     }
 
-    private static Map<String, String> getTicketingInfoApiResponse() {
+    private static Map<String, String> getTicketingSites() {
         return Map.of(
             "YES24", "https://YES24URL",
             "인터파크", "https://인터파크URL"
+        );
+    }
+
+    private static Map<TicketingApiType, LocalDate> getShowTicketingDates() {
+        return Map.of(
+            TicketingApiType.PRE, LocalDate.of(2024, 10, 1),
+            TicketingApiType.NORMAL, LocalDate.of(2024, 10, 12)
         );
     }
 }

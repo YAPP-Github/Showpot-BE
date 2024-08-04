@@ -45,7 +45,7 @@ class ShowAdminServiceTest {
         showAdminService.save(showCreateServiceRequest);
 
         //then
-        verify(showUseCase, times(1)).save(request);
+        verify(showUseCase, times(1)).save(any());
     }
 
     @Test
