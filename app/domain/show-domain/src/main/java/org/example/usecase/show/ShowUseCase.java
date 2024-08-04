@@ -15,8 +15,6 @@ import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
 import org.example.entity.show.ShowSearch;
 import org.example.entity.show.ShowTicketingTime;
-import org.example.error.ShowError;
-import org.example.exception.BusinessException;
 import org.example.repository.show.ShowRepository;
 import org.example.repository.show.ShowTicketingTimeRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
@@ -58,18 +56,16 @@ public class ShowUseCase {
     }
 
     public ShowDetailDomainResponse findShowDetail(UUID id) {
-        return showRepository.findShowDetailById(id)
-            .orElseThrow(NoSuchElementException::new);
+        return showRepository.findShowDetailById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public ShowInfoDomainResponse findShowInfo(UUID id) {
-        return showRepository.findShowInfoById(id)
-            .orElseThrow(() -> new BusinessException(ShowError.ENTITY_NOT_FOUND_ERROR));
+        return showRepository.findShowInfoById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional
     public void updateShow(UUID id, Show newShow, List<UUID> newArtistIds, List<UUID> newGenreIds) {
-        Show show = findShowOrThrowNoSuchElementException(id);
+        Show show = findShowById(id);
         show.changeShowInfo(newShow);
 
         updateShowArtist(newArtistIds, show);
@@ -116,8 +112,7 @@ public class ShowUseCase {
 
     @Transactional
     public void deleteShow(UUID id) {
-        //TODO
-        Show show = findShowOrThrowNoSuchElementException(id);
+        Show show = findShowById(id);
         show.softDelete();
 
         List<ShowArtist> showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
@@ -139,7 +134,7 @@ public class ShowUseCase {
     }
 
 
-    private Show findShowOrThrowNoSuchElementException(UUID id) {
+    private Show findShowById(UUID id) {
         return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

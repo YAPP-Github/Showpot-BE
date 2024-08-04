@@ -2,14 +2,17 @@ package com.example.show.service;
 
 
 import com.example.component.FileUploadComponent;
+import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.entity.show.Show;
+import org.example.exception.BusinessException;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +32,20 @@ public class ShowAdminService {
     }
 
     public List<ShowInfoServiceResponse> findAllShowInfos() {
-        List<ShowInfoDomainResponse> showInfoDomainRespons = showUseCase.findAllShowInfos();
-        return showInfoDomainRespons.stream()
+        List<ShowInfoDomainResponse> showInfoDomainResponse = showUseCase.findAllShowInfos();
+        return showInfoDomainResponse.stream()
             .map(ShowInfoServiceResponse::new)
             .toList();
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {
-        ShowInfoDomainResponse showInfoDomainResponse = showUseCase.findShowInfo(id);
+        ShowInfoDomainResponse showInfoDomainResponse;
+        try {
+            showInfoDomainResponse = showUseCase.findShowInfo(id);
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        }
+
         return new ShowInfoServiceResponse(showInfoDomainResponse);
     }
 
@@ -44,11 +53,23 @@ public class ShowAdminService {
         String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
         Show show = showUpdateServiceRequest.toShowWithImageUrl(imageUrl);
 
-        showUseCase.updateShow(id, show, showUpdateServiceRequest.artistIds(),
-            showUpdateServiceRequest.genreIds());
+        try {
+            showUseCase.updateShow(
+                id,
+                show,
+                showUpdateServiceRequest.artistIds(),
+                showUpdateServiceRequest.genreIds()
+            );
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        }
     }
 
     public void deleteShow(UUID id) {
-        showUseCase.deleteShow(id);
+        try {
+            showUseCase.deleteShow(id);
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        }
     }
 }

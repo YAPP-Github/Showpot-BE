@@ -1,6 +1,7 @@
 package org.example.usecase.genre;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.request.GenrePaginationDomainRequest;
@@ -9,8 +10,6 @@ import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.genre.Genre;
 import org.example.entity.show.ShowGenre;
-import org.example.error.GenreError;
-import org.example.exception.BusinessException;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
 import org.example.repository.show.showgenre.ShowGenreRepository;
@@ -55,8 +54,7 @@ public class GenreUseCase {
     }
 
     public Genre findGenreById(UUID id) {
-        return genreRepository.findById(id)
-            .orElseThrow(() -> new BusinessException(GenreError.ENTITY_NOT_FOUND_ERROR));
+        return genreRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public List<Genre> findAllGenresInIds(List<UUID> genreIds) {

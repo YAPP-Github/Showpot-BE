@@ -16,8 +16,6 @@ import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.artist.ArtistSearch;
 import org.example.entity.show.ShowArtist;
-import org.example.error.ArtistError;
-import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.artist.artistsearch.ArtistSearchRepository;
@@ -55,7 +53,7 @@ public class ArtistUseCase {
 
     public ArtistDetailDomainResponse findArtistDetailById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
-            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+            .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Artist> findAllArtistInIds(List<UUID> ids) {

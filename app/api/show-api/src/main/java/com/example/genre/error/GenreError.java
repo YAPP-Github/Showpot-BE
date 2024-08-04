@@ -1,10 +1,9 @@
-package com.example.show.service.error;
+package com.example.genre.error;
 
 import org.example.exception.BusinessError;
 
-public enum ShowError implements BusinessError {
-
-    DETAIL_NOT_FOUND {
+public enum GenreError implements BusinessError {
+    ENTITY_NOT_FOUND {
         @Override
         public int getHttpStatus() {
             return 404;
@@ -12,17 +11,17 @@ public enum ShowError implements BusinessError {
 
         @Override
         public String getErrorCode() {
-            return "SHW-001";
+            return "GER-001";
         }
 
         @Override
         public String getClientMessage() {
-            return "해당 공연을 찾을 수 없습니다.";
+            return "존재하지 않은 장르입니다.";
         }
 
         @Override
         public String getLogMessage() {
-            return "공연 ID에 매칭되는 정보를 찾을 수 없습니다.";
+            return "요청 값이 잘못 처리되었습니다.";
         }
-    }
+    },
 }
