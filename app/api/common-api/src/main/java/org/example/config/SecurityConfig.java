@@ -38,10 +38,10 @@ public class SecurityConfig {
                 configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(registry -> registry
-                .requestMatchers(getMatcherForAnyone())
-                .permitAll()
                 .requestMatchers(getMatcherForUserAndAdmin())
                 .hasAnyRole("USER", "ADMIN")
+                .requestMatchers(getMatcherForAnyone())
+                .permitAll()
                 .anyRequest()
                 .hasAnyRole("ADMIN")
             )
@@ -74,6 +74,7 @@ public class SecurityConfig {
             antMatcher(HttpMethod.GET, "/api/v1/artists"),
             antMatcher(HttpMethod.GET, "/api/v1/genres"),
             antMatcher(HttpMethod.GET, "/api/v1/shows"),
+            antMatcher(HttpMethod.GET, "/api/v1/shows/{showId}"),
             antMatcher(HttpMethod.GET, "/api/v1/artists/search/**"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/search/**"),
             antMatcher(HttpMethod.GET, "/api/v1/artists/filter"),

@@ -2,6 +2,7 @@ package com.example.show.controller.dto.response;
 
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.show.controller.dto.param.ShowTicketingSiteApiParam;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,25 +13,28 @@ public record ShowInfoApiResponse(
     UUID id,
     String title,
     String content,
-    LocalDate date,
+    LocalDate startDate,
+    LocalDate endDate,
     String location,
     String image,
     SeatInfoApiResponse seatInfoApiResponse,
-    TicketingInfoApiResponse ticketingInfoApiResponse,
+    List<ShowTicketingSiteApiParam> ticketingSites,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
-
 ) {
     public ShowInfoApiResponse(ShowInfoServiceResponse showInfoServiceResponse) {
         this(
             showInfoServiceResponse.id(),
             showInfoServiceResponse.title(),
             showInfoServiceResponse.content(),
-            showInfoServiceResponse.date(),
+            showInfoServiceResponse.startDate(),
+            showInfoServiceResponse.startDate(),
             showInfoServiceResponse.location(),
             showInfoServiceResponse.image(),
             showInfoServiceResponse.seatInfoApiResponse(),
-            showInfoServiceResponse.ticketingInfoApiResponse(),
+            showInfoServiceResponse.ticketingSiteInfos().stream()
+                .map(ShowTicketingSiteApiParam::from)
+                .toList(),
             showInfoServiceResponse.artistKoreanNameResponses(),
             showInfoServiceResponse.genreNameResponses()
         );

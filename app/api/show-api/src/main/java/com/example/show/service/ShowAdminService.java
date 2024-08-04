@@ -8,6 +8,7 @@ import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
@@ -20,24 +21,23 @@ public class ShowAdminService {
     private final FileUploadComponent fileUploadComponent;
 
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
-        String imageUrl = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
-        Show show = showCreateServiceRequest.toShowWithImageUrl(imageUrl);
+        String imageURL = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
 
         showUseCase.save(
-            show,
-            showCreateServiceRequest.artistIds(),
-            showCreateServiceRequest.genreIds()
+            showCreateServiceRequest.toDomainRequest(imageURL)
         );
     }
 
     public List<ShowInfoServiceResponse> findAllShowInfos() {
-        return showUseCase.findAllShowInfos().stream()
+        List<ShowInfoDomainResponse> showInfoDomainRespons = showUseCase.findAllShowInfos();
+        return showInfoDomainRespons.stream()
             .map(ShowInfoServiceResponse::new)
             .toList();
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {
-        return new ShowInfoServiceResponse(showUseCase.findShowInfo(id));
+        ShowInfoDomainResponse showInfoDomainResponse = showUseCase.findShowInfo(id);
+        return new ShowInfoServiceResponse(showInfoDomainResponse);
     }
 
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {

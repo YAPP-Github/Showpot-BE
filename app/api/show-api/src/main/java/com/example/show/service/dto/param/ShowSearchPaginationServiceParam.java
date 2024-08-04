@@ -16,7 +16,7 @@ public record ShowSearchPaginationServiceParam(
         this(
             showSearchDomainResponse.id(),
             showSearchDomainResponse.title(),
-            showSearchDomainResponse.date(),
+            showSearchDomainResponse.startDate(),
             showSearchDomainResponse.location(),
             showSearchDomainResponse.image()
         );

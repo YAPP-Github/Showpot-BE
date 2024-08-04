@@ -16,8 +16,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.response.ArtistDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.genre.response.GenreDomainResponse;
 import org.example.dto.genre.response.GenreNameDomainResponse;
+import org.example.dto.show.response.ShowDetailDomainResponse;
+import org.example.dto.show.response.ShowDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.entity.show.Show;
 import org.springframework.stereotype.Repository;
@@ -29,6 +33,53 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    public Optional<ShowDetailDomainResponse> findShowDetailById(UUID id) {
+        return Optional.ofNullable(
+            createShowJoinArtistAndGenreQuery()
+                .where(show.id.eq(id))
+                .transform(
+                    groupBy(show.id).as(
+                        Projections.constructor(
+                            ShowDetailDomainResponse.class,
+                            Projections.constructor(
+                                ShowDomainResponse.class,
+                                show.id,
+                                show.title,
+                                show.content,
+                                show.startDate,
+                                show.endDate,
+                                show.location,
+                                show.image,
+                                show.seatPrices,
+                                show.ticketingSites
+                            ),
+                            set(
+                                Projections.constructor(
+                                    ArtistDomainResponse.class,
+                                    artist.id,
+                                    artist.koreanName,
+                                    artist.englishName,
+                                    artist.image,
+                                    artist.country,
+                                    artist.artistGender,
+                                    artist.artistType
+                                )
+                            ),
+                            set(
+                                Projections.constructor(
+                                    GenreDomainResponse.class,
+                                    genre.id,
+                                    genre.name
+                                )
+                            )
+                        )
+                    )
+                )
+                .get(id)
+        );
+    }
+
+    @Override
     public List<ShowInfoDomainResponse> findAllShowInfos() {
         return createShowJoinArtistAndGenreQuery()
             .transform(
@@ -38,11 +89,12 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                         show.id,
                         show.title,
                         show.content,
-                        show.date,
+                        show.startDate,
+                        show.endDate,
                         show.location,
                         show.image,
-                        show.seatPrice,
-                        show.ticketing,
+                        show.seatPrices,
+                        show.ticketingSites,
                         set(
                             Projections.constructor(
                                 ArtistKoreanNameDomainResponse.class,
@@ -74,11 +126,12 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.id,
                             show.title,
                             show.content,
-                            show.date,
+                            show.startDate,
+                            show.endDate,
                             show.location,
                             show.image,
-                            show.seatPrice,
-                            show.ticketing,
+                            show.seatPrices,
+                            show.ticketingSites,
                             set(
                                 Projections.constructor(
                                     ArtistKoreanNameDomainResponse.class,

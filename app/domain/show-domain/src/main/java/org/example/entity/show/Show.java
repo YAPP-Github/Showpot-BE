@@ -12,8 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
-import org.example.entity.show.info.SeatPrice;
-import org.example.entity.show.info.Ticketing;
+import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.TicketingSites;
 import org.example.util.StringNormalizer;
 
 @Entity
@@ -28,8 +28,11 @@ public class Show extends BaseEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
 
     @Column(name = "location", nullable = false)
     private String location;
@@ -38,21 +41,30 @@ public class Show extends BaseEntity {
     private String image;
 
     @Enumerated
-    private SeatPrice seatPrice;
+    private SeatPrices seatPrices;
 
     @Enumerated
-    private Ticketing ticketing;
+    private TicketingSites ticketingSites;
 
     @Builder
-    private Show(String title, String content, LocalDate date, String location, String image,
-        SeatPrice seatPrice, Ticketing ticketing) {
+    private Show(
+        String title,
+        String content,
+        LocalDate startDate,
+        LocalDate endDate,
+        String location,
+        String image,
+        SeatPrices seatPrices,
+        TicketingSites ticketingSites
+    ) {
         this.title = title;
         this.content = content;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
         this.image = image;
-        this.seatPrice = seatPrice;
-        this.ticketing = ticketing;
+        this.seatPrices = seatPrices;
+        this.ticketingSites = ticketingSites;
     }
 
     public List<ShowArtist> toShowArtist(List<UUID> artistIds) {
@@ -83,10 +95,9 @@ public class Show extends BaseEntity {
     public void changeShowInfo(Show newShow) {
         this.title = newShow.title;
         this.content = newShow.content;
-        this.date = newShow.date;
+        this.startDate = newShow.startDate;
         this.location = newShow.location;
         this.image = newShow.image;
-        this.seatPrice = newShow.seatPrice;
-        this.ticketing = newShow.ticketing;
+        this.seatPrices = newShow.seatPrices;
     }
 }
