@@ -28,9 +28,9 @@ public class ShowRequestDtoFixture {
             .endDate(LocalDate.EPOCH)
             .location("test_location")
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponse())
+            .priceInformation(getSeatInfoApiResponse())
             .showTicketingSites(getTicketingSites())
-            .showTicketingDates(getShowTicketingDates())
+            .ticketingTimes(getShowTicketingDates())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -44,7 +44,7 @@ public class ShowRequestDtoFixture {
             .endDate(LocalDate.EPOCH)
             .location("test_location")
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponse())
+            .seatInfoApiResponse(getSeatInfoApiResponses())
             .showTicketingSiteInfos(getTicketingSites())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
@@ -62,7 +62,16 @@ public class ShowRequestDtoFixture {
             .build();
     }
 
-    private static SeatInfoApiResponse getSeatInfoApiResponse() {
+    private static Map<String, Integer> getSeatInfoApiResponse() {
+        return Map.of(
+            "VIP", 150000,
+            "R", 120000,
+            "S", 100000,
+            "A", 80000
+        );
+    }
+
+    private static SeatInfoApiResponse getSeatInfoApiResponses() {
         return new SeatInfoApiResponse(
             Map.of(
                 "VIP", 150000,

@@ -1,6 +1,5 @@
 package com.example.show.controller.dto.request;
 
-import com.example.show.controller.dto.response.SeatInfoApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
@@ -66,19 +65,18 @@ public record ShowCreateApiForm(
             .endDate(endDate)
             .location(location)
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponse())
+            .priceInformation(getPriceInformation())
             .showTicketingSites(getTicketingSitesApiResponse())
-            .showTicketingDates(getTicketingDatesApiResponse())
+            .ticketingTimes(getTicketingDatesApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
     }
 
-    private SeatInfoApiResponse getSeatInfoApiResponse() {
-        Map<String, Integer> priceInformation = IntStream.range(0, seatTypes.size())
+    private Map<String, Integer> getPriceInformation() {
+        return IntStream.range(0, seatTypes.size())
             .boxed()
             .collect(Collectors.toMap(seatTypes::get, pricesPerSeatType::get));
-        return new SeatInfoApiResponse(priceInformation);
     }
 
     private Map<String, String> getTicketingSitesApiResponse() {

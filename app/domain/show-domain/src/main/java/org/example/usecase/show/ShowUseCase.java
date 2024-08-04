@@ -38,16 +38,16 @@ public class ShowUseCase {
         ShowCreationDomainRequest request
     ) {
         Show show = request.toShow();
-        showRepository.save(request.toShow());
-        showSearchRepository.save(request.toShowSearch(show));
+        showRepository.save(show);
+        showSearchRepository.save(show.toShowSearch());
 
-        List<ShowArtist> showArtists = request.toShowArtist(show);
+        List<ShowArtist> showArtists = show.toShowArtist(request.artistIds());
         showArtistRepository.saveAll(showArtists);
 
-        List<ShowGenre> showGenres = request.toShowGenre(show);
+        List<ShowGenre> showGenres = show.toShowGenre(request.genreIds());
         showGenreRepository.saveAll(showGenres);
 
-        List<ShowTicketingTime> showTicketingTimes = request.toShowTicketing(show);
+        List<ShowTicketingTime> showTicketingTimes = show.toShowTicketingTime(request.showTicketingTimes());
         showTicketingTimeRepository.saveAll(showTicketingTimes);
     }
 
