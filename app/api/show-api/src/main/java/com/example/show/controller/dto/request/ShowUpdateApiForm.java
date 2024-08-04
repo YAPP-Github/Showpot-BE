@@ -46,7 +46,7 @@ public record ShowUpdateApiForm(
     List<String> ticketBookingSites,
 
     @NotNull(message = "티켓팅 예약 사이트 URL는 필수 요청값 입니다.")
-    List<String> ticketingSiteUrls,
+    List<String> ticketingSiteURL,
 
     @NotNull(message = "아티스트 ID는 필수 요청값 입니다.")
     List<UUID> artistIds,
@@ -80,6 +80,6 @@ public record ShowUpdateApiForm(
     private Map<String, String> getTicketingInfoApiResponse() {
         return IntStream.range(0, ticketBookingSites.size())
             .boxed()
-            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
+            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteURL::get));
     }
 }

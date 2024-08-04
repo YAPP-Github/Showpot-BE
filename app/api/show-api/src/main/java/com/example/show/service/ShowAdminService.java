@@ -21,13 +21,10 @@ public class ShowAdminService {
     private final FileUploadComponent fileUploadComponent;
 
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
-        String imageUrl = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
-        Show show = showCreateServiceRequest.toShowWithImageUrl(imageUrl);
+        String imageURL = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
 
         showUseCase.save(
-            show,
-            showCreateServiceRequest.artistIds(),
-            showCreateServiceRequest.genreIds()
+            showCreateServiceRequest.toDomainRequest(imageURL)
         );
     }
 

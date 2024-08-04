@@ -9,12 +9,6 @@
       <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
     </div>
 
-    <!-- 티켓 오픈일 입력 -->
-    <div class="form-group mb-3">
-      <label style="font-weight: bold;">티켓 오픈일</label>
-      <input type="datetime-local" name="ticketOpenTime" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-    </div>
-
     <!-- 장소 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">장소</label>
@@ -80,12 +74,12 @@
       </div>
     </div>
 
-    <!-- 좌석별 가격 입력 -->
+    <!-- 티켓팅 유형별 날짜 입력 -->
     <div class="form-group mb-3">
-      <label style="font-weight: bold;">좌석별 가격</label>
-      <div id="priceFieldsContainer">
+      <label style="font-weight: bold;">티켓팅 날짜</label>
+      <div id="ticketingDateFieldsContainer">
         <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
-          <button type="button" class="btn btn-secondary" onclick="addPriceField()">좌석 추가</button>
+          <button type="button" class="btn btn-secondary" onclick="addTicketingDateField()">티켓팅 날짜 추가</button>
         </div>
       </div>
     </div>
@@ -93,9 +87,19 @@
     <!-- 티켓팅 사이트 입력 -->
     <div class="form-group mb-3">
       <label style="font-weight: bold;">티켓팅 사이트</label>
-      <div id="ticketingFieldsContainer">
+      <div id="ticketingSiteFieldsContainer">
         <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
-          <button type="button" class="btn btn-secondary" onclick="addTicketingField()">티켓팅 사이트 추가</button>
+          <button type="button" class="btn btn-secondary" onclick="addTicketingSiteField()">티켓팅 사이트 추가</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 좌석별 가격 입력 -->
+    <div class="form-group mb-3">
+      <label style="font-weight: bold;">좌석별 가격</label>
+      <div id="priceFieldsContainer">
+        <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="addPriceField()">좌석 추가</button>
         </div>
       </div>
     </div>
@@ -107,7 +111,42 @@
 
   </form>
 </div>
+
 <script layout:fragment="script" type='text/javascript'>
+
+  function addTicketingDateField() {
+    const container = document.getElementById('ticketingDateFieldsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'form-group';
+    newField.innerHTML = `
+      <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+        <select name="ticketingTypes" id="ticketingTypes" class="form-control">
+          <option value="">티켓팅 종류 선택</option>
+          <option value="PRE">선예매</option>
+          <option value="NORMAL">일반예매</option>
+          <option value="ADDITIONAL">추가예매</option>
+        </select>
+        <input type="date" name="ticketingDates" id="ticketingDates" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
+      </div>
+    `;
+    container.appendChild(newField);
+  }
+
+  function addTicketingSiteField() {
+    const container = document.getElementById('ticketingSiteFieldsContainer');
+    const newField = document.createElement('div');
+    newField.className = 'form-group';
+    newField.innerHTML = `
+      <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
+        <input type="text" class="form-control" name="ticketBookingSites" id="ticketBookingSites" required style="width: 150px;" placeholder="티켓팅 사이트">
+        <input type="url" class="form-control" name="ticketingSiteURL" id="ticketingSiteURL" required style="width: 150px;" placeholder="URL">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
+      </div>
+    `;
+    container.appendChild(newField);
+  }
+
   function addPriceField() {
     const container = document.getElementById('priceFieldsContainer');
     const newField = document.createElement('div');
@@ -119,20 +158,6 @@
           <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
         </div>
       `;
-    container.appendChild(newField);
-  }
-
-  function addTicketingField() {
-    const container = document.getElementById('ticketingFieldsContainer');
-    const newField = document.createElement('div');
-    newField.className = 'form-group';
-    newField.innerHTML = `
-      <div class="mb-3" style="display: flex; align-items: center; gap: 10px;">
-        <input type="text" class="form-control" name="ticketBookingSites" id="ticketBookingSites" required style="width: 150px;" placeholder="티켓팅 사이트">
-        <input type="url" class="form-control" name="ticketingSiteUrls" id="ticketingSiteUrls" required style="width: 150px;" placeholder="URL">
-        <button type="button" class="btn btn-danger btn-sm" onclick="removeField(this)">삭제</button>
-      </div>
-    `;
     container.appendChild(newField);
   }
 

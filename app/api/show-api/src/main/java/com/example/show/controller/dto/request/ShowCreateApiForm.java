@@ -1,11 +1,11 @@
 package com.example.show.controller.dto.request;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,20 +33,23 @@ public record ShowCreateApiForm(
     @NotNull(message = "공연 포스터는 필수 요청값 입니다.")
     MultipartFile post,
 
-    @NotNull(message = "공연 좌석 타입은 필수 요청값 입니다.")
-    List<String> seatTypes,
+    @NotNull(message = "공연 티켓팅 종류는 필수 요청값 입니다.")
+    List<TicketingApiType> ticketingTypes,
 
-    @NotNull(message = "공연 좌석별 가격은 필수 요청값 입니다.")
-    List<Integer> pricesPerSeatType,
-
-    @NotNull(message = "공연 티켓 오픈 시간은 필수 요청값 입니다.")
-    LocalDateTime ticketOpenTime,
+    @NotNull(message = "공연 티켓팅 종류는 필수 요청값 입니다.")
+    List<LocalDate> ticketingDates,
 
     @NotNull(message = "티켓팅 예약 사이트명은 필수 요청값 입니다.")
     List<String> ticketBookingSites,
 
     @NotNull(message = "티켓팅 예약 사이트 URL는 필수 요청값 입니다.")
-    List<String> ticketingSiteUrls,
+    List<String> ticketingSiteURL,
+
+    @NotNull(message = "공연 좌석 타입은 필수 요청값 입니다.")
+    List<String> seatTypes,
+
+    @NotNull(message = "공연 좌석별 가격은 필수 요청값 입니다.")
+    List<Integer> pricesPerSeatType,
 
     @NotNull(message = "아티스트 ID는 필수 요청값 입니다.")
     List<UUID> artistIds,
@@ -64,7 +67,8 @@ public record ShowCreateApiForm(
             .location(location)
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .showTicketingSiteInfos(getTicketingInfoApiResponse())
+            .showTicketingSites(getTicketingSitesApiResponse())
+            .showTicketingDates(getTicketingDatesApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
@@ -77,9 +81,15 @@ public record ShowCreateApiForm(
         return new SeatInfoApiResponse(priceInformation);
     }
 
-    private Map<String, String> getTicketingInfoApiResponse() {
+    private Map<String, String> getTicketingSitesApiResponse() {
         return IntStream.range(0, ticketBookingSites.size())
             .boxed()
-            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
+            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteURL::get));
+    }
+
+    private Map<TicketingApiType, LocalDate> getTicketingDatesApiResponse() {
+        return IntStream.range(0, ticketingTypes.size())
+            .boxed()
+            .collect(Collectors.toMap(ticketingTypes::get, ticketingDates::get));
     }
 }

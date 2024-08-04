@@ -13,6 +13,7 @@ import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.util.UUID;
+import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.entity.show.Show;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
@@ -38,12 +39,13 @@ class ShowAdminServiceTest {
                 showCreateServiceRequest.post()
             )
         ).willReturn("test_imageUrl");
+        ShowCreationDomainRequest request = showCreateServiceRequest.toDomainRequest("test_imageUrl");
 
         //when
         showAdminService.save(showCreateServiceRequest);
 
         //then
-        verify(showUseCase, times(1)).save(any(Show.class), anyList(), anyList());
+        verify(showUseCase, times(1)).save(request);
     }
 
     @Test

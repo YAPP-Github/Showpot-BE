@@ -27,7 +27,7 @@ public class ShowDtoFixture {
             .location("test_location")
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .showTicketingSiteInfos(getTicketingInfoApiResponse())
+            .showTicketingSites(getTicketingInfoApiResponse())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
