@@ -37,7 +37,7 @@ create table artist
     id           uuid         not null,
     country      varchar(255) not null,
     english_name varchar(255) not null,
-    gender       varchar(255) not null check (gender in ('MAN', 'WOMAN')),
+    gender       varchar(255) not null check (gender in ('MAN', 'WOMAN', 'MIXED')),
     image        varchar(255) not null,
     korean_name  varchar(255) not null,
     type         varchar(255) not null check (type in ('SOLO', 'GROUP')),
