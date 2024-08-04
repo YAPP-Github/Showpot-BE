@@ -18,10 +18,9 @@ public record ShowInfoApiResponse(
     String location,
     String image,
     SeatInfoApiResponse seatInfoApiResponse,
-    List<ShowTicketingSiteApiParam> showTicketingSiteApiParams,
+    List<ShowTicketingSiteApiParam> ticketingSites,
     List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
     List<GenreNameServiceResponse> genreNameResponses
-
 ) {
     public ShowInfoApiResponse(ShowInfoServiceResponse showInfoServiceResponse) {
         this(
