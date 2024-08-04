@@ -1,7 +1,6 @@
 package com.example.show.controller.dto.request;
 
 import com.example.show.controller.dto.response.SeatInfoApiResponse;
-import com.example.show.controller.dto.response.TicketingInfoApiResponse;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,8 +21,11 @@ public record ShowUpdateApiForm(
     @NotBlank(message = "공연 내용은 필수 요청값 입니다.")
     String content,
 
-    @NotNull(message = "공연 날짜는 필수 요청값 입니다.")
-    LocalDate date,
+    @NotNull(message = "공연 시작 날짜는 필수 요청값 입니다.")
+    LocalDate startDate,
+
+    @NotNull(message = "공연 종료 날짜는 필수 요청값 입니다.")
+    LocalDate endDate,
 
     @NotNull(message = "공연 장소는 필수 요청값 입니다.")
     String location,
@@ -44,7 +46,7 @@ public record ShowUpdateApiForm(
     List<String> ticketBookingSites,
 
     @NotNull(message = "티켓팅 예약 사이트 URL는 필수 요청값 입니다.")
-    List<String> ticketingSiteUrls,
+    List<String> ticketingSiteURL,
 
     @NotNull(message = "아티스트 ID는 필수 요청값 입니다.")
     List<UUID> artistIds,
@@ -57,11 +59,12 @@ public record ShowUpdateApiForm(
         return ShowUpdateServiceRequest.builder()
             .title(title)
             .content(content)
-            .date(date)
+            .startDate(startDate)
+            .endDate(endDate)
             .location(location)
             .post(post)
             .seatInfoApiResponse(getSeatInfoApiResponse())
-            .ticketingInfoApiResponse(getTicketingInfoApiResponse())
+            .showTicketingSiteInfos(getTicketingInfoApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
@@ -74,11 +77,9 @@ public record ShowUpdateApiForm(
         return new SeatInfoApiResponse(priceInformation);
     }
 
-    private TicketingInfoApiResponse getTicketingInfoApiResponse() {
-        Map<String, String> ticketingInformation = IntStream.range(0, ticketBookingSites.size())
+    private Map<String, String> getTicketingInfoApiResponse() {
+        return IntStream.range(0, ticketBookingSites.size())
             .boxed()
-            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteUrls::get));
-        return new TicketingInfoApiResponse(ticketOpenTime, ticketingInformation);
+            .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteURL::get));
     }
-
 }

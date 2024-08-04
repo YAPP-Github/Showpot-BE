@@ -5,20 +5,26 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 @Embeddable
-public class SeatPrice {
+@NoArgsConstructor
+public class SeatPrices {
 
     @Type(JsonType.class)
     @Column(name = "seat_price", columnDefinition = "jsonb", nullable = false)
-    private Map<String, Integer> priceInformation = new HashMap<>();
+    private Map<String, Integer> priceBySeat = new HashMap<>();
 
     public void savePriceInformation(String seatType, Integer price) {
-        priceInformation.put(seatType, price);
+        priceBySeat.put(seatType, price);
     }
 
-    public Map<String, Integer> getPriceInformation() {
-        return new HashMap<>(priceInformation);
+    public Map<String, Integer> getPriceBySeat() {
+        return new HashMap<>(priceBySeat);
+    }
+
+    public SeatPrices(Map<String, Integer> priceBySeat) {
+        this.priceBySeat = priceBySeat;
     }
 }

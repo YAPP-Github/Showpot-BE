@@ -131,28 +131,7 @@ public class ShowController {
         @PathVariable("showId") UUID showId
     ) {
         return ResponseEntity.ok(
-            new ShowDetailApiResponse(
-                showId,
-                "2021 서울재즈페스티벌",
-                new ArtistSimpleApiResponse(
-                    UUID.randomUUID(),
-                    "윈터",
-                    image
-                ),
-                new GenreSimpleApiResponse(
-                    UUID.randomUUID(),
-                    "재즈",
-                    image
-                ),
-                List.of(
-                    new TicketingAndShowInfoApiResponse(
-                        "2021-10-01 14:00:00",
-                        "2021-10-03 14:00:00",
-                        image
-                    )
-                ),
-                image
-            )
+            ShowDetailApiResponse.from(showService.getShow(showId))
         );
     }
 

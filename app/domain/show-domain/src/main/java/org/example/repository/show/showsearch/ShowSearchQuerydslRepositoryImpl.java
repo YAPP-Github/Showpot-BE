@@ -31,7 +31,8 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
                     ShowSearchDomainResponse.class,
                     show.id,
                     show.title,
-                    show.date,
+                    show.startDate,
+                    show.endDate,
                     show.location,
                     show.image
                 )

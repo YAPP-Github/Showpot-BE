@@ -1,11 +1,10 @@
 package org.example.fixture;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Map;
 import org.example.entity.show.Show;
-import org.example.entity.show.info.SeatPrice;
-import org.example.entity.show.info.Ticketing;
+import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.TicketingSites;
 
 public class ShowFixture {
 
@@ -13,21 +12,27 @@ public class ShowFixture {
         return Show.builder()
             .title("test_title")
             .content("test_content")
-            .date(LocalDate.EPOCH)
+            .startDate(LocalDate.EPOCH)
+            .endDate(LocalDate.EPOCH)
             .location("test_location")
             .image("test_image")
-            .seatPrice(getSeatPrice())
-            .ticketing(getTicketing())
+            .seatPrices(getSeatPrice())
+            .ticketingSites(getTicketingInfos())
             .build();
     }
 
-    private static SeatPrice getSeatPrice() {
-        return new SeatPrice();
+    private static SeatPrices getSeatPrice() {
+        return new SeatPrices();
     }
 
-    private static Ticketing getTicketing() {
-        Ticketing ticketing = new Ticketing();
-        ticketing.saveTicketOpenTime(LocalDateTime.of(LocalDate.EPOCH, LocalTime.MIDNIGHT));
-        return ticketing;
+    private static TicketingSites getTicketingInfos() {
+        TicketingSites ticketingSites = new TicketingSites();
+
+        Map.of(
+            "YES24", "https://YES24URL",
+            "인터파크", "https://인터파크URL"
+        ).forEach(ticketingSites::saveTicketingSite);
+
+        return ticketingSites;
     }
 }

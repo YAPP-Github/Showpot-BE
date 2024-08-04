@@ -5,18 +5,19 @@ import java.util.Set;
 import java.util.UUID;
 import org.example.dto.artist.response.ArtistKoreanNameResponse;
 import org.example.dto.genre.response.GenreNameResponse;
-import org.example.entity.show.info.SeatPrice;
-import org.example.entity.show.info.Ticketing;
+import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.TicketingSites;
 
-public record ShowInfoResponse(
+public record ShowInfoDomainResponse(
     UUID id,
     String title,
     String content,
-    LocalDate date,
+    LocalDate startDate,
+    LocalDate endDate,
     String location,
     String image,
-    SeatPrice seatPrice,
-    Ticketing ticketing,
+    SeatPrices seatPrices,
+    TicketingSites ticketingSites,
     Set<ArtistKoreanNameResponse> artistKoreanNameResponses,
     Set<GenreNameResponse> genreNameResponses
 ) {
