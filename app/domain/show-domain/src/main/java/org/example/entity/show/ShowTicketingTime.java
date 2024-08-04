@@ -3,6 +3,8 @@ package org.example.entity.show;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -22,6 +24,7 @@ import org.example.vo.TicketingType;
 public class ShowTicketingTime extends BaseEntity {
 
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TicketingType ticketingType;
 
     @Column(name = "ticketing_at", nullable = false)
