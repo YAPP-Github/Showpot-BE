@@ -23,7 +23,7 @@ public abstract class BaseEntity implements Persistable<UUID> {
     private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     @CreatedDate
-    @Column(name = "create_at", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
