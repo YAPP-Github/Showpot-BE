@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.component.FileUploadComponent;
+import com.example.mq.MessagePublisher;
 import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
@@ -23,9 +24,13 @@ class ShowAdminServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);
+    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final ShowAdminService showAdminService = new ShowAdminService(
-        showUseCase, fileUploadComponent);
+        showUseCase,
+        fileUploadComponent,
+        messagePublisher
+    );
 
     @Test
     @DisplayName("공연은 업로드된 이미지 URL과 함께 생성된다.")
