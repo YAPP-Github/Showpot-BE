@@ -6,6 +6,7 @@ import com.example.artist.vo.ArtistGenderApiType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
+import org.example.util.ValidateStatus;
 
 public record ArtistFilterTotalCountApiRequest(
     @Schema(description = "아티스트 성별")
@@ -18,18 +19,14 @@ public record ArtistFilterTotalCountApiRequest(
     List<UUID> genreIds
 ) {
 
-    public ArtistFilterTotalCountApiRequest {
-        if (artistGenderApiTypes == null || artistGenderApiTypes.isEmpty()) {
-            artistGenderApiTypes = List.of();
-        }
-
-        if (artistApiTypes == null || artistApiTypes.isEmpty()) {
-            artistApiTypes = List.of();
-        }
-
-        if (genreIds == null || genreIds.isEmpty()) {
-            genreIds = List.of();
-        }
+    public ArtistFilterTotalCountApiRequest(
+        List<ArtistGenderApiType> artistGenderApiTypes,
+        List<ArtistApiType> artistApiTypes,
+        List<UUID> genreIds
+    ) {
+        this.artistGenderApiTypes = ValidateStatus.checkNullOrEmpty(artistGenderApiTypes);
+        this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
+        this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);
     }
 
     public ArtistFilterTotalCountServiceRequest toServiceRequest(UUID userId) {

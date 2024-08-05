@@ -8,10 +8,10 @@ public record ShowSearchPaginationApiRequest(
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor,
 
-    @Parameter(description = "조회하는 데이터 개수")
+    @Parameter(description = "조회하는 데이터 개수", required = true)
     int size,
 
-    @Parameter(description = "검색어")
+    @Parameter(description = "검색어", required = true)
     String search
 ) {
 

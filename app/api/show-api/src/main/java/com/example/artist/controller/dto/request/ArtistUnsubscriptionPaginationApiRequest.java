@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
+import org.example.util.ValidateStatus;
 
 @Schema
 public record ArtistUnsubscriptionPaginationApiRequest(
@@ -44,9 +45,9 @@ public record ArtistUnsubscriptionPaginationApiRequest(
     ) {
         this.sortStandard =
             sortStandard == null ? ArtistSortStandardApiType.ENGLISH_NAME_ASC : sortStandard;
-        this.artistGenderApiTypes = checkNullOrEmpty(artistGenderApiTypes);
-        this.artistApiTypes = checkNullOrEmpty(artistApiTypes);
-        this.genreIds = checkNullOrEmpty(genreIds);
+        this.artistGenderApiTypes = ValidateStatus.checkNullOrEmpty(artistGenderApiTypes);
+        this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
+        this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);
         this.cursor = cursor;
         this.size = size;
     }
@@ -63,9 +64,5 @@ public record ArtistUnsubscriptionPaginationApiRequest(
             .cursor(cursor)
             .size(size)
             .build();
-    }
-
-    private <T> List<T> checkNullOrEmpty(List<T> list) {
-        return (list == null || list.isEmpty()) ? List.of() : list;
     }
 }
