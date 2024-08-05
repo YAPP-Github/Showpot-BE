@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +40,24 @@ public class ShowTicketingTime extends BaseEntity {
         this.ticketingType = ticketingType;
         this.ticketingAt = ticketingAt;
         this.show = show;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShowTicketingTime that = (ShowTicketingTime) o;
+        return getTicketingType() == that.getTicketingType() && Objects.equals(
+            getTicketingAt(), that.getTicketingAt()) && Objects.equals(getShow(),
+            that.getShow());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTicketingType(), getTicketingAt(), getShow());
     }
 }

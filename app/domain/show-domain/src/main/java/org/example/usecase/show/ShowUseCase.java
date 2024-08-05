@@ -69,9 +69,25 @@ public class ShowUseCase {
         Show show = findShowById(id);
         show.changeShowInfo(request.toShow());
 
+        updateShowSearch(show);
         updateShowArtist(request.artistIds(), show);
         updateShowGenre(request.genreIds(), show);
         updateShowTicketingTimes(request.showTicketingTimes(), show);
+    }
+
+    private void updateShowSearch(Show show) {
+        var newShowSearch = show.toShowSearch();
+        var currentShowSearches = showSearchRepository.findAllByShowIdAndIsDeletedFalse(
+            show.getId());
+
+        if (!currentShowSearches.contains(newShowSearch)) {
+            showSearchRepository.save(newShowSearch);
+
+            var showSearchesToRemove = currentShowSearches.stream()
+                .filter(currentShowSearch -> !newShowSearch.equals(currentShowSearch))
+                .toList();
+            showSearchesToRemove.forEach(BaseEntity::softDelete);
+        }
     }
 
     private void updateShowArtist(List<UUID> newArtistIds, Show show) {
@@ -116,23 +132,18 @@ public class ShowUseCase {
         var currentShowTicketingTimes = showTicketingTimeRepository.findAllByShowIdAndIsDeletedFalse(
             show.getId()
         );
-        var currentShowTicketingTimeIds = currentShowTicketingTimes.stream()
-            .map(BaseEntity::getId)
-            .toList();
 
         var newShowTicketingTimes = show.toShowTicketingTime(ticketingTimes);
-        var newShowTicketingTimeIds = newShowTicketingTimes.stream()
-            .map(BaseEntity::getId)
-            .toList();
-
         var ticketingTimesToAdd = newShowTicketingTimes.stream()
             .filter(
-                newTicketingTime -> !currentShowTicketingTimeIds.contains(newTicketingTime.getId()))
+                newTicketingTime ->
+                    !currentShowTicketingTimes.contains(newTicketingTime)
+            )
             .toList();
         showTicketingTimeRepository.saveAll(ticketingTimesToAdd);
 
         var showGenresToRemove = currentShowTicketingTimes.stream()
-            .filter(ticketingTime -> !newShowTicketingTimeIds.contains(ticketingTime.getId()))
+            .filter(curTicketingTime -> !newShowTicketingTimes.contains(curTicketingTime))
             .toList();
         showGenresToRemove.forEach(BaseEntity::softDelete);
     }
