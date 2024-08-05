@@ -18,9 +18,9 @@ public record ShowInfoApiResponse(
     String image,
     ShowSeatApiResponse seatInfoApiResponse,
     ShowTicketingSiteApiResponse ticketingSiteApiResponse,
+    List<ShowTicketingTimeApiResponse> ticketingTimes,
     List<ArtistKoreanNameApiResponse> artistKoreanNameResponses,
-    List<GenreNameApiResponse> genreNameResponses,
-    List<ShowTicketingTimeApiResponse> ticketingTimes
+    List<GenreNameApiResponse> genreNameResponses
 ) {
 
     public ShowInfoApiResponse(ShowInfoServiceResponse showInfoServiceResponse) {
@@ -34,14 +34,14 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.image(),
             ShowSeatApiResponse.from(showInfoServiceResponse.seats()),
             ShowTicketingSiteApiResponse.from(showInfoServiceResponse.ticketingSiteInfos()),
+            showInfoServiceResponse.ticketingSites().stream()
+                .map(ShowTicketingTimeApiResponse::from)
+                .toList(),
             showInfoServiceResponse.artistKoreanNameResponses().stream()
                 .map(ArtistKoreanNameApiResponse::new)
                 .toList(),
             showInfoServiceResponse.genreNameResponses().stream()
                 .map(GenreNameApiResponse::new)
-                .toList(),
-            showInfoServiceResponse.ticketingSites().stream()
-                .map(ShowTicketingTimeApiResponse::from)
                 .toList()
         );
     }

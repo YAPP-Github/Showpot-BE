@@ -6,6 +6,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
+import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
@@ -14,7 +15,7 @@ import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
 import org.example.entity.show.ShowSearch;
-import org.example.entity.show.ShowTicketingTime;
+import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.repository.show.ShowRepository;
 import org.example.repository.show.ShowTicketingTimeRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
@@ -41,13 +42,14 @@ public class ShowUseCase {
         showRepository.save(show);
         showSearchRepository.save(show.toShowSearch());
 
-        List<ShowArtist> showArtists = show.toShowArtist(request.artistIds());
+        var showArtists = show.toShowArtist(request.artistIds());
         showArtistRepository.saveAll(showArtists);
 
-        List<ShowGenre> showGenres = show.toShowGenre(request.genreIds());
+        var showGenres = show.toShowGenre(request.genreIds());
         showGenreRepository.saveAll(showGenres);
 
-        List<ShowTicketingTime> showTicketingTimes = show.toShowTicketingTime(request.showTicketingTimes());
+        var showTicketingTimes = show.toShowTicketingTime(
+            request.showTicketingTimes());
         showTicketingTimeRepository.saveAll(showTicketingTimes);
     }
 
@@ -64,48 +66,74 @@ public class ShowUseCase {
     }
 
     @Transactional
-    public void updateShow(UUID id, Show newShow, List<UUID> newArtistIds, List<UUID> newGenreIds) {
+    public void updateShow(UUID id, ShowUpdateDomainRequest request) {
         Show show = findShowById(id);
-        show.changeShowInfo(newShow);
+        show.changeShowInfo(request.toShow());
 
-        updateShowArtist(newArtistIds, show);
-        updateShowGenre(newGenreIds, show);
+        updateShowArtist(request.artistIds(), show);
+        updateShowGenre(request.genreIds(), show);
+        updateShowTicketingTimes(request.showTicketingTimes(), show);
     }
 
     private void updateShowArtist(List<UUID> newArtistIds, Show show) {
-        List<ShowArtist> currentShowArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
+        var currentShowArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
             show.getId());
-        List<UUID> currentArtistIds = currentShowArtists.stream()
+        var currentArtistIds = currentShowArtists.stream()
             .map(ShowArtist::getArtistId)
             .toList();
 
-        List<UUID> artistIdsToAdd = newArtistIds.stream()
+        var artistIdsToAdd = newArtistIds.stream()
             .filter(newArtistId -> !currentArtistIds.contains(newArtistId))
             .toList();
-        List<ShowArtist> showArtistsToAdd = show.toShowArtist(artistIdsToAdd);
+        var showArtistsToAdd = show.toShowArtist(artistIdsToAdd);
         showArtistRepository.saveAll(showArtistsToAdd);
 
-        List<ShowArtist> showArtistsToRemove = currentShowArtists.stream()
+        var showArtistsToRemove = currentShowArtists.stream()
             .filter(showArtist -> !newArtistIds.contains(showArtist.getArtistId()))
             .toList();
         showArtistsToRemove.forEach(BaseEntity::softDelete);
     }
 
     private void updateShowGenre(List<UUID> newGenreIds, Show show) {
-        List<ShowGenre> currentShowGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(
+        var currentShowGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(
             show.getId());
-        List<UUID> currentGenreIds = currentShowGenres.stream()
+        var currentGenreIds = currentShowGenres.stream()
             .map(ShowGenre::getGenreId)
             .toList();
 
-        List<UUID> genreIdsToAdd = newGenreIds.stream()
+        var genreIdsToAdd = newGenreIds.stream()
             .filter(newGenreId -> !currentGenreIds.contains(newGenreId))
             .toList();
-        List<ShowGenre> showGenresToAdd = show.toShowGenre(genreIdsToAdd);
+        var showGenresToAdd = show.toShowGenre(genreIdsToAdd);
         showGenreRepository.saveAll(showGenresToAdd);
 
-        List<ShowGenre> showGenresToRemove = currentShowGenres.stream()
+        var showGenresToRemove = currentShowGenres.stream()
             .filter(showGenre -> !newGenreIds.contains(showGenre.getGenreId()))
+            .toList();
+        showGenresToRemove.forEach(BaseEntity::softDelete);
+    }
+
+    private void updateShowTicketingTimes(ShowTicketingTimes ticketingTimes, Show show) {
+        var currentShowTicketingTimes = showTicketingTimeRepository.findAllByShowIdAndIsDeletedFalse(
+            show.getId()
+        );
+        var currentShowTicketingTimeIds = currentShowTicketingTimes.stream()
+            .map(BaseEntity::getId)
+            .toList();
+
+        var newShowTicketingTimes = show.toShowTicketingTime(ticketingTimes);
+        var newShowTicketingTimeIds = newShowTicketingTimes.stream()
+            .map(BaseEntity::getId)
+            .toList();
+
+        var ticketingTimesToAdd = newShowTicketingTimes.stream()
+            .filter(
+                newTicketingTime -> !currentShowTicketingTimeIds.contains(newTicketingTime.getId()))
+            .toList();
+        showTicketingTimeRepository.saveAll(ticketingTimesToAdd);
+
+        var showGenresToRemove = currentShowTicketingTimes.stream()
+            .filter(ticketingTime -> !newShowTicketingTimeIds.contains(ticketingTime.getId()))
             .toList();
         showGenresToRemove.forEach(BaseEntity::softDelete);
     }

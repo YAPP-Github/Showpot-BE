@@ -1,6 +1,5 @@
 package show.fixture.dto;
 
-import com.example.show.controller.dto.response.SeatInfoApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
@@ -44,8 +43,9 @@ public class ShowRequestDtoFixture {
             .endDate(LocalDate.EPOCH)
             .location("test_location")
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponses())
-            .showTicketingSiteInfos(getTicketingSites())
+            .priceInformation(getSeatInfoApiResponse())
+            .showTicketingSites(getTicketingSites())
+            .ticketingTimes(getShowTicketingDates())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -68,17 +68,6 @@ public class ShowRequestDtoFixture {
             "R", 120000,
             "S", 100000,
             "A", 80000
-        );
-    }
-
-    private static SeatInfoApiResponse getSeatInfoApiResponses() {
-        return new SeatInfoApiResponse(
-            Map.of(
-                "VIP", 150000,
-                "R", 120000,
-                "S", 100000,
-                "A", 80000
-            )
         );
     }
 

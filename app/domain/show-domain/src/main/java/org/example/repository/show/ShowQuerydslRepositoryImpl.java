@@ -142,15 +142,18 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                     groupBy(show.id).as(
                         Projections.constructor(
                             ShowInfoDomainResponse.class,
-                            show.id,
-                            show.title,
-                            show.content,
-                            show.startDate,
-                            show.endDate,
-                            show.location,
-                            show.image,
-                            show.seatPrices,
-                            show.ticketingSites,
+                            Projections.constructor(
+                                ShowDomainResponse.class,
+                                show.id,
+                                show.title,
+                                show.content,
+                                show.startDate,
+                                show.endDate,
+                                show.location,
+                                show.image,
+                                show.seatPrices,
+                                show.ticketingSites
+                            ),
                             set(
                                 Projections.constructor(
                                     ArtistKoreanNameDomainResponse.class,
@@ -163,6 +166,13 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                                     GenreNameDomainResponse.class,
                                     genre.id,
                                     genre.name
+                                )
+                            ),
+                            set(
+                                Projections.constructor(
+                                    ShowTicketingTimeDomainResponse.class,
+                                    showTicketingTime.ticketingType,
+                                    showTicketingTime.ticketingAt
                                 )
                             )
                         )
