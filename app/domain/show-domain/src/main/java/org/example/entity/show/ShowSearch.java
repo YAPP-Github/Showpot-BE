@@ -7,7 +7,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,23 +30,5 @@ public class ShowSearch extends BaseEntity {
     private ShowSearch(String name, Show show) {
         this.name = name;
         this.show = show;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShowSearch that = (ShowSearch) o;
-        return Objects.equals(getName(), that.getName()) && Objects.equals(
-            getShow(), that.getShow());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getShow());
     }
 }
