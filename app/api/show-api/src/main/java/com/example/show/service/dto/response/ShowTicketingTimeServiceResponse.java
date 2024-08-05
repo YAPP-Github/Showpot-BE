@@ -1,14 +1,14 @@
 package com.example.show.service.dto.response;
 
 import com.example.show.controller.vo.TicketingApiType;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import org.example.dto.show.response.ShowTicketingTimeDomainResponse;
 
 @Builder
 public record ShowTicketingTimeServiceResponse(
     TicketingApiType ticketingApiType,
-    LocalDate ticketingAt
+    LocalDateTime ticketingAt
 ) {
 
     public static ShowTicketingTimeServiceResponse from(ShowTicketingTimeDomainResponse response) {

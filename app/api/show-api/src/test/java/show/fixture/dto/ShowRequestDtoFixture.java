@@ -5,6 +5,7 @@ import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -78,10 +79,10 @@ public class ShowRequestDtoFixture {
         );
     }
 
-    private static Map<TicketingApiType, LocalDate> getShowTicketingDates() {
+    private static Map<TicketingApiType, LocalDateTime> getShowTicketingDates() {
         return Map.of(
-            TicketingApiType.PRE, LocalDate.of(2024, 10, 1),
-            TicketingApiType.NORMAL, LocalDate.of(2024, 10, 12)
+            TicketingApiType.PRE, LocalDateTime.now(),
+            TicketingApiType.NORMAL, LocalDateTime.now()
         );
     }
 }

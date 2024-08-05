@@ -2,6 +2,7 @@ package com.example.show.service.dto.request;
 
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public record ShowUpdateServiceRequest(
     MultipartFile post,
     Map<String, Integer> priceInformation,
     Map<String, String> showTicketingSites,
-    Map<TicketingApiType, LocalDate> ticketingTimes,
+    Map<TicketingApiType, LocalDateTime> ticketingTimes,
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
