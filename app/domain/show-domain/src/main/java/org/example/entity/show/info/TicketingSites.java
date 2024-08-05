@@ -3,9 +3,7 @@ package org.example.entity.show.info;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -22,11 +20,7 @@ public class TicketingSites {
         ticketingURLBySite.put(ticketingSite, ticketingURL);
     }
 
-    public List<String> getSites() {
-        return new ArrayList<>(ticketingURLBySite.keySet());
-    }
-
-    public String getURLOrNullBy(String site) {
-        return ticketingURLBySite.getOrDefault(site, null);
+    public Map<String, String> getTicketingURLBySite() {
+        return new HashMap<>(ticketingURLBySite);
     }
 }

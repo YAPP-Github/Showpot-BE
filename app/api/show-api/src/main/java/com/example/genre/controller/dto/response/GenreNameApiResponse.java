@@ -3,12 +3,12 @@ package com.example.genre.controller.dto.response;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import java.util.UUID;
 
-public record GenreNameApiFormResponse(
+public record GenreNameApiResponse(
     UUID id,
     String name
 ) {
 
-    public GenreNameApiFormResponse(GenreNameServiceResponse genreNameServiceResponse) {
+    public GenreNameApiResponse(GenreNameServiceResponse genreNameServiceResponse) {
         this (
             genreNameServiceResponse.id(),
             genreNameServiceResponse.name()

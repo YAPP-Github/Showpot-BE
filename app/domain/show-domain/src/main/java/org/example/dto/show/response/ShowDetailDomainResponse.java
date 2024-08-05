@@ -6,9 +6,9 @@ import org.example.dto.genre.response.GenreDomainResponse;
 
 public record ShowDetailDomainResponse(
     ShowDomainResponse show,
-
     Set<ArtistDomainResponse> artists,
-    Set<GenreDomainResponse> genres
+    Set<GenreDomainResponse> genres,
+    Set<ShowTicketingTimeDomainResponse> ticketingTimes
 ) {
 
 }

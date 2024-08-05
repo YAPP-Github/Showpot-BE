@@ -1,6 +1,5 @@
 package com.example.show.controller.dto.response;
 
-import com.example.show.controller.dto.param.ShowTicketingSiteApiParam;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -31,11 +30,14 @@ public record ShowDetailApiResponse(
     @Schema(description = "장르 정보")
     List<ShowGenreApiResponse> genres,
 
+    @Schema(description = "티켓팅 예매 시간 정보")
+    List<ShowTicketingTimeApiResponse> ticketingTimes,
+
     @Schema(description = "좌석 정보")
     ShowSeatApiResponse seats,
 
     @Schema(description = "티켓팅 정보 및 공연 날짜")
-    List<ShowTicketingSiteApiParam> ticketingSites
+    ShowTicketingSiteApiResponse ticketingSites
 ) {
 
     public static ShowDetailApiResponse from(ShowDetailServiceResponse show) {
@@ -55,12 +57,13 @@ public record ShowDetailApiResponse(
                     .map(ShowGenreApiResponse::from)
                     .toList()
             )
-            .seats(ShowSeatApiResponse.from((show.seats())))
-            .ticketingSites(
-                show.ticketingSites().stream()
-                    .map(ShowTicketingSiteApiParam::from)
+            .ticketingTimes(
+                show.ticketingTimes().stream()
+                    .map(ShowTicketingTimeApiResponse::from)
                     .toList()
             )
+            .seats(ShowSeatApiResponse.from((show.seats())))
+            .ticketingSites(ShowTicketingSiteApiResponse.from(show.ticketingSites()))
             .build();
     }
 }

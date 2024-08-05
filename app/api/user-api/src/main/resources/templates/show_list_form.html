@@ -14,6 +14,7 @@
         <th>이미지</th>
         <th>좌석 가격 타입</th>
         <th>티켓팅 타입</th>
+        <th>티켓팅 시간</th>
         <th>아티스트</th>
         <th>장르</th>
         <th>작업</th>
@@ -29,10 +30,10 @@
         <td>
           <img th:src="@{${show.image}}" alt="공연 이미지" width="100">
         </td>
-        <td th:text="${show.seatInfoApiResponse.priceInformation()}">좌석 가격 타입</td>
+        <td th:text="${show.seatInfoApiResponse.priceBySeat()}">좌석 가격 타입</td>
+        <td th:text="${show.ticketingSiteApiResponse.ticketingSites()}">티켓팅 사이트</td>
         <td>
-<!--          티켓팅 오픈 시간: <span class="ticket-open-time" th:text="${show.ticketingInfoApiResponse.ticketOpenTime()}">티켓팅 오픈 시간</span><br>-->
-          티켓팅 사이트: <span th:text="${show.ticketingSites()}">티켓팅 사이트</span>
+          <li th:each="time : ${show.ticketingTimes}" th:text="${time.ticketingApiType} + ' - ' + ${time.ticketingAt}">티켓팅 시간</li>
         </td>
         <td>
           <ul>
