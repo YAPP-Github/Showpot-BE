@@ -8,7 +8,7 @@ import java.util.Locale;
 public class DateTimeUtil {
 
     public static String formatLocalDateTime(LocalDateTime dateTime) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("M월 d일");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String dayOfWeek = dateTime
             .getDayOfWeek()
