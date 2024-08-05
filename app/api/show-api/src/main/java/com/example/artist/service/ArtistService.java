@@ -1,10 +1,8 @@
 package com.example.artist.service;
 
-import com.example.artist.service.dto.param.ArtistFilterPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistUnsubscriptionPaginationServiceParam;
-import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
@@ -45,20 +43,6 @@ public class ArtistService {
         return PaginationServiceResponse.of(data, response.hasNext());
     }
 
-    public PaginationServiceResponse<ArtistFilterPaginationServiceParam> filterArtist(
-        ArtistFilterPaginationServiceRequest request
-    ) {
-        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
-
-        var response = artistUseCase.findAllArtistInCursorPagination(
-            request.toDomainRequest(subscriptionArtistIds));
-        List<ArtistFilterPaginationServiceParam> data = response.data().stream()
-            .map(ArtistFilterPaginationServiceParam::new)
-            .toList();
-
-        return PaginationServiceResponse.of(data, response.hasNext());
-    }
-
     public ArtistFilterTotalCountServiceResponse filterArtistTotalCount(
         ArtistFilterTotalCountServiceRequest request
     ) {
@@ -66,7 +50,8 @@ public class ArtistService {
 
         try {
             return new ArtistFilterTotalCountServiceResponse(
-                artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
+                artistUseCase.findFilterArtistTotalCount(
+                    request.toDomainRequest(subscriptionArtistIds))
             );
         } catch (NoSuchElementException e) {
             return ArtistFilterTotalCountServiceResponse.noneTotalCount();
@@ -141,7 +126,8 @@ public class ArtistService {
     }
 
     private List<UUID> getSubscriptionArtistIds(UUID userId) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(userId);
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            userId);
 
         return subscriptions.stream()
             .map(ArtistSubscription::getArtistId)

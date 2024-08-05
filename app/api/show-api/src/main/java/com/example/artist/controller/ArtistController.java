@@ -1,10 +1,8 @@
 package com.example.artist.controller;
 
-import com.example.artist.controller.dto.param.ArtistFilterPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSearchPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistSubscriptionPaginationApiParam;
 import com.example.artist.controller.dto.param.ArtistUnsubscriptionPaginationApiParam;
-import com.example.artist.controller.dto.request.ArtistFilterPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistFilterTotalCountApiRequest;
 import com.example.artist.controller.dto.request.ArtistSearchPaginationApiRequest;
 import com.example.artist.controller.dto.request.ArtistSubscriptionApiRequest;
@@ -97,7 +95,6 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @Valid @RequestBody ArtistUnsubscriptionApiRequest request
     ) {
-        ;
         return ResponseEntity.ok(
             ArtistUnsubscriptionApiResponse.from(
                 artistService.unsubscribe(request.toServiceRequest(user.userId()))
@@ -124,32 +121,14 @@ public class ArtistController {
         );
     }
 
-    @GetMapping("/filter")
-    @Operation(summary = "필터링하기")
-    public ResponseEntity<PaginationApiResponse<ArtistFilterPaginationApiParam>> filter(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject ArtistFilterPaginationApiRequest request
-    ) {
-        var response = artistService.filterArtist(request.toServiceRequest(user.userId()));
-        var data = response.data().stream()
-            .map(ArtistFilterPaginationApiParam::from)
-            .toList();
-
-        return ResponseEntity.ok(
-            PaginationApiResponse.<ArtistFilterPaginationApiParam>builder()
-                .hasNext(response.hasNext())
-                .data(data)
-                .build()
-        );
-    }
-
     @GetMapping("/filter-total-count")
     @Operation(summary = "필터링한 데이터의 총 개수 가져오기")
     public ResponseEntity<ArtistFilterTotalCountApiResponse> filterTotalCount(
         @AuthenticationPrincipal AuthenticatedUser user,
         @Valid @RequestBody ArtistFilterTotalCountApiRequest request
     ) {
-        var response = artistService.filterArtistTotalCount(request.toServiceRequest(user.userId()));
+        var response = artistService.filterArtistTotalCount(
+            request.toServiceRequest(user.userId()));
 
         return ResponseEntity.ok(
             ArtistFilterTotalCountApiResponse.from(response.totalCount())

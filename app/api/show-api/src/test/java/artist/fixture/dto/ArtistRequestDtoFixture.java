@@ -1,7 +1,6 @@
 package artist.fixture.dto;
 
 import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
-import com.example.artist.service.dto.request.ArtistFilterPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
@@ -61,21 +60,6 @@ public class ArtistRequestDtoFixture {
             .build();
     }
 
-    public static ArtistFilterPaginationServiceRequest artistFilterPaginationServiceRequest(
-        int size
-    ) {
-        return ArtistFilterPaginationServiceRequest.builder()
-            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
-            .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
-            .artistGenderApiTypes(getArtistGenderApiTypes())
-            .artistApiTypes(getArtistApiTypes())
-            .genreIds(List.of(UUID.randomUUID()))
-            .userId(UUID.randomUUID())
-            .cursor(UUID.randomUUID())
-            .size(size)
-            .build();
-    }
-
     public static ArtistFilterTotalCountServiceRequest artistFilterTotalCountServiceRequest() {
         return ArtistFilterTotalCountServiceRequest.builder()
             .artistGenderApiTypes(getArtistGenderApiTypes())
@@ -102,10 +86,13 @@ public class ArtistRequestDtoFixture {
     ) {
         return ArtistUnsubscriptionPaginationServiceRequest.builder()
             .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
-            .size(size)
             .sortStandard(ArtistSortStandardApiType.ENGLISH_NAME_ASC)
-            .cursor(UUID.randomUUID())
+            .artistGenderApiTypes(getArtistGenderApiTypes())
+            .artistApiTypes(getArtistApiTypes())
+            .genreIds(List.of(UUID.randomUUID()))
             .userId(UUID.randomUUID())
+            .cursor(UUID.randomUUID())
+            .size(size)
             .build();
     }
 

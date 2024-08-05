@@ -1,10 +1,13 @@
 package com.example.artist.controller.dto.request;
 
 import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
+import com.example.artist.vo.ArtistApiType;
+import com.example.artist.vo.ArtistGenderApiType;
 import com.example.artist.vo.ArtistSortStandardApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import java.util.UUID;
 
 @Schema
@@ -15,6 +18,15 @@ public record ArtistUnsubscriptionPaginationApiRequest(
     )
     ArtistSortStandardApiType sortStandard,
 
+    @Parameter(description = "아티스트 성별 목록")
+    List<ArtistGenderApiType> artistGenderApiTypes,
+
+    @Parameter(description = "아티스트 타입 목록")
+    List<ArtistApiType> artistApiTypes,
+
+    @Parameter(description = "장르 ID 목록")
+    List<UUID> genreIds,
+
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor,
 
@@ -24,22 +36,36 @@ public record ArtistUnsubscriptionPaginationApiRequest(
 
     public ArtistUnsubscriptionPaginationApiRequest(
         ArtistSortStandardApiType sortStandard,
+        List<ArtistGenderApiType> artistGenderApiTypes,
+        List<ArtistApiType> artistApiTypes,
+        List<UUID> genreIds,
         UUID cursor,
         int size
     ) {
         this.sortStandard =
             sortStandard == null ? ArtistSortStandardApiType.ENGLISH_NAME_ASC : sortStandard;
+        this.artistGenderApiTypes = checkNullOrEmpty(artistGenderApiTypes);
+        this.artistApiTypes = checkNullOrEmpty(artistApiTypes);
+        this.genreIds = checkNullOrEmpty(genreIds);
         this.cursor = cursor;
         this.size = size;
     }
 
+
     public ArtistUnsubscriptionPaginationServiceRequest toServiceRequest(UUID userId) {
         return ArtistUnsubscriptionPaginationServiceRequest.builder()
             .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
-            .size(size)
             .sortStandard(sortStandard)
-            .cursor(cursor)
+            .artistGenderApiTypes(artistGenderApiTypes)
+            .artistApiTypes(artistApiTypes)
+            .genreIds(genreIds)
             .userId(userId)
+            .cursor(cursor)
+            .size(size)
             .build();
+    }
+
+    private <T> List<T> checkNullOrEmpty(List<T> list) {
+        return (list == null || list.isEmpty()) ? List.of() : list;
     }
 }

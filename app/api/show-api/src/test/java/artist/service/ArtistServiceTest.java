@@ -91,7 +91,7 @@ class ArtistServiceTest {
         int subscriptionCount = 2;
         int size = 3;
         boolean hasNext = true;
-        var request = ArtistRequestDtoFixture.artistFilterPaginationServiceRequest(size);
+        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationServiceRequest(size);
         var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(subscriptionCount);
         given(
             artistSubscriptionUseCase.findSubscriptionList(request.userId())
@@ -110,7 +110,7 @@ class ArtistServiceTest {
         );
 
         //when
-        var result = artistService.filterArtist(request);
+        var result = artistService.findArtistUnsubscriptions(request);
 
         //then
         SoftAssertions.assertSoftly(
@@ -127,7 +127,7 @@ class ArtistServiceTest {
         //given
         int subscriptionCount = 2;
         int size = 3;
-        var request = ArtistRequestDtoFixture.artistFilterPaginationServiceRequest(size);
+        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationServiceRequest(size);
         var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(subscriptionCount);
         given(
             artistSubscriptionUseCase.findSubscriptionList(request.userId())
@@ -146,7 +146,7 @@ class ArtistServiceTest {
         );
 
         //when
-        var result = artistService.filterArtist(request);
+        var result = artistService.findArtistUnsubscriptions(request);
 
         //then
         SoftAssertions.assertSoftly(

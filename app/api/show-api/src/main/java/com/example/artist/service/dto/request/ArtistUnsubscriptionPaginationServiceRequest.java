@@ -1,5 +1,7 @@
 package com.example.artist.service.dto.request;
 
+import com.example.artist.vo.ArtistApiType;
+import com.example.artist.vo.ArtistGenderApiType;
 import com.example.artist.vo.ArtistSortStandardApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
@@ -11,20 +13,36 @@ import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 @Builder
 public record ArtistUnsubscriptionPaginationServiceRequest(
     SubscriptionStatusApiType subscriptionStatusApiType,
-    int size,
     ArtistSortStandardApiType sortStandard,
+    List<ArtistGenderApiType> artistGenderApiTypes,
+    List<ArtistApiType> artistApiTypes,
+    List<UUID> genreIds,
+    UUID userId,
     UUID cursor,
-    UUID userId
+    int size
 ) {
 
     public ArtistPaginationDomainRequest toDomainRequest(List<UUID> artistIds) {
+        var artistGenders = artistGenderApiTypes.stream()
+            .map(ArtistGenderApiType::toDomainType)
+            .toList();
+        var artistTypes = artistApiTypes.stream()
+            .map(ArtistApiType::toDomainType)
+            .toList();
+
+        ArtistFilterDomain artistFilterDomain = ArtistFilterDomain.builder()
+            .artistGenders(artistGenders)
+            .artistTypes(artistTypes)
+            .genreIds(genreIds)
+            .build();
+
         return ArtistPaginationDomainRequest.builder()
             .subscriptionStatus(subscriptionStatusApiType.toDomainType())
-            .size(size)
             .sortStandard(sortStandard.toDomainType())
             .artistIds(artistIds)
             .cursor(cursor)
-            .artistFilterDomain(ArtistFilterDomain.defaultArtistFilterDomain())
+            .size(size)
+            .artistFilterDomain(artistFilterDomain)
             .build();
     }
 }
