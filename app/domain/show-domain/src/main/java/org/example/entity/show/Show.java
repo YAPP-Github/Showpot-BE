@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.entity.show.info.TicketingSites;
 import org.example.util.StringNormalizer;
 
@@ -85,12 +86,26 @@ public class Show extends BaseEntity {
             .toList();
     }
 
+    public List<ShowTicketingTime> toShowTicketingTime(ShowTicketingTimes showTicketingTimes) {
+        return showTicketingTimes.getTicketingTimeByType()
+            .entrySet()
+            .stream()
+            .map(entry -> ShowTicketingTime.builder()
+                .ticketingType(entry.getKey())
+                .ticketingAt(entry.getValue())
+                .show(this)
+                .build()
+            )
+            .toList();
+    }
+
     public ShowSearch toShowSearch() {
         return ShowSearch.builder()
             .name(StringNormalizer.removeWhitespaceAndLowerCase(title))
             .show(this)
             .build();
     }
+
 
     public void changeShowInfo(Show newShow) {
         this.title = newShow.title;

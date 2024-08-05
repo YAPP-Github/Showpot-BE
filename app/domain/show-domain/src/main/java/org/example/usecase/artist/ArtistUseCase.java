@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
 import org.example.entity.artist.ArtistSearch;
 import org.example.entity.show.ShowArtist;
-import org.example.error.ArtistError;
-import org.example.exception.BusinessException;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.artist.artistsearch.ArtistSearchRepository;
@@ -43,26 +43,34 @@ public class ArtistUseCase {
         artistGenreRepository.saveAll(artistGenres);
     }
 
-    public List<ArtistDetailResponse> findAllWithGenreNames() {
+    public List<ArtistDetailDomainResponse> findAllWithGenreNames() {
         return artistRepository.findAllWithGenreNames();
     }
 
-    public List<ArtistKoreanNameResponse> findAllArtistKoreanName() {
+    public List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName() {
         return artistRepository.findAllArtistKoreanName();
     }
 
-    public ArtistDetailResponse findArtistDetailById(UUID id) {
+    public ArtistDetailDomainResponse findArtistDetailById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
-            .orElseThrow(() -> new BusinessException(ArtistError.ENTITY_NOT_FOUND_ERROR));
+            .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Artist> findAllArtistInIds(List<UUID> ids) {
         return artistRepository.findAllInIds(ids);
     }
 
-    public ArtistDetailPaginationResponse findAllArtistInCursorPagination(
-        ArtistPaginationDomainRequest request) {
+    public ArtistPaginationDomainResponse findAllArtistInCursorPagination(
+        ArtistPaginationDomainRequest request
+    ) {
         return artistRepository.findAllWithCursorPagination(request);
+    }
+
+    public ArtistFilterTotalCountDomainResponse findFilterArtistTotalCount(
+        ArtistFilterTotalCountDomainRequest request
+    ) {
+        return artistRepository.findFilterArtistTotalCount(request)
+            .orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional
@@ -70,7 +78,8 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.changeArtistInfo(newArtist);
 
-        List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(
+            artist.getId());
 
         List<UUID> currentGenreIds = currentGenres.stream()
             .map(ArtistGenre::getGenreId)
@@ -93,18 +102,22 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.softDelete();
 
-        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(
+            artist.getId());
         artistGenres.forEach(BaseEntity::softDelete);
 
-        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(
+            artist.getId());
         showArtists.forEach(BaseEntity::softDelete);
 
-        List<ArtistSearch> artistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(artist.getId());
+        List<ArtistSearch> artistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(
+            artist.getId());
         artistSearches.forEach(BaseEntity::softDelete);
     }
 
-    public ArtistDetailPaginationResponse searchArtist(
-        ArtistSearchPaginationDomainRequest request) {
+    public ArtistPaginationDomainResponse searchArtist(
+        ArtistSearchPaginationDomainRequest request
+    ) {
         return artistSearchRepository.searchArtist(request);
     }
 

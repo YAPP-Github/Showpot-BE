@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
-import org.example.dto.artist.response.SimpleArtistResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
+import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.util.SliceUtil;
 import org.example.vo.ArtistSortStandardDomainType;
 import org.springframework.data.domain.Slice;
@@ -25,11 +25,11 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public ArtistDetailPaginationResponse searchArtist(
+    public ArtistPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request) {
-        List<SimpleArtistResponse> result = jpaQueryFactory.select(
+        List<ArtistSimpleDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
-                    SimpleArtistResponse.class,
+                    ArtistSimpleDomainResponse.class,
                     artist.id,
                     artist.koreanName,
                     artist.englishName,
@@ -43,12 +43,12 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
             .orderBy(getOrderSpecifier(request.sortStandard()))
             .fetch();
 
-        Slice<SimpleArtistResponse> simpleArtistSlices = SliceUtil.makeSlice(
+        Slice<ArtistSimpleDomainResponse> simpleArtistSlices = SliceUtil.makeSlice(
             request.size(),
             result
         );
 
-        return ArtistDetailPaginationResponse.builder()
+        return ArtistPaginationDomainResponse.builder()
             .data(simpleArtistSlices.getContent())
             .hasNext(simpleArtistSlices.hasNext())
             .build();

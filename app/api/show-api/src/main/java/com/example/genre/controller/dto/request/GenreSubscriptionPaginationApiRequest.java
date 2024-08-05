@@ -1,6 +1,7 @@
 package com.example.genre.controller.dto.request;
 
 import com.example.genre.service.dto.request.GenreSubscriptionPaginationServiceRequest;
+import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public record GenreSubscriptionPaginationApiRequest(
 
     public GenreSubscriptionPaginationServiceRequest toServiceRequest(UUID userId) {
         return GenreSubscriptionPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.SUBSCRIBED)
             .cursor(cursor)
             .size(size)
             .userId(userId)

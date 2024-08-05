@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
-import org.example.dto.genre.response.GenreNameResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.genre.response.GenreNameDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 
 @Builder
@@ -52,7 +52,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<ArtistKoreanNameServiceResponse> toArtistKoreanNameServiceResponses(
-        Set<ArtistKoreanNameResponse> artistKoreanNameResponses) {
+        Set<ArtistKoreanNameDomainResponse> artistKoreanNameResponses) {
         return artistKoreanNameResponses
             .stream()
             .map(ArtistKoreanNameServiceResponse::new)
@@ -60,7 +60,7 @@ public record ShowInfoServiceResponse(
     }
 
     private static List<GenreNameServiceResponse> toGenreNameServiceResponses(
-        Set<GenreNameResponse> genreNameResponses) {
+        Set<GenreNameDomainResponse> genreNameResponses) {
         return genreNameResponses
             .stream()
             .map(GenreNameServiceResponse::new)

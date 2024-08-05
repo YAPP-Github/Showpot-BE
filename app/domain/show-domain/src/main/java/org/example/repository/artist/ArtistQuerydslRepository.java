@@ -3,21 +3,29 @@ package org.example.repository.artist;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
-import org.example.dto.artist.response.ArtistDetailResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistDetailDomainResponse;
+import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 
 public interface ArtistQuerydslRepository {
 
-    List<ArtistDetailResponse> findAllWithGenreNames();
+    List<ArtistDetailDomainResponse> findAllWithGenreNames();
 
-    Optional<ArtistDetailResponse> findArtistWithGenreNamesById(UUID id);
+    Optional<ArtistDetailDomainResponse> findArtistWithGenreNamesById(UUID id);
 
-    List<ArtistKoreanNameResponse> findAllArtistKoreanName();
+    List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName();
 
     List<Artist> findAllInIds(List<UUID> ids);
 
-    ArtistDetailPaginationResponse findAllWithCursorPagination(ArtistPaginationDomainRequest request);
+    ArtistPaginationDomainResponse findAllWithCursorPagination(
+        ArtistPaginationDomainRequest request
+    );
+
+    Optional<ArtistFilterTotalCountDomainResponse> findFilterArtistTotalCount(
+        ArtistFilterTotalCountDomainRequest request
+    );
 }

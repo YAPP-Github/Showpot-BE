@@ -1,9 +1,9 @@
 package com.example.show.service;
 
+import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
-import com.example.show.service.error.ShowError;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class ShowService {
         try {
             showDetail = showUseCase.findShowDetail(id);
         } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.DETAIL_NOT_FOUND);
+            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
         }
 
         return ShowDetailServiceResponse.from(showDetail);

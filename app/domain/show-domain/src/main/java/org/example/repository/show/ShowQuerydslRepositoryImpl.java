@@ -17,9 +17,9 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDomainResponse;
-import org.example.dto.artist.response.ArtistKoreanNameResponse;
+import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.genre.response.GenreDomainResponse;
-import org.example.dto.genre.response.GenreNameResponse;
+import org.example.dto.genre.response.GenreNameDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
@@ -97,14 +97,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                         show.ticketingSites,
                         set(
                             Projections.constructor(
-                                ArtistKoreanNameResponse.class,
+                                ArtistKoreanNameDomainResponse.class,
                                 artist.id,
                                 artist.koreanName
                             )
                         ),
                         set(
                             Projections.constructor(
-                                GenreNameResponse.class,
+                                GenreNameDomainResponse.class,
                                 genre.id,
                                 genre.name
                             )
@@ -134,14 +134,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.ticketingSites,
                             set(
                                 Projections.constructor(
-                                    ArtistKoreanNameResponse.class,
+                                    ArtistKoreanNameDomainResponse.class,
                                     artist.id,
                                     artist.koreanName
                                 )
                             ),
                             set(
                                 Projections.constructor(
-                                    GenreNameResponse.class,
+                                    GenreNameDomainResponse.class,
                                     genre.id,
                                     genre.name
                                 )

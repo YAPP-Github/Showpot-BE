@@ -1,6 +1,16 @@
+plugins {
+    id "java-library"
+    id "java-test-fixtures"
+    id "maven-publish"
+}
+
 dependencies {
     implementation project(":app:domain:common-domain")
 
     // hypersistence utils
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.6'
+    //testFixtures
+    testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testFixturesImplementation project(":app:domain:common-domain")
+    testFixturesImplementation 'org.springframework.data:spring-data-jpa'
 }

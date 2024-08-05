@@ -16,7 +16,7 @@ public enum TicketingApiType {
         };
     }
 
-    public TicketingType toTicketingType() {
+    public TicketingType toDomainType() {
         return switch (this) {
             case PRE -> TicketingType.PRE;
             case NORMAL -> TicketingType.NORMAL;

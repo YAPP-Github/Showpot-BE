@@ -1,9 +1,9 @@
 package org.example.repository.artist.artistsearch;
 
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
-import org.example.dto.artist.response.ArtistDetailPaginationResponse;
+import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 
 public interface ArtistSearchQuerydslRepository {
 
-    ArtistDetailPaginationResponse searchArtist(ArtistSearchPaginationDomainRequest request);
+    ArtistPaginationDomainResponse searchArtist(ArtistSearchPaginationDomainRequest request);
 }
