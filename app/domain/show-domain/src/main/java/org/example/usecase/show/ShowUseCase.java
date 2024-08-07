@@ -78,8 +78,7 @@ public class ShowUseCase {
 
     public void updateShowSearch(Show show) {
         var newShowSearch = show.toShowSearch();
-        var currentShowSearches = showSearchRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
+        var currentShowSearches = findShowSearchesByShowId(show.getId());
 
         if (!currentShowSearches.contains(newShowSearch)) {
             showSearchRepository.save(newShowSearch);

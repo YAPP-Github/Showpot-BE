@@ -62,14 +62,6 @@ public class ShowAdminService {
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
         String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
 
-        try {
-            showUseCase.updateShow(
-                id,
-                showUpdateServiceRequest.toDomainRequest(imageUrl)
-            );
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
-        }
         var artistIdsToPublish = showUseCase.getArtistIdsToAdd(
             showUpdateServiceRequest.artistIds(),
             showUseCase.findShowArtistsByShowId(id)
@@ -79,6 +71,15 @@ public class ShowAdminService {
             showUpdateServiceRequest.genreIds(),
             showUseCase.findShowGenresByShowId(id)
         );
+
+        try {
+            showUseCase.updateShow(
+                id,
+                showUpdateServiceRequest.toDomainRequest(imageUrl)
+            );
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        }
 
         if (!artistIdsToPublish.isEmpty() || !genreIdsToPublish.isEmpty()) {
             messagePublisher.publish(
