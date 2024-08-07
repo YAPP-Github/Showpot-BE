@@ -68,17 +68,14 @@ public class SecurityConfig {
             antMatcher("/css/**"),
             antMatcher("/js/**"),
             antMatcher(HttpMethod.POST, "/api/v1/users/login"),
-            antMatcher(HttpMethod.POST, "/admin/login"),
-            antMatcher(HttpMethod.POST, "/admin/signup"),
             antMatcher(HttpMethod.GET, "/admin/home"),
-            antMatcher(HttpMethod.GET, "/api/v1/artists"),
-            antMatcher(HttpMethod.GET, "/api/v1/genres"),
-            antMatcher(HttpMethod.GET, "/api/v1/shows"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/{showId}"),
             antMatcher(HttpMethod.GET, "/api/v1/artists/search/**"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/search/**"),
             antMatcher(HttpMethod.GET, "/api/v1/artists/filter"),
-            antMatcher(HttpMethod.GET, "/api/v1/artists/filter-total-count")
+            antMatcher(HttpMethod.GET, "/api/v1/artists/filter-total-count"),
+            antMatcher(HttpMethod.GET, "/api/v1/artists/unsubscriptions"),
+            antMatcher(HttpMethod.GET, "/api/v1/genres/unsubscriptions")
         );
     }
 
@@ -92,11 +89,9 @@ public class SecurityConfig {
             antMatcher(HttpMethod.POST, "/api/v1/genres/subscribe"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/unsubscribe"),
             antMatcher(HttpMethod.GET, "/api/v1/genres/subscriptions"),
-            antMatcher(HttpMethod.GET, "/api/v1/genres/unsubscriptions"),
             antMatcher(HttpMethod.POST, "/api/v1/artists/subscribe"),
             antMatcher(HttpMethod.POST, "/api/v1/artists/unsubscribe"),
-            antMatcher(HttpMethod.GET, "/api/v1/artists/subscriptions"),
-            antMatcher(HttpMethod.GET, "/api/v1/artists/unsubscriptions")
+            antMatcher(HttpMethod.GET, "/api/v1/artists/subscriptions")
         );
     }
 }
