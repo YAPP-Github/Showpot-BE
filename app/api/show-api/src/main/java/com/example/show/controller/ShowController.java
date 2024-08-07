@@ -21,10 +21,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
-import org.example.security.dto.AuthenticatedUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -186,7 +184,6 @@ public class ShowController {
     @GetMapping("/search")
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ShowSearchPaginationApiParam>> search(
-        @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ShowSearchPaginationApiRequest request
     ) {
         var response = showService.searchShow(request.toServiceRequest());
