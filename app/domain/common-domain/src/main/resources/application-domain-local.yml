@@ -5,6 +5,8 @@ spring:
     show-sql: true
     open-in-view: false
     generate-ddl: true
-
-# 별도의 datasource 불필요
-# docker-compose 의존성이 ConnectionDetails를 통해 자동으로 DB 연결
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true

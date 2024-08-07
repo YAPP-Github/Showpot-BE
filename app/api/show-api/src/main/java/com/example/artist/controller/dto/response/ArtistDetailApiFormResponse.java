@@ -20,7 +20,8 @@ public record ArtistDetailApiFormResponse(
 ) {
 
     public ArtistDetailApiFormResponse(
-        ArtistDetailServiceResponse artistDetailServiceResponse) {
+        ArtistDetailServiceResponse artistDetailServiceResponse
+    ) {
         this(
             artistDetailServiceResponse.id(),
             artistDetailServiceResponse.koreanName(),
