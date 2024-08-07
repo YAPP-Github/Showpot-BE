@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.repository.TokenRepository;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
@@ -26,7 +25,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTHandler jwtHandler;
     private final TokenProcessor tokenProcessor;
-    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -42,6 +40,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
         if (request.getHeader("Authorization") != null) {
             handleAccessToken(request);
+        }
+
+        if (request.getHeader("Authorization") == null) {
+            handleGuestUser();
         }
 
         filterChain.doFilter(request, response);
@@ -65,6 +67,18 @@ public class JWTFilter extends OncePerRequestFilter {
                 authenticatedUser,
                 null,
                 List.of(new SimpleGrantedAuthority(authenticatedUser.role().getAuthority()))
+            )
+        );
+    }
+
+    private void handleGuestUser() {
+        AuthenticatedUser guestUser = AuthenticatedUser.getGuestUser();
+
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(
+                guestUser,
+                null,
+                List.of(new SimpleGrantedAuthority(guestUser.role().getAuthority()))
             )
         );
     }
