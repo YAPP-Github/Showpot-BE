@@ -3,10 +3,10 @@ package com.example.show.service;
 
 import com.example.component.FileUploadComponent;
 import com.example.mq.MessagePublisher;
-import com.example.mq.SubscriptionMessageApiRequest;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
+import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,7 +34,7 @@ public class ShowAdminService {
 
         messagePublisher.publish(
             "registerShow",
-            SubscriptionMessageApiRequest.of(
+            SubscriptionMessageServiceRequest.of(
                 showCreateServiceRequest.artistIds(),
                 showCreateServiceRequest.genreIds()
             )
@@ -83,7 +83,7 @@ public class ShowAdminService {
         if (!artistIdsToPublish.isEmpty() || !genreIdsToPublish.isEmpty()) {
             messagePublisher.publish(
                 "updateShow",
-                SubscriptionMessageApiRequest.of(
+                SubscriptionMessageServiceRequest.of(
                     artistIdsToPublish,
                     genreIdsToPublish
                 )

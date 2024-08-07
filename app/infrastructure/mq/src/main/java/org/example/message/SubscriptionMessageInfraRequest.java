@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.mq.SubscriptionMessageApiRequest;
+import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -11,7 +11,7 @@ public record SubscriptionMessageInfraRequest(
     List<UUID> genreIds
 ) {
 
-    public static SubscriptionMessageInfraRequest from(SubscriptionMessageApiRequest apiRequest) {
+    public static SubscriptionMessageInfraRequest from(SubscriptionMessageServiceRequest apiRequest) {
         return SubscriptionMessageInfraRequest.builder()
             .artistIds(apiRequest.artistIds())
             .genreIds(apiRequest.genreIds())

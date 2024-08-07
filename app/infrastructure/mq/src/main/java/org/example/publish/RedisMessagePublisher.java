@@ -1,7 +1,7 @@
 package org.example.publish;
 
 import com.example.mq.MessagePublisher;
-import com.example.mq.SubscriptionMessageApiRequest;
+import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.message.SubscriptionMessageInfraRequest;
@@ -16,7 +16,7 @@ public class RedisMessagePublisher implements MessagePublisher {
     private final RedisTemplate<String, Object> template;
 
     @Override
-    public void publish(String topic, SubscriptionMessageApiRequest apiRequest) {
+    public void publish(String topic, SubscriptionMessageServiceRequest apiRequest) {
         template.convertAndSend(topic, SubscriptionMessageInfraRequest.from(apiRequest));
         log.info("Message published successfully to topic: {}", topic);
         log.info("Message Contents ( artistIds : {}, genreIds : {} )",
