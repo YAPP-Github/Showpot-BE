@@ -174,7 +174,7 @@ create table show_ticketing_time
     created_at   timestamp(6) not null,
     is_deleted   boolean      not null,
     updated_at   timestamp(6) not null,
-    ticketing_at date         not null,
+    ticketing_at timestamp(6) not null,
     show_id      uuid         not null,
     type         varchar(255) not null check (type in ('PRE', 'NORMAL', 'ADDITIONAL')),
     primary key (id)
