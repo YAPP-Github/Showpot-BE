@@ -36,7 +36,7 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-    @GetMapping
+    @GetMapping("/unsubscriptions")
     @Operation(summary = "구독하지 않은 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
         @AuthenticationPrincipal AuthenticatedUser user,

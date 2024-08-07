@@ -1,7 +1,6 @@
 package show.service;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -14,7 +13,7 @@ import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.util.UUID;
 import org.example.dto.show.request.ShowCreationDomainRequest;
-import org.example.entity.show.Show;
+import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,8 @@ class ShowAdminServiceTest {
                 showCreateServiceRequest.post()
             )
         ).willReturn("test_imageUrl");
-        ShowCreationDomainRequest request = showCreateServiceRequest.toDomainRequest("test_imageUrl");
+        ShowCreationDomainRequest request = showCreateServiceRequest.toDomainRequest(
+            "test_imageUrl");
 
         //when
         showAdminService.save(showCreateServiceRequest);
@@ -65,7 +65,6 @@ class ShowAdminServiceTest {
         showAdminService.updateShow(showId, showUpdateServiceRequest);
 
         //then
-        verify(showUseCase, times(1)).updateShow(eq(showId), any(Show.class), anyList(), anyList());
+        verify(showUseCase, times(1)).updateShow(eq(showId), any(ShowUpdateDomainRequest.class));
     }
-
 }

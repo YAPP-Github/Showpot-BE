@@ -1,12 +1,10 @@
 package com.example.show.service.dto.response;
 
-import com.example.show.service.dto.param.ShowTicketingSiteServiceParam;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.dto.show.response.ShowDetailDomainResponse;
-import org.example.entity.show.info.TicketingSites;
 
 @Builder
 public record ShowDetailServiceResponse(
@@ -18,12 +16,12 @@ public record ShowDetailServiceResponse(
     String posterImageURL,
     List<ShowArtistServiceResponse> artists,
     List<ShowGenreServiceResponse> genres,
+    List<ShowTicketingTimeServiceResponse> ticketingTimes,
     ShowSeatServiceResponse seats,
-    List<ShowTicketingSiteServiceParam> ticketingSites
+    ShowTicketingSiteServiceResponse ticketingSites
 ) {
 
     public static ShowDetailServiceResponse from(ShowDetailDomainResponse show) {
-        TicketingSites ticketingSites = show.show().ticketingSites();
         return ShowDetailServiceResponse.builder()
             .id(show.show().id())
             .title(show.show().title())
@@ -40,16 +38,12 @@ public record ShowDetailServiceResponse(
                     .map(ShowGenreServiceResponse::from)
                     .toList()
             )
-            .seats(ShowSeatServiceResponse.from(show.show().seatPrices()))
-            .ticketingSites(
-                ticketingSites.getSites().stream()
-                    .map(site -> ShowTicketingSiteServiceParam.builder()
-                        .siteName(site)
-                        .siteURL(ticketingSites.getURLOrNullBy(site))
-                        .build()
-                    )
-                    .toList()
+            .ticketingTimes(show.ticketingTimes().stream()
+                .map(ShowTicketingTimeServiceResponse::from)
+                .toList()
             )
+            .seats(ShowSeatServiceResponse.from(show.show().seatPrices()))
+            .ticketingSites(ShowTicketingSiteServiceResponse.from(show.show().ticketingSites()))
             .build();
     }
 }

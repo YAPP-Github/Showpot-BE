@@ -8,7 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,14 +28,14 @@ public class ShowTicketingTime extends BaseEntity {
     private TicketingType ticketingType;
 
     @Column(name = "ticketing_at", nullable = false)
-    private LocalDate ticketingAt;
+    private LocalDateTime ticketingAt;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
     @Builder
-    public ShowTicketingTime(TicketingType ticketingType, LocalDate ticketingAt, Show show) {
+    public ShowTicketingTime(TicketingType ticketingType, LocalDateTime ticketingAt, Show show) {
         this.ticketingType = ticketingType;
         this.ticketingAt = ticketingAt;
         this.show = show;

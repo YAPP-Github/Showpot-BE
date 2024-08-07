@@ -1,8 +1,7 @@
 package com.example.show.controller.dto.response;
 
-import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
-import com.example.genre.service.dto.response.GenreNameServiceResponse;
-import com.example.show.controller.dto.param.ShowTicketingSiteApiParam;
+import com.example.artist.controller.dto.response.ArtistKoreanNameApiResponse;
+import com.example.genre.controller.dto.response.GenreNameApiResponse;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,11 +16,13 @@ public record ShowInfoApiResponse(
     LocalDate endDate,
     String location,
     String image,
-    SeatInfoApiResponse seatInfoApiResponse,
-    List<ShowTicketingSiteApiParam> ticketingSites,
-    List<ArtistKoreanNameServiceResponse> artistKoreanNameResponses,
-    List<GenreNameServiceResponse> genreNameResponses
+    ShowSeatApiResponse seatInfoApiResponse,
+    ShowTicketingSiteApiResponse ticketingSiteApiResponse,
+    List<ShowTicketingTimeApiResponse> ticketingTimes,
+    List<ArtistKoreanNameApiResponse> artistKoreanNameResponses,
+    List<GenreNameApiResponse> genreNameResponses
 ) {
+
     public ShowInfoApiResponse(ShowInfoServiceResponse showInfoServiceResponse) {
         this(
             showInfoServiceResponse.id(),
@@ -31,12 +32,17 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.startDate(),
             showInfoServiceResponse.location(),
             showInfoServiceResponse.image(),
-            showInfoServiceResponse.seatInfoApiResponse(),
-            showInfoServiceResponse.ticketingSiteInfos().stream()
-                .map(ShowTicketingSiteApiParam::from)
+            ShowSeatApiResponse.from(showInfoServiceResponse.seats()),
+            ShowTicketingSiteApiResponse.from(showInfoServiceResponse.ticketingSiteInfos()),
+            showInfoServiceResponse.ticketingSites().stream()
+                .map(ShowTicketingTimeApiResponse::from)
                 .toList(),
-            showInfoServiceResponse.artistKoreanNameResponses(),
-            showInfoServiceResponse.genreNameResponses()
+            showInfoServiceResponse.artistKoreanNameResponses().stream()
+                .map(ArtistKoreanNameApiResponse::new)
+                .toList(),
+            showInfoServiceResponse.genreNameResponses().stream()
+                .map(GenreNameApiResponse::new)
+                .toList()
         );
     }
 

@@ -5,6 +5,7 @@ import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public record ShowCreateApiForm(
     List<TicketingApiType> ticketingTypes,
 
     @NotNull(message = "공연 티켓팅 종류는 필수 요청값 입니다.")
-    List<LocalDate> ticketingDates,
+    List<LocalDateTime> ticketingDates,
 
     @NotNull(message = "티켓팅 예약 사이트명은 필수 요청값 입니다.")
     List<String> ticketBookingSites,
@@ -85,7 +86,7 @@ public record ShowCreateApiForm(
             .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteURL::get));
     }
 
-    private Map<TicketingApiType, LocalDate> getTicketingDatesApiResponse() {
+    private Map<TicketingApiType, LocalDateTime> getTicketingDatesApiResponse() {
         return IntStream.range(0, ticketingTypes.size())
             .boxed()
             .collect(Collectors.toMap(ticketingTypes::get, ticketingDates::get));

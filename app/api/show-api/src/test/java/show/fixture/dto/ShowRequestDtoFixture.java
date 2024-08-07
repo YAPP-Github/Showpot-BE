@@ -1,11 +1,11 @@
 package show.fixture.dto;
 
-import com.example.show.controller.dto.response.SeatInfoApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -44,8 +44,9 @@ public class ShowRequestDtoFixture {
             .endDate(LocalDate.EPOCH)
             .location("test_location")
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponses())
-            .showTicketingSiteInfos(getTicketingSites())
+            .priceInformation(getSeatInfoApiResponse())
+            .showTicketingSites(getTicketingSites())
+            .ticketingTimes(getShowTicketingDates())
             .artistIds(List.of(UUID.randomUUID()))
             .genreIds(List.of(UUID.randomUUID()))
             .build();
@@ -71,17 +72,6 @@ public class ShowRequestDtoFixture {
         );
     }
 
-    private static SeatInfoApiResponse getSeatInfoApiResponses() {
-        return new SeatInfoApiResponse(
-            Map.of(
-                "VIP", 150000,
-                "R", 120000,
-                "S", 100000,
-                "A", 80000
-            )
-        );
-    }
-
     private static Map<String, String> getTicketingSites() {
         return Map.of(
             "YES24", "https://YES24URL",
@@ -89,10 +79,10 @@ public class ShowRequestDtoFixture {
         );
     }
 
-    private static Map<TicketingApiType, LocalDate> getShowTicketingDates() {
+    private static Map<TicketingApiType, LocalDateTime> getShowTicketingDates() {
         return Map.of(
-            TicketingApiType.PRE, LocalDate.of(2024, 10, 1),
-            TicketingApiType.NORMAL, LocalDate.of(2024, 10, 12)
+            TicketingApiType.PRE, LocalDateTime.now(),
+            TicketingApiType.NORMAL, LocalDateTime.now()
         );
     }
 }

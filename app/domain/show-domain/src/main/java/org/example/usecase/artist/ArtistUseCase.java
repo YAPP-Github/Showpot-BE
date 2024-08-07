@@ -78,6 +78,27 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.changeArtistInfo(newArtist);
 
+        updateArtistSearch(artist);
+        updateArtistGenre(newGenreIds, artist);
+    }
+
+    private void updateArtistSearch(Artist artist) {
+        List<ArtistSearch> newArtistSearches = artist.toArtistSearch();
+        List<ArtistSearch> currentArtistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(
+            artist.getId());
+
+        List<ArtistSearch> artistSearchesToAdd = newArtistSearches.stream()
+            .filter(newArtistSearch -> !currentArtistSearches.contains(newArtistSearch))
+            .toList();
+        artistSearchRepository.saveAll(artistSearchesToAdd);
+
+        List<ArtistSearch> artistSearchesToRemove = currentArtistSearches.stream()
+            .filter(curArtistSearch -> !newArtistSearches.contains(curArtistSearch))
+            .toList();
+        artistSearchesToRemove.forEach(BaseEntity::softDelete);
+    }
+
+    private void updateArtistGenre(List<UUID> newGenreIds, Artist artist) {
         List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(
             artist.getId());
 

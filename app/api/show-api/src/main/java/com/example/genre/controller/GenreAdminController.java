@@ -2,7 +2,7 @@ package com.example.genre.controller;
 
 import com.example.genre.controller.dto.request.GenreCreateApiForm;
 import com.example.genre.controller.dto.request.GenreUpdateApiForm;
-import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
+import com.example.genre.controller.dto.response.GenreNameApiResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import jakarta.validation.Valid;
@@ -38,8 +38,8 @@ public class GenreAdminController {
 
     @GetMapping("/list")
     public String findAllGenres(Model model) {
-        List<GenreNameApiFormResponse> genreNameApiFormResponses = genreAdminService.findAllGenres().stream()
-            .map(response -> new GenreNameApiFormResponse(response.id(), response.name()))
+        List<GenreNameApiResponse> genreNameApiFormResponses = genreAdminService.findAllGenres().stream()
+            .map(response -> new GenreNameApiResponse(response.id(), response.name()))
             .toList();
 
         model.addAttribute("genres", genreNameApiFormResponses);
@@ -50,7 +50,7 @@ public class GenreAdminController {
     public String findGenre(@PathVariable("id") UUID id, Model model) {
         GenreNameServiceResponse genreNameServiceResponse = genreAdminService.findGenreById(
             id);
-        GenreNameApiFormResponse genreNameApiFormResponse = new GenreNameApiFormResponse(
+        GenreNameApiResponse genreNameApiFormResponse = new GenreNameApiResponse(
             genreNameServiceResponse.id(),
             genreNameServiceResponse.name()
         );

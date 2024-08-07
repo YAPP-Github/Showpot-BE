@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
-import org.example.entity.show.Show;
 import org.example.exception.BusinessException;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
@@ -51,14 +50,11 @@ public class ShowAdminService {
 
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
         String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
-        Show show = showUpdateServiceRequest.toShowWithImageUrl(imageUrl);
 
         try {
             showUseCase.updateShow(
                 id,
-                show,
-                showUpdateServiceRequest.artistIds(),
-                showUpdateServiceRequest.genreIds()
+                showUpdateServiceRequest.toDomainRequest(imageUrl)
             );
         } catch (NoSuchElementException e) {
             throw new BusinessException(ShowError.ENTITY_NOT_FOUND);

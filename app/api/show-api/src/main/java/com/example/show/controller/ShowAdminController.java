@@ -2,7 +2,7 @@ package com.example.show.controller;
 
 import com.example.artist.controller.dto.response.ArtistKoreanNameApiResponse;
 import com.example.artist.service.ArtistAdminService;
-import com.example.genre.controller.dto.response.GenreNameApiFormResponse;
+import com.example.genre.controller.dto.response.GenreNameApiResponse;
 import com.example.genre.service.GenreAdminService;
 import com.example.show.controller.dto.request.ShowCreateApiForm;
 import com.example.show.controller.dto.request.ShowUpdateApiForm;
@@ -38,9 +38,9 @@ public class ShowAdminController {
             .map(ArtistKoreanNameApiResponse::new)
             .toList();
 
-        List<GenreNameApiFormResponse> genres = genreAdminService.findAllGenres()
+        List<GenreNameApiResponse> genres = genreAdminService.findAllGenres()
             .stream()
-            .map(GenreNameApiFormResponse::new)
+            .map(GenreNameApiResponse::new)
             .toList();
 
         model.addAttribute("artists", artists);
@@ -72,9 +72,9 @@ public class ShowAdminController {
             .map(ArtistKoreanNameApiResponse::new)
             .toList();
 
-        List<GenreNameApiFormResponse> genres = genreAdminService.findAllGenres()
+        List<GenreNameApiResponse> genres = genreAdminService.findAllGenres()
             .stream()
-            .map(GenreNameApiFormResponse::new)
+            .map(GenreNameApiResponse::new)
             .toList();
 
         ShowInfoServiceResponse showInfoServiceResponse = showAdminService.findShowInfo(id);

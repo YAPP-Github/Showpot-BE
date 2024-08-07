@@ -1,6 +1,6 @@
 package com.example.show.controller.dto.request;
 
-import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,20 +33,23 @@ public record ShowUpdateApiForm(
     @NotNull(message = "공연 포스터는 필수 요청값 입니다.")
     MultipartFile post,
 
-    @NotNull(message = "공연 좌석 타입은 필수 요청값 입니다.")
-    List<String> seatTypes,
+    @NotNull(message = "공연 티켓팅 종류는 필수 요청값 입니다.")
+    List<TicketingApiType> ticketingTypes,
 
-    @NotNull(message = "공연 좌석별 가격은 필수 요청값 입니다.")
-    List<Integer> pricesPerSeatType,
-
-    @NotNull(message = "공연 티켓 오픈 시간은 필수 요청값 입니다.")
-    LocalDateTime ticketOpenTime,
+    @NotNull(message = "공연 티켓팅 종류는 필수 요청값 입니다.")
+    List<LocalDateTime> ticketingDates,
 
     @NotNull(message = "티켓팅 예약 사이트명은 필수 요청값 입니다.")
     List<String> ticketBookingSites,
 
     @NotNull(message = "티켓팅 예약 사이트 URL는 필수 요청값 입니다.")
     List<String> ticketingSiteURL,
+
+    @NotNull(message = "공연 좌석 타입은 필수 요청값 입니다.")
+    List<String> seatTypes,
+
+    @NotNull(message = "공연 좌석별 가격은 필수 요청값 입니다.")
+    List<Integer> pricesPerSeatType,
 
     @NotNull(message = "아티스트 ID는 필수 요청값 입니다.")
     List<UUID> artistIds,
@@ -63,23 +66,29 @@ public record ShowUpdateApiForm(
             .endDate(endDate)
             .location(location)
             .post(post)
-            .seatInfoApiResponse(getSeatInfoApiResponse())
-            .showTicketingSiteInfos(getTicketingInfoApiResponse())
+            .priceInformation(getPriceInformation())
+            .showTicketingSites(getTicketingSitesApiResponse())
+            .ticketingTimes(getTicketingDatesApiResponse())
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
     }
 
-    private SeatInfoApiResponse getSeatInfoApiResponse() {
-        Map<String, Integer> priceInformation = IntStream.range(0, seatTypes.size())
+    private Map<String, Integer> getPriceInformation() {
+        return IntStream.range(0, seatTypes.size())
             .boxed()
             .collect(Collectors.toMap(seatTypes::get, pricesPerSeatType::get));
-        return new SeatInfoApiResponse(priceInformation);
     }
 
-    private Map<String, String> getTicketingInfoApiResponse() {
+    private Map<String, String> getTicketingSitesApiResponse() {
         return IntStream.range(0, ticketBookingSites.size())
             .boxed()
             .collect(Collectors.toMap(ticketBookingSites::get, ticketingSiteURL::get));
+    }
+
+    private Map<TicketingApiType, LocalDateTime> getTicketingDatesApiResponse() {
+        return IntStream.range(0, ticketingTypes.size())
+            .boxed()
+            .collect(Collectors.toMap(ticketingTypes::get, ticketingDates::get));
     }
 }

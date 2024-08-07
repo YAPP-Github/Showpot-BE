@@ -9,7 +9,8 @@ public record ArtistKoreanNameApiResponse(
 ) {
 
     public ArtistKoreanNameApiResponse(
-        ArtistKoreanNameServiceResponse artistKoreanNameServiceResponse) {
+        ArtistKoreanNameServiceResponse artistKoreanNameServiceResponse
+    ) {
         this(
             artistKoreanNameServiceResponse.id(),
             artistKoreanNameServiceResponse.koreanName()

@@ -1,13 +1,15 @@
 package com.example.show.service.dto.request;
 
-import com.example.show.controller.dto.response.SeatInfoApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.show.Show;
+import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.entity.show.info.SeatPrices;
+import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.entity.show.info.TicketingSites;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,32 +22,52 @@ public record ShowUpdateServiceRequest(
     LocalDate endDate,
     String location,
     MultipartFile post,
-    SeatInfoApiResponse seatInfoApiResponse,
-    Map<String, String> showTicketingSiteInfos,
+    Map<String, Integer> priceInformation,
+    Map<String, String> showTicketingSites,
+    Map<TicketingApiType, LocalDateTime> ticketingTimes,
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
 
-    public Show toShowWithImageUrl(String imageUrl) {
-        TicketingSites ticketingSites = new TicketingSites();
-        showTicketingSiteInfos.forEach(ticketingSites::saveTicketingSite);
-
-        return Show.builder()
+    public ShowUpdateDomainRequest toDomainRequest(String imageURL) {
+        return ShowUpdateDomainRequest.builder()
             .title(title)
             .content(content)
             .startDate(startDate)
             .endDate(endDate)
             .location(location)
-            .image(imageUrl)
-            .seatPrices(getSeatPrice())
-            .ticketingSites(ticketingSites)
+            .posterImageURL(imageURL)
+            .showSeats(getSeatPrice())
+            .showTicketingSites(getTicketingSites())
+            .showTicketingTimes(getTicketingTimes())
+            .artistIds(artistIds)
+            .genreIds(genreIds)
             .build();
     }
 
     private SeatPrices getSeatPrice() {
         SeatPrices seatPrices = new SeatPrices();
-        seatInfoApiResponse.priceInformation().forEach(seatPrices::savePriceInformation);
+        priceInformation.forEach(seatPrices::savePriceInformation);
 
         return seatPrices;
+    }
+
+    private TicketingSites getTicketingSites() {
+        TicketingSites ticketingSites = new TicketingSites();
+        showTicketingSites.forEach(ticketingSites::saveTicketingSite);
+
+        return ticketingSites;
+    }
+
+    private ShowTicketingTimes getTicketingTimes() {
+        ShowTicketingTimes showTicketingTimes = new ShowTicketingTimes();
+        ticketingTimes.forEach(
+            (apiType, date) ->
+                showTicketingTimes.saveTicketingTimes(
+                    apiType.toDomainType(),
+                    date
+                )
+        );
+        return showTicketingTimes;
     }
 }

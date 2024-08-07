@@ -32,7 +32,7 @@ public class GenreController {
 
     private final GenreService genreService;
 
-    @GetMapping
+    @GetMapping("/unsubscriptions")
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
         @AuthenticationPrincipal AuthenticatedUser user,

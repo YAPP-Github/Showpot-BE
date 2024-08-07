@@ -7,6 +7,7 @@ import static org.example.entity.genre.QGenre.genre;
 import static org.example.entity.show.QShow.show;
 import static org.example.entity.show.QShowArtist.showArtist;
 import static org.example.entity.show.QShowGenre.showGenre;
+import static org.example.entity.show.QShowTicketingTime.showTicketingTime;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,6 +24,7 @@ import org.example.dto.genre.response.GenreNameDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
+import org.example.dto.show.response.ShowTicketingTimeDomainResponse;
 import org.example.entity.show.Show;
 import org.springframework.stereotype.Repository;
 
@@ -71,6 +73,13 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                                     genre.id,
                                     genre.name
                                 )
+                            ),
+                            set(
+                                Projections.constructor(
+                                    ShowTicketingTimeDomainResponse.class,
+                                    showTicketingTime.ticketingType,
+                                    showTicketingTime.ticketingAt
+                                )
                             )
                         )
                     )
@@ -86,15 +95,18 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                 groupBy(show.id).list(
                     Projections.constructor(
                         ShowInfoDomainResponse.class,
-                        show.id,
-                        show.title,
-                        show.content,
-                        show.startDate,
-                        show.endDate,
-                        show.location,
-                        show.image,
-                        show.seatPrices,
-                        show.ticketingSites,
+                        Projections.constructor(
+                            ShowDomainResponse.class,
+                            show.id,
+                            show.title,
+                            show.content,
+                            show.startDate,
+                            show.endDate,
+                            show.location,
+                            show.image,
+                            show.seatPrices,
+                            show.ticketingSites
+                        ),
                         set(
                             Projections.constructor(
                                 ArtistKoreanNameDomainResponse.class,
@@ -107,6 +119,13 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                                 GenreNameDomainResponse.class,
                                 genre.id,
                                 genre.name
+                            )
+                        ),
+                        set(
+                            Projections.constructor(
+                                ShowTicketingTimeDomainResponse.class,
+                                showTicketingTime.ticketingType,
+                                showTicketingTime.ticketingAt
                             )
                         )
                     )
@@ -123,15 +142,18 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                     groupBy(show.id).as(
                         Projections.constructor(
                             ShowInfoDomainResponse.class,
-                            show.id,
-                            show.title,
-                            show.content,
-                            show.startDate,
-                            show.endDate,
-                            show.location,
-                            show.image,
-                            show.seatPrices,
-                            show.ticketingSites,
+                            Projections.constructor(
+                                ShowDomainResponse.class,
+                                show.id,
+                                show.title,
+                                show.content,
+                                show.startDate,
+                                show.endDate,
+                                show.location,
+                                show.image,
+                                show.seatPrices,
+                                show.ticketingSites
+                            ),
                             set(
                                 Projections.constructor(
                                     ArtistKoreanNameDomainResponse.class,
@@ -144,6 +166,13 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                                     GenreNameDomainResponse.class,
                                     genre.id,
                                     genre.name
+                                )
+                            ),
+                            set(
+                                Projections.constructor(
+                                    ShowTicketingTimeDomainResponse.class,
+                                    showTicketingTime.ticketingType,
+                                    showTicketingTime.ticketingAt
                                 )
                             )
                         )
@@ -160,6 +189,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .join(artist).on(isArtistIdEqualShowArtistAndIsDeletedFalse())
             .join(showGenre).on(isShowGenreEqualShowIdAndIsDeletedFalse())
             .join(genre).on(isGenreIdEqualShowGenreAndIsDeletedFalse())
+            .join(showTicketingTime).on(isShowTicketingEqualShowAndIsDeletedFalse())
             .where(show.isDeleted.isFalse());
     }
 
@@ -177,6 +207,10 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
 
     private BooleanExpression isGenreIdEqualShowGenreAndIsDeletedFalse() {
         return genre.id.eq(showGenre.genreId).and(genre.isDeleted.isFalse());
+    }
+
+    private BooleanExpression isShowTicketingEqualShowAndIsDeletedFalse() {
+        return showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse());
     }
 
 }
