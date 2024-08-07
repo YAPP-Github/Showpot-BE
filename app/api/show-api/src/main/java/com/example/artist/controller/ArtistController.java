@@ -105,7 +105,6 @@ public class ArtistController {
     @GetMapping("/search")
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
-        @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
         var response = artistService.searchArtist(request.toServiceRequest());
