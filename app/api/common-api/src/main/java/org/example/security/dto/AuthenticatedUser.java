@@ -10,4 +10,11 @@ public record AuthenticatedUser(
     UserRoleApiType role
 ) {
 
+    public static AuthenticatedUser getGuestUser() {
+        return AuthenticatedUser.builder()
+            .userId(UUID.randomUUID())
+            .role(UserRoleApiType.GUEST)
+            .build();
+    }
+
 }
