@@ -10,6 +10,7 @@ import static org.example.entity.show.QShowArtist.showArtist;
 import static org.example.entity.show.QShowGenre.showGenre;
 import static org.example.entity.show.QShowTicketingTime.showTicketingTime;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -22,12 +23,17 @@ import org.example.dto.artist.response.ArtistDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
 import org.example.dto.genre.response.GenreDomainResponse;
 import org.example.dto.genre.response.GenreNameDomainResponse;
+import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
+import org.example.dto.show.response.ShowPaginationDomainResponse;
 import org.example.dto.show.response.ShowTicketingTimeDomainResponse;
 import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.show.Show;
+import org.example.util.SliceUtil;
+import org.example.vo.ShowSortType;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -172,6 +178,73 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
         );
     }
 
+    @Override
+    public ShowPaginationDomainResponse findShows(ShowPaginationDomainRequest request) {
+        List<ShowDetailDomainResponse> data = jpaQueryFactory
+            .selectFrom(show)
+            .join(showArtist).on(isShowArtistEqualShowIdAndIsDeletedFalse())
+            .join(artist).on(isArtistIdEqualShowArtistAndIsDeletedFalse())
+            .join(showGenre).on(isShowGenreEqualShowIdAndIsDeletedFalse())
+            .join(genre).on(isGenreIdEqualShowGenreAndIsDeletedFalse())
+            .join(showTicketingTime)
+            .on(showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse()))
+            .where(getShowPaginationWhereCondition(request))
+            .limit(request.size() + 1)
+            .transform(
+                groupBy(show.id).as(
+                    Projections.constructor(
+                        ShowDetailDomainResponse.class,
+                        Projections.constructor(
+                            ShowDomainResponse.class,
+                            show.id,
+                            show.title,
+                            show.content,
+                            show.startDate,
+                            show.endDate,
+                            show.location,
+                            show.image,
+                            show.seatPrices,
+                            show.ticketingSites
+                        ),
+                        set(
+                            Projections.constructor(
+                                ArtistDomainResponse.class,
+                                artist.id,
+                                artist.koreanName,
+                                artist.englishName,
+                                artist.image,
+                                artist.country,
+                                artist.artistGender,
+                                artist.artistType
+                            )
+                        ),
+                        set(
+                            Projections.constructor(
+                                GenreDomainResponse.class,
+                                genre.id,
+                                genre.name
+                            )
+                        ),
+                        set(
+                            Projections.constructor(
+                                ShowTicketingTimeDomainResponse.class,
+                                showTicketingTime.id,
+                                showTicketingTime.ticketingType,
+                                showTicketingTime.ticketingAt
+                            )
+                        )
+                    )
+                )
+            ).values().stream().toList();
+
+        Slice<ShowDetailDomainResponse> slice = SliceUtil.makeSlice(request.size(), data);
+
+        return ShowPaginationDomainResponse.builder()
+            .data(slice.getContent())
+            .hasNext(slice.hasNext())
+            .build();
+    }
+
     private JPAQuery<Show> createShowJoinArtistAndGenreQuery() {
         return jpaQueryFactory
             .selectFrom(show)
@@ -203,4 +276,24 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
         return showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse());
     }
 
+    private BooleanExpression getShowPaginationWhereCondition(ShowPaginationDomainRequest request) {
+        BooleanExpression defaultCondition = show.isDeleted.isFalse()
+            .and(show.id.gt(request.cursor()));
+
+        // TODO: Show 테이블에 lastTicketingAt 컬럼 추가 후 수정
+        // if (request.onlyOpenSchedule()) {
+
+        // }
+
+        return defaultCondition;
+    }
+
+    // TODO: Show 테이블에 lastTicketingAt 컬럼 추가 후 수정
+    // TODO: Show 조회수 컬럼 추가 후 수정
+    private OrderSpecifier getShowOrderSpecifier(ShowSortType sortType) {
+        return switch (sortType) {
+            case RECENT -> show.id.desc();
+            case POPULAR -> show.id.desc();
+        };
+    }
 }

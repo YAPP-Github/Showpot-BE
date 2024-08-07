@@ -8,7 +8,7 @@ public record ShowDetailDomainResponse(
     ShowDomainResponse show,
     Set<ArtistDomainResponse> artists,
     Set<GenreDomainResponse> genres,
-    Set<ShowTicketingTimeDomainResponse> ticketingTimes
+    Set<ShowTicketingTimeDomainResponse> showTicketingTimes
 ) {
 
 }

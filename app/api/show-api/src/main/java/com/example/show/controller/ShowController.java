@@ -1,26 +1,24 @@
 package com.example.show.controller;
 
-import com.example.artist.controller.dto.response.ArtistSimpleApiResponse;
-import com.example.genre.controller.dto.response.GenreSimpleApiResponse;
 import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
 import com.example.show.controller.dto.request.ShowAlertRegistrationApiRequest;
 import com.example.show.controller.dto.request.ShowInterestPaginationApiRequest;
+import com.example.show.controller.dto.request.ShowPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.response.ShowAlertPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowInterestPaginationApiResponse;
-import com.example.show.controller.dto.response.ShowPaginationApiResponse;
-import com.example.show.controller.dto.response.ShowSimpleApiResponse;
-import com.example.show.controller.dto.response.TicketingAndShowInfoApiResponse;
+import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.service.ShowService;
+import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
+import org.example.dto.response.PaginationServiceResponse;
 import org.example.security.dto.AuthenticatedUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -45,38 +43,24 @@ public class ShowController {
 
     @GetMapping
     @Operation(summary = "공연 목록 조회")
-    public ResponseEntity<ShowPaginationApiResponse> getShows(
-        @RequestParam(required = false) ShowSearchPaginationApiRequest param
+    public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
+        @RequestParam(required = false) ShowPaginationApiRequest request
     ) {
-        return ResponseEntity.ok(
-            new ShowPaginationApiResponse(
-                List.of(
-                    new ShowSimpleApiResponse(
-                        UUID.randomUUID(),
-                        "2021 서울재즈페스티벌",
-                        new ArtistSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "윈터",
-                            image
-                        ),
-                        new GenreSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "재즈",
-                            image
-                        ),
-                        List.of(
-                            new TicketingAndShowInfoApiResponse(
-                                "2021-10-01 14:00:00",
-                                "2021-10-03 14:00:00",
-                                image
-                            )
-                        ),
-                        image
-                    )
-                ),
-                false
-            )
+        PaginationServiceResponse<ShowPaginationServiceResponse> response = showService.findShows(
+            request.toServiceRequest()
         );
+
+        var data = response.data().stream()
+            .map(ShowPaginationApiParam::from)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<ShowPaginationApiParam>builder()
+                 .data(data)
+                 .hasNext(response.hasNext())
+                .build()
+        );
+
     }
 
     @PostMapping("/{showId}/interest")
@@ -95,33 +79,7 @@ public class ShowController {
         @RequestParam(required = false) ShowInterestPaginationApiRequest param
     ) {
         return ResponseEntity.ok(
-            new ShowInterestPaginationApiResponse(
-                List.of(
-                    new ShowSimpleApiResponse(
-                        UUID.randomUUID(),
-                        "2021 서울재즈페스티벌",
-                        new ArtistSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "윈터",
-                            image
-                        ),
-                        new GenreSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "재즈",
-                            image
-                        ),
-                        List.of(
-                            new TicketingAndShowInfoApiResponse(
-                                "2021-10-01 14:00:00",
-                                "2021-10-03 14:00:00",
-                                image
-                            )
-                        ),
-                        image
-                    )
-                ),
-                false
-            )
+            ShowInterestPaginationApiResponse.builder().build()
         );
     }
 
@@ -153,33 +111,7 @@ public class ShowController {
         @RequestParam(required = false) ShowInterestPaginationApiRequest param
     ) {
         return ResponseEntity.ok(
-            new ShowAlertPaginationApiResponse(
-                List.of(
-                    new ShowSimpleApiResponse(
-                        UUID.randomUUID(),
-                        "2021 서울재즈페스티벌",
-                        new ArtistSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "윈터",
-                            image
-                        ),
-                        new GenreSimpleApiResponse(
-                            UUID.randomUUID(),
-                            "재즈",
-                            image
-                        ),
-                        List.of(
-                            new TicketingAndShowInfoApiResponse(
-                                "2021-10-01 14:00:00",
-                                "2021-10-03 14:00:00",
-                                image
-                            )
-                        ),
-                        image
-                    )
-                ),
-                false
-            )
+            ShowAlertPaginationApiResponse.builder().build()
         );
     }
 

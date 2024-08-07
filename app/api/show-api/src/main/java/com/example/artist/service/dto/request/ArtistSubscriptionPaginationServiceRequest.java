@@ -1,6 +1,6 @@
 package com.example.artist.service.dto.request;
 
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 public record ArtistSubscriptionPaginationServiceRequest(
     SubscriptionStatusApiType subscriptionStatusApiType,
     int size,
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sortStandard,
     UUID cursor,
     UUID userId
 ) {

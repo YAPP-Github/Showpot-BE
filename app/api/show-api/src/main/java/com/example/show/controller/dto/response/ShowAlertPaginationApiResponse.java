@@ -2,7 +2,9 @@ package com.example.show.controller.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Builder;
 
+@Builder
 public record ShowAlertPaginationApiResponse(
 
     @Schema(description = "공연 목록")

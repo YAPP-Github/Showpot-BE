@@ -29,9 +29,9 @@ import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.util.SliceUtil;
-import org.example.vo.ArtistSortStandardDomainType;
 import org.example.vo.SubscriptionStatus;
 import org.springframework.data.domain.Slice;
+import org.example.vo.ArtistSortType;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -227,7 +227,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
         }
     }
 
-    private OrderSpecifier<String> getOrderSpecifier(ArtistSortStandardDomainType type) {
+    private OrderSpecifier<String> getOrderSpecifier(ArtistSortType type) {
         return switch (type) {
             case KOREAN_NAME_ASC -> artist.koreanName.asc();
             case KOREAN_NAME_DESC -> artist.koreanName.desc();

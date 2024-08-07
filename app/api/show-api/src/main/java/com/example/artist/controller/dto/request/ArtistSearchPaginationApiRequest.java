@@ -1,7 +1,7 @@
 package com.example.artist.controller.dto.request;
 
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
@@ -10,9 +10,9 @@ public record ArtistSearchPaginationApiRequest(
 
     @Parameter(
         description = "정렬 기준, default: ENGLISH_NAME_ASC",
-        schema = @Schema(implementation = ArtistSortStandardApiType.class)
+        schema = @Schema(implementation = ArtistSortApiType.class)
     )
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sortStandard,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor,
@@ -26,7 +26,7 @@ public record ArtistSearchPaginationApiRequest(
 
     public ArtistSearchPaginationApiRequest {
         if (sortStandard == null) {
-            sortStandard = ArtistSortStandardApiType.ENGLISH_NAME_ASC;
+            sortStandard = ArtistSortApiType.ENGLISH_NAME_ASC;
         }
     }
 

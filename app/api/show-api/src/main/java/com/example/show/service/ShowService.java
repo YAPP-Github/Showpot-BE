@@ -2,8 +2,10 @@ package com.example.show.service;
 
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
+import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
+import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -43,4 +45,15 @@ public class ShowService {
         return PaginationServiceResponse.of(data, response.hasNext());
     }
 
+    public PaginationServiceResponse<ShowPaginationServiceResponse> findShows(ShowPaginationServiceRequest request) {
+        var response = showUseCase.findShows(request.toDomainRequest());
+        var data = response.data().stream()
+            .map(ShowPaginationServiceResponse::from)
+            .toList();
+
+        return PaginationServiceResponse.of(
+            data,
+            response.hasNext()
+        );
+    }
 }

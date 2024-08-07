@@ -3,7 +3,7 @@ package com.example.artist.controller.dto.request;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,9 +15,9 @@ import org.example.util.ValidateStatus;
 public record ArtistUnsubscriptionPaginationApiRequest(
     @Parameter(
         description = "정렬 기준, default: ENGLISH_NAME_ASC",
-        schema = @Schema(implementation = ArtistSortStandardApiType.class)
+        schema = @Schema(implementation = ArtistSortApiType.class)
     )
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sortStandard,
 
     @Parameter(description = "아티스트 성별 목록")
     List<ArtistGenderApiType> artistGenderApiTypes,
@@ -36,7 +36,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
 ) {
 
     public ArtistUnsubscriptionPaginationApiRequest(
-        ArtistSortStandardApiType sortStandard,
+        ArtistSortApiType sortStandard,
         List<ArtistGenderApiType> artistGenderApiTypes,
         List<ArtistApiType> artistApiTypes,
         List<UUID> genreIds,
@@ -44,7 +44,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         int size
     ) {
         this.sortStandard =
-            sortStandard == null ? ArtistSortStandardApiType.ENGLISH_NAME_ASC : sortStandard;
+            sortStandard == null ? ArtistSortApiType.ENGLISH_NAME_ASC : sortStandard;
         this.artistGenderApiTypes = ValidateStatus.checkNullOrEmpty(artistGenderApiTypes);
         this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
         this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);

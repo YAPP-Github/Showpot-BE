@@ -1,7 +1,7 @@
 package com.example.artist.controller.dto.request;
 
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +12,9 @@ public record ArtistSubscriptionPaginationApiRequest(
 
     @Parameter(
         description = "정렬 기준, default: ENGLISH_NAME_ASC",
-        schema = @Schema(implementation = ArtistSortStandardApiType.class)
+        schema = @Schema(implementation = ArtistSortApiType.class)
     )
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sort,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
     UUID cursor,
@@ -24,12 +24,11 @@ public record ArtistSubscriptionPaginationApiRequest(
 ) {
 
     public ArtistSubscriptionPaginationApiRequest(
-        ArtistSortStandardApiType sortStandard,
+        ArtistSortApiType sort,
         UUID cursor,
         int size
     ) {
-        this.sortStandard =
-            sortStandard == null ? ArtistSortStandardApiType.ENGLISH_NAME_ASC : sortStandard;
+        this.sort = sort == null ? ArtistSortApiType.ENGLISH_NAME_ASC : sort;
         this.cursor = cursor;
         this.size = size;
     }
@@ -38,7 +37,7 @@ public record ArtistSubscriptionPaginationApiRequest(
         return ArtistSubscriptionPaginationServiceRequest.builder()
             .subscriptionStatusApiType(SubscriptionStatusApiType.SUBSCRIBED)
             .size(size)
-            .sortStandard(sortStandard)
+            .sortStandard(sort)
             .cursor(cursor)
             .userId(userId)
             .build();
