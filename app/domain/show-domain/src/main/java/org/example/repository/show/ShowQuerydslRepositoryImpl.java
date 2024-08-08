@@ -1,6 +1,7 @@
 package org.example.repository.show;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static com.querydsl.core.group.GroupBy.set;
 import static org.example.entity.artist.QArtist.artist;
 import static org.example.entity.genre.QGenre.genre;
@@ -25,6 +26,7 @@ import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowTicketingTimeDomainResponse;
+import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.show.Show;
 import org.springframework.stereotype.Repository;
 
@@ -89,12 +91,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     @Override
-    public List<ShowInfoDomainResponse> findAllShowInfos() {
-        return createShowJoinArtistAndGenreQuery()
+    public List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes() {
+        return jpaQueryFactory.selectFrom(show)
+            .join(showTicketingTime).on(isShowTicketingEqualShowAndIsDeletedFalse())
+            .where(show.isDeleted.isFalse())
             .transform(
                 groupBy(show.id).list(
                     Projections.constructor(
-                        ShowInfoDomainResponse.class,
+                        ShowWithTicketingTimesDomainResponse.class,
                         Projections.constructor(
                             ShowDomainResponse.class,
                             show.id,
@@ -107,21 +111,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.seatPrices,
                             show.ticketingSites
                         ),
-                        set(
-                            Projections.constructor(
-                                ArtistKoreanNameDomainResponse.class,
-                                artist.id,
-                                artist.koreanName
-                            )
-                        ),
-                        set(
-                            Projections.constructor(
-                                GenreNameDomainResponse.class,
-                                genre.id,
-                                genre.name
-                            )
-                        ),
-                        set(
+                        list(
                             Projections.constructor(
                                 ShowTicketingTimeDomainResponse.class,
                                 showTicketingTime.ticketingType,

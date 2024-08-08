@@ -2,6 +2,7 @@ package com.example.show.service;
 
 
 import com.example.component.FileUploadComponent;
+import com.example.show.controller.dto.response.ShowWithTicketingTimesServiceResponse;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
@@ -30,10 +31,9 @@ public class ShowAdminService {
         );
     }
 
-    public List<ShowInfoServiceResponse> findAllShowInfos() {
-        List<ShowInfoDomainResponse> showInfoDomainResponse = showUseCase.findAllShowInfos();
-        return showInfoDomainResponse.stream()
-            .map(ShowInfoServiceResponse::new)
+    public List<ShowWithTicketingTimesServiceResponse> findShowDetailWithTicketingTimes() {
+        return showUseCase.findShowDetailWithTicketingTimes().stream()
+            .map(ShowWithTicketingTimesServiceResponse::new)
             .toList();
     }
 

@@ -4,6 +4,7 @@ import com.example.genre.error.GenreError;
 import com.example.genre.service.dto.request.GenreCreateServiceRequest;
 import com.example.genre.service.dto.request.GenreUpdateServiceRequest;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.genre.service.dto.response.GenreNameWithShowIdServiceResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -23,6 +24,11 @@ public class GenreAdminService {
         genreUseCase.save(genreCreateServiceRequest.toGenre());
     }
 
+    public List<GenreNameWithShowIdServiceResponse> findGenreNamesWithShowId() {
+        return genreUseCase.findGenreNamesWithShowId().stream()
+            .map(GenreNameWithShowIdServiceResponse::new)
+            .toList();
+    }
 
     public List<GenreNameServiceResponse> findAllGenres() {
         List<Genre> genres = genreUseCase.findAllGenres();

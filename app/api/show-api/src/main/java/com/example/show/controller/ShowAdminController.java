@@ -56,10 +56,15 @@ public class ShowAdminController {
 
     @GetMapping("/list")
     public String findAllShow(Model model) {
-        List<ShowInfoApiResponse> shows = showAdminService.findAllShowInfos()
-            .stream()
-            .map(ShowInfoApiResponse::new)
-            .toList();
+        var showWithTicketingTimes = showAdminService.findShowDetailWithTicketingTimes();
+        var artistNamesWithShowId = artistAdminService.findArtistKoreanNamesWithShowId();
+        var genreNamesWithShowId = genreAdminService.findGenreNamesWithShowId();
+
+        List<ShowInfoApiResponse> shows = ShowInfoApiResponse.as(
+            showWithTicketingTimes,
+            artistNamesWithShowId,
+            genreNamesWithShowId
+        );
 
         model.addAttribute("shows", shows);
         return "show_list_form";

@@ -10,6 +10,7 @@ import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
 import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.artist.response.ArtistKoreanNamesWithShowIdDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
@@ -54,6 +55,10 @@ public class ArtistUseCase {
     public ArtistDetailDomainResponse findArtistDetailById(UUID id) {
         return artistRepository.findArtistWithGenreNamesById(id)
             .orElseThrow(NoSuchElementException::new);
+    }
+
+    public List<ArtistKoreanNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
+        return showArtistRepository.findArtistKoreanNamesWithShowId();
     }
 
     public List<Artist> findAllArtistInIds(List<UUID> ids) {
@@ -146,5 +151,7 @@ public class ArtistUseCase {
         return artistRepository.findById(id)
             .orElseThrow(NoSuchElementException::new);
     }
+
+
 }
 

@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.request.GenrePaginationDomainRequest;
+import org.example.dto.genre.response.GenreNamesWithShowIdDomainResponse;
 import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.ArtistGenre;
@@ -55,6 +56,10 @@ public class GenreUseCase {
 
     public Genre findGenreById(UUID id) {
         return genreRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public List<GenreNamesWithShowIdDomainResponse> findGenreNamesWithShowId() {
+        return showGenreRepository.findGenreNamesWithShowId();
     }
 
     public List<Genre> findAllGenresInIds(List<UUID> genreIds) {
