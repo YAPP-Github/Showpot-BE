@@ -140,6 +140,32 @@ class GenreServiceTest {
     }
 
     @Test
+    @DisplayName("장르를 구독 취소하면 구독 취소 성공한 장르 ID들을 메시지 발하다.")
+    void genreUnsubscribePublishMessage() {
+        //given
+        List<UUID> genreIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new GenreUnsubscriptionServiceRequest(genreIds, userId);
+        int genreUnsubscriptionCount = 2;
+        given(
+            genreSubscriptionUseCase.unsubscribe(request.genreIds(), request.userId())
+        ).willReturn(
+            GenreSubscriptionFixture.genreSubscriptions(genreUnsubscriptionCount)
+        );
+
+        //when
+        var result = genreService.unsubscribe(request);
+
+        //then
+        assertThat(result).isNotNull();
+        verify(messagePublisher, times(1))
+            .publishGenreSubscription(
+                eq("genreUnsubscription"),
+                anyList()
+            );
+    }
+
+    @Test
     @DisplayName("페이지네이션을 이용해 구독한 장르를 반환한다.")
     void genreSubscribeWithPagination() {
         //given

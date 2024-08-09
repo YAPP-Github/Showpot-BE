@@ -65,6 +65,14 @@ public class GenreService {
             request.userId()
         );
 
+        var messages = unsubscriptionGenres.stream()
+            .map(GenreSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishGenreSubscription(
+            "genreUnsubscription",
+            messages
+        );
+
         return GenreUnsubscriptionServiceResponse.builder()
             .successUnsubscriptionGenreIds(
                 unsubscriptionGenres.stream()
