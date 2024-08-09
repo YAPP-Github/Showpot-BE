@@ -43,11 +43,16 @@ public class UserService {
     }
 
     public void withdraw(WithdrawalServiceRequest request) {
+        try {
+            userUseCase.deleteUser(request.userId());
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(UserError.NOT_FOUND_USER);
+        }
+
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
             request.accessToken(),
             request.userId()
         );
-        userUseCase.deleteUser(request.userId());
     }
 
     public UserProfileServiceResponse findUserProfile(UUID userId) {

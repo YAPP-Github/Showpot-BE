@@ -48,9 +48,7 @@ public class UserUseCase {
 
     @Transactional
     public void deleteUser(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-            new BusinessException(UserError.NOT_FOUND_USER)
-        );
+        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
 
         user.softDelete();
     }
