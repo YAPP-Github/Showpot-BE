@@ -96,6 +96,14 @@ public class ArtistService {
             request.userId()
         );
 
+        var messages = unsubscribedArtists.stream()
+            .map(ArtistSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishArtistSubscription(
+            "artistUnsubscription",
+            messages
+        );
+
         return ArtistUnsubscriptionServiceResponse.builder()
             .successUnsubscriptionArtistIds(
                 unsubscribedArtists.stream()

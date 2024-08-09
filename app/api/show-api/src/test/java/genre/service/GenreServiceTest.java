@@ -2,7 +2,7 @@ package genre.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -78,7 +78,7 @@ class GenreServiceTest {
     }
 
     @Test
-    @DisplayName("장르를 구독하면 구독 성공한 장르 ID들을 반환하다.")
+    @DisplayName("장르를 구독하면 구독 성공한 장르 ID들을 메시지 발행하다.")
     void genreSubscribePublishMessage() {
         //given
         List<UUID> genreIds = List.of(UUID.randomUUID(), UUID.randomUUID());
@@ -106,7 +106,10 @@ class GenreServiceTest {
 
         //then
         assertThat(result).isNotNull();
-        verify(messagePublisher, times(1)).publishGenreSubscription(anyString(), anyList());
+        verify(messagePublisher, times(1)).publishGenreSubscription(
+            eq("genreSubscription"),
+            anyList()
+        );
     }
 
     @Test

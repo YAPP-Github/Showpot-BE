@@ -2,7 +2,7 @@ package artist.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -289,7 +289,10 @@ class ArtistServiceTest {
 
         //then
         assertThat(result).isNotNull();
-        verify(messagePublisher, times(1)).publishArtistSubscription(anyString(), anyList());
+        verify(messagePublisher, times(1)).publishArtistSubscription(
+            eq("artistSubscription"),
+            anyList()
+        );
     }
 
     @Test
@@ -317,6 +320,32 @@ class ArtistServiceTest {
                     .isEqualTo(artistSubscriptionCount);
             }
         );
+    }
+
+    @Test
+    @DisplayName("아티스트를 구독 취소하면 구독 취소 성공한 아티스트 ID들을 메시지 발행한다.")
+    void artistUnsubscribePublishMessage() {
+        //given
+        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new ArtistUnsubscriptionServiceRequest(artistsId, userId);
+        int artistSubscriptionCount = 2;
+        given(
+            artistSubscriptionUseCase.unsubscribe(request.artistIds(), userId)
+        ).willReturn(
+            ArtistSubscriptionFixture.artistSubscriptions(artistSubscriptionCount)
+        );
+
+        //when
+        var result = artistService.unsubscribe(request);
+
+        //then
+        assertThat(result).isNotNull();
+        verify(messagePublisher, times(1))
+            .publishArtistSubscription(
+                eq("artistUnsubscription"),
+                anyList()
+            );
     }
 
     @Test
