@@ -5,8 +5,8 @@ import com.example.component.FileUploadComponent;
 import com.example.mq.MessagePublisher;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
+import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
-import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,9 +32,9 @@ public class ShowAdminService {
             showCreateServiceRequest.toDomainRequest(imageURL)
         );
 
-        messagePublisher.publish(
+        messagePublisher.publishShow(
             "registerShow",
-            SubscriptionMessageServiceRequest.of(
+            ShowRelationArtistAndGenreServiceMessage.of(
                 showCreateServiceRequest.artistIds(),
                 showCreateServiceRequest.genreIds()
             )
@@ -82,9 +82,9 @@ public class ShowAdminService {
         }
 
         if (!artistIdsToPublish.isEmpty() || !genreIdsToPublish.isEmpty()) {
-            messagePublisher.publish(
+            messagePublisher.publishShow(
                 "updateShow",
-                SubscriptionMessageServiceRequest.of(
+                ShowRelationArtistAndGenreServiceMessage.of(
                     artistIdsToPublish,
                     genreIdsToPublish
                 )

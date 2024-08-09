@@ -13,8 +13,8 @@ import com.example.component.FileUploadComponent;
 import com.example.mq.MessagePublisher;
 import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
+import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
-import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
 import java.util.List;
 import java.util.UUID;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
@@ -70,9 +70,9 @@ class ShowAdminServiceTest {
         showAdminService.save(showCreateServiceRequest);
 
         //then
-        verify(messagePublisher, times(1)).publish(
+        verify(messagePublisher, times(1)).publishShow(
             anyString(),
-            any(SubscriptionMessageServiceRequest.class)
+            any(ShowRelationArtistAndGenreServiceMessage.class)
         );
     }
 
@@ -132,9 +132,9 @@ class ShowAdminServiceTest {
         showAdminService.updateShow(showId, showUpdateServiceRequest);
 
         //then
-        verify(messagePublisher, times(1)).publish(
+        verify(messagePublisher, times(1)).publishShow(
             anyString(),
-            any(SubscriptionMessageServiceRequest.class)
+            any(ShowRelationArtistAndGenreServiceMessage.class)
         );
     }
 

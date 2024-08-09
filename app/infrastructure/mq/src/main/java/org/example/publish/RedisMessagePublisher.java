@@ -1,10 +1,10 @@
 package org.example.publish;
 
 import com.example.mq.MessagePublisher;
-import com.example.show.service.dto.request.SubscriptionMessageServiceRequest;
+import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.message.SubscriptionMessageInfraRequest;
+import org.example.message.ShowRelationArtistAndGenreInfraMessage;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +16,12 @@ public class RedisMessagePublisher implements MessagePublisher {
     private final RedisTemplate<String, Object> template;
 
     @Override
-    public void publish(String topic, SubscriptionMessageServiceRequest apiRequest) {
-        template.convertAndSend(topic, SubscriptionMessageInfraRequest.from(apiRequest));
+    public void publishShow(String topic, ShowRelationArtistAndGenreServiceMessage message) {
+        template.convertAndSend(topic, ShowRelationArtistAndGenreInfraMessage.from(message));
         log.info("Message published successfully to topic: {}", topic);
         log.info("Message Contents ( artistIds : {}, genreIds : {} )",
-            apiRequest.artistIds(),
-            apiRequest.genreIds()
+            message.artistIds(),
+            message.genreIds()
         );
     }
 }

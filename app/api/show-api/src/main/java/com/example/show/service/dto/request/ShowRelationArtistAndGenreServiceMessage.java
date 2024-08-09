@@ -5,13 +5,13 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record SubscriptionMessageServiceRequest(
+public record ShowRelationArtistAndGenreServiceMessage(
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
 
-    public static SubscriptionMessageServiceRequest of(List<UUID> artistIds, List<UUID> genreIds) {
-        return SubscriptionMessageServiceRequest.builder()
+    public static ShowRelationArtistAndGenreServiceMessage of(List<UUID> artistIds, List<UUID> genreIds) {
+        return ShowRelationArtistAndGenreServiceMessage.builder()
             .artistIds(artistIds)
             .genreIds(genreIds)
             .build();
