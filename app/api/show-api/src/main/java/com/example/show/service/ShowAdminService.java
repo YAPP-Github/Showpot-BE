@@ -3,9 +3,9 @@ package com.example.show.service;
 
 import com.example.component.FileUploadComponent;
 import com.example.mq.MessagePublisher;
+import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
-import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;

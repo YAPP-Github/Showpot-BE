@@ -1,4 +1,4 @@
-package com.example.show.service.dto.request;
+package com.example.mq.message;
 
 import java.util.List;
 import java.util.UUID;

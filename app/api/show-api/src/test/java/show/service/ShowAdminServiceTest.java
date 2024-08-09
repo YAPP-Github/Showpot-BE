@@ -11,9 +11,9 @@ import static org.mockito.Mockito.verify;
 
 import com.example.component.FileUploadComponent;
 import com.example.mq.MessagePublisher;
+import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
-import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.util.List;
 import java.util.UUID;

@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.show.service.dto.request.ShowRelationArtistAndGenreServiceMessage;
+import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;

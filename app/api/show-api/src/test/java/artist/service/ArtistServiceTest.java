@@ -1,14 +1,19 @@
 package artist.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import artist.fixture.dto.ArtistRequestDtoFixture;
 import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
+import com.example.mq.MessagePublisher;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -28,9 +33,13 @@ class ArtistServiceTest {
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase = mock(
         ArtistSubscriptionUseCase.class
     );
+
+    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+
     private final ArtistService artistService = new ArtistService(
         artistUseCase,
-        artistSubscriptionUseCase
+        artistSubscriptionUseCase,
+        messagePublisher
     );
 
     @Test
@@ -249,6 +258,38 @@ class ArtistServiceTest {
                     .isEqualTo(artistSubscriptionCount);
             }
         );
+    }
+
+    @Test
+    @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 메시지 발행한다.")
+    void artistSubscribePublishMessage() {
+        //given
+        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
+        var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
+        given(
+            artistUseCase.findAllArtistInIds(request.artistIds())
+        ).willReturn(
+            existArtistsInRequest
+        );
+
+        var existArtistIdsInRequest = existArtistsInRequest.stream()
+            .map(Artist::getId)
+            .toList();
+        int artistSubscriptionCount = 2;
+        given(
+            artistSubscriptionUseCase.subscribe(existArtistIdsInRequest, userId)
+        ).willReturn(
+            ArtistSubscriptionFixture.artistSubscriptions(artistSubscriptionCount)
+        );
+
+        //when
+        var result = artistService.subscribe(request);
+
+        //then
+        assertThat(result).isNotNull();
+        verify(messagePublisher, times(1)).publishArtistSubscription(anyString(), anyList());
     }
 
     @Test
