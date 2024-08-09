@@ -6,11 +6,11 @@ import org.example.vo.SocialLoginType;
 
 public class SocialLoginFixture {
 
-    public static SocialLogin socialLogin(SocialLoginType type) {
+    public static SocialLogin socialLogin(SocialLoginType type, UUID userId) {
         return SocialLogin.builder()
             .socialLoginType(type)
             .identifier("testIdentifier")
-            .userId(UUID.randomUUID())
+            .userId(userId)
             .build();
     }
 }
