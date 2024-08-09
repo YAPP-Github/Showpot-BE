@@ -2,4 +2,7 @@ dependencies {
     implementation project(":app:domain:user-domain")
 
     implementation project(":app:api:common-api")
+
+    //testFixtures
+    testImplementation(testFixtures(project(":app:domain:user-domain")))
 }
