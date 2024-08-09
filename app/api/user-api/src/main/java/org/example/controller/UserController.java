@@ -8,11 +8,13 @@ import org.example.controller.dto.request.LoginApiRequest;
 import org.example.controller.dto.request.LogoutApiRequest;
 import org.example.controller.dto.request.WithdrawalApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
+import org.example.controller.dto.response.UserProfileApiResponse;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +59,17 @@ public class UserController {
     ) {
         userService.withdraw(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/profile")
+    @Operation(summary = "회원 정보")
+    public ResponseEntity<UserProfileApiResponse> profile(
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        var profile = userService.findUserProfile(user.userId());
+
+        return ResponseEntity.ok(
+            UserProfileApiResponse.from(profile)
+        );
     }
 }

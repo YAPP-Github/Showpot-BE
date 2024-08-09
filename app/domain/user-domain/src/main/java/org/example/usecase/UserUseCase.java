@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.LoginDomainRequest;
+import org.example.dto.response.UserProfileDomainResponse;
 import org.example.entity.SocialLogin;
 import org.example.entity.User;
 import org.example.error.UserError;
@@ -45,10 +46,6 @@ public class UserUseCase {
         return user;
     }
 
-    public String findNickName(final User user) {
-        return userRepository.findNicknameById(user.getId()).orElseThrow();
-    }
-
     @Transactional
     public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
@@ -56,5 +53,9 @@ public class UserUseCase {
         );
 
         user.softDelete();
+    }
+
+    public UserProfileDomainResponse findUserProfile(UUID userId) {
+        return userRepository.findUserProfileById(userId).orElseThrow(NoSuchElementException::new);
     }
 }
