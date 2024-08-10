@@ -2,7 +2,6 @@ package com.example.show.service;
 
 
 import com.example.component.FileUploadComponent;
-import com.example.show.controller.dto.response.ShowWithTicketingTimesServiceResponse;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
@@ -13,6 +12,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.exception.BusinessException;
+import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.genre.GenreUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class ShowAdminService {
 
     private final ShowUseCase showUseCase;
+    private final GenreUseCase genreUseCase;
+    private final ArtistUseCase artistUseCase;
     private final FileUploadComponent fileUploadComponent;
 
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
@@ -31,10 +34,17 @@ public class ShowAdminService {
         );
     }
 
-    public List<ShowWithTicketingTimesServiceResponse> findShowDetailWithTicketingTimes() {
-        return showUseCase.findShowDetailWithTicketingTimes().stream()
-            .map(ShowWithTicketingTimesServiceResponse::new)
-            .toList();
+    public List<ShowInfoServiceResponse> findShowDetailWithTicketingTimes() {
+        var showWithTicketingTimesDomainResponses = showUseCase.findShowDetailWithTicketingTimes();
+        var artistKoreanNameWithShowIdDomainResponses = artistUseCase.findArtistKoreanNamesWithShowId();
+        var genreNameWithShowIdDomainResponses = genreUseCase.findGenreNamesWithShowId();
+
+        return ShowInfoServiceResponse.as(
+            showWithTicketingTimesDomainResponses,
+            artistKoreanNameWithShowIdDomainResponses,
+            genreNameWithShowIdDomainResponses
+        );
+
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {

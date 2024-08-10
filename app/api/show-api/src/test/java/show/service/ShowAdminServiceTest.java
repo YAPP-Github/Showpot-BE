@@ -14,6 +14,8 @@ import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import java.util.UUID;
 import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
+import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.genre.GenreUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,10 +24,16 @@ import show.fixture.dto.ShowRequestDtoFixture;
 class ShowAdminServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
+    private final GenreUseCase genreUseCase = mock(GenreUseCase.class);
+    private final ArtistUseCase artistUseCase = mock(ArtistUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);
 
     private final ShowAdminService showAdminService = new ShowAdminService(
-        showUseCase, fileUploadComponent);
+        showUseCase,
+        genreUseCase,
+        artistUseCase,
+        fileUploadComponent
+    );
 
     @Test
     @DisplayName("공연은 업로드된 이미지 URL과 함께 생성된다.")
