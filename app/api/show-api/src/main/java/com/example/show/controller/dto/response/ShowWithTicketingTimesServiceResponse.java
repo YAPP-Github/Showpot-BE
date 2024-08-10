@@ -23,7 +23,8 @@ public record ShowWithTicketingTimesServiceResponse(
 ) {
 
     public ShowWithTicketingTimesServiceResponse(
-        ShowWithTicketingTimesDomainResponse domainResponse) {
+        ShowWithTicketingTimesDomainResponse domainResponse
+    ) {
         this(
             domainResponse.show().id(),
             domainResponse.show().title(),

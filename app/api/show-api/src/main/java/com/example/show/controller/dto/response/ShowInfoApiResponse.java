@@ -83,7 +83,8 @@ public record ShowInfoApiResponse(
 
     private static List<ArtistKoreanNameApiResponse> getArtistKoreanNameResponses(
         List<ArtistKoreanNameWithShowIdServiceResponse> artistNamesWithShowId,
-        ShowWithTicketingTimesServiceResponse show) {
+        ShowWithTicketingTimesServiceResponse show
+    ) {
         return artistNamesWithShowId.stream()
             .filter(artistResponse -> artistResponse.showId().equals(show.id()))
             .flatMap(artistResponse -> artistResponse.koreanNameServiceResponses().stream())
@@ -93,7 +94,8 @@ public record ShowInfoApiResponse(
 
     private static List<GenreNameApiResponse> getGenreNameResponses(
         List<GenreNameWithShowIdServiceResponse> genreNamesWithShowId,
-        ShowWithTicketingTimesServiceResponse show) {
+        ShowWithTicketingTimesServiceResponse show
+    ) {
         return genreNamesWithShowId.stream()
             .filter(genreResponse -> genreResponse.showId().equals(show.id()))
             .flatMap(genreResponse -> genreResponse.genreNames().stream())
