@@ -22,7 +22,7 @@ public record ShowPaginationApiParam(
     String posterImageURL,
 
     @Schema(description = "예매일")
-    String reservationDate,
+    String reservationAt,
 
     @Schema(description = "오픈 예정인 티켓팅 일정이 있는지 여부")
     boolean hasTicketingOpenSchedule,
@@ -43,6 +43,8 @@ public record ShowPaginationApiParam(
             .title(response.title())
             .location(response.location())
             .posterImageURL(response.posterImageURL())
+            .reservationAt(response.reservationAt())
+            .hasTicketingOpenSchedule(response.hasTicketingOpenSchedule())
             .artists(
                 response.artists().stream()
                     .map(ShowArtistPaginationApiParam::from)

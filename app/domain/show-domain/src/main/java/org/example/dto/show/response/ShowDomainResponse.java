@@ -1,6 +1,7 @@
 package org.example.dto.show.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.example.entity.show.info.SeatPrices;
 import org.example.entity.show.info.TicketingSites;
@@ -16,6 +17,7 @@ public record ShowDomainResponse(
     LocalDate endDate,
     String location,
     String image,
+    LocalDateTime lastTicketingAt,
     SeatPrices seatPrices,
     TicketingSites ticketingSites
 ) {

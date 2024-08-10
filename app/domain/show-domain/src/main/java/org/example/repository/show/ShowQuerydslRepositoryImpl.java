@@ -10,6 +10,7 @@ import static org.example.entity.show.QShowArtist.showArtist;
 import static org.example.entity.show.QShowGenre.showGenre;
 import static org.example.entity.show.QShowTicketingTime.showTicketingTime;
 
+import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -48,49 +49,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             createShowJoinArtistAndGenreQuery()
                 .where(show.id.eq(id))
                 .transform(
-                    groupBy(show.id).as(
-                        Projections.constructor(
-                            ShowDetailDomainResponse.class,
-                            Projections.constructor(
-                                ShowDomainResponse.class,
-                                show.id,
-                                show.title,
-                                show.content,
-                                show.startDate,
-                                show.endDate,
-                                show.location,
-                                show.image,
-                                show.seatPrices,
-                                show.ticketingSites
-                            ),
-                            set(
-                                Projections.constructor(
-                                    ArtistDomainResponse.class,
-                                    artist.id,
-                                    artist.koreanName,
-                                    artist.englishName,
-                                    artist.image,
-                                    artist.country,
-                                    artist.artistGender,
-                                    artist.artistType
-                                )
-                            ),
-                            set(
-                                Projections.constructor(
-                                    GenreDomainResponse.class,
-                                    genre.id,
-                                    genre.name
-                                )
-                            ),
-                            set(
-                                Projections.constructor(
-                                    ShowTicketingTimeDomainResponse.class,
-                                    showTicketingTime.ticketingType,
-                                    showTicketingTime.ticketingAt
-                                )
-                            )
-                        )
-                    )
+                    groupBy(show.id).as(getShowDetailConstructor())
                 )
                 .get(id)
         );
@@ -135,44 +94,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             createShowJoinArtistAndGenreQuery()
                 .where(show.id.eq(id))
                 .transform(
-                    groupBy(show.id).as(
-                        Projections.constructor(
-                            ShowInfoDomainResponse.class,
-                            Projections.constructor(
-                                ShowDomainResponse.class,
-                                show.id,
-                                show.title,
-                                show.content,
-                                show.startDate,
-                                show.endDate,
-                                show.location,
-                                show.image,
-                                show.seatPrices,
-                                show.ticketingSites
-                            ),
-                            set(
-                                Projections.constructor(
-                                    ArtistKoreanNameDomainResponse.class,
-                                    artist.id,
-                                    artist.koreanName
-                                )
-                            ),
-                            set(
-                                Projections.constructor(
-                                    GenreNameDomainResponse.class,
-                                    genre.id,
-                                    genre.name
-                                )
-                            ),
-                            set(
-                                Projections.constructor(
-                                    ShowTicketingTimeDomainResponse.class,
-                                    showTicketingTime.ticketingType,
-                                    showTicketingTime.ticketingAt
-                                )
-                            )
-                        )
-                    )
+                    groupBy(show.id).as(getShowInfoConstructor())
                 )
                 .get(id)
         );
@@ -190,52 +112,11 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .on(showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse()))
             .where(getShowPaginationWhereCondition(request))
             .limit(request.size() + 1)
+            .orderBy(getShowOrderSpecifier(request.sort()))
             .transform(
-                groupBy(show.id).as(
-                    Projections.constructor(
-                        ShowDetailDomainResponse.class,
-                        Projections.constructor(
-                            ShowDomainResponse.class,
-                            show.id,
-                            show.title,
-                            show.content,
-                            show.startDate,
-                            show.endDate,
-                            show.location,
-                            show.image,
-                            show.seatPrices,
-                            show.ticketingSites
-                        ),
-                        set(
-                            Projections.constructor(
-                                ArtistDomainResponse.class,
-                                artist.id,
-                                artist.koreanName,
-                                artist.englishName,
-                                artist.image,
-                                artist.country,
-                                artist.artistGender,
-                                artist.artistType
-                            )
-                        ),
-                        set(
-                            Projections.constructor(
-                                GenreDomainResponse.class,
-                                genre.id,
-                                genre.name
-                            )
-                        ),
-                        set(
-                            Projections.constructor(
-                                ShowTicketingTimeDomainResponse.class,
-                                showTicketingTime.id,
-                                showTicketingTime.ticketingType,
-                                showTicketingTime.ticketingAt
-                            )
-                        )
-                    )
-                )
-            ).values().stream().toList();
+                groupBy(show.id).as(getShowDetailConstructor())
+            ).values().stream()
+            .toList();
 
         Slice<ShowDetailDomainResponse> slice = SliceUtil.makeSlice(request.size(), data);
 
@@ -243,6 +124,91 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .data(slice.getContent())
             .hasNext(slice.hasNext())
             .build();
+    }
+
+    private ConstructorExpression<ShowDetailDomainResponse> getShowDetailConstructor() {
+        return Projections.constructor(
+            ShowDetailDomainResponse.class,
+            Projections.constructor(
+                ShowDomainResponse.class,
+                show.id,
+                show.title,
+                show.content,
+                show.startDate,
+                show.endDate,
+                show.location,
+                show.image,
+                show.lastTicketingAt,
+                show.seatPrices,
+                show.ticketingSites
+            ),
+            set(
+                Projections.constructor(
+                    ArtistDomainResponse.class,
+                    artist.id,
+                    artist.koreanName,
+                    artist.englishName,
+                    artist.image,
+                    artist.country,
+                    artist.artistGender,
+                    artist.artistType
+                )
+            ),
+            set(
+                Projections.constructor(
+                    GenreDomainResponse.class,
+                    genre.id,
+                    genre.name
+                )
+            ),
+            set(
+                Projections.constructor(
+                    ShowTicketingTimeDomainResponse.class,
+                    showTicketingTime.ticketingType,
+                    showTicketingTime.ticketingAt
+                )
+            )
+        );
+    }
+
+    private ConstructorExpression<ShowInfoDomainResponse> getShowInfoConstructor() {
+        return Projections.constructor(
+            ShowInfoDomainResponse.class,
+            Projections.constructor(
+                ShowDomainResponse.class,
+                show.id,
+                show.title,
+                show.content,
+                show.startDate,
+                show.endDate,
+                show.location,
+                show.image,
+                show.lastTicketingAt,
+                show.seatPrices,
+                show.ticketingSites
+            ),
+            set(
+                Projections.constructor(
+                    ArtistKoreanNameDomainResponse.class,
+                    artist.id,
+                    artist.koreanName
+                )
+            ),
+            set(
+                Projections.constructor(
+                    GenreNameDomainResponse.class,
+                    genre.id,
+                    genre.name
+                )
+            ),
+            set(
+                Projections.constructor(
+                    ShowTicketingTimeDomainResponse.class,
+                    showTicketingTime.ticketingType,
+                    showTicketingTime.ticketingAt
+                )
+            )
+        );
     }
 
     private JPAQuery<Show> createShowJoinArtistAndGenreQuery() {
@@ -277,22 +243,23 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     private BooleanExpression getShowPaginationWhereCondition(ShowPaginationDomainRequest request) {
-        BooleanExpression defaultCondition = show.isDeleted.isFalse()
-            .and(show.id.gt(request.cursor()));
+        BooleanExpression defaultCondition = show.isDeleted.isFalse();
 
-        // TODO: Show 테이블에 lastTicketingAt 컬럼 추가 후 수정
-        // if (request.onlyOpenSchedule()) {
+        if (request.cursor() != null) {
+            defaultCondition.and(show.id.gt(request.cursor()));
+        }
 
-        // }
+        if (request.onlyOpenSchedule()) {
+            defaultCondition.and(show.lastTicketingAt.after(request.now()));
+        }
 
         return defaultCondition;
     }
 
-    // TODO: Show 테이블에 lastTicketingAt 컬럼 추가 후 수정
     // TODO: Show 조회수 컬럼 추가 후 수정
     private OrderSpecifier getShowOrderSpecifier(ShowSortType sortType) {
         return switch (sortType) {
-            case RECENT -> show.id.desc();
+            case RECENT -> show.lastTicketingAt.desc();
             case POPULAR -> show.id.desc();
         };
     }

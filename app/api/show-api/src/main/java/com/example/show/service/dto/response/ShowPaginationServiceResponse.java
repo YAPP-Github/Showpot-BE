@@ -1,9 +1,12 @@
 package com.example.show.service.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.dto.show.response.ShowDetailDomainResponse;
+import org.example.util.DateTimeUtil;
 
 @Builder
 public record ShowPaginationServiceResponse(
@@ -11,23 +14,33 @@ public record ShowPaginationServiceResponse(
     String title,
     String location,
     String posterImageURL,
-    String reservationDate,
+    String reservationAt,
     boolean hasTicketingOpenSchedule,
     List<ShowArtistSimpleServiceResponse> artists,
     List<ShowGenreSimpleServiceResponse> genres,
     List<ShowTicketingTimeServiceParam> showTicketingTimes
 ) {
 
-    public static ShowPaginationServiceResponse from(ShowDetailDomainResponse response) {
+    public static ShowPaginationServiceResponse from(ShowDetailDomainResponse response, LocalDateTime now) {
+        List<ShowTicketingTimeServiceParam> ticketingTimes = response.showTicketingTimes().stream()
+            .map(ShowTicketingTimeServiceParam::from)
+            .toList();
+
+        Optional<ShowTicketingTimeServiceParam> optShowTicketingTime = ticketingTimes.stream()
+            .filter(ticketingTime -> ticketingTime.ticketingAt().isBefore(now))
+            .findFirst();
+
+        String reservationAt = optShowTicketingTime.map(
+            showTicketingTime -> DateTimeUtil.formatLocalDateTime(showTicketingTime.ticketingAt())
+        ).orElseGet(() -> "");
+
         return ShowPaginationServiceResponse.builder()
             .id(response.show().id())
             .title(response.show().title())
             .location(response.show().location())
             .posterImageURL(response.show().image())
-            // TODO: Show에 lastTicketingAt을 업데이트
-            // .reservationDate()
-            // TODO: Show에 lastTicketingAt을 업데이트
-            // .hasTicketingOpenSchedule()
+            .reservationAt(reservationAt)
+            .hasTicketingOpenSchedule(response.show().lastTicketingAt().isBefore(now))
             .artists(
                 response.artists().stream()
                     .map(ShowArtistSimpleServiceResponse::from)
@@ -38,12 +51,7 @@ public record ShowPaginationServiceResponse(
                     .map(ShowGenreSimpleServiceResponse::from)
                     .toList()
             )
-
-            .showTicketingTimes(
-                response.showTicketingTimes().stream()
-                    .map(ShowTicketingTimeServiceParam::from)
-                    .toList()
-            )
+            .showTicketingTimes(ticketingTimes)
             .build();
     }
 }

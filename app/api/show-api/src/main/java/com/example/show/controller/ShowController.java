@@ -15,6 +15,7 @@ import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
@@ -39,15 +40,15 @@ public class ShowController {
 
     private final ShowService showService;
 
-    private String image = "https://thumb.mtstarnews.com/06/2023/06/2023062914274537673_1.jpg";
-
     @GetMapping
     @Operation(summary = "공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
-        @RequestParam(required = false) ShowPaginationApiRequest request
+        @ParameterObject ShowPaginationApiRequest request
     ) {
+        LocalDateTime now = LocalDateTime.now();
+
         PaginationServiceResponse<ShowPaginationServiceResponse> response = showService.findShows(
-            request.toServiceRequest()
+            request.toServiceRequest(now)
         );
 
         var data = response.data().stream()

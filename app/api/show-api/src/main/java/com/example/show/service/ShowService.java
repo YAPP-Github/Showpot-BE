@@ -48,7 +48,7 @@ public class ShowService {
     public PaginationServiceResponse<ShowPaginationServiceResponse> findShows(ShowPaginationServiceRequest request) {
         var response = showUseCase.findShows(request.toDomainRequest());
         var data = response.data().stream()
-            .map(ShowPaginationServiceResponse::from)
+            .map(domainResponse -> ShowPaginationServiceResponse.from(domainResponse, request.now()))
             .toList();
 
         return PaginationServiceResponse.of(
