@@ -32,6 +32,7 @@ public record ShowCreationDomainRequest(
             .endDate(endDate)
             .location(location)
             .image(posterImageURL)
+            .lastTicketingAt(showTicketingTimes.getLastTicketingDateTime())
             .seatPrices(showSeats)
             .ticketingSites(showTicketingSites)
             .build();

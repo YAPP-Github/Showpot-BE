@@ -22,5 +22,4 @@ public record ArtistSearchPaginationServiceRequest(
             .search(StringNormalizer.removeWhitespaceAndLowerCase(search))
             .build();
     }
-
 }

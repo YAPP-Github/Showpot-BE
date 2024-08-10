@@ -29,9 +29,9 @@ import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.util.SliceUtil;
+import org.example.vo.ArtistSortType;
 import org.example.vo.SubscriptionStatus;
 import org.springframework.data.domain.Slice;
-import org.example.vo.ArtistSortType;
 import org.springframework.stereotype.Repository;
 
 @Repository

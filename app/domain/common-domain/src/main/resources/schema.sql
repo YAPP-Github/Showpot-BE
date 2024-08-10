@@ -120,18 +120,19 @@ create table interest_show
 
 create table show
 (
-    id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
-    is_deleted boolean      not null,
-    start_date date         not null,
-    end_date   date         not null,
-    title      varchar(255) not null,
-    content    varchar(255) not null,
-    location   varchar(255) not null,
-    image      varchar(255) not null,
-    seat_price jsonb        not null,
-    ticketing  jsonb        not null,
+    id                uuid         not null,
+    created_at        timestamp(6) not null,
+    updated_at        timestamp(6) not null,
+    is_deleted        boolean      not null,
+    start_date        date         not null,
+    end_date          date         not null,
+    title             varchar(255) not null,
+    content           varchar(255) not null,
+    location          varchar(255) not null,
+    image             varchar(255) not null,
+    last_ticketing_at timestamp(6) not null,
+    seat_price        jsonb        not null,
+    ticketing         jsonb        not null,
     primary key (id)
 );
 
