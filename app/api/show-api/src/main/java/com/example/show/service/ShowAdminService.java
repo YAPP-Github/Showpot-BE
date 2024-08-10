@@ -2,6 +2,8 @@ package com.example.show.service;
 
 
 import com.example.component.FileUploadComponent;
+import com.example.mq.MessagePublisher;
+import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
@@ -21,12 +23,21 @@ public class ShowAdminService {
 
     private final ShowUseCase showUseCase;
     private final FileUploadComponent fileUploadComponent;
+    private final MessagePublisher messagePublisher;
 
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
         String imageURL = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
 
         showUseCase.save(
             showCreateServiceRequest.toDomainRequest(imageURL)
+        );
+
+        messagePublisher.publishShow(
+            "registerShow",
+            ShowRelationArtistAndGenreServiceMessage.of(
+                showCreateServiceRequest.artistIds(),
+                showCreateServiceRequest.genreIds()
+            )
         );
     }
 
@@ -51,6 +62,16 @@ public class ShowAdminService {
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
         String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
 
+        var artistIdsToPublish = showUseCase.getArtistIdsToAdd(
+            showUpdateServiceRequest.artistIds(),
+            showUseCase.findShowArtistsByShowId(id)
+        );
+
+        var genreIdsToPublish = showUseCase.getGenreIdsToAdd(
+            showUpdateServiceRequest.genreIds(),
+            showUseCase.findShowGenresByShowId(id)
+        );
+
         try {
             showUseCase.updateShow(
                 id,
@@ -58,6 +79,16 @@ public class ShowAdminService {
             );
         } catch (NoSuchElementException e) {
             throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        }
+
+        if (!artistIdsToPublish.isEmpty() || !genreIdsToPublish.isEmpty()) {
+            messagePublisher.publishShow(
+                "updateShow",
+                ShowRelationArtistAndGenreServiceMessage.of(
+                    artistIdsToPublish,
+                    genreIdsToPublish
+                )
+            );
         }
     }
 

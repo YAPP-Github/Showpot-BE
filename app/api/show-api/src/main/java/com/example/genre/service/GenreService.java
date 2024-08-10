@@ -8,6 +8,8 @@ import com.example.genre.service.dto.request.GenreUnsubscriptionPaginationServic
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
+import com.example.mq.MessagePublisher;
+import com.example.mq.message.GenreSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class GenreService {
 
     private final GenreUseCase genreUseCase;
     private final GenreSubscriptionUseCase genreSubscriptionUseCase;
+    private final MessagePublisher messagePublisher;
 
     public GenreSubscriptionServiceResponse subscribe(GenreSubscriptionServiceRequest request) {
         List<Genre> existGenresInRequest = genreUseCase.findAllGenresInIds(request.genreIds());
@@ -35,6 +38,14 @@ public class GenreService {
         List<GenreSubscription> subscriptions = genreSubscriptionUseCase.subscribe(
             existGenreIdsInRequest,
             request.userId()
+        );
+
+        var messages = subscriptions.stream()
+            .map(GenreSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishGenreSubscription(
+            "genreSubscription",
+            messages
         );
 
         return GenreSubscriptionServiceResponse.builder()
@@ -52,6 +63,14 @@ public class GenreService {
         List<GenreSubscription> unsubscriptionGenres = genreSubscriptionUseCase.unsubscribe(
             request.genreIds(),
             request.userId()
+        );
+
+        var messages = unsubscriptionGenres.stream()
+            .map(GenreSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishGenreSubscription(
+            "genreUnsubscription",
+            messages
         );
 
         return GenreUnsubscriptionServiceResponse.builder()

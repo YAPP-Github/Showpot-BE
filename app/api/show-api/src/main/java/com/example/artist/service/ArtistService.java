@@ -12,6 +12,8 @@ import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest
 import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
+import com.example.mq.MessagePublisher;
+import com.example.mq.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -30,6 +32,7 @@ public class ArtistService {
 
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
+    private final MessagePublisher messagePublisher;
 
     public PaginationServiceResponse<ArtistSearchPaginationServiceParam> searchArtist(
         ArtistSearchPaginationServiceRequest request
@@ -69,6 +72,14 @@ public class ArtistService {
             request.userId()
         );
 
+        var messages = subscriptions.stream()
+            .map(ArtistSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishArtistSubscription(
+            "artistSubscription",
+            messages
+        );
+
         return ArtistSubscriptionServiceResponse.builder()
             .successSubscriptionArtistIds(
                 subscriptions.stream()
@@ -83,6 +94,14 @@ public class ArtistService {
         List<ArtistSubscription> unsubscribedArtists = artistSubscriptionUseCase.unsubscribe(
             request.artistIds(),
             request.userId()
+        );
+
+        var messages = unsubscribedArtists.stream()
+            .map(ArtistSubscriptionServiceMessage::from)
+            .toList();
+        messagePublisher.publishArtistSubscription(
+            "artistUnsubscription",
+            messages
         );
 
         return ArtistUnsubscriptionServiceResponse.builder()
