@@ -144,6 +144,18 @@ public class ArtistService {
         return PaginationServiceResponse.of(data, response.hasNext());
     }
 
+    public PaginationServiceResponse<ArtistUnsubscriptionPaginationServiceParam> findArtistUnsubscriptionsForNonUser(
+        ArtistUnsubscriptionPaginationServiceRequest request
+    ) {
+        var response = artistUseCase.findAllArtistInCursorPagination(
+            request.toNonUserDomainRequest());
+        List<ArtistUnsubscriptionPaginationServiceParam> data = response.data().stream()
+            .map(ArtistUnsubscriptionPaginationServiceParam::new)
+            .toList();
+
+        return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
     private List<UUID> getSubscriptionArtistIds(UUID userId) {
         List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
             userId);

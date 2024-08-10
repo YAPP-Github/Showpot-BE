@@ -42,8 +42,15 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
-        var response = artistService.findArtistUnsubscriptions(
-            request.toServiceRequest(user.userId()));
+        var response =
+            (user == null)
+                ? artistService.findArtistUnsubscriptionsForNonUser(
+                    request.toNonUserServiceRequest()
+                )
+                : artistService.findArtistUnsubscriptions(
+                    request.toServiceRequest(user.userId())
+                );
+
         var data = response.data().stream()
             .map(ArtistUnsubscriptionPaginationApiParam::from)
             .toList();

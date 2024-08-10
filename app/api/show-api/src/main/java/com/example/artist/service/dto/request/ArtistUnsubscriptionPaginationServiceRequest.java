@@ -23,6 +23,14 @@ public record ArtistUnsubscriptionPaginationServiceRequest(
 ) {
 
     public ArtistPaginationDomainRequest toDomainRequest(List<UUID> artistIds) {
+        return buildDomainRequest(artistIds);
+    }
+
+    public ArtistPaginationDomainRequest toNonUserDomainRequest() {
+        return buildDomainRequest(List.of());
+    }
+
+    private ArtistPaginationDomainRequest buildDomainRequest(List<UUID> artistIds) {
         var artistGenders = artistGenderApiTypes.stream()
             .map(ArtistGenderApiType::toDomainType)
             .toList();
