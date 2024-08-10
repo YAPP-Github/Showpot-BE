@@ -140,7 +140,7 @@ class GenreServiceTest {
     }
 
     @Test
-    @DisplayName("장르를 구독 취소하면 구독 취소 성공한 장르 ID들을 메시지 발하다.")
+    @DisplayName("장르를 구독 취소하면 구독 취소 성공한 장르 ID들을 메시지 발행한다.")
     void genreUnsubscribePublishMessage() {
         //given
         List<UUID> genreIds = List.of(UUID.randomUUID(), UUID.randomUUID());
