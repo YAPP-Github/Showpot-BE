@@ -1,15 +1,23 @@
 package org.example.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
 
     public static String formatLocalDateTime(LocalDateTime dateTime) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        return dateTime.format(dateFormatter) + dateTime.format(timeFormatter);
+        return formatDate(dateTime.toLocalDate()) + " " + formatTime(dateTime.toLocalTime());
     }
 
+    public static String formatDate(LocalDate date) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        return date.format(dateFormatter);
+    }
+
+    public static String formatTime(LocalTime time) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        return time.format(timeFormatter);
+    }
 }

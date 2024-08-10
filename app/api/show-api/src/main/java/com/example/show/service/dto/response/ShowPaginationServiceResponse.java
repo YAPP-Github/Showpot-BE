@@ -27,7 +27,7 @@ public record ShowPaginationServiceResponse(
             .toList();
 
         Optional<ShowTicketingTimeServiceParam> optShowTicketingTime = ticketingTimes.stream()
-            .filter(ticketingTime -> ticketingTime.ticketingAt().isBefore(now))
+            .filter(ticketingTime -> now.isBefore(ticketingTime.ticketingAt()))
             .findFirst();
 
         String reservationAt = optShowTicketingTime.map(
@@ -40,7 +40,7 @@ public record ShowPaginationServiceResponse(
             .location(response.show().location())
             .posterImageURL(response.show().image())
             .reservationAt(reservationAt)
-            .hasTicketingOpenSchedule(response.show().lastTicketingAt().isBefore(now))
+            .hasTicketingOpenSchedule(now.isBefore(response.show().lastTicketingAt()))
             .artists(
                 response.artists().stream()
                     .map(ShowArtistSimpleServiceResponse::from)
