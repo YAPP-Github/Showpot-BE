@@ -1,5 +1,6 @@
 package org.example.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -19,6 +20,9 @@ import org.example.usecase.UserUseCase;
 import org.example.vo.SocialLoginApiType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 public class UserServiceTest {
 
@@ -32,11 +36,16 @@ public class UserServiceTest {
         tokenProcessor
     );
 
-    @Test
+    @ParameterizedTest
+    @EnumSource(
+        value = SocialLoginApiType.class,
+        names = {"KAKAO", "GOOGLE", "APPLE"},
+        mode = Mode.INCLUDE
+    )
     @DisplayName("로그인 시 사용자가 존재하지 않으면 새로운 사용자를 생성하고 JWT를 반환한다.")
-    void getJwtAndCreatesNewUserIfNotExistWhenLogin() {
+    void getJwtAndCreatesNewUserIfNotExistWhenLogin(SocialLoginApiType type) {
         // given
-        var request = UserRequestDtoFixture.loginServiceRequest(SocialLoginApiType.KAKAO);
+        var request = UserRequestDtoFixture.loginServiceRequest(type);
         given(
             userUseCase.findUser(request.toDomainRequest())
         ).willThrow(
@@ -52,6 +61,7 @@ public class UserServiceTest {
         var result = userService.login(request);
 
         // then
+        assertThat(result).isNotNull();
         verify(jwtGenerator, times(1)).generate(any(UserParam.class), any(Date.class));
     }
 
@@ -69,6 +79,7 @@ public class UserServiceTest {
         var result = userService.login(request);
 
         // then
+        assertThat(result).isNotNull();
         verify(jwtGenerator, times(1)).generate(any(UserParam.class), any(Date.class));
     }
 }
