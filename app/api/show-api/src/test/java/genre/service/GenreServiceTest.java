@@ -1,11 +1,17 @@
 package genre.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import com.example.genre.service.GenreService;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
+import com.example.mq.MessagePublisher;
 import genre.fixture.GenreRequestDtoFixture;
 import genre.fixture.GenreResponseDtoFixture;
 import java.util.List;
@@ -24,10 +30,14 @@ class GenreServiceTest {
 
     private final GenreUseCase genreUseCase = mock(GenreUseCase.class);
     private final GenreSubscriptionUseCase genreSubscriptionUseCase = mock(
-        GenreSubscriptionUseCase.class);
+        GenreSubscriptionUseCase.class
+    );
+    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+
     private final GenreService genreService = new GenreService(
         genreUseCase,
-        genreSubscriptionUseCase
+        genreSubscriptionUseCase,
+        messagePublisher
     );
 
     @Test
@@ -68,6 +78,41 @@ class GenreServiceTest {
     }
 
     @Test
+    @DisplayName("장르를 구독하면 구독 성공한 장르 ID들을 메시지 발행하다.")
+    void genreSubscribePublishMessage() {
+        //given
+        List<UUID> genreIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new GenreSubscriptionServiceRequest(genreIds, userId);
+        var existGenresInRequest = GenreFixture.genres(2);
+        given(
+            genreUseCase.findAllGenresInIds(request.genreIds())
+        ).willReturn(
+            existGenresInRequest
+        );
+
+        var existGenreIdsInRequest = existGenresInRequest.stream()
+            .map(Genre::getId)
+            .toList();
+        int genreSubscriptionCount = 2;
+        given(
+            genreSubscriptionUseCase.subscribe(existGenreIdsInRequest, request.userId())
+        ).willReturn(
+            GenreSubscriptionFixture.genreSubscriptions(genreSubscriptionCount)
+        );
+
+        //when
+        var result = genreService.subscribe(request);
+
+        //then
+        assertThat(result).isNotNull();
+        verify(messagePublisher, times(1)).publishGenreSubscription(
+            eq("genreSubscription"),
+            anyList()
+        );
+    }
+
+    @Test
     @DisplayName("장르를 구독 취소하면 구독 취소 성공한 장르 ID들을 반환하다.")
     void genreUnsubscribe() {
         //given
@@ -92,6 +137,32 @@ class GenreServiceTest {
                     .isEqualTo(genreUnsubscriptionCount);
             }
         );
+    }
+
+    @Test
+    @DisplayName("장르를 구독 취소하면 구독 취소 성공한 장르 ID들을 메시지 발행한다.")
+    void genreUnsubscribePublishMessage() {
+        //given
+        List<UUID> genreIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+        UUID userId = UUID.randomUUID();
+        var request = new GenreUnsubscriptionServiceRequest(genreIds, userId);
+        int genreUnsubscriptionCount = 2;
+        given(
+            genreSubscriptionUseCase.unsubscribe(request.genreIds(), request.userId())
+        ).willReturn(
+            GenreSubscriptionFixture.genreSubscriptions(genreUnsubscriptionCount)
+        );
+
+        //when
+        var result = genreService.unsubscribe(request);
+
+        //then
+        assertThat(result).isNotNull();
+        verify(messagePublisher, times(1))
+            .publishGenreSubscription(
+                eq("genreUnsubscription"),
+                anyList()
+            );
     }
 
     @Test

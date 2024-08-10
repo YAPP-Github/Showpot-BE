@@ -17,4 +17,13 @@ public class ShowArtistFixture {
             .toList();
     }
 
+    public static List<ShowArtist> showArtists(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> ShowArtist.builder()
+                .showId(UUID.randomUUID())
+                .artistId(UUID.randomUUID())
+                .build()
+            )
+            .toList();
+    }
 }

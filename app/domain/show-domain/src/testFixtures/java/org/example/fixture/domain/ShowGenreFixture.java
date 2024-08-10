@@ -7,7 +7,7 @@ import org.example.entity.show.ShowGenre;
 
 public class ShowGenreFixture {
 
-    public static List<ShowGenre> showGenre(List<UUID> showIds, List<UUID> genreIds, int count) {
+    public static List<ShowGenre> showGenres(List<UUID> showIds, List<UUID> genreIds, int count) {
         return IntStream.range(0, count)
             .mapToObj(i -> ShowGenre.builder()
                 .showId(showIds.get(i))
@@ -16,5 +16,13 @@ public class ShowGenreFixture {
             .toList();
     }
 
-
+    public static List<ShowGenre> showGenres(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> ShowGenre.builder()
+                .showId(UUID.randomUUID())
+                .genreId(UUID.randomUUID())
+                .build()
+            )
+            .toList();
+    }
 }

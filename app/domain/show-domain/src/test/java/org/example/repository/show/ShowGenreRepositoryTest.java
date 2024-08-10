@@ -34,7 +34,7 @@ public class ShowGenreRepositoryTest extends QueryTest {
         var shows = ShowFixture.shows(2);
         showRepository.saveAll(shows);
 
-        var showGenres = ShowGenreFixture.showGenre(
+        var showGenres = ShowGenreFixture.showGenres(
             shows.stream().map(Show::getId).toList(),
             genres.stream().map(Genre::getId).toList(),
             2

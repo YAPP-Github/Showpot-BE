@@ -15,6 +15,7 @@ import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
+import org.example.entity.show.ShowSearch;
 import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.repository.show.ShowRepository;
 import org.example.repository.show.ShowTicketingTimeRepository;
@@ -76,10 +77,9 @@ public class ShowUseCase {
         updateShowTicketingTimes(request.showTicketingTimes(), show);
     }
 
-    private void updateShowSearch(Show show) {
+    public void updateShowSearch(Show show) {
         var newShowSearch = show.toShowSearch();
-        var currentShowSearches = showSearchRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
+        var currentShowSearches = findShowSearchesByShowId(show.getId());
 
         if (!currentShowSearches.contains(newShowSearch)) {
             showSearchRepository.save(newShowSearch);
@@ -91,18 +91,10 @@ public class ShowUseCase {
         }
     }
 
-    private void updateShowArtist(List<UUID> newArtistIds, Show show) {
-        var currentShowArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
-        var currentArtistIds = currentShowArtists.stream()
-            .map(ShowArtist::getArtistId)
-            .toList();
-
-        var artistIdsToAdd = newArtistIds.stream()
-            .filter(newArtistId -> !currentArtistIds.contains(newArtistId))
-            .toList();
-        var showArtistsToAdd = show.toShowArtist(artistIdsToAdd);
-        showArtistRepository.saveAll(showArtistsToAdd);
+    public void updateShowArtist(List<UUID> newArtistIds, Show show) {
+        var currentShowArtists = findShowArtistsByShowId(show.getId());
+        var artistIdsToAdd = getArtistIdsToAdd(newArtistIds, currentShowArtists);
+        showArtistRepository.saveAll(show.toShowArtist(artistIdsToAdd));
 
         var showArtistsToRemove = currentShowArtists.stream()
             .filter(showArtist -> !newArtistIds.contains(showArtist.getArtistId()))
@@ -110,26 +102,44 @@ public class ShowUseCase {
         showArtistsToRemove.forEach(BaseEntity::softDelete);
     }
 
-    private void updateShowGenre(List<UUID> newGenreIds, Show show) {
-        var currentShowGenres = showGenreRepository.findAllByShowIdAndIsDeletedFalse(
-            show.getId());
-        var currentGenreIds = currentShowGenres.stream()
-            .map(ShowGenre::getGenreId)
+    public List<UUID> getArtistIdsToAdd(
+        List<UUID> newArtistIds,
+        List<ShowArtist> currentShowArtists
+    ) {
+        var currentArtistIds = currentShowArtists.stream()
+            .map(ShowArtist::getArtistId)
             .toList();
 
-        var genreIdsToAdd = newGenreIds.stream()
-            .filter(newGenreId -> !currentGenreIds.contains(newGenreId))
+        return newArtistIds.stream()
+            .filter(newArtistId -> !currentArtistIds.contains(newArtistId))
             .toList();
-        var showGenresToAdd = show.toShowGenre(genreIdsToAdd);
-        showGenreRepository.saveAll(showGenresToAdd);
+    }
 
-        var showGenresToRemove = currentShowGenres.stream()
+    public void updateShowGenre(List<UUID> newGenreIds, Show show) {
+        List<ShowGenre> currentShowGenres = findShowGenresByShowId(show.getId());
+        List<UUID> genreIdsToAdd = getGenreIdsToAdd(newGenreIds, currentShowGenres);
+        showGenreRepository.saveAll(show.toShowGenre(genreIdsToAdd));
+
+        List<ShowGenre> showGenresToRemove = currentShowGenres.stream()
             .filter(showGenre -> !newGenreIds.contains(showGenre.getGenreId()))
             .toList();
         showGenresToRemove.forEach(BaseEntity::softDelete);
     }
 
-    private void updateShowTicketingTimes(ShowTicketingTimes ticketingTimes, Show show) {
+    public List<UUID> getGenreIdsToAdd(
+        List<UUID> newGenreIds,
+        List<ShowGenre> currentShowGenres
+    ) {
+        var currentGenreIds = currentShowGenres.stream()
+            .map(ShowGenre::getGenreId)
+            .toList();
+
+        return newGenreIds.stream()
+            .filter(newGenreId -> !currentGenreIds.contains(newGenreId))
+            .toList();
+    }
+
+    public void updateShowTicketingTimes(ShowTicketingTimes ticketingTimes, Show show) {
         var currentShowTicketingTimes = showTicketingTimeRepository.findAllByShowIdAndIsDeletedFalse(
             show.getId()
         );
@@ -173,10 +183,22 @@ public class ShowUseCase {
     }
 
     public ShowSearchPaginationDomainResponse searchShow(
-        ShowSearchPaginationDomainRequest request) {
+        ShowSearchPaginationDomainRequest request
+    ) {
         return showSearchRepository.searchShow(request);
     }
 
+    public List<ShowArtist> findShowArtistsByShowId(UUID showId) {
+        return showArtistRepository.findAllByShowIdAndIsDeletedFalse(showId);
+    }
+
+    public List<ShowGenre> findShowGenresByShowId(UUID showId) {
+        return showGenreRepository.findAllByShowIdAndIsDeletedFalse(showId);
+    }
+
+    public List<ShowSearch> findShowSearchesByShowId(UUID showId) {
+        return showSearchRepository.findAllByShowIdAndIsDeletedFalse(showId);
+    }
 
     private Show findShowById(UUID id) {
         return showRepository.findById(id).orElseThrow(NoSuchElementException::new);

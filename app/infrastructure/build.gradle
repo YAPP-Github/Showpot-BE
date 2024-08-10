@@ -1,7 +1,7 @@
-bootJar.enabled = false
-jar.enabled = true
-
 allprojects {
+    bootJar.enabled = false
+    jar.enabled = true
+
     dependencies {
         implementation "org.springframework.boot:spring-boot-starter-web"
     }
@@ -10,4 +10,5 @@ allprojects {
 dependencies {
     implementation project(":app:infrastructure:redis")
     implementation project(":app:infrastructure:s3")
+    implementation project(":app:infrastructure:message_queue")
 }

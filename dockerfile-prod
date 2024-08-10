@@ -1,4 +1,21 @@
-FROM openjdk:21-jdk-slim
-ARG JAR_FILE_PATH=app/build/libs/*.jar
-COPY ${JAR_FILE_PATH} app.jar
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+FROM bellsoft/liberica-openjdk-alpine:17 as build
+WORKDIR /workspace/app
+
+# Copy Gradle wrapper and other necessary files
+COPY app/build/libs/ .
+
+# Unpack the built application
+RUN mkdir -p target/extracted
+RUN java -Djarmode=layertools -jar *.jar extract --destination target/extracted
+
+FROM bellsoft/liberica-openjdk-alpine:17
+VOLUME /tmp
+ARG EXTRACTED=/workspace/app/target/extracted
+
+# Copy over the unpacked application
+COPY --from=build ${EXTRACTED}/dependencies/ ./
+COPY --from=build ${EXTRACTED}/spring-boot-loader/ ./
+COPY --from=build ${EXTRACTED}/snapshot-dependencies/ ./
+COPY --from=build ${EXTRACTED}/application/ ./
+
+ENTRYPOINT java -Dspring.profiles.active=dev org.springframework.boot.loader.launch.JarLauncher

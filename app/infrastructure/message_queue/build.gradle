@@ -1,7 +1,8 @@
 dependencies {
-    implementation project(":app:api:common-api")
+    implementation project(":app:api:show-api")
 
-    //redis
+    //redis pub & sub
+    implementation project(":app:infrastructure:redis")
     implementation 'org.springframework.data:spring-data-redis'
     implementation 'io.lettuce:lettuce-core:6.3.0.RELEASE'
 }
