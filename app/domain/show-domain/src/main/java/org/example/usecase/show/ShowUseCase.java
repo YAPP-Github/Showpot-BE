@@ -10,6 +10,7 @@ import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
+import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -53,8 +54,8 @@ public class ShowUseCase {
         showTicketingTimeRepository.saveAll(showTicketingTimes);
     }
 
-    public List<ShowInfoDomainResponse> findAllShowInfos() {
-        return showRepository.findAllShowInfos();
+    public List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes() {
+        return showRepository.findShowDetailWithTicketingTimes();
     }
 
     public ShowDetailDomainResponse findShowDetail(UUID id) {

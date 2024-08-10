@@ -5,7 +5,8 @@ import java.util.UUID;
 import org.example.entity.show.ShowArtist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ShowArtistRepository extends JpaRepository<ShowArtist, UUID> {
+public interface ShowArtistRepository extends JpaRepository<ShowArtist, UUID>,
+    ShowArtistQuerydslRepository {
 
     List<ShowArtist> findAllByShowIdAndIsDeletedFalse(UUID showId);
 

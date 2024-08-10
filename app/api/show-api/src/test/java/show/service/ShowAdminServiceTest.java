@@ -20,6 +20,8 @@ import java.util.UUID;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.fixture.domain.ShowArtistFixture;
 import org.example.fixture.domain.ShowGenreFixture;
+import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.genre.GenreUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,11 +30,15 @@ import show.fixture.dto.ShowRequestDtoFixture;
 class ShowAdminServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
+    private final GenreUseCase genreUseCase = mock(GenreUseCase.class);
+    private final ArtistUseCase artistUseCase = mock(ArtistUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final ShowAdminService showAdminService = new ShowAdminService(
         showUseCase,
+        genreUseCase,
+        artistUseCase,
         fileUploadComponent,
         messagePublisher
     );

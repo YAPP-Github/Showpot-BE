@@ -5,6 +5,7 @@ import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.artist.service.dto.response.ArtistKoreanNameServiceResponse;
+import com.example.artist.service.dto.response.ArtistKoreanNameWithShowIdServiceResponse;
 import com.example.component.FileUploadComponent;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,6 +41,12 @@ public class ArtistAdminService {
     public List<ArtistKoreanNameServiceResponse> findAllArtistKoreanName() {
         return artistUseCase.findAllArtistKoreanName().stream()
             .map(ArtistKoreanNameServiceResponse::new)
+            .toList();
+    }
+
+    public List<ArtistKoreanNameWithShowIdServiceResponse> findArtistKoreanNamesWithShowId() {
+        return artistUseCase.findArtistKoreanNamesWithShowId().stream()
+            .map(ArtistKoreanNameWithShowIdServiceResponse::from)
             .toList();
     }
 

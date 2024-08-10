@@ -56,8 +56,9 @@ public class ShowAdminController {
 
     @GetMapping("/list")
     public String findAllShow(Model model) {
-        List<ShowInfoApiResponse> shows = showAdminService.findAllShowInfos()
-            .stream()
+        var showWithTicketingTimes = showAdminService.findShowDetailWithTicketingTimes();
+
+        List<ShowInfoApiResponse> shows = showWithTicketingTimes.stream()
             .map(ShowInfoApiResponse::new)
             .toList();
 

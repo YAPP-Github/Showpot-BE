@@ -14,6 +14,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.exception.BusinessException;
+import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.genre.GenreUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 public class ShowAdminService {
 
     private final ShowUseCase showUseCase;
+    private final GenreUseCase genreUseCase;
+    private final ArtistUseCase artistUseCase;
     private final FileUploadComponent fileUploadComponent;
     private final MessagePublisher messagePublisher;
 
@@ -41,11 +45,17 @@ public class ShowAdminService {
         );
     }
 
-    public List<ShowInfoServiceResponse> findAllShowInfos() {
-        List<ShowInfoDomainResponse> showInfoDomainResponse = showUseCase.findAllShowInfos();
-        return showInfoDomainResponse.stream()
-            .map(ShowInfoServiceResponse::new)
-            .toList();
+    public List<ShowInfoServiceResponse> findShowDetailWithTicketingTimes() {
+        var showWithTicketingTimesDomainResponses = showUseCase.findShowDetailWithTicketingTimes();
+        var artistKoreanNameWithShowIdDomainResponses = artistUseCase.findArtistKoreanNamesWithShowId();
+        var genreNameWithShowIdDomainResponses = genreUseCase.findGenreNamesWithShowId();
+
+        return ShowInfoServiceResponse.as(
+            showWithTicketingTimesDomainResponses,
+            artistKoreanNameWithShowIdDomainResponses,
+            genreNameWithShowIdDomainResponses
+        );
+
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {

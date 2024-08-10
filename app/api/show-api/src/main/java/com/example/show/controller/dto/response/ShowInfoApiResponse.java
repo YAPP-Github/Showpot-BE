@@ -46,4 +46,11 @@ public record ShowInfoApiResponse(
         );
     }
 
+    public static List<ShowInfoApiResponse> from(
+        List<ShowInfoServiceResponse> showInfoServiceResponses
+    ) {
+        return showInfoServiceResponses.stream()
+            .map(ShowInfoApiResponse::new)
+            .toList();
+    }
 }

@@ -1,12 +1,20 @@
 package org.example.fixture.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 import org.example.entity.show.Show;
 import org.example.entity.show.info.SeatPrices;
 import org.example.entity.show.info.TicketingSites;
 
 public class ShowFixture {
+
+    public static List<Show> shows(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> deafultShow())
+            .toList();
+    }
 
     public static Show deafultShow() {
         return Show.builder()

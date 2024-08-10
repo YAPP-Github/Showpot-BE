@@ -5,12 +5,13 @@ import java.util.Optional;
 import java.util.UUID;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
+import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 
 public interface ShowQuerydslRepository {
 
     Optional<ShowDetailDomainResponse> findShowDetailById(UUID id);
 
-    List<ShowInfoDomainResponse> findAllShowInfos();
+    List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes();
 
     Optional<ShowInfoDomainResponse> findShowInfoById(UUID id);
 }
