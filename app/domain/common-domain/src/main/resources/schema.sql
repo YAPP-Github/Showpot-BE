@@ -215,7 +215,7 @@ create table users
     birth      date         not null,
     fcm_token  varchar(255) not null,
     gender     varchar(255) not null check (gender in ('MAN', 'WOMAN', 'NOT_CHOSEN')),
-    nickname   varchar(255) not null,
+    nickname   varchar(255) not null unique,
     role       varchar(255) not null check (role in ('GUEST', 'USER', 'ADMIN')),
     primary key (id)
 );
