@@ -65,4 +65,17 @@ public record ArtistUnsubscriptionPaginationApiRequest(
             .size(size)
             .build();
     }
+
+    public ArtistUnsubscriptionPaginationServiceRequest toNonUserServiceRequest() {
+        return ArtistUnsubscriptionPaginationServiceRequest.builder()
+            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
+            .sortStandard(sortStandard)
+            .artistGenderApiTypes(artistGenderApiTypes)
+            .artistApiTypes(artistApiTypes)
+            .genreIds(genreIds)
+            .userId(null)
+            .cursor(cursor)
+            .size(size)
+            .build();
+    }
 }

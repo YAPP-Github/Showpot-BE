@@ -443,4 +443,31 @@ class ArtistServiceTest {
             }
         );
     }
+
+    @Test
+    @DisplayName("페이지네이션을 이용해 비회원도 구독하지 않은 아티스트를 조회할 수 있다.")
+    void artistUnsubscribeForNonUserWithPagination() {
+        //given
+        int size = 2;
+        boolean hasNext = true;
+        var request = ArtistRequestDtoFixture.artistUnsubscriptionPaginationServiceRequest(size);
+
+        given(
+            artistUseCase.findAllArtistInCursorPagination(
+                request.toNonUserDomainRequest())
+        ).willReturn(
+            ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
+        );
+
+        //when
+        var result = artistService.findArtistUnsubscriptionsForNonUser(request);
+
+        //then
+        SoftAssertions.assertSoftly(
+            soft -> {
+                soft.assertThat(result.data().size()).isEqualTo(size);
+                soft.assertThat(result.hasNext()).isEqualTo(hasNext);
+            }
+        );
+    }
 }
