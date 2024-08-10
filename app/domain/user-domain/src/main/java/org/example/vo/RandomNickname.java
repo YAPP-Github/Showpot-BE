@@ -40,11 +40,16 @@ public enum RandomNickname {
     private final List<String> value;
 
     public static String makeRandomNickName() {
-        return NICK.value.get(randomNumber()) + " " + NAME.value.get(randomNumber()) + "님";
+        return NICK.value.get(randomNumber()) + " "
+            + NAME.value.get(randomNumber())
+            + getUniqueNumber() + "님";
     }
 
     private static int randomNumber() {
         return ThreadLocalRandom.current().nextInt(51);
     }
 
+    private static String getUniqueNumber() {
+        return String.valueOf(ThreadLocalRandom.current().nextInt(1000));
+    }
 }

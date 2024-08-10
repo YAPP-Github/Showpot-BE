@@ -33,4 +33,13 @@ public class UserQuerydslRepositoryImpl implements UserQuerydslRepository {
             .fetchFirst()
         );
     }
+
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return jpaQueryFactory
+            .selectOne()
+            .from(user)
+            .where(user.nickname.eq(nickname), user.isDeleted.isFalse())
+            .fetchFirst() != null;
+    }
 }

@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.vo.RandomNickname;
 import org.example.vo.UserGender;
 import org.example.vo.UserRole;
 
@@ -19,7 +20,7 @@ import org.example.vo.UserRole;
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
 
     @Column(name = "fcm_token", nullable = false)
@@ -56,5 +57,9 @@ public class User extends BaseEntity {
 
     public boolean isWithdrew() {
         return this.getIsDeleted();
+    }
+
+    public void changeNickname() {
+        this.nickname = RandomNickname.makeRandomNickName();
     }
 }

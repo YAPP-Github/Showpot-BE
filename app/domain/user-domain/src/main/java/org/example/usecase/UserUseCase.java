@@ -23,6 +23,10 @@ public class UserUseCase {
 
     @Transactional
     public User createNewUser(User user, SocialLogin socialLogin) {
+        while (userRepository.existsByNickname(user.getNickname())) {
+            user.changeNickname();
+        }
+
         socialLoginRepository.save(socialLogin);
         return userRepository.save(user);
     }
