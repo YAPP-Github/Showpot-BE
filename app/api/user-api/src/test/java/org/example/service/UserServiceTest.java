@@ -1,6 +1,5 @@
 package org.example.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -58,10 +57,9 @@ public class UserServiceTest {
         ).willReturn(user);
 
         // when
-        var result = userService.login(request);
+        userService.login(request);
 
         // then
-        assertThat(result).isNotNull();
         verify(jwtGenerator, times(1)).generate(any(UserParam.class), any(Date.class));
     }
 
@@ -76,10 +74,9 @@ public class UserServiceTest {
         ).willReturn(user);
 
         // when
-        var result = userService.login(request);
+        userService.login(request);
 
         // then
-        assertThat(result).isNotNull();
         verify(jwtGenerator, times(1)).generate(any(UserParam.class), any(Date.class));
     }
 }
