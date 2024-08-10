@@ -16,7 +16,7 @@ spring:
       password: password
   data:
     redis:
-      host: localhost
+      host: yapp_redis
       port: 6379
 
 token:
