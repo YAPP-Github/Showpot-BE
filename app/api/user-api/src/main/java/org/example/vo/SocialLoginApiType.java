@@ -10,4 +10,12 @@ public enum SocialLoginApiType {
             case APPLE -> SocialLoginType.APPLE;
         };
     }
+
+    public static SocialLoginApiType from(SocialLoginType type) {
+        return switch (type) {
+            case GOOGLE -> SocialLoginApiType.GOOGLE;
+            case KAKAO -> SocialLoginApiType.KAKAO;
+            case APPLE -> SocialLoginApiType.APPLE;
+        };
+    }
 }

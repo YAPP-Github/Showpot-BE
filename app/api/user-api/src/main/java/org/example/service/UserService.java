@@ -2,9 +2,13 @@ package org.example.service;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.UserProfileDomainResponse;
 import org.example.entity.SocialLogin;
 import org.example.entity.User;
+import org.example.error.UserError;
+import org.example.exception.BusinessException;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
@@ -12,6 +16,7 @@ import org.example.security.token.TokenProcessor;
 import org.example.service.dto.request.LoginServiceRequest;
 import org.example.service.dto.request.LogoutServiceRequest;
 import org.example.service.dto.request.WithdrawalServiceRequest;
+import org.example.service.dto.response.UserProfileServiceResponse;
 import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +43,27 @@ public class UserService {
     }
 
     public void withdraw(WithdrawalServiceRequest request) {
+        try {
+            userUseCase.deleteUser(request.userId());
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(UserError.NOT_FOUND_USER);
+        }
+
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
             request.accessToken(),
             request.userId()
         );
-        userUseCase.deleteUser(request.userId());
+    }
+
+    public UserProfileServiceResponse findUserProfile(UUID userId) {
+        UserProfileDomainResponse profile;
+        try {
+            profile = userUseCase.findUserProfile(userId);
+        } catch (NoSuchElementException e) {
+            throw new BusinessException(UserError.NOT_FOUND_USER);
+        }
+
+        return UserProfileServiceResponse.from(profile);
     }
 
     private User getUser(LoginServiceRequest request) {
@@ -62,9 +83,5 @@ public class UserService {
             .build();
 
         return userUseCase.createNewUser(user, socialLogin);
-    }
-
-    public String findNickname(final User user) {
-        return userUseCase.findNickName(user);
     }
 }
