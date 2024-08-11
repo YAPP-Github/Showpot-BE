@@ -56,4 +56,8 @@ public class ShowService {
             response.hasNext()
         );
     }
+
+    public void view(UUID showId) {
+        showUseCase.view(showId);
+    }
 }

@@ -9,7 +9,8 @@ import org.example.vo.ShowSortType;
 public record ShowPaginationDomainRequest(
     ShowSortType sort,
     boolean onlyOpenSchedule,
-    UUID cursor,
+    UUID cursorId,
+    Object cursorValue,
     int size,
     LocalDateTime now
 ) {

@@ -10,7 +10,8 @@ import org.example.dto.show.request.ShowPaginationDomainRequest;
 public record ShowPaginationServiceRequest(
     ShowSortApiType sort,
     boolean onlyOpenSchedule,
-    UUID cursor,
+    UUID cursorId,
+    Object cursorValue,
     int size,
     LocalDateTime now
 ) {
@@ -19,7 +20,8 @@ public record ShowPaginationServiceRequest(
         return ShowPaginationDomainRequest.builder()
             .sort(sort.toDomainType())
             .onlyOpenSchedule(onlyOpenSchedule)
-            .cursor(cursor)
+            .cursorId(cursorId)
+            .cursorValue(cursorValue)
             .size(size)
             .now(now)
             .build();

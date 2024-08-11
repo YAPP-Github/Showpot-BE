@@ -164,6 +164,12 @@ public class ShowUseCase {
         showGenresToRemove.forEach(BaseEntity::softDelete);
     }
 
+    // TODO: 동시성 이슈 고려 안 함
+    @Transactional
+    public void view(UUID id) {
+        findShowOrThrowNoSuchElementException(id).view();
+    }
+
     @Transactional
     public void deleteShow(UUID id) {
         Show show = findShowOrThrowNoSuchElementException(id);

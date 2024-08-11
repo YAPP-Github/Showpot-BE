@@ -25,6 +25,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,8 +58,8 @@ public class ShowController {
 
         return ResponseEntity.ok(
             PaginationApiResponse.<ShowPaginationApiParam>builder()
-                 .data(data)
-                 .hasNext(response.hasNext())
+                .data(data)
+                .hasNext(response.hasNext())
                 .build()
         );
 
@@ -134,5 +135,13 @@ public class ShowController {
                 .data(data)
                 .build()
         );
+    }
+
+    @PatchMapping("/{showId}/view")
+    @Operation(summary = "공연 조회수 증가")
+    public void view(
+        @PathVariable("showId") UUID showId
+    ) {
+        showService.view(showId);
     }
 }

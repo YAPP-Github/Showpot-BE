@@ -1,14 +1,11 @@
 alter table if exists artist_search
-drop
-constraint if exists fk_artist_artist_search;
+    drop constraint if exists fk_artist_artist_search;
 
 alter table if exists show_search
-drop
-constraint if exists fk_show_show_search;
+    drop constraint if exists fk_show_show_search;
 
 alter table if exists show_ticketing_time
-drop
-constraint if exists fk_show_show_ticketing_time;
+    drop constraint if exists fk_show_show_ticketing_time;
 
 drop table if exists admin cascade;
 drop table if exists artist cascade;
@@ -131,6 +128,7 @@ create table show
     location          varchar(255) not null,
     image             varchar(255) not null,
     last_ticketing_at timestamp(6) not null,
+    view_count        int          not null,
     seat_prices       jsonb        not null,
     ticketing_sites   jsonb        not null,
     primary key (id)
@@ -223,15 +221,15 @@ create table users
 
 alter table if exists artist_search
     add constraint fk_artist_artist_search
-    foreign key (artist_id)
-    references artist;
+        foreign key (artist_id)
+            references artist;
 
 alter table if exists show_search
     add constraint fk_show_show_search
-    foreign key (show_id)
-    references show;
+        foreign key (show_id)
+            references show;
 
 alter table if exists show_ticketing_time
     add constraint fk_show_show_ticketing_time
-    foreign key (show_id)
-    references show;
+        foreign key (show_id)
+            references show;

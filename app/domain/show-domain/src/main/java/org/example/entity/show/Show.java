@@ -45,6 +45,9 @@ public class Show extends BaseEntity {
     @Column(name = "last_ticketing_at", nullable = false)
     private LocalDateTime lastTicketingAt;
 
+    @Column(name = "view_count", nullable = false)
+    private int viewCount;
+
     @Enumerated
     private SeatPrices seatPrices;
 
@@ -70,6 +73,7 @@ public class Show extends BaseEntity {
         this.location = location;
         this.image = image;
         this.lastTicketingAt = lastTicketingAt;
+        this.viewCount = 0;
         this.seatPrices = seatPrices;
         this.ticketingSites = ticketingSites;
     }
@@ -119,5 +123,9 @@ public class Show extends BaseEntity {
         this.location = newShow.location;
         this.image = newShow.image;
         this.seatPrices = newShow.seatPrices;
+    }
+
+    public void view() {
+        this.viewCount++;
     }
 }
