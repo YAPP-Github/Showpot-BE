@@ -42,5 +42,4 @@ public class ShowRepositoryTest extends QueryTest {
             }
         );
     }
-
 }
