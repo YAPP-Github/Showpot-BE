@@ -1,5 +1,6 @@
 package com.example.show.controller.dto.response;
 
+import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ShowInterestApiResponse(
@@ -7,4 +8,7 @@ public record ShowInterestApiResponse(
     boolean hasInterest
 ) {
 
+    public static ShowInterestApiResponse from(ShowInterestServiceResponse response) {
+        return new ShowInterestApiResponse(response.hasInterest());
+    }
 }

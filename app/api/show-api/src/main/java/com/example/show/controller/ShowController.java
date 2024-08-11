@@ -11,6 +11,7 @@ import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowInterestPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.service.ShowService;
+import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -68,10 +69,18 @@ public class ShowController {
     @PostMapping("/{showId}/interest")
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
-        @PathVariable("showId") UUID showId
+        @PathVariable("showId") UUID showId,
+        @AuthenticationPrincipal AuthenticatedUser user
     ) {
         return ResponseEntity.ok(
-            new ShowInterestApiResponse(true)
+            ShowInterestApiResponse.from(
+                showService.interest(
+                    ShowInterestServiceRequest.builder()
+                        .showId(showId)
+                        .userId(user.userId())
+                        .build()
+                )
+            )
         );
     }
 
