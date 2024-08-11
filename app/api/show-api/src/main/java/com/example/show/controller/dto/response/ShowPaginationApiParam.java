@@ -21,7 +21,7 @@ public record ShowPaginationApiParam(
     @Schema(description = "공연 포스터 이미지 주소")
     String posterImageURL,
 
-    @Schema(description = "예매일")
+    @Schema(description = "가장 근접한 예매 시간")
     String reservationAt,
 
     @Schema(description = "오픈 예정인 티켓팅 일정이 있는지 여부")

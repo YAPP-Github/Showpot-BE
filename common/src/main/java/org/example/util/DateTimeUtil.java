@@ -20,4 +20,8 @@ public class DateTimeUtil {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(timeFormatter);
     }
+
+    public static LocalDateTime parse(String origin) {
+        return LocalDateTime.parse(origin, DateTimeFormatter.ofPattern("yyyy-MM-dd H:m"));
+    }
 }

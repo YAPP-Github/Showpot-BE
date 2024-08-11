@@ -17,7 +17,10 @@ public record ShowPaginationApiRequest(
     boolean onlyOpenSchedule,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
-    UUID cursor,
+    UUID cursorId,
+
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 정렬 필드 값 (RECENT: reservationAt, POPULAR: viewCount) / 최초 조회라면 null")
+    UUID cursorValue,
 
     @Parameter(required = true, description = "조회하려는 데이터 개수")
     int size
@@ -26,7 +29,8 @@ public record ShowPaginationApiRequest(
     public ShowPaginationServiceRequest toServiceRequest(LocalDateTime now) {
         return ShowPaginationServiceRequest.builder()
             .sort(sort)
-            .cursor(cursor)
+            .cursorId(cursorId)
+            .cursorValue(cursorValue)
             .size(size)
             .now(now)
             .build();

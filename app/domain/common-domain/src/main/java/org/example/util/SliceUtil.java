@@ -13,10 +13,11 @@ public final class SliceUtil {
 
     public static <T> Slice<T> makeSlice(final int size, final List<T> dtos) {
         final boolean hasNext = dtos.size() > size;
+
         if (hasNext) {
-            dtos.remove(size);
+            return new SliceImpl<>(dtos.subList(0, size), Pageable.ofSize(size), true);
         }
 
-        return new SliceImpl<>(dtos, Pageable.ofSize(size), hasNext);
+        return new SliceImpl<>(dtos, Pageable.ofSize(size), false);
     }
 }
