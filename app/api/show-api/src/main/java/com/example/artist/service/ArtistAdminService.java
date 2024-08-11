@@ -25,9 +25,7 @@ public class ArtistAdminService {
     private final FileUploadComponent fileUploadComponent;
 
     public void save(ArtistCreateServiceRequest artistCreateServiceRequest) {
-        String imageUrl = fileUploadComponent.uploadFile("artist",
-            artistCreateServiceRequest.image());
-
+        String imageUrl = fileUploadComponent.uploadFile("artists", artistCreateServiceRequest.image());
         Artist artist = artistCreateServiceRequest.toArtistWithImageUrl(imageUrl);
         artistUseCase.save(artist, artistCreateServiceRequest.genreIds());
     }
@@ -62,10 +60,7 @@ public class ArtistAdminService {
     }
 
     public void updateArtist(UUID id, ArtistUpdateServiceRequest artistUpdateServiceRequest) {
-        String imageUrl = fileUploadComponent.uploadFile(
-            "artist",
-            artistUpdateServiceRequest.image()
-        );
+        String imageUrl = fileUploadComponent.uploadFile("artist", artistUpdateServiceRequest.image());
         Artist artist = artistUpdateServiceRequest.toArtist(imageUrl);
 
         try {

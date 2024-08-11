@@ -2,7 +2,7 @@ package com.example.artist.service.dto.request;
 
 import com.example.artist.vo.ArtistApiType;
 import com.example.artist.vo.ArtistGenderApiType;
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +13,7 @@ import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 @Builder
 public record ArtistUnsubscriptionPaginationServiceRequest(
     SubscriptionStatusApiType subscriptionStatusApiType,
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sortStandard,
     List<ArtistGenderApiType> artistGenderApiTypes,
     List<ArtistApiType> artistApiTypes,
     List<UUID> genreIds,

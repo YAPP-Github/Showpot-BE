@@ -5,10 +5,12 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowCreationDomainRequest;
+import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
+import org.example.dto.show.response.ShowPaginationDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
 import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.BaseEntity;
@@ -66,10 +68,13 @@ public class ShowUseCase {
         return showRepository.findShowInfoById(id).orElseThrow(NoSuchElementException::new);
     }
 
+    public ShowPaginationDomainResponse findShows(ShowPaginationDomainRequest request) {
+        return showRepository.findShows(request);
+    }
+
     @Transactional
     public void updateShow(UUID id, ShowUpdateDomainRequest request) {
-        Show show = findShowById(id);
-        show.changeShowInfo(request.toShow());
+        Show show = findShowOrThrowNoSuchElementException(id);
 
         updateShowSearch(show);
         updateShowArtist(request.artistIds(), show);
@@ -161,7 +166,7 @@ public class ShowUseCase {
 
     @Transactional
     public void deleteShow(UUID id) {
-        Show show = findShowById(id);
+        Show show = findShowOrThrowNoSuchElementException(id);
         show.softDelete();
 
         var showArtists = showArtistRepository.findAllByShowIdAndIsDeletedFalse(
@@ -200,7 +205,7 @@ public class ShowUseCase {
         return showSearchRepository.findAllByShowIdAndIsDeletedFalse(showId);
     }
 
-    private Show findShowById(UUID id) {
+    private Show findShowOrThrowNoSuchElementException(UUID id) {
         return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

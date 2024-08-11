@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 public class SeatPrices {
 
     @Type(JsonType.class)
-    @Column(name = "seat_price", columnDefinition = "jsonb", nullable = false)
+    @Column(name = "seat_prices", columnDefinition = "jsonb", nullable = false)
     private Map<String, Integer> priceBySeat = new HashMap<>();
 
     public void savePriceInformation(String seatType, Integer price) {

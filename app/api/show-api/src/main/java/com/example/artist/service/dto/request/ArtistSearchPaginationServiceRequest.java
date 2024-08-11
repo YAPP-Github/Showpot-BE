@@ -1,6 +1,6 @@
 package com.example.artist.service.dto.request;
 
-import com.example.artist.vo.ArtistSortStandardApiType;
+import com.example.artist.vo.ArtistSortApiType;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
@@ -8,7 +8,7 @@ import org.example.util.StringNormalizer;
 
 @Builder
 public record ArtistSearchPaginationServiceRequest(
-    ArtistSortStandardApiType sortStandard,
+    ArtistSortApiType sortStandard,
     UUID cursor,
     int size,
     String search
@@ -22,5 +22,4 @@ public record ArtistSearchPaginationServiceRequest(
             .search(StringNormalizer.removeWhitespaceAndLowerCase(search))
             .build();
     }
-
 }

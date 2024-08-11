@@ -20,4 +20,3 @@ spring:
   sql:
     init:
       mode: always
-      platform: local

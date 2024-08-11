@@ -15,7 +15,7 @@ import org.example.fixture.dto.ArtistRequestDtoFixture;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
 import org.example.vo.ArtistGender;
-import org.example.vo.ArtistSortStandardDomainType;
+import org.example.vo.ArtistSortType;
 import org.example.vo.ArtistType;
 import org.example.vo.SubscriptionStatus;
 import org.junit.jupiter.api.Assertions;
@@ -81,7 +81,7 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.SUBSCRIBED,
             size,
-            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
+            ArtistSortType.ENGLISH_NAME_ASC,
             null,
             artists.stream().map(Artist::getId).toList(),
             ArtistFilterDomain.defaultArtistFilterDomain()
@@ -106,7 +106,7 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
+            ArtistSortType.ENGLISH_NAME_ASC,
             null,
             artists.stream().map(Artist::getId).toList(),
             ArtistFilterDomain.defaultArtistFilterDomain()
@@ -131,7 +131,7 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
+            ArtistSortType.ENGLISH_NAME_ASC,
             null,
             List.of(),
             ArtistFilterDomain.defaultArtistFilterDomain()
@@ -164,7 +164,7 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
+            ArtistSortType.ENGLISH_NAME_ASC,
             null,
             List.of(),
             ArtistFilterDomain.builder()
@@ -201,7 +201,7 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortStandardDomainType.ENGLISH_NAME_ASC,
+            ArtistSortType.ENGLISH_NAME_ASC,
             null,
             artists.stream().map(Artist::getId).toList(),
             ArtistFilterDomain.builder()

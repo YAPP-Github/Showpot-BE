@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -41,6 +42,9 @@ public class Show extends BaseEntity {
     @Column(name = "image", nullable = false)
     private String image;
 
+    @Column(name = "last_ticketing_at", nullable = false)
+    private LocalDateTime lastTicketingAt;
+
     @Enumerated
     private SeatPrices seatPrices;
 
@@ -55,6 +59,7 @@ public class Show extends BaseEntity {
         LocalDate endDate,
         String location,
         String image,
+        LocalDateTime lastTicketingAt,
         SeatPrices seatPrices,
         TicketingSites ticketingSites
     ) {
@@ -64,6 +69,7 @@ public class Show extends BaseEntity {
         this.endDate = endDate;
         this.location = location;
         this.image = image;
+        this.lastTicketingAt = lastTicketingAt;
         this.seatPrices = seatPrices;
         this.ticketingSites = ticketingSites;
     }
@@ -105,7 +111,6 @@ public class Show extends BaseEntity {
             .show(this)
             .build();
     }
-
 
     public void changeShowInfo(Show newShow) {
         this.title = newShow.title;

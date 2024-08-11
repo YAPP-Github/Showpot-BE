@@ -115,7 +115,12 @@ public class ArtistService {
     public PaginationServiceResponse<ArtistSubscriptionPaginationServiceParam> findArtistSubscriptions(
         ArtistSubscriptionPaginationServiceRequest request
     ) {
-        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            request.userId()
+        );
+        List<UUID> subscriptionArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
+            .toList();
 
         if (subscriptionArtistIds.isEmpty()) {
             return PaginationServiceResponse.of(List.of(), false);

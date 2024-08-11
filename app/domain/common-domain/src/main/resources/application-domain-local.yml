@@ -1,12 +1,17 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
     open-in-view: false
     generate-ddl: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+
+  sql:
+    init:
+      mode: always

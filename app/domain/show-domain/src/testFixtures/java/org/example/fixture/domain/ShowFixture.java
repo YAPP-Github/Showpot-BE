@@ -1,6 +1,7 @@
 package org.example.fixture.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -24,6 +25,7 @@ public class ShowFixture {
             .endDate(LocalDate.EPOCH)
             .location("test_location")
             .image("test_image")
+            .lastTicketingAt(LocalDateTime.now())
             .seatPrices(getSeatPrice())
             .ticketingSites(getTicketingInfos())
             .build();

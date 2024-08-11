@@ -10,7 +10,7 @@ import org.example.entity.artist.ArtistSearch;
 import org.example.fixture.domain.ArtistFixture;
 import org.example.repository.artist.artistsearch.ArtistSearchRepository;
 import org.example.util.StringNormalizer;
-import org.example.vo.ArtistSortStandardDomainType;
+import org.example.vo.ArtistSortType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -36,7 +36,7 @@ class ArtistSearchRepositoryTest extends QueryTest {
         artistSearchRepository.saveAll(artistSearches);
 
         ArtistSearchPaginationDomainRequest request = ArtistSearchPaginationDomainRequest.builder()
-            .sortStandard(ArtistSortStandardDomainType.ENGLISH_NAME_ASC)
+            .sortStandard(ArtistSortType.ENGLISH_NAME_ASC)
             .cursor(null)
             .size(2)
             .search(StringNormalizer.removeWhitespaceAndLowerCase(search))

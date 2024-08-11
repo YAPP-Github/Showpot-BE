@@ -38,7 +38,7 @@ public record ShowDetailServiceResponse(
                     .map(ShowGenreServiceResponse::from)
                     .toList()
             )
-            .ticketingTimes(show.ticketingTimes().stream()
+            .ticketingTimes(show.showTicketingTimes().stream()
                 .map(ShowTicketingTimeServiceResponse::from)
                 .toList()
             )
