@@ -852,7 +852,7 @@ VALUES (gen_random_uuid(),
 
 -- Show
 INSERT INTO show(id, created_at, updated_at, is_deleted, title, content, start_date, end_date,
-                 location, image, last_ticketing_at, seat_prices, ticketing_sites)
+                 location, image, last_ticketing_at, view_count, seat_prices, ticketing_sites)
 VALUES ('eca21e50-1392-4059-b380-061a2323c6d2',
         now(),
         now(),
@@ -864,6 +864,7 @@ VALUES ('eca21e50-1392-4059-b380-061a2323c6d2',
         '공연장 위치',
         'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
         now(),
+        0,
         '{"b": 20000, "c": 30000}',
         '{"티켓링크": "https://naver.com"}');
 
