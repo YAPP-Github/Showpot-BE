@@ -77,6 +77,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                             show.location,
                             show.image,
                             show.lastTicketingAt,
+                            show.viewCount,
                             show.seatPrices,
                             show.ticketingSites
                         ),
