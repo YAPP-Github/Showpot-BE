@@ -37,7 +37,6 @@ import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.show.Show;
 import org.example.util.DateTimeUtil;
 import org.example.util.SliceUtil;
-import org.example.vo.ShowSortType;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
@@ -109,22 +108,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     public ShowPaginationDomainResponse findShows(ShowPaginationDomainRequest request) {
         List<ShowDetailDomainResponse> result;
         switch (request.sort()) {
-            case POPULAR -> result = jpaQueryFactory
-                .selectFrom(show)
-                .join(showArtist).on(isShowArtistEqualShowIdAndIsDeletedFalse())
-                .join(artist).on(isArtistIdEqualShowArtistAndIsDeletedFalse())
-                .join(showGenre).on(isShowGenreEqualShowIdAndIsDeletedFalse())
-                .join(genre).on(isGenreIdEqualShowGenreAndIsDeletedFalse())
-                .join(showTicketingTime)
-                .on(showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse()))
-                .where(getShowPaginationWhereCondition(request))
-                .limit(request.size() + 1)
-                .orderBy(getShowOrderSpecifier(request.sort()).toArray(OrderSpecifier[]::new))
-                .transform(
-                    groupBy(show.id).as(getShowDetailConstructor())
-                ).values().stream()
-                .toList();
-            default -> result = findShowsByRecent(request);
+            case POPULAR -> result = findShowsByPopularity(request);
+            default -> result = findShowsByClosestTicketingAt(request);
         }
 
         Slice<ShowDetailDomainResponse> slice = SliceUtil.makeSlice(request.size(), result);
@@ -135,7 +120,43 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .build();
     }
 
-    private List<ShowDetailDomainResponse> findShowsByRecent(ShowPaginationDomainRequest request) {
+    private List<ShowDetailDomainResponse> findShowsByPopularity(ShowPaginationDomainRequest request) {
+        BooleanExpression whereExpression = show.isDeleted.isFalse();
+
+        if (request.cursorId() != null) {
+            whereExpression.and(
+                show.viewCount.gt(Integer.parseInt(request.cursorValue().toString()))
+                    .or(show.viewCount.eq(Integer.parseInt(request.cursorValue().toString()))
+                        .and(show.id.gt(request.cursorId()))
+                    )
+            );
+        }
+
+        if (request.onlyOpenSchedule()) {
+            whereExpression.and(show.lastTicketingAt.after(request.now()));
+        }
+
+        return jpaQueryFactory
+            .selectFrom(show)
+            .leftJoin(showArtist).on(isShowArtistEqualShowIdAndIsDeletedFalse())
+            .leftJoin(artist).on(isArtistIdEqualShowArtistAndIsDeletedFalse())
+            .leftJoin(showGenre).on(isShowGenreEqualShowIdAndIsDeletedFalse())
+            .leftJoin(genre).on(isGenreIdEqualShowGenreAndIsDeletedFalse())
+            .leftJoin(showTicketingTime)
+            .on(showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse()))
+            .where(whereExpression)
+            .limit(request.size() + 1)
+            .orderBy(
+                show.viewCount.desc(),
+                show.id.asc()
+            )
+            .transform(
+                groupBy(show.id).as(getShowDetailConstructor())
+            ).values().stream()
+            .toList();
+    }
+
+    private List<ShowDetailDomainResponse> findShowsByClosestTicketingAt(ShowPaginationDomainRequest request) {
         JPAQuery<LocalDateTime> closestTicketingTimeQuery = jpaQueryFactory
             .select(showTicketingTime.ticketingAt.min())
             .from(showTicketingTime)
@@ -154,17 +175,23 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             );
         }
 
+        if (request.onlyOpenSchedule()) {
+            whereExpression.and(show.lastTicketingAt.after(request.now()));
+        }
+
         List<ShowDetailDomainResponse> response = jpaQueryFactory
             .selectFrom(show)
             .leftJoin(showGenre).on(show.id.eq(showGenre.showId).and(showGenre.isDeleted.isFalse()))
             .leftJoin(genre).on(showGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse()))
-            .leftJoin(showArtist).on(show.id.eq(showArtist.showId))
-            .leftJoin(artist).on(showArtist.artistId.eq(artist.id))
-            .leftJoin(showTicketingTime).on(show.id.eq(showTicketingTime.show.id))
+            .leftJoin(showArtist).on(show.id.eq(showArtist.showId).and(showArtist.isDeleted.isFalse()))
+            .leftJoin(artist).on(showArtist.artistId.eq(artist.id).and(artist.isDeleted.isFalse()))
+            .leftJoin(showTicketingTime)
+            .on(show.id.eq(showTicketingTime.show.id).and(showTicketingTime.isDeleted.isFalse()))
             .where(whereExpression)
+            .limit(request.size() + 1)
             .orderBy(
                 new OrderSpecifier<>(Order.ASC, closestTicketingTimeQuery, NullHandling.NullsLast),
-                new OrderSpecifier<>(Order.ASC, show.id)
+                show.id.asc()
             )
             .transform(
                 groupBy(show.id).as(getShowDetailConstructor())
@@ -287,34 +314,5 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
 
     private BooleanExpression isShowTicketingEqualShowAndIsDeletedFalse() {
         return showTicketingTime.show.id.eq(show.id).and(showTicketingTime.isDeleted.isFalse());
-    }
-
-    private BooleanExpression getShowPaginationWhereCondition(ShowPaginationDomainRequest request) {
-        BooleanExpression defaultCondition = show.isDeleted.isFalse();
-
-        switch (request.sort()) {
-            case POPULAR -> defaultCondition.and(show.viewCount.gt(0));
-            default -> defaultCondition.and(show.lastTicketingAt.after(request.now()));
-        }
-
-        if (request.cursorId() != null) {
-            defaultCondition.and(show.id.gt(request.cursorId()));
-        }
-
-        // 티켓팅 오픈 예정 스케줄이 있는 경우
-        // TODO: 이름 변경이 필요해 보임
-        if (request.onlyOpenSchedule()) {
-            defaultCondition.and(show.lastTicketingAt.after(request.now()));
-        }
-
-        return defaultCondition;
-    }
-
-    // TODO: Show 조회수 컬럼 추가 후 수정
-    private List<OrderSpecifier> getShowOrderSpecifier(ShowSortType sortType) {
-        return switch (sortType) {
-            case RECENT -> List.of(show.lastTicketingAt.asc(), show.id.asc());
-            case POPULAR -> List.of(show.viewCount.desc(), show.id.asc());
-        };
     }
 }
