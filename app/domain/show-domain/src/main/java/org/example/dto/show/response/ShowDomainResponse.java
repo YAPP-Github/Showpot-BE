@@ -18,6 +18,7 @@ public record ShowDomainResponse(
     String location,
     String image,
     LocalDateTime lastTicketingAt,
+    int viewCount,
     SeatPrices seatPrices,
     TicketingSites ticketingSites
 ) {

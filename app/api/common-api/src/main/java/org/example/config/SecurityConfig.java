@@ -62,6 +62,7 @@ public class SecurityConfig {
 
     private RequestMatcher getMatcherForAnyone() {
         return RequestMatchers.anyOf(
+            antMatcher("/health"),
             antMatcher("/swagger-ui/**"),
             antMatcher("/v3/api-docs/**"),
             antMatcher("/admin/**"),

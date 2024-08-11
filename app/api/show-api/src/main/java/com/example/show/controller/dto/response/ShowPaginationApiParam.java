@@ -27,6 +27,9 @@ public record ShowPaginationApiParam(
     @Schema(description = "오픈 예정인 티켓팅 일정이 있는지 여부")
     boolean hasTicketingOpenSchedule,
 
+    @Schema(description = "조회수")
+    int viewCount,
+
     @Schema(description = "아티스트 정보")
     List<ShowArtistPaginationApiParam> artists,
 
@@ -45,6 +48,7 @@ public record ShowPaginationApiParam(
             .posterImageURL(response.posterImageURL())
             .reservationAt(response.reservationAt())
             .hasTicketingOpenSchedule(response.hasTicketingOpenSchedule())
+            .viewCount(response.viewCount())
             .artists(
                 response.artists().stream()
                     .map(ShowArtistPaginationApiParam::from)
