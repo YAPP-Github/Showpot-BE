@@ -249,6 +249,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             defaultCondition.and(show.id.gt(request.cursor()));
         }
 
+        // 티켓팅 오픈 예정 스케줄이 있는 경우
+        // TODO: 이름 변경이 필요해 보임
         if (request.onlyOpenSchedule()) {
             defaultCondition.and(show.lastTicketingAt.after(request.now()));
         }

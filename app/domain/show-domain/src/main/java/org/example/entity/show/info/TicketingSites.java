@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 public class TicketingSites {
 
     @Type(JsonType.class)
-    @Column(name = "ticketing", columnDefinition = "jsonb", nullable = false)
+    @Column(name = "ticketing_sites", columnDefinition = "jsonb", nullable = false)
     private Map<String, String> ticketingURLBySite = new HashMap<>();
 
     public void saveTicketingSite(String ticketingSite, String ticketingURL) {

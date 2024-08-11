@@ -24,7 +24,7 @@ import org.example.vo.TicketingType;
 public class ShowTicketingTime extends BaseEntity {
 
     @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private TicketingType ticketingType;
 
     @Column(name = "ticketing_at", nullable = false)

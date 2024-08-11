@@ -131,8 +131,8 @@ create table show
     location          varchar(255) not null,
     image             varchar(255) not null,
     last_ticketing_at timestamp(6) not null,
-    seat_price        jsonb        not null,
-    ticketing         jsonb        not null,
+    seat_prices       jsonb        not null,
+    ticketing_sites   jsonb        not null,
     primary key (id)
 );
 
