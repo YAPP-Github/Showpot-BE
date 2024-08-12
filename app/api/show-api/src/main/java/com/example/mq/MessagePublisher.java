@@ -10,7 +10,7 @@ public interface MessagePublisher {
 
     void publishShow(String topic, ShowRelationArtistAndGenreServiceMessage message);
 
-    void publishArtistSubscription(String topic, List<ArtistSubscriptionServiceMessage> messages);
+    void publishArtistSubscription(String topic, ArtistSubscriptionServiceMessage messages);
 
     void publishGenreSubscription(String topic, List<GenreSubscriptionServiceMessage> messages);
 

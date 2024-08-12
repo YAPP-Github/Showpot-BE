@@ -60,4 +60,8 @@ public class UserUseCase {
     public UserProfileDomainResponse findUserProfile(UUID userId) {
         return userRepository.findUserProfileById(userId).orElseThrow(NoSuchElementException::new);
     }
+
+    public String findUserFcmTokensByUserId(UUID userId) {
+        return userRepository.findUserFcmTokensByUserId(userId).orElseThrow(NoSuchElementException::new);
+    }
 }

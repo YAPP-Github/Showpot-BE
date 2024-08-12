@@ -35,15 +35,12 @@ public class RedisMessagePublisher implements MessagePublisher {
     @Override
     public void publishArtistSubscription(
         String topic,
-        List<ArtistSubscriptionServiceMessage> messages
+        ArtistSubscriptionServiceMessage message
     ) {
-        var infraMessages = messages.stream()
-            .map(ArtistSubscriptionInfraMessage::from)
-            .toList();
-
-        template.convertAndSend(topic, infraMessages);
+        var infraMessage = ArtistSubscriptionInfraMessage.from(message);
+        template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( artistSubscriptionMessage : {} )", infraMessages);
+        log.info("Message Contents ( artistSubscriptionMessage : {} )", infraMessage);
     }
 
     @Override
