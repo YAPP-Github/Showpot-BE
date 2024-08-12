@@ -8,8 +8,8 @@ import com.example.genre.service.dto.request.GenreUnsubscriptionPaginationServic
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
-import com.example.mq.MessagePublisher;
-import com.example.mq.message.GenreSubscriptionServiceMessage;
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.GenreSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

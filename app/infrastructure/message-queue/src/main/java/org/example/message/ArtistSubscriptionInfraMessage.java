@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.mq.message.ArtistSubscriptionServiceMessage;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;

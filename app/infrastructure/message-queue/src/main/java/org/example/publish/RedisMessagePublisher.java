@@ -1,10 +1,10 @@
 package org.example.publish;
 
-import com.example.mq.MessagePublisher;
-import com.example.mq.message.ArtistSubscriptionServiceMessage;
-import com.example.mq.message.GenreSubscriptionServiceMessage;
-import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.mq.message.TicketingReservationServiceMessage;
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
+import com.example.publish.message.GenreSubscriptionServiceMessage;
+import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
+import com.example.publish.message.TicketingReservationServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.message.ArtistSubscriptionInfraMessage;

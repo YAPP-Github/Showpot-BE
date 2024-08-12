@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.mq.message.TicketingReservationServiceMessage;
+import com.example.publish.message.TicketingReservationServiceMessage;
 import java.util.List;
 import lombok.Builder;
 

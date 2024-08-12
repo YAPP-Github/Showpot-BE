@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.mq.message.ReserveShowServiceMessage;
+import com.example.publish.message.ReserveShowServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDateTime;
 import java.util.UUID;

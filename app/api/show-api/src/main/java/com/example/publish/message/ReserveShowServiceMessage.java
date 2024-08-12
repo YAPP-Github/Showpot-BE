@@ -1,4 +1,4 @@
-package com.example.mq.message;
+package com.example.publish.message;
 
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDateTime;

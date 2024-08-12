@@ -1,9 +1,9 @@
-package com.example.mq;
+package com.example.publish;
 
-import com.example.mq.message.ArtistSubscriptionServiceMessage;
-import com.example.mq.message.GenreSubscriptionServiceMessage;
-import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.mq.message.TicketingReservationServiceMessage;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
+import com.example.publish.message.GenreSubscriptionServiceMessage;
+import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
+import com.example.publish.message.TicketingReservationServiceMessage;
 
 public interface MessagePublisher {
 

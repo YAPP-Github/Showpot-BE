@@ -12,8 +12,8 @@ import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest
 import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
-import com.example.mq.MessagePublisher;
-import com.example.mq.message.ArtistSubscriptionServiceMessage;
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
