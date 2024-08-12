@@ -11,8 +11,10 @@ services:
     ports:
       - '8080:8080'
     networks:
-      - app-network
+      - yapp-network
+    depends_on:
+      - redis정
 
 networks:
-  app-network:
-    driver: bridge
+  yapp-network:
+    external: true
