@@ -16,6 +16,7 @@ public record ShowInfoApiResponse(
     LocalDate endDate,
     String location,
     String image,
+    int viewCount,
     ShowSeatApiResponse seatInfoApiResponse,
     ShowTicketingSiteApiResponse ticketingSiteApiResponse,
     List<ShowTicketingTimeApiResponse> ticketingTimes,
@@ -32,6 +33,7 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.startDate(),
             showInfoServiceResponse.location(),
             showInfoServiceResponse.image(),
+            showInfoServiceResponse.viewCount(),
             ShowSeatApiResponse.from(showInfoServiceResponse.seats()),
             ShowTicketingSiteApiResponse.from(showInfoServiceResponse.ticketingSiteInfos()),
             showInfoServiceResponse.ticketingSites().stream()

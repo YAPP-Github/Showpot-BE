@@ -16,6 +16,7 @@ public record ShowPaginationServiceResponse(
     String posterImageURL,
     String reservationAt,
     boolean hasTicketingOpenSchedule,
+    int viewCount,
     List<ShowArtistSimpleServiceResponse> artists,
     List<ShowGenreSimpleServiceResponse> genres,
     List<ShowTicketingTimeServiceParam> showTicketingTimes
@@ -41,6 +42,7 @@ public record ShowPaginationServiceResponse(
             .posterImageURL(response.show().image())
             .reservationAt(reservationAt)
             .hasTicketingOpenSchedule(now.isBefore(response.show().lastTicketingAt()))
+            .viewCount(response.show().viewCount())
             .artists(
                 response.artists().stream()
                     .map(ShowArtistSimpleServiceResponse::from)

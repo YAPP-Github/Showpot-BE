@@ -24,6 +24,7 @@ public record ShowInfoServiceResponse(
     LocalDate endDate,
     String location,
     String image,
+    int viewCount,
     ShowSeatServiceResponse seats,
     ShowTicketingSiteServiceResponse ticketingSiteInfos,
     List<ShowTicketingTimeServiceResponse> ticketingSites,
@@ -40,6 +41,7 @@ public record ShowInfoServiceResponse(
             showInfo.show().endDate(),
             showInfo.show().location(),
             showInfo.show().image(),
+            showInfo.show().viewCount(),
             ShowSeatServiceResponse.from(showInfo.show().seatPrices()),
             ShowTicketingSiteServiceResponse.from(showInfo.show().ticketingSites()),
             toShowTicketingTimeServiceResponses(showInfo.ticketingTimes()),
@@ -72,6 +74,7 @@ public record ShowInfoServiceResponse(
                     showWithTicketingTime.show().endDate(),
                     showWithTicketingTime.show().location(),
                     showWithTicketingTime.show().image(),
+                    showWithTicketingTime.show().viewCount(),
                     ShowSeatServiceResponse.from(showWithTicketingTime.show().seatPrices()),
                     ShowTicketingSiteServiceResponse.from(
                         showWithTicketingTime.show().ticketingSites()),
