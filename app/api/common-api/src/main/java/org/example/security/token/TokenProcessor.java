@@ -1,6 +1,5 @@
 package org.example.security.token;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +18,7 @@ public class TokenProcessor {
     private final JWTGenerator jwtGenerator;
     private final TokenRepository tokenRepository;
 
-    public TokenParam reissueToken(HttpServletRequest request) {
-        String refreshToken = jwtHandler.extractRefreshToken(request);
+    public TokenParam reissueToken(String refreshToken) {
         UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
 
         String oldRefreshToken = getExistRefreshToken(userParam);
