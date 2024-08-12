@@ -69,6 +69,7 @@ public class SecurityConfig {
             antMatcher("/css/**"),
             antMatcher("/js/**"),
             antMatcher(HttpMethod.POST, "/api/v1/users/login"),
+            antMatcher(HttpMethod.POST, "/api/v1/users/reissue"),
             antMatcher(HttpMethod.POST, "/admin/login"),
             antMatcher(HttpMethod.POST, "/admin/signup"),
             antMatcher(HttpMethod.GET, "/admin/home"),

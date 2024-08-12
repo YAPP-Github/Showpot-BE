@@ -15,6 +15,7 @@ import org.example.security.token.JWTGenerator;
 import org.example.security.token.TokenProcessor;
 import org.example.service.dto.request.LoginServiceRequest;
 import org.example.service.dto.request.LogoutServiceRequest;
+import org.example.service.dto.request.ReissueServiceRequest;
 import org.example.service.dto.request.WithdrawalServiceRequest;
 import org.example.service.dto.response.UserProfileServiceResponse;
 import org.example.usecase.UserUseCase;
@@ -53,6 +54,10 @@ public class UserService {
             request.accessToken(),
             request.userId()
         );
+    }
+
+    public TokenParam reissue(ReissueServiceRequest request) {
+        return tokenProcessor.reissueToken(request.refreshToken());
     }
 
     public UserProfileServiceResponse findUserProfile(UUID userId) {
