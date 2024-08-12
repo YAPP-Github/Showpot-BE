@@ -12,8 +12,8 @@ import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest
 import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
-import com.example.mq.MessagePublisher;
-import com.example.mq.message.ArtistSubscriptionServiceMessage;
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -22,6 +22,7 @@ import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
 import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.UserUseCase;
 import org.example.usecase.artist.ArtistUseCase;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class ArtistService {
 
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
+    private final UserUseCase userUseCase;
     private final MessagePublisher messagePublisher;
 
     public PaginationServiceResponse<ArtistSearchPaginationServiceParam> searchArtist(
@@ -62,22 +64,27 @@ public class ArtistService {
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
-        List<Artist> existArtistsInRequest = artistUseCase.findAllArtistInIds(request.artistIds());
-        List<UUID> existArtistIdsInRequest = existArtistsInRequest.stream()
+        var existArtistsInRequest = artistUseCase.findAllArtistInIds(request.artistIds());
+        var existArtistIdsInRequest = existArtistsInRequest.stream()
             .map(Artist::getId)
             .toList();
 
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.subscribe(
+        var subscriptions = artistSubscriptionUseCase.subscribe(
             existArtistIdsInRequest,
             request.userId()
         );
-
-        var messages = subscriptions.stream()
-            .map(ArtistSubscriptionServiceMessage::from)
+        var subscribedArtistIds = subscriptions.stream()
+            .map(ArtistSubscription::getArtistId)
             .toList();
+
+        var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishArtistSubscription(
             "artistSubscription",
-            messages
+            ArtistSubscriptionServiceMessage.from(
+                userFcmToken,
+                subscribedArtistIds
+            )
         );
 
         return ArtistSubscriptionServiceResponse.builder()
@@ -91,17 +98,21 @@ public class ArtistService {
     public ArtistUnsubscriptionServiceResponse unsubscribe(
         ArtistUnsubscriptionServiceRequest request
     ) {
-        List<ArtistSubscription> unsubscribedArtists = artistSubscriptionUseCase.unsubscribe(
+        var unsubscribedArtists = artistSubscriptionUseCase.unsubscribe(
             request.artistIds(),
             request.userId()
         );
-
-        var messages = unsubscribedArtists.stream()
-            .map(ArtistSubscriptionServiceMessage::from)
+        var unsubscribedArtistIds = unsubscribedArtists.stream()
+            .map(ArtistSubscription::getArtistId)
             .toList();
+
+        var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
         messagePublisher.publishArtistSubscription(
             "artistUnsubscription",
-            messages
+            ArtistSubscriptionServiceMessage.from(
+                userFcmToken,
+                unsubscribedArtistIds
+            )
         );
 
         return ArtistUnsubscriptionServiceResponse.builder()
