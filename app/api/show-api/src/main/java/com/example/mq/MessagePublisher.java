@@ -4,7 +4,6 @@ import com.example.mq.message.ArtistSubscriptionServiceMessage;
 import com.example.mq.message.GenreSubscriptionServiceMessage;
 import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.mq.message.TicketingReservationServiceMessage;
-import java.util.List;
 
 public interface MessagePublisher {
 
@@ -14,5 +13,5 @@ public interface MessagePublisher {
 
     void publishGenreSubscription(String topic, GenreSubscriptionServiceMessage message);
 
-    void publishTicketingReservation(String topic, List<TicketingReservationServiceMessage> messages);
+    void publishTicketingReservation(String topic, TicketingReservationServiceMessage message);
 }

@@ -5,7 +5,6 @@ import com.example.mq.message.ArtistSubscriptionServiceMessage;
 import com.example.mq.message.GenreSubscriptionServiceMessage;
 import com.example.mq.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.mq.message.TicketingReservationServiceMessage;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.message.ArtistSubscriptionInfraMessage;
@@ -58,14 +57,12 @@ public class RedisMessagePublisher implements MessagePublisher {
     @Override
     public void publishTicketingReservation(
         String topic,
-        List<TicketingReservationServiceMessage> messages
+        TicketingReservationServiceMessage message
     ) {
-        var infraMessages = messages.stream()
-            .map(TicketingReservationInfraMessage::from)
-            .toList();
+        var infraMessage = TicketingReservationInfraMessage.from(message);
 
-        template.convertAndSend(topic, infraMessages);
+        template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( ticketingReservationMessage : {} )", infraMessages);
+        log.info("Message Contents ( ticketingReservationMessage : {} )", infraMessage);
     }
 }
