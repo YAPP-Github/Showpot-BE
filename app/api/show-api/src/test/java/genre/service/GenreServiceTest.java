@@ -1,7 +1,7 @@
 package genre.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -12,6 +12,7 @@ import com.example.genre.service.GenreService;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.mq.MessagePublisher;
+import com.example.mq.message.GenreSubscriptionServiceMessage;
 import genre.fixture.GenreRequestDtoFixture;
 import genre.fixture.GenreResponseDtoFixture;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.example.entity.genre.Genre;
 import org.example.fixture.GenreSubscriptionFixture;
 import org.example.fixture.domain.GenreFixture;
 import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.UserUseCase;
 import org.example.usecase.genre.GenreUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,11 +34,13 @@ class GenreServiceTest {
     private final GenreSubscriptionUseCase genreSubscriptionUseCase = mock(
         GenreSubscriptionUseCase.class
     );
+    private final UserUseCase userUseCase = mock(UserUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final GenreService genreService = new GenreService(
         genreUseCase,
         genreSubscriptionUseCase,
+        userUseCase,
         messagePublisher
     );
 
@@ -108,7 +112,7 @@ class GenreServiceTest {
         assertThat(result).isNotNull();
         verify(messagePublisher, times(1)).publishGenreSubscription(
             eq("genreSubscription"),
-            anyList()
+            any(GenreSubscriptionServiceMessage.class)
         );
     }
 
@@ -161,7 +165,7 @@ class GenreServiceTest {
         verify(messagePublisher, times(1))
             .publishGenreSubscription(
                 eq("genreUnsubscription"),
-                anyList()
+                any(GenreSubscriptionServiceMessage.class)
             );
     }
 

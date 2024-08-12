@@ -24,12 +24,11 @@ public class RedisMessagePublisher implements MessagePublisher {
 
     @Override
     public void publishShow(String topic, ShowRelationArtistAndGenreServiceMessage message) {
-        template.convertAndSend(topic, ShowRelationArtistAndGenreInfraMessage.from(message));
+        var infraMessage = ShowRelationArtistAndGenreInfraMessage.from(message);
+
+        template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( artistIds : {}, genreIds : {} )",
-            message.artistIds(),
-            message.genreIds()
-        );
+        log.info("Message Contents ( showRelationArtistAndGenreInfraMessage : {})", infraMessage);
     }
 
     @Override
@@ -38,6 +37,7 @@ public class RedisMessagePublisher implements MessagePublisher {
         ArtistSubscriptionServiceMessage message
     ) {
         var infraMessage = ArtistSubscriptionInfraMessage.from(message);
+
         template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
         log.info("Message Contents ( artistSubscriptionMessage : {} )", infraMessage);
@@ -46,15 +46,13 @@ public class RedisMessagePublisher implements MessagePublisher {
     @Override
     public void publishGenreSubscription(
         String topic,
-        List<GenreSubscriptionServiceMessage> messages
+        GenreSubscriptionServiceMessage message
     ) {
-        var infraMessages = messages.stream()
-            .map(GenreSubscriptionInfraMessage::from)
-            .toList();
+        var infraMessage = GenreSubscriptionInfraMessage.from(message);
 
-        template.convertAndSend(topic, infraMessages);
+        template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( genreSubscriptionMessage : {} )", infraMessages);
+        log.info("Message Contents ( genreSubscriptionMessage : {} )", infraMessage);
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
 import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.UserUseCase;
 import org.example.usecase.genre.GenreUseCase;
 import org.springframework.stereotype.Service;
 
@@ -27,25 +28,31 @@ public class GenreService {
 
     private final GenreUseCase genreUseCase;
     private final GenreSubscriptionUseCase genreSubscriptionUseCase;
+    private final UserUseCase userUseCase;
     private final MessagePublisher messagePublisher;
 
     public GenreSubscriptionServiceResponse subscribe(GenreSubscriptionServiceRequest request) {
-        List<Genre> existGenresInRequest = genreUseCase.findAllGenresInIds(request.genreIds());
-        List<UUID> existGenreIdsInRequest = existGenresInRequest.stream()
+        var existGenresInRequest = genreUseCase.findAllGenresInIds(request.genreIds());
+        var existGenreIdsInRequest = existGenresInRequest.stream()
             .map(Genre::getId)
             .toList();
 
-        List<GenreSubscription> subscriptions = genreSubscriptionUseCase.subscribe(
+        var subscriptions = genreSubscriptionUseCase.subscribe(
             existGenreIdsInRequest,
             request.userId()
         );
-
-        var messages = subscriptions.stream()
-            .map(GenreSubscriptionServiceMessage::from)
+        var subscribedGenreIds = subscriptions.stream()
+            .map(GenreSubscription::getGenreId)
             .toList();
+
+        var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishGenreSubscription(
             "genreSubscription",
-            messages
+            GenreSubscriptionServiceMessage.from(
+                userFcmToken,
+                subscribedGenreIds
+            )
         );
 
         return GenreSubscriptionServiceResponse.builder()
@@ -60,17 +67,23 @@ public class GenreService {
     public GenreUnsubscriptionServiceResponse unsubscribe(
         GenreUnsubscriptionServiceRequest request
     ) {
-        List<GenreSubscription> unsubscriptionGenres = genreSubscriptionUseCase.unsubscribe(
+        var unsubscriptionGenres = genreSubscriptionUseCase.unsubscribe(
             request.genreIds(),
             request.userId()
         );
-
-        var messages = unsubscriptionGenres.stream()
-            .map(GenreSubscriptionServiceMessage::from)
+        var unsubscribedGenreIds = unsubscriptionGenres
+            .stream()
+            .map(GenreSubscription::getGenreId)
             .toList();
+
+        var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishGenreSubscription(
             "genreUnsubscription",
-            messages
+            GenreSubscriptionServiceMessage.from(
+                userFcmToken,
+                unsubscribedGenreIds
+            )
         );
 
         return GenreUnsubscriptionServiceResponse.builder()

@@ -1,19 +1,22 @@
 package com.example.mq.message;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.GenreSubscription;
 
 @Builder
 public record GenreSubscriptionServiceMessage(
-    UUID userId,
-    UUID genreId
+    String userFcmToken,
+    List<UUID> genreIds
 ) {
 
-    public static GenreSubscriptionServiceMessage from(GenreSubscription genreSubscription) {
+    public static GenreSubscriptionServiceMessage from(
+        String userFcmToken,
+        List<UUID> genreIds
+    ) {
         return GenreSubscriptionServiceMessage.builder()
-            .userId(genreSubscription.getUserId())
-            .genreId(genreSubscription.getGenreId())
+            .userFcmToken(userFcmToken)
+            .genreIds(genreIds)
             .build();
     }
 }
