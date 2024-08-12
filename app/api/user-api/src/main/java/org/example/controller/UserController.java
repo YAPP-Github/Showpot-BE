@@ -6,8 +6,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.request.LoginApiRequest;
 import org.example.controller.dto.request.LogoutApiRequest;
+import org.example.controller.dto.request.ReissueApiRequest;
 import org.example.controller.dto.request.WithdrawalApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
+import org.example.controller.dto.response.ReissueApiResponse;
 import org.example.controller.dto.response.UserProfileApiResponse;
 import org.example.security.dto.AuthenticatedUser;
 import org.example.security.dto.TokenParam;
@@ -45,7 +47,7 @@ public class UserController {
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestBody LogoutApiRequest request
+        @Valid @RequestBody LogoutApiRequest request
     ) {
         userService.logout(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
@@ -55,10 +57,25 @@ public class UserController {
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestBody WithdrawalApiRequest request
+        @Valid @RequestBody WithdrawalApiRequest request
     ) {
         userService.withdraw(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reissue")
+    @Operation(summary = "토큰 재발급")
+    public ResponseEntity<ReissueApiResponse> reissue(
+        @Valid @RequestBody ReissueApiRequest request
+    ) {
+        TokenParam reissueToken = userService.reissue(request.toServiceRequest());
+
+        return ResponseEntity.ok(
+            ReissueApiResponse.builder()
+                .accessToken(reissueToken.accessToken())
+                .refreshToken(reissueToken.refreshToken())
+                .build()
+        );
     }
 
     @GetMapping("/profile")

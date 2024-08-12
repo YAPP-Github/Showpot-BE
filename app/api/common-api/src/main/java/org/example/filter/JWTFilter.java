@@ -1,6 +1,5 @@
 package org.example.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,9 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.repository.TokenRepository;
 import org.example.security.dto.AuthenticatedUser;
-import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTHandler;
 import org.example.security.token.TokenProcessor;
@@ -26,7 +23,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTHandler jwtHandler;
     private final TokenProcessor tokenProcessor;
-    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -34,12 +30,6 @@ public class JWTFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getHeader("Refresh") != null) {
-            TokenParam token = tokenProcessor.reissueToken(request);
-            response.getWriter().write(new ObjectMapper().writeValueAsString(token));
-            return;
-        }
-
         if (request.getHeader("Authorization") != null) {
             handleAccessToken(request);
         }
