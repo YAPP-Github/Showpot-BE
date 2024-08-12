@@ -47,7 +47,7 @@ public class UserController {
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestBody LogoutApiRequest request
+        @Valid @RequestBody LogoutApiRequest request
     ) {
         userService.logout(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
@@ -57,7 +57,7 @@ public class UserController {
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestBody WithdrawalApiRequest request
+        @Valid @RequestBody WithdrawalApiRequest request
     ) {
         userService.withdraw(request.toServiceRequest(user.userId()));
         return ResponseEntity.noContent().build();
