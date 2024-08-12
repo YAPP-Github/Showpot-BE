@@ -13,7 +13,7 @@ services:
     networks:
       - yapp-network
     depends_on:
-      - redis정
+      - redis
 
 networks:
   yapp-network:
