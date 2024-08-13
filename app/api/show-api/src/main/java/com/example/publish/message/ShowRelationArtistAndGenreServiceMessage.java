@@ -1,4 +1,4 @@
-package com.example.mq.message;
+package com.example.publish.message;
 
 import java.util.List;
 import java.util.UUID;

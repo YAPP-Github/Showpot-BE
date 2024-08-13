@@ -1,21 +1,22 @@
 package org.example.message;
 
-import com.example.mq.message.GenreSubscriptionServiceMessage;
+import com.example.publish.message.GenreSubscriptionServiceMessage;
+import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 
 @Builder
 public record GenreSubscriptionInfraMessage(
-    UUID userId,
-    UUID genreId
+    String userFcmToken,
+    List<UUID> genreIds
 ) {
 
     public static GenreSubscriptionInfraMessage from(
         GenreSubscriptionServiceMessage message
     ) {
         return GenreSubscriptionInfraMessage.builder()
-            .userId(message.userId())
-            .genreId(message.genreId())
+            .userFcmToken(message.userFcmToken())
+            .genreIds(message.genreIds())
             .build();
     }
 }

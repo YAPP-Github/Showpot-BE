@@ -42,4 +42,14 @@ public class UserQuerydslRepositoryImpl implements UserQuerydslRepository {
             .where(user.nickname.eq(nickname), user.isDeleted.isFalse())
             .fetchFirst() != null;
     }
+
+    @Override
+    public Optional<String> findUserFcmTokensByUserId(UUID userId) {
+        return Optional.ofNullable(jpaQueryFactory
+            .select(user.fcmToken)
+            .from(user)
+            .where(user.id.eq(userId))
+            .fetchOne()
+        );
+    }
 }

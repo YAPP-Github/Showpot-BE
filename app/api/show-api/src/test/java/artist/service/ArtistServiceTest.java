@@ -1,7 +1,7 @@
 package artist.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -13,7 +13,8 @@ import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
-import com.example.mq.MessagePublisher;
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import org.example.entity.artist.Artist;
 import org.example.fixture.ArtistSubscriptionFixture;
 import org.example.fixture.domain.ArtistFixture;
 import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.UserUseCase;
 import org.example.usecase.artist.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,12 +35,13 @@ class ArtistServiceTest {
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase = mock(
         ArtistSubscriptionUseCase.class
     );
-
+    private final UserUseCase userUseCase = mock(UserUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final ArtistService artistService = new ArtistService(
         artistUseCase,
         artistSubscriptionUseCase,
+        userUseCase,
         messagePublisher
     );
 
@@ -291,7 +294,7 @@ class ArtistServiceTest {
         assertThat(result).isNotNull();
         verify(messagePublisher, times(1)).publishArtistSubscription(
             eq("artistSubscription"),
-            anyList()
+            any(ArtistSubscriptionServiceMessage.class)
         );
     }
 
@@ -344,7 +347,7 @@ class ArtistServiceTest {
         verify(messagePublisher, times(1))
             .publishArtistSubscription(
                 eq("artistUnsubscription"),
-                anyList()
+                any(ArtistSubscriptionServiceMessage.class)
             );
     }
 
