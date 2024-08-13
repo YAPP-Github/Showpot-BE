@@ -97,11 +97,11 @@ public class ShowController {
         );
     }
 
-    @GetMapping("/alert/reservations")
+    @GetMapping("/{showId}/alert/reservations")
     @Operation(summary = "티켓팅 알림 예약 조회")
     public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestParam("showId") UUID showId,
+        @PathVariable("showId") UUID showId,
         @RequestParam("ticketingApiType") TicketingApiType type
     ) {
         return ResponseEntity.ok(
@@ -111,7 +111,7 @@ public class ShowController {
         );
     }
 
-    @PostMapping("/{showId}r/alert")
+    @PostMapping("/{showId}/alert")
     @Operation(
         summary = "공연 알림 등록 / 취소",
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
