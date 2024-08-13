@@ -10,6 +10,8 @@ import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowInterestPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
+import com.example.show.controller.dto.response.TicketingAlertReservationApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.ShowService;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -95,7 +97,21 @@ public class ShowController {
         );
     }
 
-    @PostMapping("/{showId}/alert")
+    @GetMapping("/alert/reservations")
+    @Operation(summary = "티켓팅 알림 예약 조회")
+    public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @RequestParam("showId") UUID showId,
+        @RequestParam("ticketingApiType") TicketingApiType type
+    ) {
+        return ResponseEntity.ok(
+            TicketingAlertReservationApiResponse.from(
+                showService.findAlertsReservations(user.userId(), showId, type)
+            )
+        );
+    }
+
+    @PostMapping("/{showId}r/alert")
     @Operation(
         summary = "공연 알림 등록 / 취소",
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
