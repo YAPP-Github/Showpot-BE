@@ -12,16 +12,3 @@ services:
     build:
       context: .
       dockerfile: dockerfile-prod
-    environment:
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
-    ports:
-      - '8080:8080'
-    depends_on:
-      - postgresql
-      - redis
-    networks:
-      - app-network
-
-networks:
-  app-network:

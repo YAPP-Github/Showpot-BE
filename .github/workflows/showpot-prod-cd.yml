@@ -1,0 +1,74 @@
+name: prod-cd
+
+on:
+  push:
+    branches:
+      - prod
+      - feat/prod-cd
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: showpot-application
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'liberica'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Copy Secrets
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './app/src/main/resources/application-prod.yml, ./app/src/main/resources/application-cloud-prod.yml, ./app/domain/common-domain/src/main/resources/application-domain-prod.yml'
+        env:
+          token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.region: ${{ secrets.AWS_REGION }}
+          cloud.aws.s3.bucket: ${{ secrets.AWS_BUCKET }}
+          spring.datasource.url: ${{ secrets.APPLICATION_DATASOURCE_URL_PROD }}
+          spring.datasource.username: ${{ secrets.APPLICATION_DATASOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew clean build -Dspring.profiles.active=prod
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set image tag
+        id: set-tag
+        run: |
+          DATE_TAG=$(TZ='Asia/Seoul' date +'%Y%m%d_%H%M')
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
+          echo "IMAGE_TAG=${DATE_TAG}_${SHORT_SHA}" >> $GITHUB_ENV
+
+      - name: Build and Push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
