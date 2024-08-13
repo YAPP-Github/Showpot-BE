@@ -169,8 +169,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
 
         if (request.cursorId() != null) {
             whereExpression.and(
-                closestTicketingTimeQuery.gt(DateTimeUtil.parse(request.cursorValue().toString()))
-                    .or(closestTicketingTimeQuery.eq(DateTimeUtil.parse(request.cursorValue().toString()))
+                closestTicketingTimeQuery.gt(DateTimeUtil.parseDateTime(request.cursorValue().toString()))
+                    .or(closestTicketingTimeQuery.eq(DateTimeUtil.parseDateTime(request.cursorValue().toString()))
                         .and(show.id.gt(request.cursorId()))
                     )
             );

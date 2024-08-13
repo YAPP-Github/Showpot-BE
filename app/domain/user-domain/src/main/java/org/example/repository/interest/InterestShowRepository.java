@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.example.entity.InterestShow;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InterestShowRepository extends JpaRepository<InterestShow, UUID> {
+public interface InterestShowRepository extends JpaRepository<InterestShow, UUID>, InterestShowQuerydslRepository {
 
     Optional<InterestShow> findByShowIdAndUserId(UUID showId, UUID userId);
 }

@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
 
-    public static String formatLocalDateTime(LocalDateTime dateTime) {
+    public static String formatDateTime(LocalDateTime dateTime) {
         return formatDate(dateTime.toLocalDate()) + " " + formatTime(dateTime.toLocalTime());
     }
 
@@ -21,7 +21,7 @@ public class DateTimeUtil {
         return time.format(timeFormatter);
     }
 
-    public static LocalDateTime parse(String origin) {
-        return LocalDateTime.parse(origin, DateTimeFormatter.ofPattern("yyyy-MM-dd H:m"));
+    public static LocalDateTime parseDateTime(String origin) {
+        return LocalDateTime.parse(origin, DateTimeFormatter.ofPattern("yyyy-M-d HH:mm"));
     }
 }

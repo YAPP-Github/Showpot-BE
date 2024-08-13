@@ -32,7 +32,7 @@ public record ShowPaginationServiceResponse(
             .findFirst();
 
         String reservationAt = optShowTicketingTime.map(
-            showTicketingTime -> DateTimeUtil.formatLocalDateTime(showTicketingTime.ticketingAt())
+            showTicketingTime -> DateTimeUtil.formatDateTime(showTicketingTime.ticketingAt())
         ).orElseGet(() -> "");
 
         return ShowPaginationServiceResponse.builder()
