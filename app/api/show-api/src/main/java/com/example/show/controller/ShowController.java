@@ -1,10 +1,10 @@
 package com.example.show.controller;
 
 import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
-import com.example.show.controller.dto.request.ShowAlertRegistrationApiRequest;
 import com.example.show.controller.dto.request.ShowInterestPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
+import com.example.show.controller.dto.request.TicketingAlertReservationApiRequest;
 import com.example.show.controller.dto.response.ShowAlertPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
@@ -117,9 +117,15 @@ public class ShowController {
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
     )
     public ResponseEntity<Void> alert(
+        @AuthenticationPrincipal AuthenticatedUser user,
         @PathVariable("showId") UUID showId,
-        @Valid @RequestBody ShowAlertRegistrationApiRequest request
+        @RequestParam("ticketingApiType") TicketingApiType type,
+        @Valid @RequestBody TicketingAlertReservationApiRequest ticketingAlertReservationRequest
     ) {
+        showService.alertReservation(
+            ticketingAlertReservationRequest.toServiceRequest(user.userId(), showId, type)
+        );
+
         return ResponseEntity.noContent().build();
     }
 

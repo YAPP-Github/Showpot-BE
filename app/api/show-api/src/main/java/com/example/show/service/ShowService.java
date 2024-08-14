@@ -5,6 +5,7 @@ import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
+import com.example.show.service.dto.request.TicketingAlertReservationServiceRequest;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationAvailabilityServiceResponse;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.entity.TicketingAlert;
+import org.example.entity.show.ShowTicketingTime;
 import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.show.ShowUseCase;
@@ -92,5 +94,21 @@ public class ShowService {
         var availability = TicketingAlertReservationAvailabilityServiceResponse.as(ticketingAt);
 
         return TicketingAlertReservationServiceResponse.as(status, availability);
+    }
+
+    public void alertReservation(
+        TicketingAlertReservationServiceRequest ticketingAlertReservationRequest
+    ) {
+        ShowTicketingTime showTicketingTime = showUseCase.findTicketingTimeWithShow(
+            ticketingAlertReservationRequest.showId(),
+            ticketingAlertReservationRequest.type().toDomainType()
+        );
+
+        ticketingAlertUseCase.alertReservation(
+            ticketingAlertReservationRequest.toDomainRequest(
+                showTicketingTime.getShow().getTitle(),
+                showTicketingTime.getTicketingAt()
+            )
+        );
     }
 }

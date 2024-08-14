@@ -217,7 +217,15 @@ public class ShowUseCase {
         UUID showId,
         TicketingType type
     ) {
-        return showTicketingTimeRepository.findByShowIdAndTicketingType(showId, type)
+        return showTicketingTimeRepository.findByShowIdAndTicketingTypeAndIsDeletedFalse(showId, type)
+            .orElseThrow(NoSuchElementException::new);
+    }
+
+    public ShowTicketingTime findTicketingTimeWithShow(
+        UUID showId,
+        TicketingType type
+    ) {
+        return showTicketingTimeRepository.findByShowIdAndTicketingTypeAndIsDeletedFalse(showId, type)
             .orElseThrow(NoSuchElementException::new);
     }
 
