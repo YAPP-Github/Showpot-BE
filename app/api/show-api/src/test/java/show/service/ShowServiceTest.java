@@ -3,6 +3,7 @@ package show.service;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+import com.example.publish.MessagePublisher;
 import com.example.show.service.ShowService;
 import org.assertj.core.api.SoftAssertions;
 import org.example.usecase.TicketingAlertUseCase;
@@ -16,7 +17,12 @@ class ShowServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
     private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
-    private final ShowService showService = new ShowService(showUseCase, ticketingAlertUseCase);
+    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+    private final ShowService showService = new ShowService(
+        showUseCase,
+        ticketingAlertUseCase,
+        messagePublisher
+    );
 
     @Test
     @DisplayName("페이지네이션을 이용해 공연을 검색 할 수 있다.")

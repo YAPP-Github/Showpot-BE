@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.TicketingAlertReservationDomainRequest;
+import org.example.dto.response.TicketingAlertsDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.TicketingAlert;
 import org.example.repository.ticketing.TicketingAlertRepository;
@@ -25,6 +26,13 @@ public class TicketingAlertUseCase {
         return ticketingAlertRepository.findAllByUserIdAndShowIdAndIsDeletedFalse(userId, showId);
     }
 
+    public List<TicketingAlertsDomainResponse> findTicketingAlertsWithUserFcmToken(
+        UUID userId,
+        UUID showId
+    ) {
+        return ticketingAlertRepository.findTicketingAlertsWithUserFcmToken(userId, showId);
+    }
+
     @Transactional
     public void alertReservation(
         TicketingAlertReservationDomainRequest ticketingAlertReservation
@@ -35,7 +43,8 @@ public class TicketingAlertUseCase {
         );
 
         List<LocalDateTime> requestedAlertTimes = ticketingAlertReservation.alertTimes().stream()
-            .map(alertTime -> calculateAlertTime(ticketingAlertReservation.ticketingAt(), alertTime))
+            .map(
+                alertTime -> calculateAlertTime(ticketingAlertReservation.ticketingAt(), alertTime))
             .toList();
 
         List<TicketingAlert> alertsToKeep = existingAlerts.stream()

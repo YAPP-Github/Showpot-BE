@@ -1,23 +1,22 @@
 package org.example.message;
 
-import com.example.publish.message.TicketingReservationServiceMessage;
+import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import java.util.List;
 import lombok.Builder;
 
 @Builder
 public record TicketingReservationInfraMessage(
     String userFcmToken,
-    List<ReserveShowInfraMessage> reserveShows
+    List<TicketingAlertInfraMessage> ticketingAlerts
 ) {
 
     public static TicketingReservationInfraMessage from(
-        TicketingReservationServiceMessage message
+        TicketingAlertsToReserveServiceMessage message
     ) {
         return TicketingReservationInfraMessage.builder()
             .userFcmToken(message.userFcmToken())
-            .reserveShows(message.reserveShows()
-                .stream()
-                .map(ReserveShowInfraMessage::from)
+            .ticketingAlerts(message.ticketingAlerts().stream()
+                .map(TicketingAlertInfraMessage::from)
                 .toList()
             )
             .build();

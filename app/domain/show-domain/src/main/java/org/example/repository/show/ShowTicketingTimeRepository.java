@@ -13,8 +13,10 @@ public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketing
 
     List<ShowTicketingTime> findAllByShowIdAndIsDeletedFalse(UUID showId);
 
-    Optional<ShowTicketingTime> findByShowIdAndTicketingTypeAndIsDeletedFalse(UUID showId,
-        TicketingType type);
+    Optional<ShowTicketingTime> findByShowIdAndTicketingTypeAndIsDeletedFalse(
+        UUID showId,
+        TicketingType type
+    );
 
     @Query(
         "SELECT stt FROM ShowTicketingTime stt JOIN FETCH stt.show "

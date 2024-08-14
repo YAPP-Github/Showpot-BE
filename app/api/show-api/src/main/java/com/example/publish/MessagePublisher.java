@@ -3,7 +3,7 @@ package com.example.publish;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import com.example.publish.message.GenreSubscriptionServiceMessage;
 import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.publish.message.TicketingReservationServiceMessage;
+import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 
 public interface MessagePublisher {
 
@@ -13,5 +13,5 @@ public interface MessagePublisher {
 
     void publishGenreSubscription(String topic, GenreSubscriptionServiceMessage message);
 
-    void publishTicketingReservation(String topic, TicketingReservationServiceMessage message);
+    void publishTicketingReservation(String topic, TicketingAlertsToReserveServiceMessage message);
 }

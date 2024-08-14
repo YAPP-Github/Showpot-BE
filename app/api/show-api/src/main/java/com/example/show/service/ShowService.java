@@ -1,5 +1,7 @@
 package com.example.show.service;
 
+import com.example.publish.MessagePublisher;
+import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
@@ -30,6 +32,7 @@ public class ShowService {
 
     private final ShowUseCase showUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
+    private final MessagePublisher messagePublisher;
 
     public ShowDetailServiceResponse getShow(UUID id) {
         ShowDetailDomainResponse showDetail;
@@ -109,6 +112,16 @@ public class ShowService {
                 showTicketingTime.getShow().getTitle(),
                 showTicketingTime.getTicketingAt()
             )
+        );
+
+        var serviceResponse = ticketingAlertUseCase.findTicketingAlertsWithUserFcmToken(
+            ticketingAlertReservationRequest.userId(),
+            ticketingAlertReservationRequest.showId()
+        );
+
+        messagePublisher.publishTicketingReservation(
+            "ticketingAlert",
+            TicketingAlertsToReserveServiceMessage.from(serviceResponse)
         );
     }
 }
