@@ -2,7 +2,6 @@ package org.example.usecase;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.InterestShowDomainRequest;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class UserShowUseCase {
 
     private final InterestShowRepository interestShowRepository;
