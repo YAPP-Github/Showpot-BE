@@ -78,7 +78,20 @@ jobs:
         id: update-task
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition showpot-core --region $AWS_REGION)
-          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" '.taskDefinition | .containerDefinitions[0].image=$IMAGE | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" '
+            .taskDefinition | 
+            .containerDefinitions[0].image=$IMAGE |
+            .containerDefinitions[0].logConfiguration={
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-group": "/ecs/showpot-core",
+                "awslogs-region": "'$AWS_REGION'",
+                "awslogs-stream-prefix": "ecs"
+              }
+            } |
+            .executionRoleArn="'arn:aws:iam::your-account-id:role/your-ecs-execution-role'" |
+            .enableExecuteCommand=true |
+            del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
           echo $NEW_TASK_DEFINITION > new-task-def.json
           aws ecs register-task-definition --cli-input-json file://new-task-def.json
 
