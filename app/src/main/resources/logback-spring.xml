@@ -45,13 +45,19 @@
         </encoder>
     </appender>
 
-    <springProfile name="local, dev, prod">
+    <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="Console"/>
         </root>
     </springProfile>
 
-    <springProfile name="dev, prod">
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CloudWatchAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CloudWatchAppender"/>
         </root>
