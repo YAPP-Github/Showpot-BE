@@ -1,3 +1,6 @@
+profile:
+  active: local
+
 spring:
   mvc:
     hidden-method:

@@ -1,3 +1,6 @@
+profile:
+  active: prod
+
 spring:
   mvc:
     hidden-method:
