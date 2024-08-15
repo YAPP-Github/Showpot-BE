@@ -786,117 +786,404 @@ VALUES (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
        (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
         '129fb608-eeb9-42ec-87f6-e1515bdf2696', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d4');
 
--- ArtistSearch
-
-INSERT INTO artist_search (id, created_at, updated_at, is_deleted, name, artist_id)
-VALUES (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        '콜드플레이',
-        'b9f79017-f97d-44b1-82ce-645e92856c0b'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        'coldplay',
-        'b9f79017-f97d-44b1-82ce-645e92856c0b'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        '포스트말론',
-        'ec304557-e9f1-4bf3-8abf-62c83dec099f'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        'postmalone',
-        'ec304557-e9f1-4bf3-8abf-62c83dec099f'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        '이브',
-        '977452b5-db8e-48b9-abe6-d06b44a1b4ad'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        'eve',
-        '977452b5-db8e-48b9-abe6-d06b44a1b4ad'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        '브루노마스',
-        'f56b52c1-72c2-450c-ad59-e88db1530dcb'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        'brunomars',
-        'f56b52c1-72c2-450c-ad59-e88db1530dcb'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        '킹누',
-        'd3fc15e6-172f-4448-928b-7fdd7a6a9ab6'),
-       (gen_random_uuid(),
-        now(),
-        now(),
-        False,
-        'kinggnu',
-        'd3fc15e6-172f-4448-928b-7fdd7a6a9ab6');
-
--- Show
-INSERT INTO show(id, created_at, updated_at, is_deleted, title, content, start_date, end_date,
-                 location, image, last_ticketing_at, view_count, seat_prices, ticketing_sites)
-VALUES ('eca21e50-1392-4059-b380-061a2323c6d2',
-        now(),
-        now(),
-        false,
-        '공연제목',
-        '공연내용',
-        now(),
-        now(),
-        '공연장 위치',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-        now(),
-        0,
-        '{"b": 20000, "c": 30000}',
-        '{"티켓링크": "https://naver.com"}');
-
--- Show Artist
-INSERT INTO show_artist (id, created_at, updated_at, is_deleted, show_id, artist_id)
-VALUES (
-    gen_random_uuid(),
-        now(),
-        now(),
-        false,
-        'eca21e50-1392-4059-b380-061a2323c6d2',
-        'b9f79017-f97d-44b1-82ce-645e92856c0b'
-       );
-
--- Show Genre
-INSERT INTO show_genre (id, created_at, updated_at, is_deleted, show_id, genre_id)
-VALUES (
-        gen_random_uuid(),
-        now(),
-        now(),
-        false,
-        'eca21e50-1392-4059-b380-061a2323c6d2',
-        '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d3'
-       );
-
-INSERT INTO show_ticketing_time (id, created_at, updated_at, is_deleted, type, ticketing_at, show_id)
-VALUES (
-        gen_random_uuid(),
-        now(),
-        now(),
-        false,
-        'PRE',
-        now(),
-        'eca21e50-1392-4059-b380-061a2323c6d2'
-       );
+-- artist search
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b9f79017-f97d-44b1-82ce-645e92856c0b', '콜드플레이');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b9f79017-f97d-44b1-82ce-645e92856c0b', 'coldplay');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ec304557-e9f1-4bf3-8abf-62c83dec099f', '포스트말론');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ec304557-e9f1-4bf3-8abf-62c83dec099f',
+        'postmalone');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '977452b5-db8e-48b9-abe6-d06b44a1b4ad', '이브');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '977452b5-db8e-48b9-abe6-d06b44a1b4ad', 'eve');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2ab7eba4-98f9-4936-ac1b-716bc2f04a1c', '스파이에어');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2ab7eba4-98f9-4936-ac1b-716bc2f04a1c', 'spyair');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'dac4fda7-1746-4eb3-8b87-cab78ae86c75', '엘르가든');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'dac4fda7-1746-4eb3-8b87-cab78ae86c75',
+        'ellegarden');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd3fc15e6-172f-4448-928b-7fdd7a6a9ab6', '킹누');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd3fc15e6-172f-4448-928b-7fdd7a6a9ab6', 'kinggnu');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f56b52c1-72c2-450c-ad59-e88db1530dcb', '브루노마스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f56b52c1-72c2-450c-ad59-e88db1530dcb',
+        'brunomars');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'a94dc17e-4b77-4959-bb1d-a3bd9735cf01', '찰리푸스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'a94dc17e-4b77-4959-bb1d-a3bd9735cf01',
+        'charlieputh');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0b60cd2a-5312-41a2-ba1d-db1acb72460b', '테일러스위프트');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0b60cd2a-5312-41a2-ba1d-db1acb72460b',
+        'taylorswift');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '02c9aedf-9ea2-4720-83c5-eeacd79a2e6e', '위켄드');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '02c9aedf-9ea2-4720-83c5-eeacd79a2e6e',
+        'theweeknd');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c3df1fe2-0795-4204-92d6-68d3d6f4bc05', '저스틴비버');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c3df1fe2-0795-4204-92d6-68d3d6f4bc05',
+        'justinbieber');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '7a97697e-2fa0-4d5b-851f-dd8864b5b49a', '올리비아딘');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '7a97697e-2fa0-4d5b-851f-dd8864b5b49a',
+        'oliviadean');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'fdf9929d-9001-489a-9d7f-a345581ca6bd', '새미비르지');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'fdf9929d-9001-489a-9d7f-a345581ca6bd',
+        'sammyvirji');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1535086f-99ff-493e-bfb4-254f15d87e5d', '디스클로저');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1535086f-99ff-493e-bfb4-254f15d87e5d',
+        'disclosure');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f5d0d77a-e5f2-42ff-8478-5a70b3d7ba50', '라디오헤드');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f5d0d77a-e5f2-42ff-8478-5a70b3d7ba50',
+        'radiohead');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e7bf557b-8591-418f-8422-d1f08c26df2f', '에이제이알');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e7bf557b-8591-418f-8422-d1f08c26df2f', 'ajr');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e7f28490-8e4c-426b-92fc-fbcb226ea7f7', '크리스토퍼');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e7f28490-8e4c-426b-92fc-fbcb226ea7f7',
+        'christopher');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b50a931a-d4f3-4c32-8636-253e4fff45ab', '스트록스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b50a931a-d4f3-4c32-8636-253e4fff45ab',
+        'thestrokes');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '72cdcdb7-1fed-460d-a316-3988ffa1a6c8', '벤슨분');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '72cdcdb7-1fed-460d-a316-3988ffa1a6c8',
+        'bensonboone');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e86ca40e-29f3-48d3-921f-c51d5e8c05e0', '아리아나그란데');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e86ca40e-29f3-48d3-921f-c51d5e8c05e0',
+        'arianagrande');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6d7fee98-4719-4afc-9113-42177e417cb8', '코난그레이');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6d7fee98-4719-4afc-9113-42177e417cb8',
+        'conangray');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ac400fd9-d188-4dfa-81a9-80d092317855', '마룬5');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ac400fd9-d188-4dfa-81a9-80d092317855', 'maroon5');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '8c85815e-cd89-44cf-912d-d8c92a0ace60', '이메진드래곤스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '8c85815e-cd89-44cf-912d-d8c92a0ace60',
+        'imaginedragons');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1d6bd071-dd58-4411-988b-4a6146f59c80', '요아소비');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1d6bd071-dd58-4411-988b-4a6146f59c80', 'yoasobi');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f5fc86ee-0519-409c-9bed-ae0dbead3bea', '라우브');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f5fc86ee-0519-409c-9bed-ae0dbead3bea', 'lauv');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'db8e5dbb-fc91-48d6-ba0f-0100004a64af', '레이니');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'db8e5dbb-fc91-48d6-ba0f-0100004a64af', 'lany');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'de7b5c97-16d4-4d0b-bf52-b58f28b5475c', '혼네');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'de7b5c97-16d4-4d0b-bf52-b58f28b5475c', 'honne');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '059f8de8-e3f7-4e3b-a1da-89a8c4b73f70',
+        '노엘갤러거하이플라잉버즈');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '059f8de8-e3f7-4e3b-a1da-89a8c4b73f70',
+        'noelgallagher`shighflyingbirds');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2c8afe0e-1c1b-4226-b20e-726faa1fc48c', '그린데이');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2c8afe0e-1c1b-4226-b20e-726faa1fc48c', 'greenday');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b4e388ca-5a54-4e2e-8624-ddd363b32a75', '모네스킨');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b4e388ca-5a54-4e2e-8624-ddd363b32a75', 'måneskin');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e22c3c45-b88b-4278-b20d-270aac64229e', '유우리');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e22c3c45-b88b-4278-b20d-270aac64229e', 'yuuri');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b6f220ab-34ad-40ee-b797-ec5c24459aa9', '트래비스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b6f220ab-34ad-40ee-b797-ec5c24459aa9', 'travis');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'eb93b4ca-be7c-409f-b48d-5301ee0b02fe', '머라이어캐리');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'eb93b4ca-be7c-409f-b48d-5301ee0b02fe',
+        'mariahcarey');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '43e17c11-c3b7-4dd9-a92e-fdadb8783bca',
+        '계속한밤중이면좋을텐데');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '43e17c11-c3b7-4dd9-a92e-fdadb8783bca', 'zutomayo');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'fdc16095-1bb1-4cc6-8e2f-75495a6f3a13', '원오크락');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'fdc16095-1bb1-4cc6-8e2f-75495a6f3a13',
+        'oneokrock');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2f8c8f6c-842a-48cd-9ed7-f84710d3fef2', '뉴호프클럽');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2f8c8f6c-842a-48cd-9ed7-f84710d3fef2',
+        'newhopeclub');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6b1aeec8-ac19-4a6a-92b5-5e71733ef204', '마이클부불레');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6b1aeec8-ac19-4a6a-92b5-5e71733ef204',
+        'michaelbublé');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2e277ef0-c3f1-4f80-9ed0-4db0a3350e12', '저스틴팀버레이크');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2e277ef0-c3f1-4f80-9ed0-4db0a3350e12',
+        'justintimberlake');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e0fc0ab6-19ee-47ef-a50d-45ab7efe3bba', '와니마');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e0fc0ab6-19ee-47ef-a50d-45ab7efe3bba', 'wanima');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '772efb86-0af8-4dc6-b73b-bd226fb86944', '후지이카제');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '772efb86-0af8-4dc6-b73b-bd226fb86944',
+        'fujiikaze');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '268ad7b1-7550-4cab-bb04-273b1649e682', '레오루');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '268ad7b1-7550-4cab-bb04-273b1649e682', 'reol');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e3753ac5-a079-417a-b75a-7593d9b802ad', '정글');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e3753ac5-a079-417a-b75a-7593d9b802ad', 'jungle');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5aeb15be-b150-4915-a242-d35cdee8aeb4', '나씽벗띠브스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5aeb15be-b150-4915-a242-d35cdee8aeb4',
+        'nothingbutthieves');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '01681324-678a-4e9a-a80b-e93d038bf75f', '제이콥콜리어');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '01681324-678a-4e9a-a80b-e93d038bf75f',
+        'jacobcollier');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '587d14a8-dc16-47b1-8788-b1860076cbdb', '노엘갤러거');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '587d14a8-dc16-47b1-8788-b1860076cbdb',
+        'noelgallagher');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '17790b8d-4e2c-4ec5-a524-d00d80a9868e', '라나델레이');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '17790b8d-4e2c-4ec5-a524-d00d80a9868e',
+        'lanadelrey');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '88ade2ad-96ac-4ed4-8dce-72aec8d8545d',
+        '원오트릭스포인트네버');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '88ade2ad-96ac-4ed4-8dce-72aec8d8545d',
+        'opn(oneohtrixpointnever)');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c440d4e0-3f52-4225-9bc2-f1183a4b9f22',
+        '코코앤클레어클레어');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c440d4e0-3f52-4225-9bc2-f1183a4b9f22',
+        'coco&clairclair');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '036854c0-9d22-4660-89f9-0abd16dd3ec1', '쿠키카와이');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '036854c0-9d22-4660-89f9-0abd16dd3ec1',
+        'cookieekawaii');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e139192f-ba01-4a15-b0b1-86005aee3c1d', '킹크룰');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e139192f-ba01-4a15-b0b1-86005aee3c1d',
+        'kingkrule');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd63490e9-0eaf-4914-be90-8d34381b5b05', '켄드릭라마');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd63490e9-0eaf-4914-be90-8d34381b5b05',
+        'kendricklamar');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '56a4a4af-dc3f-4f9f-9316-6bcd20d99455', '오피셜히게단디즘');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '56a4a4af-dc3f-4f9f-9316-6bcd20d99455',
+        'officialhigedandism');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '687f2125-f72e-45c9-84cc-3181fa5af912', '바운디');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '687f2125-f72e-45c9-84cc-3181fa5af912', 'vaundy');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '909593a3-d067-4dae-9b4a-e14c8accb1aa', '나토리');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '909593a3-d067-4dae-9b4a-e14c8accb1aa', 'natori');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '10c0c327-8053-4792-ae0b-413d337ec413', '아도');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '10c0c327-8053-4792-ae0b-413d337ec413', 'ado');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e19d1403-c4b3-4a6f-b5b8-8e935cb645c4', '와누카');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'e19d1403-c4b3-4a6f-b5b8-8e935cb645c4', 'wanuka');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '80154f71-f7b6-4d06-be39-2e4e00b281a1', '요네즈켄시');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '80154f71-f7b6-4d06-be39-2e4e00b281a1',
+        'kenshiyonezu');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '4fd6cc98-3e3a-42bf-b04d-1563335397ad', '이마세');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '4fd6cc98-3e3a-42bf-b04d-1563335397ad', 'imase');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c89e680f-1f9a-41a0-bc35-b835e67dcace', '리사');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c89e680f-1f9a-41a0-bc35-b835e67dcace', 'lisa');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2f3532d6-f6f6-4b34-950f-7e4fc701e009', '아이묭');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2f3532d6-f6f6-4b34-950f-7e4fc701e009', 'aimyon');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f636f96a-7a42-416b-bab8-1cb8e1d2c314', '에메');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'f636f96a-7a42-416b-bab8-1cb8e1d2c314', 'aimer');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c62a2a56-1723-44f2-abb2-7a344db06afe', '츠키');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'c62a2a56-1723-44f2-abb2-7a344db06afe', 'tuki.');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6342db02-e3ee-494b-91f0-15ba144b906c', '히즈치분가쿠');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '6342db02-e3ee-494b-91f0-15ba144b906c',
+        'hitsujibungaku');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ec82d1dd-7eb7-4801-bd44-86d6096e4dea', '밀레니엄퍼레이드');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'ec82d1dd-7eb7-4801-bd44-86d6096e4dea',
+        'millenniumparade');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5adeac70-0723-4869-831c-aace7691412c', '야마');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5adeac70-0723-4869-831c-aace7691412c', 'yama');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0dcf43ed-2a0c-4a54-af53-40eaa5c33776', '래드윔프스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0dcf43ed-2a0c-4a54-af53-40eaa5c33776', 'radwimps');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '340cb74f-c770-43ce-91af-88cd2eff23d9', '요루시카');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '340cb74f-c770-43ce-91af-88cd2eff23d9',
+        'yorushika');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '45c6e260-0ac1-4786-831f-7b077d8192e5', '미세스그린애플');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '45c6e260-0ac1-4786-831f-7b077d8192e5',
+        'mrs.greenapple');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd187b6a2-4923-4611-bfff-f9c4c986566e', '빌리아일리시');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'd187b6a2-4923-4611-bfff-f9c4c986566e',
+        'billieeilish');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5a4db81d-16e8-4033-8198-09bc92f57ca4', '마이클볼튼');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '5a4db81d-16e8-4033-8198-09bc92f57ca4',
+        'michaelbolton');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '3a2d52b1-b39f-4389-b1ee-a0fc0c38bc62', '두아리파');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '3a2d52b1-b39f-4389-b1ee-a0fc0c38bc62', 'dualipa');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '9431dc41-7ce6-4d81-b680-a322595fe43d', '레드핫칠리페퍼스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '9431dc41-7ce6-4d81-b680-a322595fe43d',
+        'redhotchilipeppers');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0d38c2cd-0be8-49b5-a719-b17db10afe84', '아델');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '0d38c2cd-0be8-49b5-a719-b17db10afe84', 'adele');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '9ab800fa-158c-4577-b4a0-15f7df9d641a', '이매진드래곤스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '9ab800fa-158c-4577-b4a0-15f7df9d641a',
+        'imaginedragons');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '8996c8dc-b8a2-449b-9c19-09cd49e2924d', '에드시런');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '8996c8dc-b8a2-449b-9c19-09cd49e2924d',
+        'edsheeran');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2204c6fa-c78d-420f-b689-b8932aaf50a7', '레이디가가');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '2204c6fa-c78d-420f-b689-b8932aaf50a7', 'ladygaga');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '82311401-6764-44bd-9fb4-a2bb37a89cfd', '데프레퍼드');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '82311401-6764-44bd-9fb4-a2bb37a89cfd',
+        'defleppard');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '7b3acbb2-6d90-4bc0-a510-95688ffbdbc7', '에이씨디씨');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '7b3acbb2-6d90-4bc0-a510-95688ffbdbc7', 'ac/dc');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'aa4e4067-11cc-46f5-9548-5ebdc40b91a3', '요니지');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'aa4e4067-11cc-46f5-9548-5ebdc40b91a3', 'yonige');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '87228380-e581-46d9-b524-869360451d02', '녹황색사회');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '87228380-e581-46d9-b524-869360451d02',
+        'ryokuoushokushakai');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '3d367630-37a4-41be-8d09-4434e4c24d09', '스티비원더');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '3d367630-37a4-41be-8d09-4434e4c24d09',
+        'steviewonder');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '967573c3-fcee-453a-b9ee-177359ff7dba', '호시노겐');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '967573c3-fcee-453a-b9ee-177359ff7dba',
+        'genhoshino');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '525c7aec-3c72-45c9-9e53-f904869b1306', '크리피넛츠');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '525c7aec-3c72-45c9-9e53-f904869b1306',
+        'creepynuts');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b71a2ee4-a110-4e6c-a49c-e135a8311b6b', '마일리사이러스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, 'b71a2ee4-a110-4e6c-a49c-e135a8311b6b',
+        'mileycyrus');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1aab6fed-7d20-42ed-9f59-67713671f813', '베케이션스');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '1aab6fed-7d20-42ed-9f59-67713671f813',
+        'vacations');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '129fb608-eeb9-42ec-87f6-e1515bdf2696', '사카낙션');
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), now(), now(), false, '129fb608-eeb9-42ec-87f6-e1515bdf2696',
+        'sakanaction');
