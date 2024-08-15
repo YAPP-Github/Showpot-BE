@@ -1,25 +1,27 @@
 package org.example.message;
 
-import com.example.publish.message.TicketingReservationServiceMessage;
+import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.Builder;
 
 @Builder
 public record TicketingReservationInfraMessage(
     String userFcmToken,
-    List<ReserveShowInfraMessage> reserveShows
+    String name,
+    UUID showId,
+    List<String> reserveAts
 ) {
 
     public static TicketingReservationInfraMessage from(
-        TicketingReservationServiceMessage message
+        TicketingAlertsToReserveServiceMessage message
     ) {
         return TicketingReservationInfraMessage.builder()
             .userFcmToken(message.userFcmToken())
-            .reserveShows(message.reserveShows()
-                .stream()
-                .map(ReserveShowInfraMessage::from)
-                .toList()
-            )
+            .name(message.name())
+            .showId(message.showId())
+            .reserveAts(message.reserveAts().stream().map(LocalDateTime::toString).toList())
             .build();
     }
 }

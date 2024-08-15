@@ -18,12 +18,14 @@ import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
 import org.example.entity.show.ShowGenre;
 import org.example.entity.show.ShowSearch;
+import org.example.entity.show.ShowTicketingTime;
 import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.repository.show.ShowRepository;
 import org.example.repository.show.ShowTicketingTimeRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
 import org.example.repository.show.showgenre.ShowGenreRepository;
 import org.example.repository.show.showsearch.ShowSearchRepository;
+import org.example.vo.TicketingType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -213,6 +215,22 @@ public class ShowUseCase {
 
     public List<ShowSearch> findShowSearchesByShowId(UUID showId) {
         return showSearchRepository.findAllByShowIdAndIsDeletedFalse(showId);
+    }
+
+    public ShowTicketingTime findTicketingAlertReservation(
+        UUID showId,
+        TicketingType type
+    ) {
+        return showTicketingTimeRepository.findByShowIdAndTicketingTypeAndIsDeletedFalse(showId, type)
+            .orElseThrow(NoSuchElementException::new);
+    }
+
+    public ShowTicketingTime findTicketingTimeWithShow(
+        UUID showId,
+        TicketingType type
+    ) {
+        return showTicketingTimeRepository.findByShowIdAndTicketingTypeWithShow(showId, type)
+            .orElseThrow(NoSuchElementException::new);
     }
 
     private Show findShowOrThrowNoSuchElementException(UUID id) {

@@ -13,6 +13,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "org.example.repository.admin",
     "org.example.repository.subscription",
     "org.example.repository.interest",
+    "org.example.repository.subscription",
+    "org.example.repository.ticketing"
 })
 public class UserDomainConfig {
 

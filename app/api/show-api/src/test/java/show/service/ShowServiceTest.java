@@ -3,8 +3,10 @@ package show.service;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+import com.example.publish.MessagePublisher;
 import com.example.show.service.ShowService;
 import org.assertj.core.api.SoftAssertions;
+import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +18,14 @@ class ShowServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
     private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
-    private final ShowService showService = new ShowService(showUseCase, userShowUseCase);
+    private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
+    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+    private final ShowService showService = new ShowService(
+        showUseCase,
+        ticketingAlertUseCase,
+        userShowUseCase,
+        messagePublisher
+    );
 
     @Test
     @DisplayName("페이지네이션을 이용해 공연을 검색 할 수 있다.")

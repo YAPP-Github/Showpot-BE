@@ -1,15 +1,17 @@
 package com.example.show.controller;
 
 import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
-import com.example.show.controller.dto.request.ShowAlertRegistrationApiRequest;
 import com.example.show.controller.dto.request.ShowInterestPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
+import com.example.show.controller.dto.request.TicketingAlertReservationApiRequest;
 import com.example.show.controller.dto.response.InterestShowPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowAlertPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
+import com.example.show.controller.dto.response.TicketingAlertReservationApiResponse;
+import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.ShowService;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
@@ -117,15 +119,35 @@ public class ShowController {
         );
     }
 
+    @GetMapping("/{showId}/alert/reservations")
+    @Operation(summary = "공연 티켓팅 알림 예약 조회")
+    public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @PathVariable("showId") UUID showId,
+        @RequestParam("ticketingApiType") TicketingApiType type
+    ) {
+        return ResponseEntity.ok(
+            TicketingAlertReservationApiResponse.from(
+                showService.findAlertsReservations(user.userId(), showId, type)
+            )
+        );
+    }
+
     @PostMapping("/{showId}/alert")
     @Operation(
-        summary = "공연 알림 등록 / 취소",
+        summary = "공연 티켓팅 알림 등록 / 취소",
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
     )
     public ResponseEntity<Void> alert(
+        @AuthenticationPrincipal AuthenticatedUser user,
         @PathVariable("showId") UUID showId,
-        @Valid @RequestBody ShowAlertRegistrationApiRequest request
+        @RequestParam("ticketingApiType") TicketingApiType type,
+        @Valid @RequestBody TicketingAlertReservationApiRequest ticketingAlertReservationRequest
     ) {
+        showService.alertReservation(
+            ticketingAlertReservationRequest.toServiceRequest(user.userId(), showId, type)
+        );
+
         return ResponseEntity.noContent().build();
     }
 

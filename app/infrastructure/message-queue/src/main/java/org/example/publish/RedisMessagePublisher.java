@@ -4,7 +4,7 @@ import com.example.publish.MessagePublisher;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import com.example.publish.message.GenreSubscriptionServiceMessage;
 import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.publish.message.TicketingReservationServiceMessage;
+import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.message.ArtistSubscriptionInfraMessage;
@@ -57,7 +57,7 @@ public class RedisMessagePublisher implements MessagePublisher {
     @Override
     public void publishTicketingReservation(
         String topic,
-        TicketingReservationServiceMessage message
+        TicketingAlertsToReserveServiceMessage message
     ) {
         var infraMessage = TicketingReservationInfraMessage.from(message);
 
