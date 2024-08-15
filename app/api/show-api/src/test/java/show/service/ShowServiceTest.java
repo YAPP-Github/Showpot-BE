@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import com.example.show.service.ShowService;
 import org.assertj.core.api.SoftAssertions;
+import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,8 @@ import show.fixture.dto.ShowResponseDtoFixture;
 class ShowServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
-    private final ShowService showService = new ShowService(showUseCase);
+    private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
+    private final ShowService showService = new ShowService(showUseCase, userShowUseCase);
 
     @Test
     @DisplayName("페이지네이션을 이용해 공연을 검색 할 수 있다.")

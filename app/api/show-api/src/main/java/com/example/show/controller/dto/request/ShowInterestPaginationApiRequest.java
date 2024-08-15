@@ -1,17 +1,22 @@
 package com.example.show.controller.dto.request;
 
+import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
-import org.example.pagination.vo.SortDirection;
 
 public record ShowInterestPaginationApiRequest(
 
-    @Schema(description = "정렬 방향")
-    SortDirection sortDirection,
-
+    @Parameter(description = "페이지네이션 데이터 개수")
+    int size,
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
-    UUID cursor
+    UUID cursorId
 ) {
 
+    public InterestShowPaginationServiceRequest toServiceRequest(UUID userId) {
+        return InterestShowPaginationServiceRequest.builder()
+            .userId(userId)
+            .size(size)
+            .cursorId(cursorId)
+            .build();
+    }
 }

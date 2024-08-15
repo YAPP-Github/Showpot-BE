@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {
     "org.example.repository.user",
     "org.example.repository.admin",
-    "org.example.repository.subscription"
+    "org.example.repository.subscription",
+    "org.example.repository.interest",
 })
 public class UserDomainConfig {
 

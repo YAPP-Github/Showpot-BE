@@ -2,17 +2,26 @@ package com.example.show.service;
 
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
+import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
+import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
+import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
+import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
+import org.example.entity.InterestShow;
+import org.example.entity.show.Show;
 import org.example.exception.BusinessException;
+import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class ShowService {
 
     private final ShowUseCase showUseCase;
+    private final UserShowUseCase userShowUseCase;
 
     public ShowDetailServiceResponse getShow(UUID id) {
         ShowDetailDomainResponse showDetail;
@@ -57,7 +67,32 @@ public class ShowService {
         );
     }
 
+    public PaginationServiceResponse<InterestShowPaginationServiceResponse> findInterestShows(
+        InterestShowPaginationServiceRequest request
+    ) {
+        var interestShows = userShowUseCase.findInterestShows(request.toDomainRequest());
+        List<UUID> showIds = interestShows.data().stream().map(InterestShow::getShowId).toList();
+        Map<UUID, Show> showById = showUseCase.findShowsInIds(showIds).stream()
+            .collect(Collectors.toMap(Show::getId, s -> s));
+
+        return PaginationServiceResponse.of(
+            interestShows.data().stream()
+                .map(interestShow -> InterestShowPaginationServiceResponse.from(
+                    showById.get(interestShow.getShowId()),
+                    interestShow
+                ))
+                .toList(),
+            interestShows.hasNext()
+        );
+    }
+
     public void view(UUID showId) {
         showUseCase.view(showId);
+    }
+
+    public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {
+        return ShowInterestServiceResponse.from(
+            userShowUseCase.interest(request.toDomainRequest())
+        );
     }
 }
