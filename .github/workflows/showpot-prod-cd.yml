@@ -52,16 +52,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Set image tag
         id: set-tag
         run: |
           DATE_TAG=$(TZ='Asia/Seoul' date +'%Y%m%d_%H%M')
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
           echo "IMAGE_TAG=${DATE_TAG}_${SHORT_SHA}" >> $GITHUB_ENV
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and Push image to Amazon ECR
         id: build-image
