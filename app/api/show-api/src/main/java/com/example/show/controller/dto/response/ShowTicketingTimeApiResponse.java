@@ -14,7 +14,7 @@ public record ShowTicketingTimeApiResponse(
     public static ShowTicketingTimeApiResponse from(ShowTicketingTimeServiceResponse response) {
         return ShowTicketingTimeApiResponse.builder()
             .ticketingApiType(response.ticketingApiType())
-            .ticketingAt(DateTimeUtil.formatLocalDateTime(response.ticketingAt()))
+            .ticketingAt(DateTimeUtil.formatDateTime(response.ticketingAt()))
             .build();
     }
 }

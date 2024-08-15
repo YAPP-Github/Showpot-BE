@@ -74,6 +74,10 @@ public class ShowUseCase {
         return showRepository.findShows(request);
     }
 
+    public List<Show> findShowsInIds(List<UUID> showIds) {
+        return showRepository.findShowsByIdIn(showIds);
+    }
+
     @Transactional
     public void updateShow(UUID id, ShowUpdateDomainRequest request) {
         Show show = findShowOrThrowNoSuchElementException(id);

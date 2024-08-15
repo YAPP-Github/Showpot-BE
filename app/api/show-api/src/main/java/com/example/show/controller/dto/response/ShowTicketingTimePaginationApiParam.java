@@ -14,7 +14,7 @@ public record ShowTicketingTimePaginationApiParam(
     public static ShowTicketingTimePaginationApiParam from(ShowTicketingTimeServiceParam response) {
         return ShowTicketingTimePaginationApiParam.builder()
             .ticketingType(response.ticketingType())
-            .ticketingAt(DateTimeUtil.formatLocalDateTime(response.ticketingAt()))
+            .ticketingAt(DateTimeUtil.formatDateTime(response.ticketingAt()))
             .build();
     }
 }

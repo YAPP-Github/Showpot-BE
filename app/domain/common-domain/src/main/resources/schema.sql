@@ -27,8 +27,8 @@ drop table if exists users cascade;
 create table admin
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     email      varchar(255) not null unique,
     password   varchar(255) not null,
@@ -38,8 +38,8 @@ create table admin
 create table artist
 (
     id           uuid         not null,
-    created_at   timestamp(6) not null,
-    updated_at   timestamp(6) not null,
+    created_at   timestamp(3) not null,
+    updated_at   timestamp(3) not null,
     is_deleted   boolean      not null,
     korean_name  varchar(255) not null,
     english_name varchar(255) not null,
@@ -53,8 +53,8 @@ create table artist
 create table artist_genre
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     artist_id  uuid         not null,
     genre_id   uuid         not null,
@@ -64,8 +64,8 @@ create table artist_genre
 create table artist_search
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     name       varchar(255) not null,
     artist_id  uuid         not null,
@@ -75,8 +75,8 @@ create table artist_search
 create table artist_subscription
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     user_id    uuid         not null,
     artist_id  uuid         not null,
@@ -86,8 +86,8 @@ create table artist_subscription
 create table genre
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     name       varchar(255) not null unique,
     primary key (id)
@@ -96,8 +96,8 @@ create table genre
 create table genre_subscription
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     genre_id   uuid         not null,
     user_id    uuid         not null,
@@ -107,8 +107,8 @@ create table genre_subscription
 create table interest_show
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     show_id    uuid         not null,
     user_id    uuid         not null,
@@ -118,8 +118,8 @@ create table interest_show
 create table show
 (
     id                uuid         not null,
-    created_at        timestamp(6) not null,
-    updated_at        timestamp(6) not null,
+    created_at        timestamp(3) not null,
+    updated_at        timestamp(3) not null,
     is_deleted        boolean      not null,
     start_date        date         not null,
     end_date          date         not null,
@@ -127,7 +127,7 @@ create table show
     content           varchar(255) not null,
     location          varchar(255) not null,
     image             varchar(255) not null,
-    last_ticketing_at timestamp(6) not null,
+    last_ticketing_at timestamp(3) not null,
     view_count        int          not null,
     seat_prices       jsonb        not null,
     ticketing_sites   jsonb        not null,
@@ -137,8 +137,8 @@ create table show
 create table show_artist
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     artist_id  uuid         not null,
     show_id    uuid         not null,
@@ -148,8 +148,8 @@ create table show_artist
 create table show_genre
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     genre_id   uuid         not null,
     show_id    uuid         not null,
@@ -159,8 +159,8 @@ create table show_genre
 create table show_search
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     show_id    uuid         not null,
     name       varchar(255) not null,
@@ -170,10 +170,10 @@ create table show_search
 create table show_ticketing_time
 (
     id           uuid         not null,
-    created_at   timestamp(6) not null,
+    created_at   timestamp(3) not null,
     is_deleted   boolean      not null,
-    updated_at   timestamp(6) not null,
-    ticketing_at timestamp(6) not null,
+    updated_at   timestamp(3) not null,
+    ticketing_at timestamp(3) not null,
     show_id      uuid         not null,
     type         varchar(255) not null check (type in ('PRE', 'NORMAL', 'ADDITIONAL')),
     primary key (id)
@@ -182,8 +182,8 @@ create table show_ticketing_time
 create table social_login
 (
     id                uuid         not null,
-    created_at        timestamp(6) not null,
-    updated_at        timestamp(6) not null,
+    created_at        timestamp(3) not null,
+    updated_at        timestamp(3) not null,
     is_deleted        boolean      not null,
     user_id           uuid         not null,
     identifier        varchar(255) not null,
@@ -195,11 +195,11 @@ create table social_login
 create table ticketing_alert
 (
     id                  uuid         not null,
-    created_at          timestamp(6) not null,
-    updated_at          timestamp(6) not null,
+    created_at          timestamp(3) not null,
+    updated_at          timestamp(3) not null,
     is_deleted          boolean      not null,
     name                varchar(255) not null,
-    schedule_alert_time timestamp(6) not null,
+    schedule_alert_time timestamp(3) not null,
     show_id             uuid         not null,
     user_id             uuid         not null,
     primary key (id)
@@ -208,8 +208,8 @@ create table ticketing_alert
 create table users
 (
     id         uuid         not null,
-    created_at timestamp(6) not null,
-    updated_at timestamp(6) not null,
+    created_at timestamp(3) not null,
+    updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     birth      date         not null,
     fcm_token  varchar(255) not null,
