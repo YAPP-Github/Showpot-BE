@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - prod
-      - feat/prod-cd
 
 env:
   AWS_REGION: ap-northeast-2
