@@ -27,7 +27,7 @@ public record TicketingAlertReservationServiceRequest(
             .type(type.toDomainType())
             .name(name)
             .ticketingAt(ticketingAt)
-            .alertTimes(alertTimes.stream().map(TicketingAlertTimeApiType::toDomainType).toList())
+            .alertTimes(TicketingAlertTimeApiType.availableReserveTimeToDomainType(ticketingAt))
             .build();
     }
 }

@@ -6,6 +6,7 @@ import com.example.show.service.dto.request.TicketingAlertReservationServiceRequ
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
+import org.example.util.ValidateStatus;
 
 public record TicketingAlertReservationApiRequest(
 
@@ -22,7 +23,7 @@ public record TicketingAlertReservationApiRequest(
             .userId(userId)
             .showId(showId)
             .type(type)
-            .alertTimes(alertTimes)
+            .alertTimes(ValidateStatus.checkNullOrEmpty(alertTimes))
             .build();
     }
 }

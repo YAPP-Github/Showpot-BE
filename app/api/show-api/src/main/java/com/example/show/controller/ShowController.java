@@ -98,7 +98,7 @@ public class ShowController {
     }
 
     @GetMapping("/{showId}/alert/reservations")
-    @Operation(summary = "티켓팅 알림 예약 조회")
+    @Operation(summary = "공연 티켓팅 알림 예약 조회")
     public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
         @AuthenticationPrincipal AuthenticatedUser user,
         @PathVariable("showId") UUID showId,
@@ -113,7 +113,7 @@ public class ShowController {
 
     @PostMapping("/{showId}/alert")
     @Operation(
-        summary = "공연 알림 등록 / 취소",
+        summary = "공연 티켓팅 알림 등록 / 취소",
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
     )
     public ResponseEntity<Void> alert(
