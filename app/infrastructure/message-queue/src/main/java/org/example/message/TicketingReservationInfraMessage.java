@@ -1,13 +1,17 @@
 package org.example.message;
 
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.Builder;
 
 @Builder
 public record TicketingReservationInfraMessage(
     String userFcmToken,
-    List<TicketingAlertInfraMessage> ticketingAlerts
+    String name,
+    UUID showId,
+    List<String> reserveAts
 ) {
 
     public static TicketingReservationInfraMessage from(
@@ -15,10 +19,9 @@ public record TicketingReservationInfraMessage(
     ) {
         return TicketingReservationInfraMessage.builder()
             .userFcmToken(message.userFcmToken())
-            .ticketingAlerts(message.ticketingAlerts().stream()
-                .map(TicketingAlertInfraMessage::from)
-                .toList()
-            )
+            .name(message.name())
+            .showId(message.showId())
+            .reserveAts(message.reserveAts().stream().map(LocalDateTime::toString).toList())
             .build();
     }
 }

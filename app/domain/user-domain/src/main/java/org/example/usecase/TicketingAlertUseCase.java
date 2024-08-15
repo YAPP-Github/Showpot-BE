@@ -2,6 +2,7 @@ package org.example.usecase;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.TicketingAlertReservationDomainRequest;
@@ -9,6 +10,7 @@ import org.example.dto.response.TicketingAlertsDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.TicketingAlert;
 import org.example.repository.ticketing.TicketingAlertRepository;
+import org.example.repository.user.UserRepository;
 import org.example.vo.TicketingAlertTime;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketingAlertUseCase {
 
     private final TicketingAlertRepository ticketingAlertRepository;
+    private final UserRepository userRepository;
 
     public List<TicketingAlert> findTicketingAlerts(
         UUID userId,
@@ -26,15 +29,8 @@ public class TicketingAlertUseCase {
         return ticketingAlertRepository.findAllByUserIdAndShowIdAndIsDeletedFalse(userId, showId);
     }
 
-    public List<TicketingAlertsDomainResponse> findTicketingAlertsWithUserFcmToken(
-        UUID userId,
-        UUID showId
-    ) {
-        return ticketingAlertRepository.findTicketingAlertsWithUserFcmToken(userId, showId);
-    }
-
     @Transactional
-    public void alertReservation(
+    public TicketingAlertsDomainResponse alertReservation(
         TicketingAlertReservationDomainRequest ticketingAlertReservation
     ) {
         List<TicketingAlert> existingAlerts = ticketingAlertRepository.findAllByUserIdAndShowIdAndIsDeletedFalse(
@@ -55,11 +51,11 @@ public class TicketingAlertUseCase {
             .map(TicketingAlert::getAlertTime)
             .toList();
 
-        addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes);
         removeAlerts(existingAlerts, requestedAlertTimes);
+        return addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes);
     }
 
-    private void addAlerts(
+    private TicketingAlertsDomainResponse addAlerts(
         TicketingAlertReservationDomainRequest ticketingAlertReservation,
         List<LocalDateTime> requestedAlertTimes,
         List<LocalDateTime> existingAlertTimes
@@ -75,6 +71,20 @@ public class TicketingAlertUseCase {
             )
             .toList();
         ticketingAlertRepository.saveAll(alertsToAdd);
+
+        String fcmToken = userRepository.findUserFcmTokensByUserId(
+                ticketingAlertReservation.userId())
+            .orElseThrow(NoSuchElementException::new);
+
+        return TicketingAlertsDomainResponse.builder()
+            .userFcmToken(fcmToken)
+            .name(ticketingAlertReservation.name())
+            .showId(ticketingAlertReservation.showId())
+            .reservedAts(alertsToAdd.stream()
+                .map(TicketingAlert::getAlertTime)
+                .toList()
+            )
+            .build();
     }
 
     private void removeAlerts(

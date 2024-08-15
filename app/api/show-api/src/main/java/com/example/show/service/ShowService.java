@@ -107,21 +107,16 @@ public class ShowService {
             ticketingAlertReservationRequest.type().toDomainType()
         );
 
-        ticketingAlertUseCase.alertReservation(
+        var domainResponse = ticketingAlertUseCase.alertReservation(
             ticketingAlertReservationRequest.toDomainRequest(
                 showTicketingTime.getShow().getTitle(),
                 showTicketingTime.getTicketingAt()
             )
         );
 
-        var serviceResponse = ticketingAlertUseCase.findTicketingAlertsWithUserFcmToken(
-            ticketingAlertReservationRequest.userId(),
-            ticketingAlertReservationRequest.showId()
-        );
-
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
-            TicketingAlertsToReserveServiceMessage.from(serviceResponse)
+            TicketingAlertsToReserveServiceMessage.from(domainResponse)
         );
     }
 }
