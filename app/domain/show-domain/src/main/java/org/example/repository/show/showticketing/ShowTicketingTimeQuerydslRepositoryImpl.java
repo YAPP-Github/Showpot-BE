@@ -36,15 +36,24 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
                     show.startDate,
                     show.endDate,
                     show.location,
-                    show.image
+                    show.image,
+                    showTicketingTime.ticketingAt
                 )
             )
             .from(showTicketingTime)
             .join(showTicketingTime.show, show)
             .where(showTicketingTime.show.id.in(request.showIds())
-                .and(getDefaultPredicateInCursorPagination(request.cursorId()))
+                .and(getDefaultPredicateInCursorPagination(
+                        request.cursorId(),
+                        request.cursorTicketingAt()
+                    )
+                )
             )
-            .orderBy(showTicketingTime.ticketingAt.asc())
+            .orderBy(
+                showTicketingTime.ticketingAt.asc(),
+                showTicketingTime.id.asc()
+            )
+            .limit(request.size() + 1)
             .fetch();
 
         Slice<ShowAlertDomainResponse> showSearchDomainSlices = SliceUtil.makeSlice(
@@ -58,12 +67,23 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
             .build();
     }
 
-    private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
-        BooleanExpression defaultPredicate = show.isDeleted.isFalse()
+    private Predicate getDefaultPredicateInCursorPagination(
+        UUID cursorId,
+        LocalDateTime cursorTicketingAt
+    ) {
+        BooleanExpression wherePredicate = show.isDeleted.isFalse()
             .and(showTicketingTime.isDeleted.isFalse())
             .and(showTicketingTime.ticketingAt.gt(LocalDateTime.now()));
 
-        return cursor == null ? defaultPredicate : show.id.gt(cursor).and(defaultPredicate);
+        if (cursorId != null && cursorTicketingAt != null) {
+            wherePredicate = wherePredicate.and(showTicketingTime.ticketingAt.gt(cursorTicketingAt)
+                .or(showTicketingTime.ticketingAt.eq(cursorTicketingAt)
+                    .and(showTicketingTime.id.gt(cursorId))));
+
+            return wherePredicate;
+        }
+
+        return wherePredicate;
     }
 }
 

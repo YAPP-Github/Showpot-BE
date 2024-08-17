@@ -3,6 +3,7 @@ package com.example.show.controller.dto.param;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ShowAlertPaginationApiParam(
@@ -22,7 +23,10 @@ public record ShowAlertPaginationApiParam(
     String location,
 
     @Schema(description = "공연 이미지")
-    String image
+    String image,
+
+    @Schema(description = "공연 티켓팅 날짜")
+    LocalDateTime ticketingAt
 ) {
 
     public static ShowAlertPaginationApiParam from(ShowAlertPaginationServiceParam serviceParam) {
@@ -32,7 +36,8 @@ public record ShowAlertPaginationApiParam(
             serviceParam.startDateAt(),
             serviceParam.endDateAt(),
             serviceParam.location(),
-            serviceParam.image()
+            serviceParam.image(),
+            serviceParam.ticketingAt()
         );
     }
 }

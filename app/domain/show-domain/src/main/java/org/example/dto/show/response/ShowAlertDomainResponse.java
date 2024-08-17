@@ -1,6 +1,7 @@
 package org.example.dto.show.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
 
@@ -11,7 +12,8 @@ public record ShowAlertDomainResponse(
     LocalDate startDateAt,
     LocalDate endDateAt,
     String location,
-    String image
+    String image,
+    LocalDateTime ticketingAt
 ) {
 
 }

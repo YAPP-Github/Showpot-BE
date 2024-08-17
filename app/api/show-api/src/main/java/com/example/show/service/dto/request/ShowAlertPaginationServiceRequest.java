@@ -1,5 +1,6 @@
 package com.example.show.service.dto.request;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -9,7 +10,8 @@ import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
 public record ShowAlertPaginationServiceRequest(
     UUID userId,
     int size,
-    UUID cursorId
+    UUID cursorId,
+    LocalDateTime cursorTicketingAt
 ) {
 
     public ShowAlertPaginationDomainRequest toDomainRequest(List<UUID> showIds) {
@@ -18,6 +20,7 @@ public record ShowAlertPaginationServiceRequest(
             .userId(userId)
             .size(size)
             .cursorId(cursorId)
+            .cursorTicketingAt(cursorTicketingAt)
             .build();
     }
 }
