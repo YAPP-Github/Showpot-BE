@@ -14,10 +14,10 @@ public record ShowAlertPaginationApiParam(
     String title,
 
     @Schema(description = "공연 시작 날짜")
-    LocalDate startDateAt,
+    LocalDate startAt,
 
     @Schema(description = "공연 마지막 날짜")
-    LocalDate endDateAt,
+    LocalDate endAt,
 
     @Schema(description = "공연 장소")
     String location,
@@ -33,8 +33,8 @@ public record ShowAlertPaginationApiParam(
         return new ShowAlertPaginationApiParam(
             serviceParam.id(),
             serviceParam.title(),
-            serviceParam.startDateAt(),
-            serviceParam.endDateAt(),
+            serviceParam.startAt(),
+            serviceParam.endAt(),
             serviceParam.location(),
             serviceParam.image(),
             serviceParam.ticketingAt()

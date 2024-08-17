@@ -10,8 +10,8 @@ import org.example.dto.show.response.ShowAlertDomainResponse;
 public record ShowAlertPaginationServiceParam(
     UUID id,
     String title,
-    LocalDate startDateAt,
-    LocalDate endDateAt,
+    LocalDate startAt,
+    LocalDate endAt,
     String location,
     String image,
     LocalDateTime ticketingAt
@@ -21,8 +21,8 @@ public record ShowAlertPaginationServiceParam(
         return ShowAlertPaginationServiceParam.builder()
             .id(alertShow.id())
             .title(alertShow.title())
-            .startDateAt(alertShow.startDateAt())
-            .endDateAt(alertShow.endDateAt())
+            .startAt(alertShow.startAt())
+            .endAt(alertShow.endAt())
             .location(alertShow.location())
             .image(alertShow.image())
             .ticketingAt(alertShow.ticketingAt())

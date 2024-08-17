@@ -9,8 +9,8 @@ import lombok.Builder;
 public record ShowAlertDomainResponse(
     UUID id,
     String title,
-    LocalDate startDateAt,
-    LocalDate endDateAt,
+    LocalDate startAt,
+    LocalDate endAt,
     String location,
     String image,
     LocalDateTime ticketingAt
