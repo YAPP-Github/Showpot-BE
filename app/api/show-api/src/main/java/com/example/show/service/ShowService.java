@@ -4,8 +4,10 @@ import com.example.publish.MessagePublisher;
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.error.ShowError;
+import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
+import com.example.show.service.dto.request.ShowAlertPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
@@ -24,6 +26,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
+import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.entity.InterestShow;
 import org.example.entity.TicketingAlert;
@@ -32,6 +35,7 @@ import org.example.entity.show.ShowTicketingTime;
 import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
+import org.example.usecase.show.ShowTicketingTimeUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,7 @@ import org.springframework.stereotype.Service;
 public class ShowService {
 
     private final ShowUseCase showUseCase;
+    private final ShowTicketingTimeUseCase showTicketingTimeUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final UserShowUseCase userShowUseCase;
     private final MessagePublisher messagePublisher;
@@ -153,6 +158,25 @@ public class ShowService {
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
             TicketingAlertsToReserveServiceMessage.from(domainResponse)
+        );
+    }
+
+    public PaginationServiceResponse<ShowAlertPaginationServiceParam> findAlertShows(
+        ShowAlertPaginationServiceRequest request
+    ) {
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
+            request.userId());
+        List<UUID> showIdsToAlert = ticketingAlerts.stream()
+            .map(TicketingAlert::getShowId).distinct()
+            .toList();
+
+        ShowAlertPaginationDomainResponse alertShows = showTicketingTimeUseCase.findAlertShows(
+            request.toDomainRequest(showIdsToAlert));
+
+        return PaginationServiceResponse.of(alertShows.data().stream()
+                .map(ShowAlertPaginationServiceParam::from)
+                .toList(),
+            alertShows.hasNext()
         );
     }
 }

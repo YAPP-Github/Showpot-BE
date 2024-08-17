@@ -1,4 +1,4 @@
-package org.example.repository.show;
+package org.example.repository.show.showticketing;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketingTime, UUID> {
+public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketingTime, UUID>,
+    ShowTicketingTimeQuerydslRepository {
 
     List<ShowTicketingTime> findAllByShowIdAndIsDeletedFalse(UUID showId);
 
@@ -20,8 +21,8 @@ public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketing
 
     @Query(
         "SELECT stt FROM ShowTicketingTime stt JOIN FETCH stt.show "
-        + "WHERE stt.show.id = :showId AND stt.ticketingType = :type "
-        + "AND stt.isDeleted = false"
+            + "WHERE stt.show.id = :showId AND stt.ticketingType = :type "
+            + "AND stt.isDeleted = false"
     )
     Optional<ShowTicketingTime> findByShowIdAndTicketingTypeWithShow(
         @Param("showId") UUID showId,

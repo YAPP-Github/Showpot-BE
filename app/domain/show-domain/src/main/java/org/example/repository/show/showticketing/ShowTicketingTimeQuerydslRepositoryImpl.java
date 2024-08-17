@@ -1,35 +1,36 @@
-package org.example.repository.show.showsearch;
+package org.example.repository.show.showticketing;
 
 import static org.example.entity.show.QShow.show;
-import static org.example.entity.show.QShowSearch.showSearch;
+import static org.example.entity.show.QShowTicketingTime.showTicketingTime;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
-import org.example.dto.show.response.ShowSearchDomainResponse;
-import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
+import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
+import org.example.dto.show.response.ShowAlertDomainResponse;
+import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.util.SliceUtil;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepository {
+public class ShowTicketingTimeQuerydslRepositoryImpl implements
+    ShowTicketingTimeQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public ShowSearchPaginationDomainResponse searchShow(
-        ShowSearchPaginationDomainRequest request
+    public ShowAlertPaginationDomainResponse findShowAlerts(
+        ShowAlertPaginationDomainRequest request
     ) {
-        List<ShowSearchDomainResponse> result = jpaQueryFactory.select(
+        List<ShowAlertDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
-                    ShowSearchDomainResponse.class,
+                    ShowAlertDomainResponse.class,
                     show.id,
                     show.title,
                     show.startDate,
@@ -38,19 +39,20 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
                     show.image
                 )
             )
-            .from(showSearch)
-            .join(showSearch.show, show)
-            .where(showSearch.name.like(request.search() + "%")
-                .and(getDefaultPredicateInCursorPagination(request.cursor()))
+            .from(showTicketingTime)
+            .join(showTicketingTime.show, show)
+            .where(showTicketingTime.show.id.in(request.showIds())
+                .and(getDefaultPredicateInCursorPagination(request.cursorId()))
             )
+            .orderBy(showTicketingTime.ticketingAt.asc())
             .fetch();
 
-        Slice<ShowSearchDomainResponse> showSearchDomainSlices = SliceUtil.makeSlice(
+        Slice<ShowAlertDomainResponse> showSearchDomainSlices = SliceUtil.makeSlice(
             request.size(),
             result
         );
 
-        return ShowSearchPaginationDomainResponse.builder()
+        return ShowAlertPaginationDomainResponse.builder()
             .data(showSearchDomainSlices.getContent())
             .hasNext(showSearchDomainSlices.hasNext())
             .build();
@@ -58,8 +60,10 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {
         BooleanExpression defaultPredicate = show.isDeleted.isFalse()
-            .and(showSearch.isDeleted.isFalse());
+            .and(showTicketingTime.isDeleted.isFalse())
+            .and(showTicketingTime.ticketingAt.gt(LocalDateTime.now()));
 
         return cursor == null ? defaultPredicate : show.id.gt(cursor).and(defaultPredicate);
     }
 }
+

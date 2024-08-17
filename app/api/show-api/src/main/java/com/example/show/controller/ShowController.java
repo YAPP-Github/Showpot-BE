@@ -1,18 +1,20 @@
 package com.example.show.controller;
 
+import com.example.show.controller.dto.param.ShowAlertPaginationApiParam;
 import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
+import com.example.show.controller.dto.request.ShowAlertPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowInterestPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.request.TicketingAlertReservationApiRequest;
 import com.example.show.controller.dto.response.InterestShowPaginationApiResponse;
-import com.example.show.controller.dto.response.ShowAlertPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.controller.dto.response.TicketingAlertReservationApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.ShowService;
+import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -153,11 +155,22 @@ public class ShowController {
 
     @GetMapping("/alerts")
     @Operation(summary = "공연 알림 목록 조회")
-    public ResponseEntity<ShowAlertPaginationApiResponse> getAlerts(
-        @RequestParam(required = false) ShowInterestPaginationApiRequest param
+    public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject ShowAlertPaginationApiRequest request
     ) {
+        PaginationServiceResponse<ShowAlertPaginationServiceParam> alertShows = showService.findAlertShows(
+            request.toServiceRequest(user.userId()));
+
+        var showAlertPaginationApiParams = alertShows.data().stream()
+            .map(ShowAlertPaginationApiParam::from)
+            .toList();
+
         return ResponseEntity.ok(
-            ShowAlertPaginationApiResponse.builder().build()
+            PaginationApiResponse.<ShowAlertPaginationApiParam>builder()
+                .data(showAlertPaginationApiParams)
+                .hasNext(alertShows.hasNext())
+                .build()
         );
     }
 

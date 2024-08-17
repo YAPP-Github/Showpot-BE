@@ -10,4 +10,6 @@ public interface TicketingAlertRepository extends JpaRepository<TicketingAlert, 
 
     List<TicketingAlert> findAllByUserIdAndShowIdAndIsDeletedFalse(UUID userId, UUID showId);
 
+    List<TicketingAlert> findAllByUserIdAndIsDeletedFalse(UUID userId);
+
 }

@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {
     "org.example.repository.genre",
     "org.example.repository.artist",
-    "org.example.repository.show"}
+    "org.example.repository.show"
+}
 )
 public class ShowDomainConfig {
 

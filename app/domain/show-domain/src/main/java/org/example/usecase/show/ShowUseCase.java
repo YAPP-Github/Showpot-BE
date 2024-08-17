@@ -21,10 +21,10 @@ import org.example.entity.show.ShowSearch;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.entity.show.info.ShowTicketingTimes;
 import org.example.repository.show.ShowRepository;
-import org.example.repository.show.ShowTicketingTimeRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
 import org.example.repository.show.showgenre.ShowGenreRepository;
 import org.example.repository.show.showsearch.ShowSearchRepository;
+import org.example.repository.show.showticketing.ShowTicketingTimeRepository;
 import org.example.vo.TicketingType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -221,7 +221,8 @@ public class ShowUseCase {
         UUID showId,
         TicketingType type
     ) {
-        return showTicketingTimeRepository.findByShowIdAndTicketingTypeAndIsDeletedFalse(showId, type)
+        return showTicketingTimeRepository.findByShowIdAndTicketingTypeAndIsDeletedFalse(showId,
+                type)
             .orElseThrow(NoSuchElementException::new);
     }
 
