@@ -67,7 +67,7 @@ public class ShowService {
         var response = showUseCase.searchShow(request.toDomainRequest());
 
         List<ShowSearchPaginationServiceParam> data = response.data().stream()
-            .map(ShowSearchPaginationServiceParam::new)
+            .map(ShowSearchPaginationServiceParam::from)
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());

@@ -177,7 +177,6 @@ public class ShowController {
     @GetMapping("/search")
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ShowSearchPaginationApiParam>> search(
-        @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ShowSearchPaginationApiRequest request
     ) {
         var response = showService.searchShow(request.toServiceRequest());

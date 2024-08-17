@@ -12,8 +12,11 @@ public record ShowSearchPaginationApiParam(
     @Schema(description = "공연 제목")
     String title,
 
-    @Schema(description = "공연 날짜")
-    LocalDate date,
+    @Schema(description = "공연 시작 날짜")
+    LocalDate startDate,
+
+    @Schema(description = "공연 마지막 날짜")
+    LocalDate endDate,
 
     @Schema(description = "공연 장소")
     String location,
@@ -26,7 +29,8 @@ public record ShowSearchPaginationApiParam(
         return new ShowSearchPaginationApiParam(
             serviceParam.id(),
             serviceParam.title(),
-            serviceParam.date(),
+            serviceParam.startDate(),
+            serviceParam.endDate(),
             serviceParam.location(),
             serviceParam.image()
         );
