@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
+import org.example.util.DateTimeUtil;
 
 @Builder
 public record ShowDetailApiResponse(
@@ -44,8 +45,8 @@ public record ShowDetailApiResponse(
         return ShowDetailApiResponse.builder()
             .id(show.id())
             .name(show.title())
-            .startDate(show.startDate().toString())
-            .endDate(show.endDate().toString())
+            .startDate(DateTimeUtil.formatDate(show.startDate()))
+            .endDate(DateTimeUtil.formatDate(show.endDate()))
             .posterImageURL(show.posterImageURL())
             .artists(
                 show.artists().stream()
