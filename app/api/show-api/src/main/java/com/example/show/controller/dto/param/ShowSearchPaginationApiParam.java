@@ -2,8 +2,8 @@ package com.example.show.controller.dto.param;
 
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
 import java.util.UUID;
+import org.example.util.DateTimeUtil;
 
 public record ShowSearchPaginationApiParam(
     @Schema(description = "공연 ID")
@@ -13,10 +13,10 @@ public record ShowSearchPaginationApiParam(
     String title,
 
     @Schema(description = "공연 시작 날짜")
-    LocalDate startDateAt,
+    String startAt,
 
     @Schema(description = "공연 마지막 날짜")
-    LocalDate endDateAt,
+    String endAt,
 
     @Schema(description = "공연 장소")
     String location,
@@ -29,8 +29,8 @@ public record ShowSearchPaginationApiParam(
         return new ShowSearchPaginationApiParam(
             serviceParam.id(),
             serviceParam.title(),
-            serviceParam.startDateAt(),
-            serviceParam.endDateAt(),
+            DateTimeUtil.formatDate(serviceParam.startAt()),
+            DateTimeUtil.formatDate(serviceParam.endAt()),
             serviceParam.location(),
             serviceParam.image()
         );
