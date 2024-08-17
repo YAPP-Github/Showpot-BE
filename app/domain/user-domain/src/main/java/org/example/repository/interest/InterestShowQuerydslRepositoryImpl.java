@@ -1,13 +1,18 @@
 package org.example.repository.interest;
 
 import static org.example.entity.QInterestShow.interestShow;
+import static org.example.entity.QTicketingAlert.ticketingAlert;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
 import org.example.entity.InterestShow;
+import org.example.entity.TicketingAlert;
 import org.example.util.SliceUtil;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
@@ -39,9 +44,18 @@ public class InterestShowQuerydslRepositoryImpl implements InterestShowQuerydslR
             .build();
     }
 
-    private BooleanExpression getInterestShowPaginationConditions(
-        InterestShowPaginationDomainRequest request
-    ) {
+    @Override
+    public List<TicketingAlert> findValidTicketingAlerts(UUID userId, LocalDateTime now) {
+        return jpaQueryFactory.selectFrom(ticketingAlert)
+            .where(
+                ticketingAlert.isDeleted.isFalse()
+                    .and(ticketingAlert.userId.eq(userId))
+                    .and(ticketingAlert.alertTime.gt(now))
+            )
+            .fetch();
+    }
+
+    private BooleanExpression getInterestShowPaginationConditions(InterestShowPaginationDomainRequest request) {
         BooleanExpression whereConditions = interestShow.userId.eq(request.userId())
             .and(interestShow.isDeleted.isFalse());
 

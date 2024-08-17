@@ -1,11 +1,15 @@
 package org.example.usecase;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.InterestShowDomainRequest;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
 import org.example.entity.InterestShow;
+import org.example.entity.TicketingAlert;
 import org.example.repository.interest.InterestShowRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +44,9 @@ public class UserShowUseCase {
 
     public InterestShowPaginationDomainResponse findInterestShows(InterestShowPaginationDomainRequest request) {
         return interestShowRepository.findInterestShowList(request);
+    }
+
+    public List<TicketingAlert> countAlertShows(UUID userId, LocalDateTime now) {
+        return interestShowRepository.findValidTicketingAlerts(userId, now);
     }
 }

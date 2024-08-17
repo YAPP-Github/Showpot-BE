@@ -121,6 +121,18 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .build();
     }
 
+    @Override
+    public List<Show> findNotFinishedShowsIn(List<UUID> showIds, LocalDateTime now) {
+        return jpaQueryFactory
+            .selectFrom(show)
+            .where(
+                show.isDeleted.isFalse()
+                    .and(show.id.in(showIds))
+                    .and(show.lastTicketingAt.after(now))
+            )
+            .fetch();
+    }
+
     private List<ShowDetailDomainResponse> findShowsByPopularity(ShowPaginationDomainRequest request) {
         BooleanExpression whereExpression = show.isDeleted.isFalse();
 
