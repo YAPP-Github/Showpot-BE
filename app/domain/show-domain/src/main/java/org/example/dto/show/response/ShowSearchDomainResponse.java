@@ -8,8 +8,8 @@ import lombok.Builder;
 public record ShowSearchDomainResponse(
     UUID id,
     String title,
-    LocalDate startDate,
-    LocalDate endDate,
+    LocalDate startDateAt,
+    LocalDate endDateAt,
     String location,
     String image
 ) {

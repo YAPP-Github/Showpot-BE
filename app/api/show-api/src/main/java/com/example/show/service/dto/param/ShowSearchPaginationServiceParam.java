@@ -9,8 +9,8 @@ import org.example.dto.show.response.ShowSearchDomainResponse;
 public record ShowSearchPaginationServiceParam(
     UUID id,
     String title,
-    LocalDate startDate,
-    LocalDate endDate,
+    LocalDate startDateAt,
+    LocalDate endDateAt,
     String location,
     String image
 ) {
@@ -19,8 +19,8 @@ public record ShowSearchPaginationServiceParam(
         return ShowSearchPaginationServiceParam.builder()
             .id(response.id())
             .title(response.title())
-            .startDate(response.startDate())
-            .endDate(response.endDate())
+            .startDateAt(response.startDateAt())
+            .endDateAt(response.endDateAt())
             .location(response.location())
             .image(response.image())
             .build();
