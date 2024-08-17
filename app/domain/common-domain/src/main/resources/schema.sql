@@ -186,7 +186,7 @@ create table social_login
     updated_at        timestamp(3) not null,
     is_deleted        boolean      not null,
     user_id           uuid         not null,
-    identifier        varchar(255) not null,
+    identifier        varchar(1000) not null,
     social_login_type varchar(255) not null check (social_login_type in ('GOOGLE', 'KAKAO', 'APPLE')),
     primary key (id),
     constraint unq_social_login_type_identifier unique (social_login_type, identifier)
@@ -212,7 +212,7 @@ create table users
     updated_at timestamp(3) not null,
     is_deleted boolean      not null,
     birth      date         not null,
-    fcm_token  varchar(255) not null,
+    fcm_token  varchar(1000) not null,
     gender     varchar(255) not null check (gender in ('MAN', 'WOMAN', 'NOT_CHOSEN')),
     nickname   varchar(255) not null unique,
     role       varchar(255) not null check (role in ('GUEST', 'USER', 'ADMIN')),

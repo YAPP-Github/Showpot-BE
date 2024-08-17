@@ -1,3 +1,6 @@
+profile:
+  active: prod
+
 spring:
   mvc:
     hidden-method:
@@ -6,3 +9,12 @@ spring:
   docker:
     compose:
       enabled: false
+  data:
+    redis:
+      host: ${REDIS_HOST_PROD}
+      port: ${REDIS_PORT_PROD}
+
+token:
+  secret-key: ${TOKEN_SECRET_KEY}
+  access-token-expiration-seconds: 3600000 # 1hour = 1000(=1s) * 60 * 60
+  refresh-token-expiration-seconds: 1209600000 # 2weeks = 1000(=1s) * 60 * 60 * 24 * 14

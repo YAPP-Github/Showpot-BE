@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 @Configuration
+@EnableRedisRepositories(basePackages = "org.example")
 @EnableConfigurationProperties(RedisProperty.class)
 @ComponentScan(basePackages = "org.example")
 @RequiredArgsConstructor

@@ -1,0 +1,95 @@
+name: prod-cd
+
+on:
+  push:
+    branches:
+      - prod
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: showpot-application
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'liberica'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Copy Secrets
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './app/src/main/resources/application-prod.yml, ./app/src/main/resources/application-cloud-prod.yml, ./app/domain/common-domain/src/main/resources/application-domain-prod.yml'
+        env:
+          token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_KEY }}
+          cloud.aws.region: ${{ secrets.AWS_REGION }}
+          cloud.aws.s3.bucket: ${{ secrets.AWS_BUCKET }}
+          spring.datasource.url: ${{ secrets.APPLICATION_DATASOURCE_URL_PROD }}
+          spring.datasource.username: ${{ secrets.APPLICATION_DATASOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
+          spring.data.redis.host: ${{ secrets.REDIS_HOST_PROD }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT_PROD }}
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew clean build -Dspring.profiles.active=prod
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set image tag
+        id: set-tag
+        run: |
+          DATE_TAG=$(TZ='Asia/Seoul' date +'%Y%m%d_%H%M')
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
+          echo "IMAGE_TAG=${DATE_TAG}_${SHORT_SHA}" >> $GITHUB_ENV
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f dockerfile-prod .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+
+      - name: Update ECS task definition
+        id: update-task
+        run: |
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition showpot-core --region $AWS_REGION)
+          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE_URI "$IMAGE_URI" '
+            .taskDefinition | 
+            .containerDefinitions[0].image=$IMAGE_URI | 
+            del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+          echo $NEW_TASK_DEFINITION > new-task-def.json
+          REGISTERED_TASK_DEFINITION=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json)
+          TASK_REVISION=$(echo $REGISTERED_TASK_DEFINITION | jq -r '.taskDefinition.taskDefinitionArn')
+          
+          echo "Registered new task definition revision: $TASK_REVISION"
+          echo "TASK_REVISION=$TASK_REVISION" >> $GITHUB_ENV
+
+      - name: Deploy to ECS service
+        run: |
+          aws ecs update-service --cluster showpot-cluster --service showpot-core-service --task-definition $TASK_REVISION --force-new-deployment --region $AWS_REGION
