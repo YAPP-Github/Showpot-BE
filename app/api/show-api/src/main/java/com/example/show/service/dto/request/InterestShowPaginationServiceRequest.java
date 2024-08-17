@@ -1,5 +1,6 @@
 package com.example.show.service.dto.request;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
@@ -8,7 +9,8 @@ import org.example.dto.request.InterestShowPaginationDomainRequest;
 public record InterestShowPaginationServiceRequest(
     UUID userId,
     int size,
-    UUID cursorId
+    UUID cursorId,
+    LocalDateTime cursorInterestedAt
 ) {
 
     public InterestShowPaginationDomainRequest toDomainRequest() {
@@ -16,6 +18,7 @@ public record InterestShowPaginationServiceRequest(
             .userId(userId)
             .size(size)
             .cursorId(cursorId)
+            .cursorInterestedAt(cursorInterestedAt)
             .build();
     }
 }
