@@ -9,4 +9,6 @@ public interface ArtistSubscriptionRepository
     extends JpaRepository<ArtistSubscription, UUID>, ArtistSubscriptionQuerydslRepository {
 
     List<ArtistSubscription> findAllByUserId(UUID userId);
+
+    Long countByUserIdAndIsDeletedFalse(UUID userId);
 }

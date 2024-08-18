@@ -1,7 +1,6 @@
 package org.example.usecase;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +8,8 @@ import org.example.dto.request.InterestShowDomainRequest;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
 import org.example.entity.InterestShow;
-import org.example.entity.TicketingAlert;
 import org.example.repository.interest.InterestShowRepository;
+import org.example.repository.subscription.artistsubscription.ArtistSubscriptionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserShowUseCase {
 
     private final InterestShowRepository interestShowRepository;
+    private final ArtistSubscriptionRepository artistSubscriptionRepository;
 
     @Transactional
     public InterestShow interest(InterestShowDomainRequest request) {
@@ -46,7 +46,12 @@ public class UserShowUseCase {
         return interestShowRepository.findInterestShowList(request);
     }
 
-    public List<TicketingAlert> countAlertShows(UUID userId, LocalDateTime now) {
-        return interestShowRepository.findValidTicketingAlerts(userId, now);
+    public long countAlertShows(UUID userId, LocalDateTime now) {
+        return interestShowRepository.countValidTicketingAlerts(userId, now);
+    }
+
+    public long countSubscribedArtists(UUID userId) {
+        Long result = artistSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
+        return result == null ? 0 : result;
     }
 }
