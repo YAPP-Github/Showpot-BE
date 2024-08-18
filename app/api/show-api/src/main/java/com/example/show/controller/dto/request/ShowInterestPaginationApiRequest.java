@@ -9,11 +9,11 @@ public record ShowInterestPaginationApiRequest(
 
     @Parameter(description = "페이지네이션 데이터 개수", required = true)
     int size,
-    @Parameter(description = "이전 페이지네이션 마지막 데이터의 관심 공연 ID / 최초 조회라면 null")
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 interestShowId / 최초 조회라면 null")
     UUID cursorId,
 
-    @Parameter(description = "이전 페이지네이션 마지막 데이터의 관심 지정 시간 / 최초 조회라면 null")
-    LocalDateTime cursorInterestedAt
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 interestedAt / 최초 조회라면 null")
+    LocalDateTime cursorValue
 ) {
 
     public InterestShowPaginationServiceRequest toServiceRequest(UUID userId) {
@@ -21,7 +21,7 @@ public record ShowInterestPaginationApiRequest(
             .userId(userId)
             .size(size)
             .cursorId(cursorId)
-            .cursorInterestedAt(cursorInterestedAt)
+            .cursorValue(cursorValue)
             .build();
     }
 }

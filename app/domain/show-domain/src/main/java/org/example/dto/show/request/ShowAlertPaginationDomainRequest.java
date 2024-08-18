@@ -11,7 +11,7 @@ public record ShowAlertPaginationDomainRequest(
     UUID userId,
     int size,
     UUID cursorId,
-    LocalDateTime cursorTicketingAt
+    LocalDateTime cursorValue
 ) {
 
 }

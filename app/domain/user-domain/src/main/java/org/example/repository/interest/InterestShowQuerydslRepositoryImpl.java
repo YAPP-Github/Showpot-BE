@@ -45,11 +45,11 @@ public class InterestShowQuerydslRepositoryImpl implements InterestShowQuerydslR
         BooleanExpression whereConditions = interestShow.userId.eq(request.userId())
             .and(interestShow.isDeleted.isFalse());
 
-        if (request.cursorId() != null && request.cursorInterestedAt() != null) {
+        if (request.cursorId() != null && request.cursorValue() != null) {
             whereConditions = whereConditions.and(
-                interestShow.updatedAt.lt(request.cursorInterestedAt())
+                interestShow.updatedAt.lt(request.cursorValue())
                     .or(
-                        interestShow.updatedAt.eq(request.cursorInterestedAt())
+                        interestShow.updatedAt.eq(request.cursorValue())
                             .and(interestShow.id.gt(request.cursorId()))
                     )
             );

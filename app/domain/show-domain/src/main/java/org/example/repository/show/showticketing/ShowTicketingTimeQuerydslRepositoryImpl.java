@@ -45,7 +45,7 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
             .where(showTicketingTime.show.id.in(request.showIds())
                 .and(getDefaultPredicateInCursorPagination(
                         request.cursorId(),
-                        request.cursorTicketingAt()
+                        request.cursorValue()
                     )
                 )
             )
@@ -69,15 +69,15 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
 
     private Predicate getDefaultPredicateInCursorPagination(
         UUID cursorId,
-        LocalDateTime cursorTicketingAt
+        LocalDateTime cursorValue
     ) {
         BooleanExpression wherePredicate = show.isDeleted.isFalse()
             .and(showTicketingTime.isDeleted.isFalse())
             .and(showTicketingTime.ticketingAt.gt(LocalDateTime.now()));
 
-        if (cursorId != null && cursorTicketingAt != null) {
-            wherePredicate = wherePredicate.and(showTicketingTime.ticketingAt.gt(cursorTicketingAt)
-                .or(showTicketingTime.ticketingAt.eq(cursorTicketingAt)
+        if (cursorId != null && cursorValue != null) {
+            wherePredicate = wherePredicate.and(showTicketingTime.ticketingAt.gt(cursorValue)
+                .or(showTicketingTime.ticketingAt.eq(cursorValue)
                     .and(showTicketingTime.id.gt(cursorId))));
 
             return wherePredicate;

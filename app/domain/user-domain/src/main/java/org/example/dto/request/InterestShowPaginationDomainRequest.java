@@ -9,7 +9,7 @@ public record InterestShowPaginationDomainRequest(
     UUID userId,
     int size,
     UUID cursorId,
-    LocalDateTime cursorInterestedAt
+    LocalDateTime cursorValue
 ) {
 
 }

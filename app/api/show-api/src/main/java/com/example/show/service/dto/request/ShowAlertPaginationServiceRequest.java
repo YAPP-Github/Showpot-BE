@@ -11,7 +11,7 @@ public record ShowAlertPaginationServiceRequest(
     UUID userId,
     int size,
     UUID cursorId,
-    LocalDateTime cursorTicketingAt
+    LocalDateTime cursorValue
 ) {
 
     public ShowAlertPaginationDomainRequest toDomainRequest(List<UUID> showIds) {
@@ -20,7 +20,7 @@ public record ShowAlertPaginationServiceRequest(
             .userId(userId)
             .size(size)
             .cursorId(cursorId)
-            .cursorTicketingAt(cursorTicketingAt)
+            .cursorValue(cursorValue)
             .build();
     }
 }

@@ -10,7 +10,7 @@ public record InterestShowPaginationServiceRequest(
     UUID userId,
     int size,
     UUID cursorId,
-    LocalDateTime cursorInterestedAt
+    LocalDateTime cursorValue
 ) {
 
     public InterestShowPaginationDomainRequest toDomainRequest() {
@@ -18,7 +18,7 @@ public record InterestShowPaginationServiceRequest(
             .userId(userId)
             .size(size)
             .cursorId(cursorId)
-            .cursorInterestedAt(cursorInterestedAt)
+            .cursorValue(cursorValue)
             .build();
     }
 }

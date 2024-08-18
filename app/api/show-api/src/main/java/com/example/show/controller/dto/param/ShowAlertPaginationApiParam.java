@@ -25,7 +25,7 @@ public record ShowAlertPaginationApiParam(
     @Schema(description = "공연 이미지")
     String image,
 
-    @Schema(description = "공연 티켓팅 날짜")
+    @Schema(description = "cursorValue로서 공연 티켓팅 날짜")
     LocalDateTime ticketingAt
 ) {
 
