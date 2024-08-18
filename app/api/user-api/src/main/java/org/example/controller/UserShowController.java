@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.example.controller.dto.response.NumberOfInterestShowApiResponse;
 import org.example.controller.dto.response.NumberOfSubscribedArtistApiResponse;
 import org.example.controller.dto.response.NumberOfSubscribedGenreApiResponse;
 import org.example.controller.dto.response.NumberOfTicketingAlertApiResponse;
@@ -56,6 +57,18 @@ public class UserShowController {
         return ResponseEntity.ok(
             NumberOfSubscribedGenreApiResponse.from(
                 userShowService.countSubscribedGenres(user.userId())
+            )
+        );
+    }
+
+    @GetMapping("/shows/interests/count")
+    @Operation(summary = "관심 공연 개수")
+    public ResponseEntity<NumberOfInterestShowApiResponse> getNumberOfInterestShow(
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        return ResponseEntity.ok(
+            NumberOfInterestShowApiResponse.from(
+                userShowService.countInterestShows(user.userId())
             )
         );
     }

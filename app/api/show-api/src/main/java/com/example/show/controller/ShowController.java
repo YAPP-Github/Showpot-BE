@@ -71,7 +71,7 @@ public class ShowController {
 
     }
 
-    @PostMapping("/{showId}/interest")
+    @PostMapping("/{showId}/interests")
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
         @PathVariable("showId") UUID showId,

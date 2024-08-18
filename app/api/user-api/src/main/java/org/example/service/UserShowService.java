@@ -3,6 +3,7 @@ package org.example.service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.service.dto.response.NumberOfInterestShowServiceResponse;
 import org.example.service.dto.response.NumberOfSubscribedArtistServiceResponse;
 import org.example.service.dto.response.NumberOfSubscribedGenreServiceResponse;
 import org.example.service.dto.response.NumberOfTicketingAlertServiceResponse;
@@ -32,6 +33,12 @@ public class UserShowService {
     public NumberOfSubscribedGenreServiceResponse countSubscribedGenres(UUID uuid) {
         return NumberOfSubscribedGenreServiceResponse.from(
             userShowUseCase.countSubscribedGenres(uuid)
+        );
+    }
+
+    public NumberOfInterestShowServiceResponse countInterestShows(UUID uuid) {
+        return NumberOfInterestShowServiceResponse.from(
+            userShowUseCase.countInterestShows(uuid)
         );
     }
 }

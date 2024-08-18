@@ -57,8 +57,13 @@ public class UserShowUseCase {
         return result == null ? 0 : result;
     }
 
-    public long countSubscribedGenres(UUID uuid) {
-        Long result = genreSubscriptionRepository.countByUserIdAndIsDeletedFalse(uuid);
+    public long countSubscribedGenres(UUID userId) {
+        Long result = genreSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
+        return result == null ? 0 : result;
+    }
+
+    public long countInterestShows(UUID userId) {
+        Long result = interestShowRepository.countInterestShowByUserIdAndIsDeletedFalse(userId);
         return result == null ? 0 : result;
     }
 }
