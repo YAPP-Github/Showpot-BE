@@ -6,8 +6,6 @@ import java.util.UUID;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.vo.TicketingType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketingTime, UUID>,
     ShowTicketingTimeQuerydslRepository {
@@ -17,15 +15,5 @@ public interface ShowTicketingTimeRepository extends JpaRepository<ShowTicketing
     Optional<ShowTicketingTime> findByShowIdAndTicketingTypeAndIsDeletedFalse(
         UUID showId,
         TicketingType type
-    );
-
-    @Query(
-        "SELECT stt FROM ShowTicketingTime stt JOIN FETCH stt.show "
-            + "WHERE stt.show.id = :showId AND stt.ticketingType = :type "
-            + "AND stt.isDeleted = false"
-    )
-    Optional<ShowTicketingTime> findByShowIdAndTicketingTypeWithShow(
-        @Param("showId") UUID showId,
-        @Param("type") TicketingType type
     );
 }

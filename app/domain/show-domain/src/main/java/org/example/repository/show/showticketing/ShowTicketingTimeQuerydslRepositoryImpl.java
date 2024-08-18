@@ -9,12 +9,15 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
 import org.example.dto.show.response.ShowAlertDomainResponse;
 import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
+import org.example.entity.show.ShowTicketingTime;
 import org.example.util.SliceUtil;
+import org.example.vo.TicketingType;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
@@ -67,6 +70,24 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
             .build();
     }
 
+    @Override
+    public Optional<ShowTicketingTime> findByShowIdAndTicketingTypeWithShow(
+        UUID showId,
+        TicketingType type
+    ) {
+        return Optional.ofNullable(jpaQueryFactory
+            .selectFrom(showTicketingTime)
+            .join(showTicketingTime.show, show).fetchJoin()
+            .where(
+                showTicketingTime.show.id.eq(showId)
+                    .and(showTicketingTime.ticketingType.eq(type))
+                    .and(showTicketingTime.isDeleted.isFalse())
+                    .and(show.isDeleted.isFalse())
+            )
+            .fetchFirst()
+        );
+    }
+
     private Predicate getDefaultPredicateInCursorPagination(
         UUID cursorId,
         LocalDateTime cursorValue
@@ -78,7 +99,8 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
         if (cursorId != null && cursorValue != null) {
             wherePredicate = wherePredicate.and(showTicketingTime.ticketingAt.gt(cursorValue)
                 .or(showTicketingTime.ticketingAt.eq(cursorValue)
-                    .and(showTicketingTime.id.gt(cursorId))));
+                    .and(showTicketingTime.id.gt(cursorId)))
+            );
 
             return wherePredicate;
         }
