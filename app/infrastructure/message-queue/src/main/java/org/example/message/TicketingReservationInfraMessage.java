@@ -11,7 +11,8 @@ public record TicketingReservationInfraMessage(
     String userFcmToken,
     String name,
     UUID showId,
-    List<String> reserveAts
+    List<String> addAts,
+    List<String> deleteAts
 ) {
 
     public static TicketingReservationInfraMessage from(
@@ -21,7 +22,8 @@ public record TicketingReservationInfraMessage(
             .userFcmToken(message.userFcmToken())
             .name(message.name())
             .showId(message.showId())
-            .reserveAts(message.reserveAts().stream().map(LocalDateTime::toString).toList())
+            .addAts(message.addAts().stream().map(LocalDateTime::toString).toList())
+            .deleteAts(message.deleteAts().stream().map(LocalDateTime::toString).toList())
             .build();
     }
 }
