@@ -10,6 +10,7 @@ import org.example.dto.response.InterestShowPaginationDomainResponse;
 import org.example.entity.InterestShow;
 import org.example.repository.interest.InterestShowRepository;
 import org.example.repository.subscription.artistsubscription.ArtistSubscriptionRepository;
+import org.example.repository.subscription.genresubscription.GenreSubscriptionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class UserShowUseCase {
 
     private final InterestShowRepository interestShowRepository;
     private final ArtistSubscriptionRepository artistSubscriptionRepository;
+    private final GenreSubscriptionRepository genreSubscriptionRepository;
 
     @Transactional
     public InterestShow interest(InterestShowDomainRequest request) {
@@ -52,6 +54,11 @@ public class UserShowUseCase {
 
     public long countSubscribedArtists(UUID userId) {
         Long result = artistSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
+        return result == null ? 0 : result;
+    }
+
+    public long countSubscribedGenres(UUID uuid) {
+        Long result = genreSubscriptionRepository.countByUserIdAndIsDeletedFalse(uuid);
         return result == null ? 0 : result;
     }
 }

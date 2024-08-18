@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.service.dto.response.NumberOfSubscribedArtistServiceResponse;
+import org.example.service.dto.response.NumberOfSubscribedGenreServiceResponse;
 import org.example.service.dto.response.NumberOfTicketingAlertServiceResponse;
 import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
@@ -23,6 +24,14 @@ public class UserShowService {
     }
 
     public NumberOfSubscribedArtistServiceResponse countSubscribedArtists(UUID userId) {
-        return NumberOfSubscribedArtistServiceResponse.from(userShowUseCase.countSubscribedArtists(userId));
+        return NumberOfSubscribedArtistServiceResponse.from(
+            userShowUseCase.countSubscribedArtists(userId)
+        );
+    }
+
+    public NumberOfSubscribedGenreServiceResponse countSubscribedGenres(UUID uuid) {
+        return NumberOfSubscribedGenreServiceResponse.from(
+            userShowUseCase.countSubscribedGenres(uuid)
+        );
     }
 }
