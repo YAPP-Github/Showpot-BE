@@ -233,3 +233,47 @@ alter table if exists show_ticketing_time
     add constraint fk_show_show_ticketing_time
         foreign key (show_id)
             references show;
+
+
+--- alarm schema ---
+create schema if not exists alarm;
+
+drop table if exists alarm.artist_subscription cascade;
+drop table if exists alarm.genre_subscription cascade;
+drop table if exists alarm.ticketing_alert cascade;
+
+
+create table alarm.artist_subscription
+(
+    is_deleted     boolean      not null,
+    created_at     timestamp(3) not null,
+    updated_at     timestamp(3) not null,
+    artist_id      uuid         not null,
+    id             uuid         not null,
+    user_fcm_token varchar(255) not null,
+    primary key (id)
+);
+
+create table alarm.genre_subscription
+(
+    is_deleted     boolean      not null,
+    created_at     timestamp(3) not null,
+    updated_at     timestamp(3) not null,
+    genre_id       uuid         not null,
+    id             uuid         not null,
+    user_fcm_token varchar(255) not null,
+    primary key (id)
+);
+
+create table alarm.ticketing_alert
+(
+    is_deleted          boolean      not null,
+    created_at          timestamp(3) not null,
+    schedule_alert_time timestamp(3) not null,
+    updated_at          timestamp(3) not null,
+    id                  uuid         not null,
+    show_id             uuid         not null,
+    name                varchar(255) not null,
+    user_fcm_token      varchar(255) not null,
+    primary key (id)
+);

@@ -6,6 +6,7 @@ import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.fixture.domain.ShowFixture;
 import org.example.fixture.domain.ShowTicketingTimeFixture;
+import org.example.repository.show.showticketing.ShowTicketingTimeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

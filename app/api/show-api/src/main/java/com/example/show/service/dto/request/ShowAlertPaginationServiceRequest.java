@@ -1,20 +1,22 @@
 package com.example.show.service.dto.request;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.request.InterestShowPaginationDomainRequest;
+import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
 
 @Builder
-public record InterestShowPaginationServiceRequest(
+public record ShowAlertPaginationServiceRequest(
     UUID userId,
     int size,
     UUID cursorId,
     LocalDateTime cursorValue
 ) {
 
-    public InterestShowPaginationDomainRequest toDomainRequest() {
-        return InterestShowPaginationDomainRequest.builder()
+    public ShowAlertPaginationDomainRequest toDomainRequest(List<UUID> showIds) {
+        return ShowAlertPaginationDomainRequest.builder()
+            .showIds(showIds)
             .userId(userId)
             .size(size)
             .cursorId(cursorId)

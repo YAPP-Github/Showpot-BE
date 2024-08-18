@@ -88,12 +88,13 @@ public class SecurityConfig {
 
     private RequestMatcher getMatcherForUserAndAdmin() {
         return RequestMatchers.anyOf(
-            antMatcher(HttpMethod.GET, "/api/v1/shows/interests"),
             antMatcher(HttpMethod.POST, "/api/v1/users/logout"),
             antMatcher(HttpMethod.POST, "/api/v1/users/withdrawal"),
             antMatcher(HttpMethod.GET, "/api/v1/users/profile"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/**/interest"),
+            antMatcher(HttpMethod.GET, "/api/v1/shows/interests"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/{showId}/alert"),
+            antMatcher(HttpMethod.GET, "/api/v1/shows/alerts"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/{showId}/alert/reservations"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/subscribe"),
             antMatcher(HttpMethod.POST, "/api/v1/genres/unsubscribe"),

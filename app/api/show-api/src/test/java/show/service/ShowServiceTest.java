@@ -8,6 +8,7 @@ import com.example.show.service.ShowService;
 import org.assertj.core.api.SoftAssertions;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
+import org.example.usecase.show.ShowTicketingTimeUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,13 @@ import show.fixture.dto.ShowResponseDtoFixture;
 class ShowServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
+    private final ShowTicketingTimeUseCase showTicketingTimeUseCase = mock(ShowTicketingTimeUseCase.class);
     private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
     private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
     private final ShowService showService = new ShowService(
         showUseCase,
+        showTicketingTimeUseCase,
         ticketingAlertUseCase,
         userShowUseCase,
         messagePublisher

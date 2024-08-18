@@ -24,24 +24,19 @@ public enum TicketingAlertTimeApiType {
         };
     }
 
-    public static List<TicketingAlertTime> availableReserveTimeToDomainType(LocalDateTime ticketingAt) {
+    public static List<TicketingAlertTime> availableReserveTimeToDomainType(
+        LocalDateTime ticketingAt,
+        List<TicketingAlertTimeApiType> alertTimes
+    ) {
         long hoursDifference = Duration.between(LocalDateTime.now(), ticketingAt).toHours();
 
-        return ALL_ALERT_TIMES.stream()
+        return alertTimes.stream()
             .filter(alertTime -> {
                 return switch (alertTime) {
-                    case BEFORE_24 -> hoursDifference >= 24;
-                    case BEFORE_6 -> hoursDifference >= 6;
-                    case BEFORE_1 -> hoursDifference >= 1;
+                    case BEFORE_24, BEFORE_6, BEFORE_1 -> hoursDifference >= alertTime.time;
                 };
             })
+            .map(TicketingAlertTimeApiType::toDomainType)
             .toList();
     }
-
-    private static final List<TicketingAlertTime> ALL_ALERT_TIMES = List.of(
-        TicketingAlertTime.BEFORE_24,
-        TicketingAlertTime.BEFORE_6,
-        TicketingAlertTime.BEFORE_1
-    );
-
 }

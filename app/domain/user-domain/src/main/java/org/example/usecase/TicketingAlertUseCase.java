@@ -29,6 +29,10 @@ public class TicketingAlertUseCase {
         return ticketingAlertRepository.findAllByUserIdAndShowIdAndIsDeletedFalse(userId, showId);
     }
 
+    public List<TicketingAlert> findTicketingAlertsByUserId(UUID userId) {
+        return ticketingAlertRepository.findAllByUserIdAndIsDeletedFalse(userId);
+    }
+
     @Transactional
     public TicketingAlertsDomainResponse alertReservation(
         TicketingAlertReservationDomainRequest ticketingAlertReservation
@@ -51,11 +55,20 @@ public class TicketingAlertUseCase {
             .map(TicketingAlert::getAlertTime)
             .toList();
 
-        removeAlerts(existingAlerts, requestedAlertTimes);
-        return addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes);
+        String fcmToken = userRepository.findUserFcmTokensByUserId(
+                ticketingAlertReservation.userId())
+            .orElseThrow(NoSuchElementException::new);
+
+        return TicketingAlertsDomainResponse.builder()
+            .userFcmToken(fcmToken)
+            .name(ticketingAlertReservation.name())
+            .showId(ticketingAlertReservation.showId())
+            .addAts(addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes))
+            .deleteAts(deleteAlerts(existingAlerts, requestedAlertTimes))
+            .build();
     }
 
-    private TicketingAlertsDomainResponse addAlerts(
+    private List<LocalDateTime> addAlerts(
         TicketingAlertReservationDomainRequest ticketingAlertReservation,
         List<LocalDateTime> requestedAlertTimes,
         List<LocalDateTime> existingAlertTimes
@@ -72,22 +85,10 @@ public class TicketingAlertUseCase {
             .toList();
         ticketingAlertRepository.saveAll(alertsToAdd);
 
-        String fcmToken = userRepository.findUserFcmTokensByUserId(
-                ticketingAlertReservation.userId())
-            .orElseThrow(NoSuchElementException::new);
-
-        return TicketingAlertsDomainResponse.builder()
-            .userFcmToken(fcmToken)
-            .name(ticketingAlertReservation.name())
-            .showId(ticketingAlertReservation.showId())
-            .reservedAts(alertsToAdd.stream()
-                .map(TicketingAlert::getAlertTime)
-                .toList()
-            )
-            .build();
+        return alertsToAdd.stream().map(TicketingAlert::getAlertTime).toList();
     }
 
-    private void removeAlerts(
+    private List<LocalDateTime> deleteAlerts(
         List<TicketingAlert> existingAlerts,
         List<LocalDateTime> requestedAlertTimes
     ) {
@@ -95,6 +96,8 @@ public class TicketingAlertUseCase {
             .filter(alert -> !requestedAlertTimes.contains(alert.getAlertTime()))
             .toList();
         alertsToRemove.forEach(BaseEntity::softDelete);
+
+        return alertsToRemove.stream().map(TicketingAlert::getAlertTime).toList();
     }
 
     private LocalDateTime calculateAlertTime(LocalDateTime showTime, TicketingAlertTime alertTime) {

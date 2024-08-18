@@ -25,7 +25,8 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
 
     @Override
     public ShowSearchPaginationDomainResponse searchShow(
-        ShowSearchPaginationDomainRequest request) {
+        ShowSearchPaginationDomainRequest request
+    ) {
         List<ShowSearchDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
                     ShowSearchDomainResponse.class,

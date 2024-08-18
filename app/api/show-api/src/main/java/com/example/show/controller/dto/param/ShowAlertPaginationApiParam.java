@@ -1,11 +1,12 @@
 package com.example.show.controller.dto.param;
 
-import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
+import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.example.util.DateTimeUtil;
 
-public record ShowSearchPaginationApiParam(
+public record ShowAlertPaginationApiParam(
     @Schema(description = "공연 ID")
     UUID id,
 
@@ -22,17 +23,21 @@ public record ShowSearchPaginationApiParam(
     String location,
 
     @Schema(description = "공연 이미지")
-    String image
+    String image,
+
+    @Schema(description = "cursorValue로서 공연 티켓팅 날짜")
+    LocalDateTime ticketingAt
 ) {
 
-    public static ShowSearchPaginationApiParam from(ShowSearchPaginationServiceParam serviceParam) {
-        return new ShowSearchPaginationApiParam(
+    public static ShowAlertPaginationApiParam from(ShowAlertPaginationServiceParam serviceParam) {
+        return new ShowAlertPaginationApiParam(
             serviceParam.id(),
             serviceParam.title(),
             DateTimeUtil.formatDate(serviceParam.startAt()),
             DateTimeUtil.formatDate(serviceParam.endAt()),
             serviceParam.location(),
-            serviceParam.image()
+            serviceParam.image(),
+            serviceParam.ticketingAt()
         );
     }
 }
