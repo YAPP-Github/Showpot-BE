@@ -11,4 +11,6 @@ public interface GenreSubscriptionRepository extends JpaRepository<GenreSubscrip
     List<GenreSubscription> findAllByUserId(UUID userId);
 
     List<GenreSubscription> findByUserIdAndIsDeletedFalse(UUID userId);
+
+    Long countByUserIdAndIsDeletedFalse(UUID uuid);
 }

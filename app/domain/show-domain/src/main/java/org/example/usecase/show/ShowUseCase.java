@@ -1,5 +1,6 @@
 package org.example.usecase.show;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -231,6 +232,10 @@ public class ShowUseCase {
     ) {
         return showTicketingTimeRepository.findByShowIdAndTicketingTypeWithShow(showId, type)
             .orElseThrow(NoSuchElementException::new);
+    }
+
+    public List<Show> findNotFinishedTicketingShows(List<UUID> showIds, LocalDateTime now) {
+        return showRepository.findNotFinishedShowsIn(showIds, now);
     }
 
     private Show findShowOrThrowNoSuchElementException(UUID id) {
