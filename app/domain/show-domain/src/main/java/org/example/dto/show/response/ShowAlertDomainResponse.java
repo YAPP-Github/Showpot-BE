@@ -13,6 +13,7 @@ public record ShowAlertDomainResponse(
     LocalDate endAt,
     String location,
     String image,
+    UUID showTicketingTimeId,
     LocalDateTime ticketingAt
 ) {
 

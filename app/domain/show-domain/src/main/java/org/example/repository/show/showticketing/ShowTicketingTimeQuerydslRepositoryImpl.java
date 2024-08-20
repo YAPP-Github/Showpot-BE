@@ -40,6 +40,7 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
                     show.endDate,
                     show.location,
                     show.image,
+                    showTicketingTime.id,
                     showTicketingTime.ticketingAt
                 )
             )

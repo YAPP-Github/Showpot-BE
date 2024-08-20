@@ -14,6 +14,7 @@ public record ShowAlertPaginationServiceParam(
     LocalDate endAt,
     String location,
     String image,
+    UUID showTicketingTimeId,
     LocalDateTime ticketingAt
 ) {
 
@@ -25,6 +26,7 @@ public record ShowAlertPaginationServiceParam(
             .endAt(alertShow.endAt())
             .location(alertShow.location())
             .image(alertShow.image())
+            .showTicketingTimeId(alertShow.showTicketingTimeId())
             .ticketingAt(alertShow.ticketingAt())
             .build();
     }

@@ -25,6 +25,9 @@ public record ShowAlertPaginationApiParam(
     @Schema(description = "공연 이미지")
     String image,
 
+    @Schema(description = "cursorID로서 공연 티켓팅 시간 ID")
+    UUID showTicketingTimeId,
+
     @Schema(description = "cursorValue로서 공연 티켓팅 날짜")
     LocalDateTime ticketingAt
 ) {
@@ -37,6 +40,7 @@ public record ShowAlertPaginationApiParam(
             DateTimeUtil.formatDate(serviceParam.endAt()),
             serviceParam.location(),
             serviceParam.image(),
+            serviceParam.showTicketingTimeId(),
             serviceParam.ticketingAt()
         );
     }
