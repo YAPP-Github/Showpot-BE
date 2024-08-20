@@ -7,7 +7,6 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +16,7 @@ import org.example.dto.show.response.ShowAlertDomainResponse;
 import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.util.SliceUtil;
+import org.example.vo.ShowTicketingAtStatus;
 import org.example.vo.TicketingType;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
@@ -47,11 +47,7 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
             .from(showTicketingTime)
             .join(showTicketingTime.show, show)
             .where(showTicketingTime.show.id.in(request.showIds())
-                .and(getDefaultPredicateInCursorPagination(
-                        request.cursorId(),
-                        request.cursorValue()
-                    )
-                )
+                .and(getShowAlertsInCursorPagination(request))
             )
             .orderBy(
                 showTicketingTime.ticketingAt.asc(),
@@ -89,24 +85,36 @@ public class ShowTicketingTimeQuerydslRepositoryImpl implements
         );
     }
 
-    private Predicate getDefaultPredicateInCursorPagination(
-        UUID cursorId,
-        LocalDateTime cursorValue
+    private Predicate getShowAlertsInCursorPagination(
+        ShowAlertPaginationDomainRequest request
     ) {
-        BooleanExpression wherePredicate = show.isDeleted.isFalse()
-            .and(showTicketingTime.isDeleted.isFalse())
-            .and(showTicketingTime.ticketingAt.gt(LocalDateTime.now()));
+        BooleanExpression wherePredicate = getDefaultPredicateExpression();
 
-        if (cursorId != null && cursorValue != null) {
-            wherePredicate = wherePredicate.and(showTicketingTime.ticketingAt.gt(cursorValue)
-                .or(showTicketingTime.ticketingAt.eq(cursorValue)
-                    .and(showTicketingTime.id.gt(cursorId)))
+        if (request.type().equals(ShowTicketingAtStatus.CONTINUED)) {
+            wherePredicate = wherePredicate.and(
+                showTicketingTime.ticketingAt.gt(request.now())
+            );
+        } else if (request.type().equals(ShowTicketingAtStatus.TERMINATED)) {
+            wherePredicate = wherePredicate.and(
+                showTicketingTime.ticketingAt.lt(request.now())
+            );
+        }
+
+        if (request.cursorId() != null && request.cursorValue() != null) {
+            wherePredicate = wherePredicate.and(
+                showTicketingTime.ticketingAt.gt(request.cursorValue())
+                    .or(showTicketingTime.ticketingAt.eq(request.cursorValue())
+                        .and(showTicketingTime.id.gt(request.cursorId())))
             );
 
             return wherePredicate;
         }
 
         return wherePredicate;
+    }
+
+    private BooleanExpression getDefaultPredicateExpression() {
+        return show.isDeleted.isFalse().and(showTicketingTime.isDeleted.isFalse());
     }
 }
 

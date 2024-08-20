@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
 import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
+import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowPaginationDomainResponse;
@@ -216,6 +218,12 @@ public class ShowUseCase {
 
     public List<ShowSearch> findShowSearchesByShowId(UUID showId) {
         return showSearchRepository.findAllByShowIdAndIsDeletedFalse(showId);
+    }
+
+    public ShowAlertPaginationDomainResponse findAlertShows(
+        ShowAlertPaginationDomainRequest request
+    ) {
+        return showTicketingTimeRepository.findShowAlerts(request);
     }
 
     public ShowTicketingTime findTicketingAlertReservation(

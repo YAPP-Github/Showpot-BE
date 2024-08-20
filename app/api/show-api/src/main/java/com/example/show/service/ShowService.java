@@ -37,7 +37,6 @@ import org.example.entity.show.ShowTicketingTime;
 import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
-import org.example.usecase.show.ShowTicketingTimeUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +45,6 @@ import org.springframework.stereotype.Service;
 public class ShowService {
 
     private final ShowUseCase showUseCase;
-    private final ShowTicketingTimeUseCase showTicketingTimeUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final UserShowUseCase userShowUseCase;
     private final MessagePublisher messagePublisher;
@@ -166,15 +164,14 @@ public class ShowService {
     public PaginationServiceResponse<ShowAlertPaginationServiceParam> findAlertShows(
         ShowAlertPaginationServiceRequest request
     ) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
-            request.userId());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(request.userId());
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
             .map(TicketingAlert::getShowId)
             .distinct()
             .toList();
 
-        ShowAlertPaginationDomainResponse alertShows = showTicketingTimeUseCase.findAlertShows(
-            request.toDomainRequest(showIdsToAlert));
+        ShowAlertPaginationDomainResponse alertShows = showUseCase.findAlertShows(
+            request.toDomainRequest(showIdsToAlert, LocalDateTime.now()));
 
         return PaginationServiceResponse.of(alertShows.data().stream()
                 .map(ShowAlertPaginationServiceParam::from)
