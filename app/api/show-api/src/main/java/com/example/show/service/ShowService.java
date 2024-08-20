@@ -16,9 +16,11 @@ import com.example.show.service.dto.response.InterestShowPaginationServiceRespon
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
 import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
+import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationAvailabilityServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationStatusServiceResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -177,6 +179,18 @@ public class ShowService {
                 .map(ShowAlertPaginationServiceParam::from)
                 .toList(),
             alertShows.hasNext()
+        );
+    }
+
+    public TerminatedTicketingShowCountServiceResponse countTerminatedTicketingShow(UUID userId) {
+        List<UUID> alertShowIds = ticketingAlertUseCase.findAlertShowIdsByUserId(userId);
+
+        if (alertShowIds.isEmpty()) {
+            return TerminatedTicketingShowCountServiceResponse.noCount();
+        }
+
+        return TerminatedTicketingShowCountServiceResponse.from(
+            showUseCase.findTerminatedTicketingShowsCount(alertShowIds, LocalDateTime.now())
         );
     }
 }

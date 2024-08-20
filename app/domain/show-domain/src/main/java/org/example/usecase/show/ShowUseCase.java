@@ -234,8 +234,8 @@ public class ShowUseCase {
             .orElseThrow(NoSuchElementException::new);
     }
 
-    public List<Show> findNotFinishedTicketingShows(List<UUID> showIds, LocalDateTime now) {
-        return showRepository.findNotFinishedShowsIn(showIds, now);
+    public long findTerminatedTicketingShowsCount(List<UUID> showIds, LocalDateTime now) {
+        return showRepository.findTerminatedTicketingShowsCount(showIds, now);
     }
 
     private Show findShowOrThrowNoSuchElementException(UUID id) {

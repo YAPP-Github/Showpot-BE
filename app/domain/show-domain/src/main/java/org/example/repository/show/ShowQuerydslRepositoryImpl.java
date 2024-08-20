@@ -122,18 +122,22 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     @Override
-    public List<Show> findNotFinishedShowsIn(List<UUID> showIds, LocalDateTime now) {
-        return jpaQueryFactory
-            .selectFrom(show)
+    public long findTerminatedTicketingShowsCount(List<UUID> showIds, LocalDateTime now) {
+        Long result = jpaQueryFactory
+            .select(show.id.countDistinct())
+            .from(show)
             .where(
                 show.isDeleted.isFalse()
                     .and(show.id.in(showIds))
-                    .and(show.lastTicketingAt.after(now))
+                    .and(show.lastTicketingAt.before(now))
             )
-            .fetch();
+            .fetchFirst();
+
+        return result == null ? 0 : result;
     }
 
-    private List<ShowDetailDomainResponse> findShowsByPopularity(ShowPaginationDomainRequest request) {
+    private List<ShowDetailDomainResponse> findShowsByPopularity(
+        ShowPaginationDomainRequest request) {
         BooleanExpression whereExpression = show.isDeleted.isFalse();
 
         if (request.cursorId() != null) {
@@ -169,7 +173,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .toList();
     }
 
-    private List<ShowDetailDomainResponse> findShowsByClosestTicketingAt(ShowPaginationDomainRequest request) {
+    private List<ShowDetailDomainResponse> findShowsByClosestTicketingAt(
+        ShowPaginationDomainRequest request) {
         JPAQuery<LocalDateTime> closestTicketingTimeQuery = jpaQueryFactory
             .select(showTicketingTime.ticketingAt.min())
             .from(showTicketingTime)
@@ -181,8 +186,10 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
 
         if (request.cursorId() != null) {
             whereExpression.and(
-                closestTicketingTimeQuery.gt(DateTimeUtil.parseDateTime(request.cursorValue().toString()))
-                    .or(closestTicketingTimeQuery.eq(DateTimeUtil.parseDateTime(request.cursorValue().toString()))
+                closestTicketingTimeQuery.gt(
+                        DateTimeUtil.parseDateTime(request.cursorValue().toString()))
+                    .or(closestTicketingTimeQuery.eq(
+                            DateTimeUtil.parseDateTime(request.cursorValue().toString()))
                         .and(show.id.gt(request.cursorId()))
                     )
             );
@@ -196,7 +203,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             .selectFrom(show)
             .leftJoin(showGenre).on(show.id.eq(showGenre.showId).and(showGenre.isDeleted.isFalse()))
             .leftJoin(genre).on(showGenre.genreId.eq(genre.id).and(genre.isDeleted.isFalse()))
-            .leftJoin(showArtist).on(show.id.eq(showArtist.showId).and(showArtist.isDeleted.isFalse()))
+            .leftJoin(showArtist)
+            .on(show.id.eq(showArtist.showId).and(showArtist.isDeleted.isFalse()))
             .leftJoin(artist).on(showArtist.artistId.eq(artist.id).and(artist.isDeleted.isFalse()))
             .leftJoin(showTicketingTime)
             .on(show.id.eq(showTicketingTime.show.id).and(showTicketingTime.isDeleted.isFalse()))

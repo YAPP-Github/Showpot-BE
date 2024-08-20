@@ -33,6 +33,10 @@ public class TicketingAlertUseCase {
         return ticketingAlertRepository.findAllByUserIdAndIsDeletedFalse(userId);
     }
 
+    public List<UUID> findAlertShowIdsByUserId(UUID userId) {
+        return ticketingAlertRepository.findAlertShowIdsByUserId(userId);
+    }
+
     @Transactional
     public TicketingAlertsDomainResponse alertReservation(
         TicketingAlertReservationDomainRequest ticketingAlertReservation
