@@ -169,7 +169,8 @@ public class ShowService {
         List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
             request.userId());
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
-            .map(TicketingAlert::getShowId).distinct()
+            .map(TicketingAlert::getShowId)
+            .distinct()
             .toList();
 
         ShowAlertPaginationDomainResponse alertShows = showTicketingTimeUseCase.findAlertShows(
@@ -183,14 +184,18 @@ public class ShowService {
     }
 
     public TerminatedTicketingShowCountServiceResponse countTerminatedTicketingShow(UUID userId) {
-        List<UUID> alertShowIds = ticketingAlertUseCase.findAlertShowIdsByUserId(userId);
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(userId);
+        List<UUID> showIdsToAlert = ticketingAlerts.stream()
+            .map(TicketingAlert::getShowId)
+            .distinct()
+            .toList();
 
-        if (alertShowIds.isEmpty()) {
+        if (showIdsToAlert.isEmpty()) {
             return TerminatedTicketingShowCountServiceResponse.noCount();
         }
 
         return TerminatedTicketingShowCountServiceResponse.from(
-            showUseCase.findTerminatedTicketingShowsCount(alertShowIds, LocalDateTime.now())
+            showUseCase.findTerminatedTicketingShowsCount(showIdsToAlert, LocalDateTime.now())
         );
     }
 }
