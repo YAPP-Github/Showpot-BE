@@ -16,9 +16,11 @@ import com.example.show.service.dto.response.InterestShowPaginationServiceRespon
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
 import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
+import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationAvailabilityServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationStatusServiceResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -35,7 +37,6 @@ import org.example.entity.show.ShowTicketingTime;
 import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
-import org.example.usecase.show.ShowTicketingTimeUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,6 @@ import org.springframework.stereotype.Service;
 public class ShowService {
 
     private final ShowUseCase showUseCase;
-    private final ShowTicketingTimeUseCase showTicketingTimeUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final UserShowUseCase userShowUseCase;
     private final MessagePublisher messagePublisher;
@@ -164,19 +164,35 @@ public class ShowService {
     public PaginationServiceResponse<ShowAlertPaginationServiceParam> findAlertShows(
         ShowAlertPaginationServiceRequest request
     ) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
-            request.userId());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(request.userId());
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
-            .map(TicketingAlert::getShowId).distinct()
+            .map(TicketingAlert::getShowId)
+            .distinct()
             .toList();
 
-        ShowAlertPaginationDomainResponse alertShows = showTicketingTimeUseCase.findAlertShows(
-            request.toDomainRequest(showIdsToAlert));
+        ShowAlertPaginationDomainResponse alertShows = showUseCase.findAlertShows(
+            request.toDomainRequest(showIdsToAlert, LocalDateTime.now()));
 
         return PaginationServiceResponse.of(alertShows.data().stream()
                 .map(ShowAlertPaginationServiceParam::from)
                 .toList(),
             alertShows.hasNext()
+        );
+    }
+
+    public TerminatedTicketingShowCountServiceResponse countTerminatedTicketingShow(UUID userId) {
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(userId);
+        List<UUID> showIdsToAlert = ticketingAlerts.stream()
+            .map(TicketingAlert::getShowId)
+            .distinct()
+            .toList();
+
+        if (showIdsToAlert.isEmpty()) {
+            return TerminatedTicketingShowCountServiceResponse.noCount();
+        }
+
+        return TerminatedTicketingShowCountServiceResponse.from(
+            showUseCase.findTerminatedTicketingShowsCount(showIdsToAlert, LocalDateTime.now())
         );
     }
 }

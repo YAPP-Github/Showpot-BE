@@ -11,6 +11,7 @@ import com.example.show.controller.dto.response.InterestShowPaginationApiRespons
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
+import com.example.show.controller.dto.response.TerminatedTicketingShowCountApiResponse;
 import com.example.show.controller.dto.response.TicketingAlertReservationApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.ShowService;
@@ -190,6 +191,18 @@ public class ShowController {
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()
+        );
+    }
+
+    @GetMapping("/terminated/ticketing/count")
+    @Operation(summary = "티켓팅 알림 설정 후 공연이 종료된 개수")
+    public ResponseEntity<TerminatedTicketingShowCountApiResponse> getNumberOfTerminatedTicketingShowCount(
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        return ResponseEntity.ok(
+            TerminatedTicketingShowCountApiResponse.from(
+                showService.countTerminatedTicketingShow(user.userId())
+            )
         );
     }
 

@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.show.request.ShowAlertPaginationDomainRequest;
 import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
+import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowPaginationDomainResponse;
@@ -218,6 +220,12 @@ public class ShowUseCase {
         return showSearchRepository.findAllByShowIdAndIsDeletedFalse(showId);
     }
 
+    public ShowAlertPaginationDomainResponse findAlertShows(
+        ShowAlertPaginationDomainRequest request
+    ) {
+        return showTicketingTimeRepository.findShowAlerts(request);
+    }
+
     public ShowTicketingTime findTicketingAlertReservation(
         UUID showId,
         TicketingType type
@@ -234,8 +242,8 @@ public class ShowUseCase {
             .orElseThrow(NoSuchElementException::new);
     }
 
-    public List<Show> findNotFinishedTicketingShows(List<UUID> showIds, LocalDateTime now) {
-        return showRepository.findNotFinishedShowsIn(showIds, now);
+    public long findTerminatedTicketingShowsCount(List<UUID> showIds, LocalDateTime now) {
+        return showRepository.findTerminatedTicketingShowsCount(showIds, now);
     }
 
     private Show findShowOrThrowNoSuchElementException(UUID id) {
