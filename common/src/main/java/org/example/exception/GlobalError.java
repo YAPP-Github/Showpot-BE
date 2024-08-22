@@ -88,5 +88,27 @@ public enum GlobalError implements BusinessError {
         public String getLogMessage() {
             return "파라마티 타입이 일치하지 않습니다.";
         }
+    },
+
+    ELEMENT_NOT_FOUND {
+        @Override
+        public int getHttpStatus() {
+            return 404;
+        }
+
+        @Override
+        public String getErrorCode() {
+            return "GLOBAL-005";
+        }
+
+        @Override
+        public String getClientMessage() {
+            return "요청에 일치하는 데이터를 찾지 못했습니다.";
+        }
+
+        @Override
+        public String getLogMessage() {
+            return "요청에 일치하는 데이터를 찾지 못했습니다.";
+        }
     }
 }

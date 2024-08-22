@@ -3,7 +3,6 @@ package com.example.show.service;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
-import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
@@ -23,7 +22,6 @@ import com.example.show.service.dto.response.TicketingAlertReservationStatusServ
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,6 @@ import org.example.entity.InterestShow;
 import org.example.entity.TicketingAlert;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
-import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
@@ -51,12 +48,7 @@ public class ShowService {
 
 
     public ShowDetailServiceResponse getShow(UUID id) {
-        ShowDetailDomainResponse showDetail;
-        try {
-            showDetail = showUseCase.findShowDetail(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
-        }
+        ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(id);
 
         return ShowDetailServiceResponse.from(showDetail);
     }

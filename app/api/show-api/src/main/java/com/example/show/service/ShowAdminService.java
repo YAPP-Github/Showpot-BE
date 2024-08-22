@@ -4,16 +4,13 @@ package com.example.show.service;
 import com.example.component.FileUploadComponent;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.show.error.ShowError;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
-import org.example.exception.BusinessException;
 import org.example.usecase.artist.ArtistUseCase;
 import org.example.usecase.genre.GenreUseCase;
 import org.example.usecase.show.ShowAdminUseCase;
@@ -59,12 +56,7 @@ public class ShowAdminService {
     }
 
     public ShowInfoServiceResponse findShowInfo(UUID id) {
-        ShowInfoDomainResponse showInfoDomainResponse;
-        try {
-            showInfoDomainResponse = showAdminUseCase.findShowInfo(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
-        }
+        ShowInfoDomainResponse showInfoDomainResponse = showAdminUseCase.findShowInfo(id);
 
         return new ShowInfoServiceResponse(showInfoDomainResponse);
     }
@@ -99,10 +91,6 @@ public class ShowAdminService {
     }
 
     public void deleteShow(UUID id) {
-        try {
-            showAdminUseCase.deleteShow(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
-        }
+        showAdminUseCase.deleteShow(id);
     }
 }
