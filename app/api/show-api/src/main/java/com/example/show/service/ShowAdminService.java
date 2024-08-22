@@ -16,14 +16,14 @@ import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.exception.BusinessException;
 import org.example.usecase.artist.ArtistUseCase;
 import org.example.usecase.genre.GenreUseCase;
-import org.example.usecase.show.ShowUseCase;
+import org.example.usecase.show.ShowAdminUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ShowAdminService {
 
-    private final ShowUseCase showUseCase;
+    private final ShowAdminUseCase showAdminUseCase;
     private final GenreUseCase genreUseCase;
     private final ArtistUseCase artistUseCase;
     private final FileUploadComponent fileUploadComponent;
@@ -32,7 +32,7 @@ public class ShowAdminService {
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
         String imageURL = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
 
-        showUseCase.save(
+        showAdminUseCase.save(
             showCreateServiceRequest.toDomainRequest(imageURL)
         );
 
@@ -46,7 +46,7 @@ public class ShowAdminService {
     }
 
     public List<ShowInfoServiceResponse> findShowDetailWithTicketingTimes() {
-        var showWithTicketingTimesDomainResponses = showUseCase.findShowDetailWithTicketingTimes();
+        var showWithTicketingTimesDomainResponses = showAdminUseCase.findShowDetailWithTicketingTimes();
         var artistKoreanNameWithShowIdDomainResponses = artistUseCase.findArtistKoreanNamesWithShowId();
         var genreNameWithShowIdDomainResponses = genreUseCase.findGenreNamesWithShowId();
 
@@ -61,7 +61,7 @@ public class ShowAdminService {
     public ShowInfoServiceResponse findShowInfo(UUID id) {
         ShowInfoDomainResponse showInfoDomainResponse;
         try {
-            showInfoDomainResponse = showUseCase.findShowInfo(id);
+            showInfoDomainResponse = showAdminUseCase.findShowInfo(id);
         } catch (NoSuchElementException e) {
             throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
         }
@@ -72,17 +72,17 @@ public class ShowAdminService {
     public void updateShow(UUID id, ShowUpdateServiceRequest showUpdateServiceRequest) {
         String imageUrl = fileUploadComponent.uploadFile("show", showUpdateServiceRequest.post());
 
-        var artistIdsToPublish = showUseCase.getArtistIdsToAdd(
+        var artistIdsToPublish = showAdminUseCase.getArtistIdsToAdd(
             showUpdateServiceRequest.artistIds(),
-            showUseCase.findShowArtistsByShowId(id)
+            showAdminUseCase.findShowArtistsByShowId(id)
         );
 
-        var genreIdsToPublish = showUseCase.getGenreIdsToAdd(
+        var genreIdsToPublish = showAdminUseCase.getGenreIdsToAdd(
             showUpdateServiceRequest.genreIds(),
-            showUseCase.findShowGenresByShowId(id)
+            showAdminUseCase.findShowGenresByShowId(id)
         );
 
-        showUseCase.updateShow(
+        showAdminUseCase.updateShow(
             id,
             showUpdateServiceRequest.toDomainRequest(imageUrl)
         );
@@ -100,7 +100,7 @@ public class ShowAdminService {
 
     public void deleteShow(UUID id) {
         try {
-            showUseCase.deleteShow(id);
+            showAdminUseCase.deleteShow(id);
         } catch (NoSuchElementException e) {
             throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
         }
