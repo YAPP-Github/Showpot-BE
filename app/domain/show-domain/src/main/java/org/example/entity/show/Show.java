@@ -116,13 +116,16 @@ public class Show extends BaseEntity {
             .build();
     }
 
-    public void changeShowInfo(Show newShow) {
-        this.title = newShow.title;
-        this.content = newShow.content;
-        this.startDate = newShow.startDate;
-        this.location = newShow.location;
-        this.image = newShow.image;
-        this.seatPrices = newShow.seatPrices;
+    public void changeShowInfo(Show updateShow) {
+        this.title = updateShow.title;
+        this.content = updateShow.content;
+        this.startDate = updateShow.startDate;
+        this.endDate = updateShow.endDate;
+        this.location = updateShow.location;
+        this.image = updateShow.image;
+        this.lastTicketingAt = updateShow.lastTicketingAt;
+        this.seatPrices = updateShow.seatPrices;
+        this.ticketingSites = updateShow.ticketingSites;
     }
 
     public void view() {

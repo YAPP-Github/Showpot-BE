@@ -82,14 +82,10 @@ public class ShowAdminService {
             showUseCase.findShowGenresByShowId(id)
         );
 
-        try {
-            showUseCase.updateShow(
-                id,
-                showUpdateServiceRequest.toDomainRequest(imageUrl)
-            );
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
-        }
+        showUseCase.updateShow(
+            id,
+            showUpdateServiceRequest.toDomainRequest(imageUrl)
+        );
 
         if (!artistIdsToPublish.isEmpty() || !genreIdsToPublish.isEmpty()) {
             messagePublisher.publishShow(

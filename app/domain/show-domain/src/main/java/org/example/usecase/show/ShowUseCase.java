@@ -84,7 +84,9 @@ public class ShowUseCase {
     @Transactional
     public void updateShow(UUID id, ShowUpdateDomainRequest request) {
         Show show = findShowOrThrowNoSuchElementException(id);
+        Show updateShow = request.toShow();
 
+        show.changeShowInfo(updateShow);
         updateShowSearch(show);
         updateShowArtist(request.artistIds(), show);
         updateShowGenre(request.genreIds(), show);
@@ -94,12 +96,13 @@ public class ShowUseCase {
     public void updateShowSearch(Show show) {
         var newShowSearch = show.toShowSearch();
         var currentShowSearches = findShowSearchesByShowId(show.getId());
+        var showNames = currentShowSearches.stream().map(ShowSearch::getName).toList();
 
-        if (!currentShowSearches.contains(newShowSearch)) {
+        if (!showNames.contains(newShowSearch.getName())) {
             showSearchRepository.save(newShowSearch);
 
             var showSearchesToRemove = currentShowSearches.stream()
-                .filter(currentShowSearch -> !newShowSearch.equals(currentShowSearch))
+                .filter(showSearch -> !newShowSearch.getName().equals(showSearch.getName()))
                 .toList();
             showSearchesToRemove.forEach(BaseEntity::softDelete);
         }
