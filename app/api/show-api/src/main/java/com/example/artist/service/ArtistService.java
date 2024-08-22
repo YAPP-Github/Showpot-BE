@@ -15,6 +15,7 @@ import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceRespon
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
@@ -52,10 +53,15 @@ public class ArtistService {
     ) {
         List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
 
-        return new ArtistFilterTotalCountServiceResponse(
-            artistUseCase.findFilterArtistTotalCount(
-                request.toDomainRequest(subscriptionArtistIds))
-        );
+        try {
+            return new ArtistFilterTotalCountServiceResponse(
+                artistUseCase.findFilterArtistTotalCount(
+                    request.toDomainRequest(subscriptionArtistIds)
+                )
+            );
+        } catch (NoSuchElementException e) {
+            return ArtistFilterTotalCountServiceResponse.noneTotalCount();
+        }
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
