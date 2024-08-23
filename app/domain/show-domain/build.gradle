@@ -10,7 +10,7 @@ dependencies {
     // hypersistence utils
     implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.7.6'
     //testFixtures
-    testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
     testFixturesImplementation project(":app:domain:common-domain")
     testFixturesImplementation 'org.springframework.data:spring-data-jpa'
+    testFixturesRuntimeOnly 'org.springframework.boot:spring-boot-starter-test'
 }

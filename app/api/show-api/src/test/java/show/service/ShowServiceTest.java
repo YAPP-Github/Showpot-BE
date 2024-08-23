@@ -3,6 +3,7 @@ package show.service;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+import com.example.component.ViewCountComponent;
 import com.example.publish.MessagePublisher;
 import com.example.show.service.ShowService;
 import org.assertj.core.api.SoftAssertions;
@@ -20,11 +21,13 @@ class ShowServiceTest {
     private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
     private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+    private final ViewCountComponent viewCountComponent = mock(ViewCountComponent.class);
     private final ShowService showService = new ShowService(
         showUseCase,
         ticketingAlertUseCase,
         userShowUseCase,
-        messagePublisher
+        messagePublisher,
+        viewCountComponent
     );
 
     @Test

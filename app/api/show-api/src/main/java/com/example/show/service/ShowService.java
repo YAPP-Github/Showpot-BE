@@ -1,9 +1,9 @@
 package com.example.show.service;
 
+import com.example.component.ViewCountComponent;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
-import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
@@ -23,7 +23,6 @@ import com.example.show.service.dto.response.TicketingAlertReservationStatusServ
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,6 @@ import org.example.entity.InterestShow;
 import org.example.entity.TicketingAlert;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
-import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
@@ -48,14 +46,16 @@ public class ShowService {
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final UserShowUseCase userShowUseCase;
     private final MessagePublisher messagePublisher;
+    private final ViewCountComponent viewCountComponent;
 
 
-    public ShowDetailServiceResponse getShow(UUID id) {
+    public ShowDetailServiceResponse getShow(UUID id, String viewIdentifier) {
         ShowDetailDomainResponse showDetail;
-        try {
-            showDetail = showUseCase.findShowDetail(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(ShowError.ENTITY_NOT_FOUND);
+        showDetail = showUseCase.findShowDetail(id);
+
+        boolean upViewCount = viewCountComponent.validateViewCount(id, viewIdentifier);
+        if (upViewCount) {
+            showUseCase.view(id);
         }
 
         return ShowDetailServiceResponse.from(showDetail);
@@ -105,10 +105,6 @@ public class ShowService {
                 .toList(),
             interestShows.hasNext()
         );
-    }
-
-    public void view(UUID showId) {
-        showUseCase.view(showId);
     }
 
     public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {
@@ -164,7 +160,8 @@ public class ShowService {
     public PaginationServiceResponse<ShowAlertPaginationServiceParam> findAlertShows(
         ShowAlertPaginationServiceRequest request
     ) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(request.userId());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
+            request.userId());
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
             .map(TicketingAlert::getShowId)
             .distinct()
@@ -181,7 +178,8 @@ public class ShowService {
     }
 
     public TerminatedTicketingShowCountServiceResponse countTerminatedTicketingShow(UUID userId) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(userId);
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
+            userId);
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
             .map(TicketingAlert::getShowId)
             .distinct()

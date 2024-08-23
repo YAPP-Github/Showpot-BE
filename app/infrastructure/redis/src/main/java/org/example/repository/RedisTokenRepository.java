@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LettuceRedisRepository implements TokenRepository {
+public class RedisTokenRepository implements TokenRepository {
 
     private final StringRedisTemplate stringRedisTemplate;
 
