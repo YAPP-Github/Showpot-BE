@@ -50,8 +50,7 @@ public class ShowService {
 
 
     public ShowDetailServiceResponse getShow(UUID id, String viewIdentifier) {
-        ShowDetailDomainResponse showDetail;
-        showDetail = showUseCase.findShowDetail(id);
+        ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(id);
 
         boolean upViewCount = viewCountComponent.validateViewCount(id, viewIdentifier);
         if (upViewCount) {
