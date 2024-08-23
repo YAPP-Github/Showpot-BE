@@ -34,11 +34,11 @@ public record ShowDetailApiResponse(
     @Schema(description = "티켓팅 예매 시간 정보")
     List<ShowTicketingTimeApiResponse> ticketingTimes,
 
-    @Schema(description = "좌석 정보")
-    ShowSeatApiResponse seats,
+    @Schema(description = "좌석별 가격 정보")
+    List<SeatTypePriceApiResponse> seats,
 
-    @Schema(description = "티켓팅 정보 및 공연 날짜")
-    ShowTicketingSiteApiResponse ticketingSites
+    @Schema(description = "티켓팅 사이트별 링크")
+    List<TicketingSiteApiResponse> ticketingSites
 ) {
 
     public static ShowDetailApiResponse from(ShowDetailServiceResponse show) {
@@ -63,8 +63,16 @@ public record ShowDetailApiResponse(
                     .map(ShowTicketingTimeApiResponse::from)
                     .toList()
             )
-            .seats(ShowSeatApiResponse.from((show.seats())))
-            .ticketingSites(ShowTicketingSiteApiResponse.from(show.ticketingSites()))
+            .seats(
+                show.seats().priceBySeat().entrySet().stream()
+                .map(entry -> SeatTypePriceApiResponse.of(entry.getKey(), entry.getValue()))
+                .toList()
+            )
+            .ticketingSites(
+                show.ticketingSites().siteByURL().entrySet().stream()
+                .map(entry -> TicketingSiteApiResponse.of(entry.getKey(), entry.getValue()))
+                .toList()
+            )
             .build();
     }
 }

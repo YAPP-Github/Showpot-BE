@@ -12,6 +12,6 @@ public record ShowTicketingSiteApiResponse(
     public static ShowTicketingSiteApiResponse from(
         ShowTicketingSiteServiceResponse ticketingSites
     ) {
-        return new ShowTicketingSiteApiResponse(ticketingSites.ticketingSites());
+        return new ShowTicketingSiteApiResponse(ticketingSites.siteByURL());
     }
 }
