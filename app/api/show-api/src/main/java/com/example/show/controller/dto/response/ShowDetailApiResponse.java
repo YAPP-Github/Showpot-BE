@@ -16,9 +16,6 @@ public record ShowDetailApiResponse(
     @Schema(description = "공연 이름")
     String name,
 
-    @Schema(description = "공연 내용")
-    String content,
-
     @Schema(description = "공연 시작일")
     String startDate,
 
@@ -51,7 +48,6 @@ public record ShowDetailApiResponse(
         return ShowDetailApiResponse.builder()
             .id(show.id())
             .name(show.title())
-            .content(show.content())
             .startDate(DateTimeUtil.formatDate(show.startDate()))
             .endDate(DateTimeUtil.formatDate(show.endDate()))
             .location(show.location())
