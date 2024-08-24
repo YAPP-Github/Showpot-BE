@@ -32,10 +32,10 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -115,10 +115,11 @@ public class ShowController {
     @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
-        @PathVariable("showId") UUID showId
+        @PathVariable("showId") UUID showId,
+        @RequestHeader(value = "viewIdentifier") String viewIdentifier
     ) {
         return ResponseEntity.ok(
-            ShowDetailApiResponse.from(showService.getShow(showId))
+            ShowDetailApiResponse.from(showService.getShow(showId, viewIdentifier))
         );
     }
 
@@ -204,13 +205,5 @@ public class ShowController {
                 showService.countTerminatedTicketingShow(user.userId())
             )
         );
-    }
-
-    @PatchMapping("/{showId}/view")
-    @Operation(summary = "공연 조회수 증가")
-    public void view(
-        @PathVariable("showId") UUID showId
-    ) {
-        showService.view(showId);
     }
 }

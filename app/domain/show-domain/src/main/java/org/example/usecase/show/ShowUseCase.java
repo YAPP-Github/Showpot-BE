@@ -41,7 +41,6 @@ public class ShowUseCase {
         return showRepository.findShowsByIdIn(showIds);
     }
 
-    // TODO: 동시성 이슈 고려 안 함
     @Transactional
     public void view(UUID id) {
         findShowOrThrowNoSuchElementException(id).view();

@@ -6,7 +6,7 @@ import org.example.entity.show.info.TicketingSites;
 
 @Builder
 public record ShowTicketingSiteServiceResponse(
-    Map<String, String> ticketingSites
+    Map<String, String> siteByURL
 ) {
 
     public static ShowTicketingSiteServiceResponse from(TicketingSites ticketingSites) {

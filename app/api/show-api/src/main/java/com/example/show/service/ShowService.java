@@ -1,5 +1,6 @@
 package com.example.show.service;
 
+import com.example.component.ViewCountComponent;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
@@ -45,10 +46,15 @@ public class ShowService {
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final UserShowUseCase userShowUseCase;
     private final MessagePublisher messagePublisher;
+    private final ViewCountComponent viewCountComponent;
 
-
-    public ShowDetailServiceResponse getShow(UUID id) {
+    public ShowDetailServiceResponse getShow(UUID id, String viewIdentifier) {
         ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(id);
+
+        boolean upViewCount = viewCountComponent.validateViewCount(id, viewIdentifier);
+        if (upViewCount) {
+            showUseCase.view(id);
+        }
 
         return ShowDetailServiceResponse.from(showDetail);
     }
@@ -97,10 +103,6 @@ public class ShowService {
                 .toList(),
             interestShows.hasNext()
         );
-    }
-
-    public void view(UUID showId) {
-        showUseCase.view(showId);
     }
 
     public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {

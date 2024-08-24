@@ -1,10 +1,15 @@
 package show.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import com.example.component.ViewCountComponent;
 import com.example.publish.MessagePublisher;
 import com.example.show.service.ShowService;
+import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
@@ -20,12 +25,62 @@ class ShowServiceTest {
     private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
     private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+    private final ViewCountComponent viewCountComponent = mock(ViewCountComponent.class);
     private final ShowService showService = new ShowService(
         showUseCase,
         ticketingAlertUseCase,
         userShowUseCase,
-        messagePublisher
+        messagePublisher,
+        viewCountComponent
     );
+
+    @Test
+    @DisplayName("공연 상세 조회할 때 조회수를 올리고 데이터를 반환한다.")
+    void showDetailWithUpViewCount() {
+        //given
+        UUID showId = UUID.randomUUID();
+        String viewIdentifier = "testIdentifier";
+        given(
+            showUseCase.findShowDetail(showId)
+        ).willReturn(
+            ShowResponseDtoFixture.showDetailDomainResponse()
+        );
+
+        given(
+            viewCountComponent.validateViewCount(showId, viewIdentifier)
+        ).willReturn(true);
+
+        //when
+        var result = showService.getShow(showId, viewIdentifier);
+
+        //then
+        verify(showUseCase, times(1)).view(showId);
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("공연 상세 조회할 때 조회수를 올리지 않고 데이터를 반환한다.")
+    void showDetailNoneUpViewCount() {
+        //given
+        UUID showId = UUID.randomUUID();
+        String viewIdentifier = "testIdentifier";
+        given(
+            showUseCase.findShowDetail(showId)
+        ).willReturn(
+            ShowResponseDtoFixture.showDetailDomainResponse()
+        );
+
+        given(
+            viewCountComponent.validateViewCount(showId, viewIdentifier)
+        ).willReturn(false);
+
+        //when
+        var result = showService.getShow(showId, viewIdentifier);
+
+        //then
+        verify(showUseCase, times(0)).view(showId);
+        assertThat(result).isNotNull();
+    }
 
     @Test
     @DisplayName("페이지네이션을 이용해 공연을 검색 할 수 있다.")
