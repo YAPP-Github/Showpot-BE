@@ -22,7 +22,7 @@ public record ShowSearchPaginationApiParam(
     String location,
 
     @Schema(description = "공연 이미지")
-    String image
+    String imageURL
 ) {
 
     public static ShowSearchPaginationApiParam from(ShowSearchPaginationServiceParam serviceParam) {
