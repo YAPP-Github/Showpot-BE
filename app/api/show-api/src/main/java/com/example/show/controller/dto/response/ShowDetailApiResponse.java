@@ -22,6 +22,9 @@ public record ShowDetailApiResponse(
     @Schema(description = "공연 종료일")
     String endDate,
 
+    @Schema(description = "공연 장소")
+    String location,
+
     @Schema(description = "공연 포스터 주소")
     String posterImageURL,
 
@@ -47,6 +50,7 @@ public record ShowDetailApiResponse(
             .name(show.title())
             .startDate(DateTimeUtil.formatDate(show.startDate()))
             .endDate(DateTimeUtil.formatDate(show.endDate()))
+            .location(show.location())
             .posterImageURL(show.posterImageURL())
             .artists(
                 show.artists().stream()

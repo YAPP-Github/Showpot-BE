@@ -11,8 +11,10 @@ public record ShowDetailServiceResponse(
 
     UUID id,
     String title,
+    String content,
     LocalDate startDate,
     LocalDate endDate,
+    String location,
     String posterImageURL,
     List<ShowArtistServiceResponse> artists,
     List<ShowGenreServiceResponse> genres,
@@ -25,8 +27,10 @@ public record ShowDetailServiceResponse(
         return ShowDetailServiceResponse.builder()
             .id(show.show().id())
             .title(show.show().title())
+            .content(show.show().content())
             .startDate(show.show().startDate())
             .endDate(show.show().endDate())
+            .location(show.show().location())
             .posterImageURL(show.show().image())
             .artists(
                 show.artists().stream()

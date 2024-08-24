@@ -17,8 +17,8 @@ public record ShowArtistApiResponse(
     @Schema(description = "아티스트 영어 이름")
     String englishName,
 
-    @Schema(description = "아티스트 이미지 주소")
-    String image
+    @Schema(description = "아티스트 이미지 URL")
+    String imageURL
 ) {
 
     public static ShowArtistApiResponse from(ShowArtistServiceResponse artists) {
@@ -26,7 +26,7 @@ public record ShowArtistApiResponse(
             .id(artists.id())
             .koreanName(artists.koreanName())
             .englishName(artists.englishName())
-            .image(artists.image())
+            .imageURL(artists.image())
             .build();
     }
 }

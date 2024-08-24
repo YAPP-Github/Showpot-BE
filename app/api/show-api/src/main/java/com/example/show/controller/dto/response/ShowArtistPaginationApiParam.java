@@ -9,7 +9,7 @@ public record ShowArtistPaginationApiParam(
     UUID id,
     String koreanName,
     String englishName,
-    String image
+    String imageURL
 ) {
 
     public static ShowArtistPaginationApiParam from(ShowArtistSimpleServiceResponse response) {
@@ -17,7 +17,7 @@ public record ShowArtistPaginationApiParam(
             .id(response.id())
             .koreanName(response.koreanName())
             .englishName(response.englishName())
-            .image(response.image())
+            .imageURL(response.image())
             .build();
     }
 }
