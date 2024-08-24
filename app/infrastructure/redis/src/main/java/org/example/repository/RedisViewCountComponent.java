@@ -19,7 +19,7 @@ public class RedisViewCountComponent implements ViewCountComponent {
 
         if (viewStatus == null) {
             stringRedisTemplate.opsForValue()
-                .set("VC:" + viewIdentifier + showId, "1", 30, TimeUnit.MINUTES);
+                .set("VC:" + viewIdentifier + showId, "1", 1, TimeUnit.DAYS);
             return true;
         }
 

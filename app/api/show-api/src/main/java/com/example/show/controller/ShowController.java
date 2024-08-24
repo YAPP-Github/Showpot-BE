@@ -112,7 +112,7 @@ public class ShowController {
         );
     }
 
-    @PostMapping("/{showId}")
+    @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
         @PathVariable("showId") UUID showId,
