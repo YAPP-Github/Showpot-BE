@@ -151,7 +151,5 @@ public class ArtistUseCase {
         return artistRepository.findById(id)
             .orElseThrow(NoSuchElementException::new);
     }
-
-
 }
 

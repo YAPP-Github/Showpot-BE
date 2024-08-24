@@ -56,7 +56,8 @@ public class ArtistService {
         try {
             return new ArtistFilterTotalCountServiceResponse(
                 artistUseCase.findFilterArtistTotalCount(
-                    request.toDomainRequest(subscriptionArtistIds))
+                    request.toDomainRequest(subscriptionArtistIds)
+                )
             );
         } catch (NoSuchElementException e) {
             return ArtistFilterTotalCountServiceResponse.noneTotalCount();

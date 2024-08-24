@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.response.UserProfileDomainResponse;
 import org.example.entity.SocialLogin;
 import org.example.entity.User;
-import org.example.error.UserError;
-import org.example.exception.BusinessException;
 import org.example.security.dto.TokenParam;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
@@ -44,11 +42,7 @@ public class UserService {
     }
 
     public void withdraw(WithdrawalServiceRequest request) {
-        try {
-            userUseCase.deleteUser(request.userId());
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(UserError.NOT_FOUND_USER);
-        }
+        userUseCase.deleteUser(request.userId());
 
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
             request.accessToken(),
@@ -61,12 +55,7 @@ public class UserService {
     }
 
     public UserProfileServiceResponse findUserProfile(UUID userId) {
-        UserProfileDomainResponse profile;
-        try {
-            profile = userUseCase.findUserProfile(userId);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(UserError.NOT_FOUND_USER);
-        }
+        UserProfileDomainResponse profile = userUseCase.findUserProfile(userId);
 
         return UserProfileServiceResponse.from(profile);
     }
