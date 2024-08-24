@@ -16,11 +16,17 @@ public record ShowDetailApiResponse(
     @Schema(description = "공연 이름")
     String name,
 
+    @Schema(description = "공연 내용")
+    String content,
+
     @Schema(description = "공연 시작일")
     String startDate,
 
     @Schema(description = "공연 종료일")
     String endDate,
+
+    @Schema(description = "공연 장소")
+    String location,
 
     @Schema(description = "공연 포스터 주소")
     String posterImageURL,
@@ -45,8 +51,10 @@ public record ShowDetailApiResponse(
         return ShowDetailApiResponse.builder()
             .id(show.id())
             .name(show.title())
+            .content(show.content())
             .startDate(DateTimeUtil.formatDate(show.startDate()))
             .endDate(DateTimeUtil.formatDate(show.endDate()))
+            .location(show.location())
             .posterImageURL(show.posterImageURL())
             .artists(
                 show.artists().stream()
