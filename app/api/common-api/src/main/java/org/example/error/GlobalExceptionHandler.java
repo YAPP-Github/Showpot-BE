@@ -1,6 +1,7 @@
 package org.example.error;
 
 import jakarta.validation.ConstraintViolationException;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exception.BusinessException;
@@ -38,6 +39,21 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.businessErrorResponseBuilder()
             .errorId(errorId)
             .error(e.error)
+            .build();
+
+        log.error(errorId, e);
+
+        return ResponseEntity.status(response.httpStatus())
+            .body(response);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ErrorResponse> handleNoSuchElementException(final NoSuchElementException e) {
+        String errorId = UUID.randomUUID().toString();
+        ErrorResponse response = ErrorResponse.messageCustomErrorResponseBuilder()
+            .errorId(errorId)
+            .message(GlobalError.ELEMENT_NOT_FOUND.getClientMessage())
+            .error(GlobalError.ELEMENT_NOT_FOUND)
             .build();
 
         log.error(errorId, e);

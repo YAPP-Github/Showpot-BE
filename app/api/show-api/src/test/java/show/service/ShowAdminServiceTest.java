@@ -22,21 +22,21 @@ import org.example.fixture.domain.ShowArtistFixture;
 import org.example.fixture.domain.ShowGenreFixture;
 import org.example.usecase.artist.ArtistUseCase;
 import org.example.usecase.genre.GenreUseCase;
-import org.example.usecase.show.ShowUseCase;
+import org.example.usecase.show.ShowAdminUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import show.fixture.dto.ShowRequestDtoFixture;
 
 class ShowAdminServiceTest {
 
-    private final ShowUseCase showUseCase = mock(ShowUseCase.class);
+    private final ShowAdminUseCase showAdminUseCase = mock(ShowAdminUseCase.class);
     private final GenreUseCase genreUseCase = mock(GenreUseCase.class);
     private final ArtistUseCase artistUseCase = mock(ArtistUseCase.class);
     private final FileUploadComponent fileUploadComponent = mock(FileUploadComponent.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final ShowAdminService showAdminService = new ShowAdminService(
-        showUseCase,
+        showAdminUseCase,
         genreUseCase,
         artistUseCase,
         fileUploadComponent,
@@ -59,7 +59,7 @@ class ShowAdminServiceTest {
         showAdminService.save(showCreateServiceRequest);
 
         //then
-        verify(showUseCase, times(1)).save(any());
+        verify(showAdminUseCase, times(1)).save(any());
     }
 
     @Test
@@ -70,7 +70,7 @@ class ShowAdminServiceTest {
         var showCreationDomainRequest = showCreateServiceRequest.toDomainRequest(
             "test_imageUrl"
         );
-        willDoNothing().given(showUseCase).save(showCreationDomainRequest);
+        willDoNothing().given(showAdminUseCase).save(showCreationDomainRequest);
 
         //when
         showAdminService.save(showCreateServiceRequest);
@@ -99,7 +99,7 @@ class ShowAdminServiceTest {
         showAdminService.updateShow(showId, showUpdateServiceRequest);
 
         //then
-        verify(showUseCase, times(1)).updateShow(eq(showId), any(ShowUpdateDomainRequest.class));
+        verify(showAdminUseCase, times(1)).updateShow(eq(showId), any(ShowUpdateDomainRequest.class));
     }
 
     @Test
@@ -110,12 +110,12 @@ class ShowAdminServiceTest {
         UUID showId = UUID.randomUUID();
         var showArtists = ShowArtistFixture.showArtists(3);
         given(
-            showUseCase.findShowArtistsByShowId(showId)
+            showAdminUseCase.findShowArtistsByShowId(showId)
         ).willReturn(
             showArtists
         );
         given(
-            showUseCase.getArtistIdsToAdd(
+            showAdminUseCase.getArtistIdsToAdd(
                 showUpdateServiceRequest.artistIds(),
                 showArtists
             )
@@ -123,12 +123,12 @@ class ShowAdminServiceTest {
 
         var showGenres = ShowGenreFixture.showGenres(3);
         given(
-            showUseCase.findShowGenresByShowId(showId)
+            showAdminUseCase.findShowGenresByShowId(showId)
         ).willReturn(
             showGenres
         );
         given(
-            showUseCase.getGenreIdsToAdd(
+            showAdminUseCase.getGenreIdsToAdd(
                 showUpdateServiceRequest.genreIds(),
                 showGenres
             )

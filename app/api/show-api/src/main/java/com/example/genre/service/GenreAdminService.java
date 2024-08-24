@@ -1,16 +1,12 @@
 package com.example.genre.service;
 
-import com.example.genre.error.GenreError;
 import com.example.genre.service.dto.request.GenreCreateServiceRequest;
 import com.example.genre.service.dto.request.GenreUpdateServiceRequest;
 import com.example.genre.service.dto.response.GenreNameServiceResponse;
-import com.example.genre.service.dto.response.GenreNameWithShowIdServiceResponse;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.genre.Genre;
-import org.example.exception.BusinessException;
 import org.example.usecase.genre.GenreUseCase;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +20,6 @@ public class GenreAdminService {
         genreUseCase.save(genreCreateServiceRequest.toGenre());
     }
 
-    public List<GenreNameWithShowIdServiceResponse> findGenreNamesWithShowId() {
-        return genreUseCase.findGenreNamesWithShowId().stream()
-            .map(GenreNameWithShowIdServiceResponse::new)
-            .toList();
-    }
-
     public List<GenreNameServiceResponse> findAllGenres() {
         List<Genre> genres = genreUseCase.findAllGenres();
         return genres.stream()
@@ -38,28 +28,15 @@ public class GenreAdminService {
     }
 
     public void updateGenre(UUID id, GenreUpdateServiceRequest genreUpdateServiceRequest) {
-        try {
-            genreUseCase.updateGenre(id, genreUpdateServiceRequest.name());
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(GenreError.ENTITY_NOT_FOUND);
-        }
+        genreUseCase.updateGenre(id, genreUpdateServiceRequest.name());
     }
 
     public void deleteGenre(UUID id) {
-        try {
-            genreUseCase.deleteGenre(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(GenreError.ENTITY_NOT_FOUND);
-        }
+        genreUseCase.deleteGenre(id);
     }
 
     public GenreNameServiceResponse findGenreById(UUID id) {
-        Genre genre;
-        try {
-            genre = genreUseCase.findGenreById(id);
-        } catch (NoSuchElementException e) {
-            throw new BusinessException(GenreError.ENTITY_NOT_FOUND);
-        }
+        Genre genre = genreUseCase.findGenreById(id);
 
         return new GenreNameServiceResponse(genre.getId(), genre.getName());
     }
