@@ -46,8 +46,7 @@ public class ShowAdminUseCase {
         var showGenres = show.toShowGenre(request.genreIds());
         showGenreRepository.saveAll(showGenres);
 
-        var showTicketingTimes = show.toShowTicketingTime(
-            request.showTicketingTimes());
+        var showTicketingTimes = show.toShowTicketingTime(request.showTicketingTimes());
         showTicketingTimeRepository.saveAll(showTicketingTimes);
     }
 

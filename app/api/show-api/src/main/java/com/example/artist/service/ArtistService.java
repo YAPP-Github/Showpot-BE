@@ -13,6 +13,7 @@ import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResp
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import com.example.publish.MessagePublisher;
+import com.example.publish.message.ArtistServiceMessage;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -90,13 +91,16 @@ public class ArtistService {
             .map(ArtistSubscription::getArtistId)
             .toList();
 
+        var subscribedArtistMessage = artistUseCase.findAllArtistInIds(subscribedArtistIds)
+            .stream().map(ArtistServiceMessage::from)
+            .toList();
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
 
         messagePublisher.publishArtistSubscription(
             "artistSubscription",
             ArtistSubscriptionServiceMessage.from(
                 userFcmToken,
-                subscribedArtistIds
+                subscribedArtistMessage
             )
         );
 
@@ -115,16 +119,18 @@ public class ArtistService {
             request.artistIds(),
             request.userId()
         );
-        var unsubscribedArtistIds = unsubscribedArtists.stream()
-            .map(ArtistSubscription::getArtistId)
+        var unsubscribedArtistMessage = unsubscribedArtists.stream()
+            .map(ArtistServiceMessage::toUnsubscribe)
             .toList();
 
+
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishArtistSubscription(
             "artistUnsubscription",
             ArtistSubscriptionServiceMessage.from(
                 userFcmToken,
-                unsubscribedArtistIds
+                unsubscribedArtistMessage
             )
         );
 

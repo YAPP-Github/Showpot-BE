@@ -11,21 +11,21 @@ public record ArtistSearchPaginationServiceParam(
     String artistImageUrl,
     String artistKoreanName,
     String artistEnglishName,
-    boolean isSubscribe
+    boolean isSubscribed
 ) {
 
     public static ArtistSearchPaginationServiceParam from(
         ArtistSimpleDomainResponse response,
         List<UUID> artistSubscriptions
     ) {
-        boolean isSubscribe = artistSubscriptions.contains(response.id());
+        boolean isSubscribed = artistSubscriptions.contains(response.id());
 
         return ArtistSearchPaginationServiceParam.builder()
             .artistId(response.id())
             .artistImageUrl(response.image())
             .artistKoreanName(response.koreanName())
             .artistEnglishName(response.englishName())
-            .isSubscribe(isSubscribe)
+            .isSubscribed(isSubscribed)
             .build();
     }
 }

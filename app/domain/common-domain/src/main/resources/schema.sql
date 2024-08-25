@@ -249,6 +249,7 @@ create table alarm.artist_subscription
     created_at     timestamp(3) not null,
     updated_at     timestamp(3) not null,
     artist_id      uuid         not null,
+    artist_name    varchar(255) not null,
     id             uuid         not null,
     user_fcm_token varchar(255) not null,
     primary key (id)
@@ -260,6 +261,7 @@ create table alarm.genre_subscription
     created_at     timestamp(3) not null,
     updated_at     timestamp(3) not null,
     genre_id       uuid         not null,
+    genre_name     varchar(255) not null,
     id             uuid         not null,
     user_fcm_token varchar(255) not null,
     primary key (id)

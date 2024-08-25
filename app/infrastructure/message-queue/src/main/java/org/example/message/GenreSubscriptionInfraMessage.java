@@ -2,13 +2,12 @@ package org.example.message;
 
 import com.example.publish.message.GenreSubscriptionServiceMessage;
 import java.util.List;
-import java.util.UUID;
 import lombok.Builder;
 
 @Builder
 public record GenreSubscriptionInfraMessage(
     String userFcmToken,
-    List<UUID> genreIds
+    List<GenreInfraMessage> genres
 ) {
 
     public static GenreSubscriptionInfraMessage from(
@@ -16,7 +15,7 @@ public record GenreSubscriptionInfraMessage(
     ) {
         return GenreSubscriptionInfraMessage.builder()
             .userFcmToken(message.userFcmToken())
-            .genreIds(message.genreIds())
+            .genres(message.genres().stream().map(GenreInfraMessage::from).toList())
             .build();
     }
 }

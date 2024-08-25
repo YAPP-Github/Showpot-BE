@@ -9,6 +9,7 @@ import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
 import com.example.publish.MessagePublisher;
+import com.example.publish.message.GenreServiceMessage;
 import com.example.publish.message.GenreSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
@@ -45,13 +46,16 @@ public class GenreService {
             .map(GenreSubscription::getGenreId)
             .toList();
 
+        var subscribedGenreMessage = genreUseCase.findAllGenresInIds(subscribedGenreIds)
+            .stream().map(GenreServiceMessage::from)
+            .toList();
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
 
         messagePublisher.publishGenreSubscription(
             "genreSubscription",
             GenreSubscriptionServiceMessage.from(
                 userFcmToken,
-                subscribedGenreIds
+                subscribedGenreMessage
             )
         );
 
@@ -71,9 +75,8 @@ public class GenreService {
             request.genreIds(),
             request.userId()
         );
-        var unsubscribedGenreIds = unsubscriptionGenres
-            .stream()
-            .map(GenreSubscription::getGenreId)
+        var unsubscribedGenreMessage = unsubscriptionGenres.stream()
+            .map(GenreServiceMessage::toUnsubscribe)
             .toList();
 
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
@@ -82,7 +85,7 @@ public class GenreService {
             "genreUnsubscription",
             GenreSubscriptionServiceMessage.from(
                 userFcmToken,
-                unsubscribedGenreIds
+                unsubscribedGenreMessage
             )
         );
 

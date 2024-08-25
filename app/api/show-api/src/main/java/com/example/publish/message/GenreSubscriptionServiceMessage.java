@@ -1,22 +1,21 @@
 package com.example.publish.message;
 
 import java.util.List;
-import java.util.UUID;
 import lombok.Builder;
 
 @Builder
 public record GenreSubscriptionServiceMessage(
     String userFcmToken,
-    List<UUID> genreIds
+    List<GenreServiceMessage> genres
 ) {
 
     public static GenreSubscriptionServiceMessage from(
         String userFcmToken,
-        List<UUID> genreIds
+        List<GenreServiceMessage> genres
     ) {
         return GenreSubscriptionServiceMessage.builder()
             .userFcmToken(userFcmToken)
-            .genreIds(genreIds)
+            .genres(genres)
             .build();
     }
 }
