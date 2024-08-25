@@ -115,7 +115,7 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
-        var response = artistService.searchArtist(request.toServiceRequest());
+        var response = artistService.searchArtist(request.toServiceRequest(user));
         var data = response.data().stream()
             .map(ArtistSearchPaginationApiParam::from)
             .toList();

@@ -26,7 +26,8 @@ public class ArtistSearchQuerydslRepositoryImpl implements ArtistSearchQuerydslR
     private final JPAQueryFactory jpaQueryFactory;
 
     public ArtistPaginationDomainResponse searchArtist(
-        ArtistSearchPaginationDomainRequest request) {
+        ArtistSearchPaginationDomainRequest request
+    ) {
         List<ArtistSimpleDomainResponse> result = jpaQueryFactory.select(
                 Projections.constructor(
                     ArtistSimpleDomainResponse.class,

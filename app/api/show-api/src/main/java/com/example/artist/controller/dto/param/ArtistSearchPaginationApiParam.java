@@ -7,12 +7,18 @@ import java.util.UUID;
 public record ArtistSearchPaginationApiParam(
     @Schema(description = "아티스트 ID")
     UUID id,
+
     @Schema(description = "아티스트 이미지 URL")
     String imageURL,
+
     @Schema(description = "아티스트 한글 이름")
     String koreanName,
+
     @Schema(description = "아티스트 영문 이름")
-    String englishName
+    String englishName,
+
+    @Schema(description = "아티스트 구독 여부")
+    boolean isSubscribe
 ) {
 
     public static ArtistSearchPaginationApiParam from(ArtistSearchPaginationServiceParam param) {
@@ -20,7 +26,8 @@ public record ArtistSearchPaginationApiParam(
             param.artistId(),
             param.artistImageUrl(),
             param.artistKoreanName(),
-            param.artistEnglishName()
+            param.artistEnglishName(),
+            param.isSubscribe()
         );
     }
 }

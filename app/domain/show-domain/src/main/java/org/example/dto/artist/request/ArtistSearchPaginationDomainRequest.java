@@ -7,6 +7,7 @@ import org.example.vo.ArtistSortType;
 @Builder
 public record ArtistSearchPaginationDomainRequest(
 
+    UUID userId,
     ArtistSortType sortStandard,
     UUID cursor,
     int size,
