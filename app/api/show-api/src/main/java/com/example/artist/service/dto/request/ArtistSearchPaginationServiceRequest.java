@@ -8,6 +8,7 @@ import org.example.util.StringNormalizer;
 
 @Builder
 public record ArtistSearchPaginationServiceRequest(
+    UUID userId,
     ArtistSortApiType sortStandard,
     UUID cursor,
     int size,
@@ -16,6 +17,7 @@ public record ArtistSearchPaginationServiceRequest(
 
     public ArtistSearchPaginationDomainRequest toDomainRequest() {
         return ArtistSearchPaginationDomainRequest.builder()
+            .userId(userId)
             .sortStandard(sortStandard.toDomainType())
             .cursor(cursor)
             .size(size)

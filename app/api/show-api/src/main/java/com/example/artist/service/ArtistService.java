@@ -22,6 +22,7 @@ import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
 import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.UserShowUseCase;
 import org.example.usecase.UserUseCase;
 import org.example.usecase.artist.ArtistUseCase;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class ArtistService {
 
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
+    private final UserShowUseCase userShowUseCase;
     private final UserUseCase userUseCase;
     private final MessagePublisher messagePublisher;
 
@@ -41,8 +43,18 @@ public class ArtistService {
     ) {
         var response = artistUseCase.searchArtist(request.toDomainRequest());
 
+        List<UUID> subscribedArtistIds = request.userId() == null
+            ? List.of()
+            : userShowUseCase.findArtistSubscriptionByUserId(request.userId()).stream()
+                .map(ArtistSubscription::getArtistId)
+                .toList();
+
         List<ArtistSearchPaginationServiceParam> data = response.data().stream()
-            .map(ArtistSearchPaginationServiceParam::new)
+            .map(artistResponse -> ArtistSearchPaginationServiceParam.from(
+                    artistResponse,
+                    subscribedArtistIds
+                )
+            )
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());
