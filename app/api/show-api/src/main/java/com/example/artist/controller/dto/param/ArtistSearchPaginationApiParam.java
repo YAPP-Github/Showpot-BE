@@ -18,7 +18,7 @@ public record ArtistSearchPaginationApiParam(
     String englishName,
 
     @Schema(description = "아티스트 구독 여부")
-    boolean isSubscribe
+    boolean isSubscribed
 ) {
 
     public static ArtistSearchPaginationApiParam from(ArtistSearchPaginationServiceParam param) {
@@ -27,7 +27,7 @@ public record ArtistSearchPaginationApiParam(
             param.artistImageUrl(),
             param.artistKoreanName(),
             param.artistEnglishName(),
-            param.isSubscribe()
+            param.isSubscribed()
         );
     }
 }
