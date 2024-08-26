@@ -74,10 +74,15 @@ public class GenreQuerydslRepositoryImpl implements GenreQuerydslRepository {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(getDefaultPredicateInCursorPagination(cursor));
 
-        if (status.equals(SubscriptionStatus.SUBSCRIBED)) {
-            return whereClause.and(genre.id.in(genreIds));
+        switch (status) {
+            case SUBSCRIBED -> whereClause.and(genre.id.in(genreIds));
+            case UNSUBSCRIBED -> whereClause.and(genre.id.notIn(genreIds));
+            default -> {
+                return whereClause;
+            }
         }
-        return whereClause.and(genre.id.notIn(genreIds));
+
+        return whereClause;
     }
 
     private Predicate getDefaultPredicateInCursorPagination(UUID cursor) {

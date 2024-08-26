@@ -1,7 +1,9 @@
 package com.example.genre.controller;
 
+import com.example.genre.controller.dto.param.GenrePaginationApiParam;
 import com.example.genre.controller.dto.param.GenreSubscriptionPaginationApiParam;
 import com.example.genre.controller.dto.param.GenreUnsubscriptionPaginationApiParam;
+import com.example.genre.controller.dto.request.GenrePaginationApiRequest;
 import com.example.genre.controller.dto.request.GenreSubscriptionApiRequest;
 import com.example.genre.controller.dto.request.GenreSubscriptionPaginationApiRequest;
 import com.example.genre.controller.dto.request.GenreUnsubscriptionApiRequest;
@@ -32,13 +34,33 @@ public class GenreController {
 
     private final GenreService genreService;
 
+    @GetMapping
+    @Operation(summary = "장르 전체 목록 조회")
+    public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @ParameterObject GenrePaginationApiRequest request
+    ) {
+        var response = genreService.findGenres(request.toServiceRequest(user));
+        var data = response.data().stream()
+            .map(GenrePaginationApiParam::new)
+            .toList();
+
+        return ResponseEntity.ok(
+            PaginationApiResponse.<GenrePaginationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .build()
+        );
+    }
+
     @GetMapping("/unsubscriptions")
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject GenreUnsubscriptionPaginationApiRequest request
     ) {
-        var response = genreService.findGenreUnSubscriptions(request.toServiceRequest(user.userId()));
+        var response = genreService.findGenreUnSubscriptions(
+            request.toServiceRequest(user.userId()));
         var data = response.data().stream()
             .map(GenreUnsubscriptionPaginationApiParam::new)
             .toList();
