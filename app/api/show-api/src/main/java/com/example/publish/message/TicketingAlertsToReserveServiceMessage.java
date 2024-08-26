@@ -1,6 +1,5 @@
 package com.example.publish.message;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -11,8 +10,8 @@ public record TicketingAlertsToReserveServiceMessage(
     String userFcmToken,
     String name,
     UUID showId,
-    List<LocalDateTime> addAts,
-    List<LocalDateTime> deleteAts
+    List<TicketingTimeServiceMessage> addAts,
+    List<TicketingTimeServiceMessage> deleteAts
 ) {
 
     public static TicketingAlertsToReserveServiceMessage from(
@@ -22,8 +21,9 @@ public record TicketingAlertsToReserveServiceMessage(
             .userFcmToken(responses.userFcmToken())
             .name(responses.name())
             .showId(responses.showId())
-            .addAts(responses.addAts())
-            .deleteAts(responses.deleteAts())
+            .addAts(responses.addAts().stream().map(TicketingTimeServiceMessage::from).toList())
+            .deleteAts(
+                responses.deleteAts().stream().map(TicketingTimeServiceMessage::from).toList())
             .build();
     }
 }
