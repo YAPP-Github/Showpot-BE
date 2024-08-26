@@ -1,6 +1,5 @@
 package com.example.publish.message;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -12,7 +11,7 @@ public record TicketingAlertsToReserveServiceMessage(
     String name,
     UUID showId,
     List<TicketingTimeServiceMessage> addAts,
-    List<LocalDateTime> deleteAts
+    List<TicketingTimeServiceMessage> deleteAts
 ) {
 
     public static TicketingAlertsToReserveServiceMessage from(
@@ -23,7 +22,8 @@ public record TicketingAlertsToReserveServiceMessage(
             .name(responses.name())
             .showId(responses.showId())
             .addAts(responses.addAts().stream().map(TicketingTimeServiceMessage::from).toList())
-            .deleteAts(responses.deleteAts())
+            .deleteAts(
+                responses.deleteAts().stream().map(TicketingTimeServiceMessage::from).toList())
             .build();
     }
 }

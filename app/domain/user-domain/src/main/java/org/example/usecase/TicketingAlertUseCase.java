@@ -65,7 +65,7 @@ public class TicketingAlertUseCase {
             .name(ticketingAlertReservation.name())
             .showId(ticketingAlertReservation.showId())
             .addAts(addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes))
-            .deleteAts(deleteAlerts(existingAlerts, requestedAlertTimes))
+            .deleteAts(deleteAlerts(ticketingAlertReservation, existingAlerts, requestedAlertTimes))
             .build();
     }
 
@@ -94,7 +94,8 @@ public class TicketingAlertUseCase {
             .toList();
     }
 
-    private List<LocalDateTime> deleteAlerts(
+    private List<TicketingTimeDomainResponse> deleteAlerts(
+        TicketingAlertReservationDomainRequest ticketingAlertReservation,
         List<TicketingAlert> existingAlerts,
         List<LocalDateTime> requestedAlertTimes
     ) {
@@ -103,7 +104,12 @@ public class TicketingAlertUseCase {
             .toList();
         alertsToRemove.forEach(BaseEntity::softDelete);
 
-        return alertsToRemove.stream().map(TicketingAlert::getAlertTime).toList();
+        return alertsToRemove.stream()
+            .map(alert -> TicketingTimeDomainResponse.from(
+                ticketingAlertReservation.ticketingAt(),
+                alert.getAlertTime()
+            ))
+            .toList();
     }
 
     private LocalDateTime calculateAlertTime(LocalDateTime showTime, TicketingAlertTime alertTime) {

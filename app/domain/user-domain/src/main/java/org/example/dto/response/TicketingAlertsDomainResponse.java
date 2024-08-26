@@ -1,6 +1,5 @@
 package org.example.dto.response;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -12,7 +11,7 @@ public record TicketingAlertsDomainResponse(
     String name,
     UUID showId,
     List<TicketingTimeDomainResponse> addAts,
-    List<LocalDateTime> deleteAts
+    List<TicketingTimeDomainResponse> deleteAts
 ) {
 
 }
