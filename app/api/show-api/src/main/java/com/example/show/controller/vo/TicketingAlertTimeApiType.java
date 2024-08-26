@@ -24,6 +24,14 @@ public enum TicketingAlertTimeApiType {
         };
     }
 
+    public static TicketingAlertTimeApiType getTicketingAlertTime(TicketingAlertTime alertTime) {
+        return switch (alertTime) {
+            case BEFORE_24 -> TicketingAlertTimeApiType.BEFORE_24;
+            case BEFORE_6 -> TicketingAlertTimeApiType.BEFORE_6;
+            case BEFORE_1 -> TicketingAlertTimeApiType.BEFORE_1;
+        };
+    }
+
     public static List<TicketingAlertTime> availableReserveTimeToDomainType(
         LocalDateTime ticketingAt,
         List<TicketingAlertTimeApiType> alertTimes

@@ -11,7 +11,7 @@ public record TicketingAlertsToReserveServiceMessage(
     String userFcmToken,
     String name,
     UUID showId,
-    List<LocalDateTime> addAts,
+    List<TicketingTimeServiceMessage> addAts,
     List<LocalDateTime> deleteAts
 ) {
 
@@ -22,7 +22,7 @@ public record TicketingAlertsToReserveServiceMessage(
             .userFcmToken(responses.userFcmToken())
             .name(responses.name())
             .showId(responses.showId())
-            .addAts(responses.addAts())
+            .addAts(responses.addAts().stream().map(TicketingTimeServiceMessage::from).toList())
             .deleteAts(responses.deleteAts())
             .build();
     }

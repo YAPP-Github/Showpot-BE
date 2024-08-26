@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.TicketingAlertReservationDomainRequest;
 import org.example.dto.response.TicketingAlertsDomainResponse;
+import org.example.dto.response.TicketingTimeDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.TicketingAlert;
 import org.example.repository.ticketing.TicketingAlertRepository;
@@ -68,7 +69,7 @@ public class TicketingAlertUseCase {
             .build();
     }
 
-    private List<LocalDateTime> addAlerts(
+    private List<TicketingTimeDomainResponse> addAlerts(
         TicketingAlertReservationDomainRequest ticketingAlertReservation,
         List<LocalDateTime> requestedAlertTimes,
         List<LocalDateTime> existingAlertTimes
@@ -85,7 +86,12 @@ public class TicketingAlertUseCase {
             .toList();
         ticketingAlertRepository.saveAll(alertsToAdd);
 
-        return alertsToAdd.stream().map(TicketingAlert::getAlertTime).toList();
+        return alertsToAdd.stream()
+            .map(alert -> TicketingTimeDomainResponse.from(
+                ticketingAlertReservation.ticketingAt(),
+                alert.getAlertTime()
+            ))
+            .toList();
     }
 
     private List<LocalDateTime> deleteAlerts(

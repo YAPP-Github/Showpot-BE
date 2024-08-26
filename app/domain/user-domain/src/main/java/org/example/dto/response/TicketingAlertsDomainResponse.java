@@ -11,7 +11,7 @@ public record TicketingAlertsDomainResponse(
     String userFcmToken,
     String name,
     UUID showId,
-    List<LocalDateTime> addAts,
+    List<TicketingTimeDomainResponse> addAts,
     List<LocalDateTime> deleteAts
 ) {
 
