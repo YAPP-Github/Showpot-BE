@@ -1,7 +1,9 @@
 package com.example.genre.service;
 
+import com.example.genre.service.dto.param.GenrePaginationServiceParam;
 import com.example.genre.service.dto.param.GenreSubscriptionPaginationServiceParam;
 import com.example.genre.service.dto.param.GenreUnsubscriptionPaginationServiceParam;
+import com.example.genre.service.dto.request.GenrePaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreSubscriptionPaginationServiceRequest;
 import com.example.genre.service.dto.request.GenreSubscriptionServiceRequest;
 import com.example.genre.service.dto.request.GenreUnsubscriptionPaginationServiceRequest;
@@ -96,6 +98,21 @@ public class GenreService {
                     .toList()
             )
             .build();
+    }
+
+    public PaginationServiceResponse<GenrePaginationServiceParam> findGenres(GenrePaginationServiceRequest request) {
+        List<UUID> subscriptionGenreIds = request.userId() == null
+            ? List.of()
+            : getSubscriptionGenreIds(request.userId());
+
+        GenrePaginationDomainResponse response = genreUseCase.findGenreWithCursorPagination(
+            request.toDomainRequest());
+
+        List<GenrePaginationServiceParam> data = response.data().stream()
+            .map(genre -> GenrePaginationServiceParam.of(genre, subscriptionGenreIds))
+            .toList();
+
+        return PaginationServiceResponse.of(data, response.hasNext());
     }
 
     public PaginationServiceResponse<GenreSubscriptionPaginationServiceParam> findGenreSubscriptions(
