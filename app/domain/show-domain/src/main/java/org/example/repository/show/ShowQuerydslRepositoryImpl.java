@@ -113,6 +113,7 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                     ShowTicketingDomainResponse.class,
                     show.id,
                     show.title,
+                    show.endDate,
                     showTicketingTime.ticketingAt,
                     show.location,
                     show.image

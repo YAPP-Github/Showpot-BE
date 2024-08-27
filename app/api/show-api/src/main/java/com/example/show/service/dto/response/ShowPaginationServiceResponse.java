@@ -1,5 +1,6 @@
 package com.example.show.service.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
@@ -21,6 +22,10 @@ public record ShowPaginationServiceResponse(
         LocalDateTime now = LocalDateTime.now();
 
         if (onlyOpenSchedule && response.ticketingAt().isBefore(now)) {
+            return null;
+        }
+
+        if (!onlyOpenSchedule && response.endDate().isBefore(LocalDate.now())) {
             return null;
         }
 
