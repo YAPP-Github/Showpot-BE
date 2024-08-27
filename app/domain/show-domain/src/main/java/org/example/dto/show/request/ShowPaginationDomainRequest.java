@@ -10,7 +10,6 @@ public record ShowPaginationDomainRequest(
     ShowSortType sort,
     boolean onlyOpenSchedule,
     UUID cursorId,
-    Object cursorValue,
     int size,
     LocalDateTime now
 ) {

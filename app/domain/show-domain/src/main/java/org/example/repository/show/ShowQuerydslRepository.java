@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowInfoDomainResponse;
-import org.example.dto.show.response.ShowPaginationDomainResponse;
+import org.example.dto.show.response.ShowTicketingPaginationDomainResponse;
 import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 
 public interface ShowQuerydslRepository {
@@ -16,7 +16,7 @@ public interface ShowQuerydslRepository {
 
     List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes();
 
-    ShowPaginationDomainResponse findShows(ShowPaginationDomainRequest request);
+    ShowTicketingPaginationDomainResponse findShows(ShowPaginationDomainRequest request);
 
     Optional<ShowInfoDomainResponse> findShowInfoById(UUID id);
 
