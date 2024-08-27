@@ -12,7 +12,7 @@ public record ShowPaginationServiceResponse(
     LocalDateTime ticketingAt,
     String location,
     String image,
-    boolean onlyOpenSchedule
+    boolean isOpen
 ) {
     public static ShowPaginationServiceResponse of(
         ShowTicketingDomainResponse response,
@@ -30,7 +30,7 @@ public record ShowPaginationServiceResponse(
             .ticketingAt(response.ticketingAt())
             .location(response.location())
             .image(response.image())
-            .onlyOpenSchedule(response.ticketingAt().isAfter(now))
+            .isOpen(response.ticketingAt().isBefore(now))
             .build();
     }
 }

@@ -24,8 +24,8 @@ public record ShowPaginationApiParam(
     @Schema(description = "가장 근접한 예매 시간")
     String ticketingAt,
 
-    @Schema(description = "오픈예정 여부")
-    boolean onlyOpenSchedule
+    @Schema(description = "오픈 여부")
+    boolean isOpen
 ) {
 
     public static ShowPaginationApiParam from(ShowPaginationServiceResponse response) {
@@ -35,7 +35,7 @@ public record ShowPaginationApiParam(
             .location(response.location())
             .posterImageURL(response.image())
             .ticketingAt(DateTimeUtil.formatDateTime(response.ticketingAt()))
-            .onlyOpenSchedule(response.onlyOpenSchedule())
+            .isOpen(response.isOpen())
             .build();
     }
 }
