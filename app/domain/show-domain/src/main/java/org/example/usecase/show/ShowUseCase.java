@@ -10,8 +10,8 @@ import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.request.ShowSearchPaginationDomainRequest;
 import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
-import org.example.dto.show.response.ShowPaginationDomainResponse;
 import org.example.dto.show.response.ShowSearchPaginationDomainResponse;
+import org.example.dto.show.response.ShowTicketingPaginationDomainResponse;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.repository.show.ShowRepository;
@@ -33,7 +33,7 @@ public class ShowUseCase {
         return showRepository.findShowDetailById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public ShowPaginationDomainResponse findShows(ShowPaginationDomainRequest request) {
+    public ShowTicketingPaginationDomainResponse findShows(ShowPaginationDomainRequest request) {
         return showRepository.findShows(request);
     }
 

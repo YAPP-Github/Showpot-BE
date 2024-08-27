@@ -2,9 +2,9 @@ package com.example.show.controller.dto.response;
 
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
+import org.example.util.DateTimeUtil;
 
 @Builder
 public record ShowPaginationApiParam(
@@ -22,22 +22,10 @@ public record ShowPaginationApiParam(
     String posterImageURL,
 
     @Schema(description = "가장 근접한 예매 시간")
-    String reservationAt,
+    String ticketingAt,
 
-    @Schema(description = "오픈 예정인 티켓팅 일정이 있는지 여부")
-    boolean hasTicketingOpenSchedule,
-
-    @Schema(description = "조회수")
-    int viewCount,
-
-    @Schema(description = "아티스트 정보")
-    List<ShowArtistPaginationApiParam> artists,
-
-    @Schema(description = "장르 정보")
-    List<ShowGenrePaginationApiParam> genres,
-
-    @Schema(description = "예약 시간 정보")
-    List<ShowTicketingTimePaginationApiParam> showTicketingTimes
+    @Schema(description = "오픈 여부")
+    boolean isOpen
 ) {
 
     public static ShowPaginationApiParam from(ShowPaginationServiceResponse response) {
@@ -45,25 +33,9 @@ public record ShowPaginationApiParam(
             .id(response.id())
             .title(response.title())
             .location(response.location())
-            .posterImageURL(response.posterImageURL())
-            .reservationAt(response.reservationAt())
-            .hasTicketingOpenSchedule(response.hasTicketingOpenSchedule())
-            .viewCount(response.viewCount())
-            .artists(
-                response.artists().stream()
-                    .map(ShowArtistPaginationApiParam::from)
-                    .toList()
-            )
-            .genres(
-                response.genres().stream()
-                    .map(ShowGenrePaginationApiParam::from)
-                    .toList()
-            )
-            .showTicketingTimes(
-                response.showTicketingTimes().stream()
-                    .map(ShowTicketingTimePaginationApiParam::from)
-                    .toList()
-            )
+            .posterImageURL(response.image())
+            .ticketingAt(DateTimeUtil.formatDateTime(response.ticketingAt()))
+            .isOpen(response.isOpen())
             .build();
     }
 }

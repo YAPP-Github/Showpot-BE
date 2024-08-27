@@ -21,7 +21,6 @@ import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -53,10 +52,8 @@ public class ShowController {
     public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
         @ParameterObject ShowPaginationApiRequest request
     ) {
-        LocalDateTime now = LocalDateTime.now();
-
         PaginationServiceResponse<ShowPaginationServiceResponse> response = showService.findShows(
-            request.toServiceRequest(now)
+            request.toServiceRequest()
         );
 
         var data = response.data().stream()
