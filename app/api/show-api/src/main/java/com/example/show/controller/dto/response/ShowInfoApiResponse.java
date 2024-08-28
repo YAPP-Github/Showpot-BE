@@ -30,7 +30,7 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.title(),
             showInfoServiceResponse.content(),
             showInfoServiceResponse.startDate(),
-            showInfoServiceResponse.startDate(),
+            showInfoServiceResponse.endDate(),
             showInfoServiceResponse.location(),
             showInfoServiceResponse.image(),
             showInfoServiceResponse.viewCount(),
