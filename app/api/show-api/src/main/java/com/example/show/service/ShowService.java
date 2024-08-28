@@ -23,7 +23,6 @@ import com.example.show.service.dto.response.TicketingAlertReservationStatusServ
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -75,13 +74,13 @@ public class ShowService {
     public PaginationServiceResponse<ShowPaginationServiceResponse> findShows(
         ShowPaginationServiceRequest request
     ) {
-        var response = showUseCase.findShows(request.toDomainRequest());
+        LocalDateTime now = LocalDateTime.now();
+        var response = showUseCase.findShows(request.toDomainRequest(now));
 
         var data = response.data().stream()
             .map(domainResponse ->
-                ShowPaginationServiceResponse.of(domainResponse, request.onlyOpenSchedule())
+                ShowPaginationServiceResponse.of(domainResponse, now)
             )
-            .filter(Objects::nonNull)
             .toList();
 
         return PaginationServiceResponse.of(

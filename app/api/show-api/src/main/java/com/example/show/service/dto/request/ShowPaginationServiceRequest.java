@@ -1,6 +1,7 @@
 package com.example.show.service.dto.request;
 
 import com.example.show.controller.vo.ShowSortApiType;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
@@ -13,12 +14,13 @@ public record ShowPaginationServiceRequest(
     int size
 ) {
 
-    public ShowPaginationDomainRequest toDomainRequest() {
+    public ShowPaginationDomainRequest toDomainRequest(LocalDateTime now) {
         return ShowPaginationDomainRequest.builder()
             .sort(sort.toDomainType())
             .onlyOpenSchedule(onlyOpenSchedule)
             .cursorId(cursorId)
             .size(size)
+            .now(now)
             .build();
     }
 }
