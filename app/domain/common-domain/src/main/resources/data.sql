@@ -29,8 +29,7 @@ VALUES ('017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1', '2024-08-04 00:00:00', '2024-08-
 
 -- 아티스트 데이터
 insert into public.artist (id, created_at, updated_at, is_deleted, korean_name, english_name, gender, type, country, image)
-values  ('587d14a8-dc16-47b1-8788-b1860076cbdb', '2024-08-04 00:00:00.000', '2024-08-04 00:00:00.000', false, '노엘갤러거', 'Noel Gallagher', 'MAN', 'SOLO', 'UK', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/images_1724739402299.jpeg'),
-        ('2ab7eba4-98f9-4936-ac1b-716bc2f04a1c', '2024-08-04 00:00:00.000', '2024-08-27 23:25:28.383', false, '스파이에어', 'Spyair', 'MAN', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/Spyair_1724768728012.jpg'),
+values  ('2ab7eba4-98f9-4936-ac1b-716bc2f04a1c', '2024-08-04 00:00:00.000', '2024-08-27 23:25:28.383', false, '스파이에어', 'Spyair', 'MAN', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/Spyair_1724768728012.jpg'),
         ('d3fc15e6-172f-4448-928b-7fdd7a6a9ab6', '2024-08-04 00:00:00.000', '2024-08-27 23:26:32.865', false, '킹누', 'King Gnu', 'MAN', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/kingnu_1724768792711.webp'),
         ('f56b52c1-72c2-450c-ad59-e88db1530dcb', '2024-08-04 00:00:00.000', '2024-08-27 23:27:01.420', false, '브루노 마스', 'Bruno Mars', 'MAN', 'SOLO', 'USA', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/bruno_1724768820768.webp'),
         ('a94dc17e-4b77-4959-bb1d-a3bd9735cf01', '2024-08-04 00:00:00.000', '2024-08-27 23:27:26.441', false, '찰리 푸스', 'Charlie Puth', 'WOMAN', 'SOLO', 'USA', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/chalie_1724768846279.jpg'),
@@ -114,7 +113,8 @@ values  ('587d14a8-dc16-47b1-8788-b1860076cbdb', '2024-08-04 00:00:00.000', '202
         ('977452b5-db8e-48b9-abe6-d06b44a1b4ad', '2024-08-04 00:00:00.000', '2024-08-27 23:24:53.214', false, '이브', 'Eve', 'WOMAN', 'SOLO', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/eve_1724768692720.jpg'),
         ('dac4fda7-1746-4eb3-8b87-cab78ae86c75', '2024-08-04 00:00:00.000', '2024-08-27 23:26:04.511', false, '엘르가든', 'Ellegarden', 'MAN', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/elle_1724768764249.jpg'),
         ('17790b8d-4e2c-4ec5-a524-d00d80a9868e', '2024-08-04 00:00:00.000', '2024-08-27 23:47:48.276', false, '라나 델 레이', 'Lana Del Rey', 'WOMAN', 'SOLO', 'USA', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/lana_1724770067708.webp'),
-        ('87228380-e581-46d9-b524-869360451d02', '2024-08-04 00:00:00.000', '2024-08-28 00:05:35.377', false, '녹황색사회', 'Ryokuoushoku Shakai', 'MIXED', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/Ryokuoushoku%20Shakai_1724771135189.jpg');
+        ('87228380-e581-46d9-b524-869360451d02', '2024-08-04 00:00:00.000', '2024-08-28 00:05:35.377', false, '녹황색사회', 'Ryokuoushoku Shakai', 'MIXED', 'GROUP', 'Japan', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artist/Ryokuoushoku%20Shakai_1724771135189.jpg'),
+        ('01919929-4987-34c0-0f5d-57dc5479f08a', '2024-08-28 22:25:05.576', '2024-08-28 22:25:05.576', false, '올리비아 로드리고', 'Olivia Rodrigo', 'WOMAN', 'SOLO', 'USA', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/artists/olivia_1724851504951.jpg');
 
 -- Coldplay
 INSERT INTO public.artist_genre (id, created_at, updated_at, is_deleted, artist_id, genre_id)
@@ -438,11 +438,6 @@ INSERT INTO public.artist_genre (id, created_at, updated_at, is_deleted, artist_
 VALUES (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
         '01681324-678a-4e9a-a80b-e93d038bf75f', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876dd');
 
--- Noel Gallagher
-INSERT INTO public.artist_genre (id, created_at, updated_at, is_deleted, artist_id, genre_id)
-VALUES (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
-        '587d14a8-dc16-47b1-8788-b1860076cbdb', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1');
-
 -- Lana Del Rey
 INSERT INTO public.artist_genre (id, created_at, updated_at, is_deleted, artist_id, genre_id)
 VALUES (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
@@ -698,6 +693,13 @@ VALUES (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
        (gen_random_uuid(), '2024-08-04 00:00:00', '2024-08-04 00:00:00', false,
         '129fb608-eeb9-42ec-87f6-e1515bdf2696', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d4');
 
+-- Olivia Lodorigo
+INSERT INTO public.artist_genre (id, created_at, updated_at, is_deleted, artist_id, genre_id)
+VALUES (gen_random_uuid(), '2024-08-28 22:25:05.605', '2024-08-28 22:25:05.605', false,
+        '01919929-4987-34c0-0f5d-57dc5479f08a', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1'),
+        (gen_random_uuid(), '2024-08-28 22:25:05.608', '2024-08-28 22:25:05.608', false,
+         '01919929-4987-34c0-0f5d-57dc5479f08a', '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d5');
+
 -- artist search
 INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
 VALUES (gen_random_uuid(), now(), now(), false, 'b9f79017-f97d-44b1-82ce-645e92856c0b', '콜드플레이');
@@ -904,11 +906,6 @@ INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, nam
 VALUES (gen_random_uuid(), now(), now(), false, '01681324-678a-4e9a-a80b-e93d038bf75f',
         'jacobcollier');
 INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
-VALUES (gen_random_uuid(), now(), now(), false, '587d14a8-dc16-47b1-8788-b1860076cbdb', '노엘갤러거');
-INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
-VALUES (gen_random_uuid(), now(), now(), false, '587d14a8-dc16-47b1-8788-b1860076cbdb',
-        'noelgallagher');
-INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
 VALUES (gen_random_uuid(), now(), now(), false, '17790b8d-4e2c-4ec5-a524-d00d80a9868e', '라나델레이');
 INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
 VALUES (gen_random_uuid(), now(), now(), false, '17790b8d-4e2c-4ec5-a524-d00d80a9868e',
@@ -1100,13 +1097,13 @@ INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, nam
 VALUES (gen_random_uuid(), now(), now(), false, '129fb608-eeb9-42ec-87f6-e1515bdf2696',
         'sakanaction');
 
+INSERT INTO artist_search(id, created_at, updated_at, is_deleted, artist_id, name)
+VALUES (gen_random_uuid(), '2024-08-28 22:25:05.601', '2024-08-28 22:25:05.601', false, '01919929-4987-34c0-0f5d-57dc5479f08a', '올리비아로드리고'),
+        (gen_random_uuid(), '2024-08-28 22:25:05.603', '2024-08-28 22:25:05.603', false, '01919929-4987-34c0-0f5d-57dc5479f08a', 'oliviarodrigo');
 
 -- SHOW
 insert into public.show (id, created_at, updated_at, is_deleted, start_date, end_date, title, content, location, image, last_ticketing_at, view_count, seat_prices, ticketing_sites)
-values  ('0191948f-0ba0-2a3b-9b19-bd42694ecf58', '2024-08-28 00:58:08.315', '2024-08-28 00:58:08.315', false, '2024-09-06', '2024-09-07', 'Me Again Tour in Seoul', '.', '명화 라이브홀', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%2012.49.39_1724774287274.png', '2024-05-08 00:53:00.000', 0, '{"스탠딩석": 110000, "지정석 P석": 121000, "지정석 R석": 99000}', '{"인터파크": "https://tickets.interpark.com/goods/24006288"}'),
-        ('019194a4-e4ba-f2d1-79d6-23088c9c3112', '2024-08-28 01:22:00.130', '2024-08-28 01:22:00.130', false, '2024-12-04', '2024-12-05', 'Radical Optimism Tour 2024', '.', '고척 스카이돔', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%201.19.10_1724775719213.png', '2024-06-20 00:00:00.000', 0, '{"스탠딩 P석": 154000, "스탠딩 R석": 143000, "지정석 A석": 132000, "지정석 B석": 121000, "지정석 P석": 176000, "지정석 R석": 165000, "지정석 S석": 143000}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
-        ('019194a9-c1b5-407a-fae8-324bc240db6d', '2024-08-28 01:27:18.840', '2024-08-28 01:27:18.840', false, '2024-10-01', '2024-10-02', '콜드플레이 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776038630.png', '2024-08-28 01:26:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
-        ('019194aa-d2fd-e29f-96c7-df9101dfd1b6', '2024-08-28 01:28:28.799', '2024-08-28 01:29:21.902', false, '2024-10-01', '2024-10-01', '포스트말론 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776161657.png', '2024-08-31 01:29:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
+values  ('019194aa-d2fd-e29f-96c7-df9101dfd1b6', '2024-08-28 01:28:28.799', '2024-08-28 01:29:21.902', false, '2024-10-01', '2024-10-01', '포스트말론 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776161657.png', '2024-08-31 01:29:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
         ('019194ac-757e-265a-a639-0f20626ad748', '2024-08-28 01:30:15.935', '2024-08-28 01:30:15.935', false, '2024-10-01', '2024-10-02', '이브 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776215766.png', '2024-08-31 01:30:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24006288"}'),
         ('019194ad-1663-4319-c525-12ece13f18ad', '2024-08-28 01:30:57.127', '2024-08-28 01:30:57.127', false, '2024-10-01', '2024-10-02', '스파이에어 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776256928.png', '2024-08-31 01:30:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
         ('019194ad-db9c-09fc-e0a6-ed4ec8888fb8', '2024-08-28 01:31:47.613', '2024-08-28 01:31:47.613', false, '2024-10-01', '2024-10-02', '엘르가든 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776307364.png', '2024-08-31 01:31:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
@@ -1123,7 +1120,12 @@ values  ('0191948f-0ba0-2a3b-9b19-bd42694ecf58', '2024-08-28 00:58:08.315', '202
         ('019194b7-b2a8-33d0-6f93-dcdcfbd7fdea', '2024-08-28 01:42:32.490', '2024-08-28 01:42:32.490', false, '2024-10-01', '2024-10-02', 'AJR 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776952348.png', '2024-08-31 01:42:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24006288"}'),
         ('019194b8-79f5-e976-7be4-1a07018ad0ee', '2024-08-28 01:43:23.511', '2024-08-28 01:43:23.511', false, '2024-10-01', '2024-10-02', '크리스토퍼 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724777003280.png', '2024-08-31 01:43:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
         ('019194b9-a3c3-5cd7-b35d-2c133907812d', '2024-08-28 01:44:39.747', '2024-08-28 01:44:39.747', false, '2024-10-01', '2024-10-02', '스트록스 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724777079518.png', '2024-08-31 01:44:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24006288"}'),
-        ('019194ba-562b-a6bc-b7e9-42d21e566111', '2024-08-28 01:45:25.429', '2024-08-28 01:45:25.429', false, '2024-10-01', '2024-10-02', '벤슨 분 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724777125258.png', '2024-08-31 01:45:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}');
+        ('019194ba-562b-a6bc-b7e9-42d21e566111', '2024-08-28 01:45:25.429', '2024-08-28 01:45:25.429', false, '2024-10-01', '2024-10-02', '벤슨 분 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724777125258.png', '2024-08-31 01:45:00.000', 0, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
+        ('01919901-105d-b5b2-cbaf-912f20281ce8', '2024-08-28 12:41:09.485', '2024-08-28 12:41:09.485', false, '2024-12-01', '2024-12-01', '2024 오피셜히게단디즘 내한공연', '.', '일산 킨텍스 제1전시장 5홀', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%209.37.40_1724848869198.png', '2024-08-28 21:40:00.000', 0, '{"스탠딩 R석": 132000, "스탠딩 S석": 121000}', '{"인퍼타크": "https://tickets.interpark.com/goods/24011642"}'),
+        ('019194a9-c1b5-407a-fae8-324bc240db6d', '2024-08-28 01:27:18.840', '2024-08-28 12:44:13.913', false, '2024-10-01', '2024-10-02', '콜드플레이 공연', '.', '서울 잠실', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/image_1724776038630.png', '2024-08-28 01:26:00.000', 1, '{"1": 1}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}'),
+        ('0191948f-0ba0-2a3b-9b19-bd42694ecf58', '2024-08-28 00:58:08.315', '2024-08-28 12:55:32.664', false, '2024-09-06', '2024-09-07', '코난 그레이 내한공연', '.', '명화 라이브홀', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%209.50.56_1724849732460.png', '2024-05-08 00:00:00.000', 0, '{"스탠딩석": 110000, "지정석 P석": 121000, "지정석 R석": 99000}', '{"인터파크": "https://tickets.interpark.com/goods/24006288"}'),
+        ('01919906-7fb9-6552-3819-91a5295bb3e6', '2024-08-28 12:47:05.658', '2024-08-28 12:47:05.658', false, '2024-09-20', '2024-09-21', '올리비아 로드리고 첫 내한공연', '.', '잠실 실내체육관', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%209.44.08_1724849225398.png', '2024-05-17 00:00:00.000', 0, '{"스탠딩 P석": 154000, "지정석 A석": 99000, "지정석 P석": 165000, "지정석 R석": 132000, "지정석 S석": 121000, "스탠딩 PIT 패키지": 262000}', '{"인터파크": "https://tickets.interpark.com/goods/24006714"}'),
+        ('019194a4-e4ba-f2d1-79d6-23088c9c3112', '2024-08-28 01:22:00.130', '2024-08-28 13:04:47.960', false, '2024-12-04', '2024-12-05', '두아리파 내한공연', '.', '고척 스카이돔', 'https://showpot-s3.s3.ap-northeast-2.amazonaws.com/show/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-08-28%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.01.45_1724850287739.png', '2024-06-20 00:00:00.000', 0, '{"스탠딩 P석": 154000, "스탠딩 R석": 143000, "지정석 A석": 132000, "지정석 B석": 121000, "지정석 P석": 176000, "지정석 R석": 165000, "지정석 S석": 143000}', '{"인터파크": "https://tickets.interpark.com/goods/24007623"}');
 
 -- Show Artist
 insert into public.show_artist (id, created_at, updated_at, is_deleted, artist_id, show_id)
@@ -1147,7 +1149,9 @@ values  ('0191948f-0bde-cedc-3946-63dc1a821b7f', '2024-08-28 00:58:08.352', '202
         ('019194b7-b2ae-f88d-90f1-91d8c70f88e7', '2024-08-28 01:42:32.494', '2024-08-28 01:42:32.494', false, 'e7bf557b-8591-418f-8422-d1f08c26df2f', '019194b7-b2a8-33d0-6f93-dcdcfbd7fdea'),
         ('019194b8-79fa-f5df-11ba-d61dba7ac608', '2024-08-28 01:43:23.515', '2024-08-28 01:43:23.515', false, 'e7f28490-8e4c-426b-92fc-fbcb226ea7f7', '019194b8-79f5-e976-7be4-1a07018ad0ee'),
         ('019194b9-a3ca-5eee-9681-390d201e1311', '2024-08-28 01:44:39.755', '2024-08-28 01:44:39.755', false, 'b50a931a-d4f3-4c32-8636-253e4fff45ab', '019194b9-a3c3-5cd7-b35d-2c133907812d'),
-        ('019194ba-5637-56d6-12da-083ed4334888', '2024-08-28 01:45:25.433', '2024-08-28 01:45:25.433', false, '72cdcdb7-1fed-460d-a316-3988ffa1a6c8', '019194ba-562b-a6bc-b7e9-42d21e566111');
+        ('019194ba-5637-56d6-12da-083ed4334888', '2024-08-28 01:45:25.433', '2024-08-28 01:45:25.433', false, '72cdcdb7-1fed-460d-a316-3988ffa1a6c8', '019194ba-562b-a6bc-b7e9-42d21e566111'),
+        ('01919901-1098-08dd-28a7-d1262d860c5f', '2024-08-28 12:41:09.530', '2024-08-28 12:41:09.530', false, '56a4a4af-dc3f-4f9f-9316-6bcd20d99455', '01919901-105d-b5b2-cbaf-912f20281ce8'),
+        ('01919906-7fbb-681d-a67e-0180ad10e0e4', '2024-08-28 12:47:05.660', '2024-08-28 12:47:05.660', false, '01919929-4987-34c0-0f5d-57dc5479f08a', '01919906-7fb9-6552-3819-91a5295bb3e6');
 
 -- Show Genre
 insert into public.show_genre (id, created_at, updated_at, is_deleted, genre_id, show_id)
@@ -1191,13 +1195,16 @@ values  ('0191948f-0be2-dcb8-0356-46fa747d0316', '2024-08-28 00:58:08.355', '202
         ('019194b8-79fa-f5df-11ba-d61dba7ac609', '2024-08-28 01:43:23.515', '2024-08-28 01:43:23.515', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d5', '019194b8-79f5-e976-7be4-1a07018ad0ee'),
         ('019194b9-a3cb-d100-2b33-66a0e3d277db', '2024-08-28 01:44:39.755', '2024-08-28 01:44:39.755', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1', '019194b9-a3c3-5cd7-b35d-2c133907812d'),
         ('019194b9-a3cb-d100-2b33-66a0e3d277dc', '2024-08-28 01:44:39.756', '2024-08-28 01:44:39.756', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d3', '019194b9-a3c3-5cd7-b35d-2c133907812d'),
-        ('019194ba-5638-dbea-365d-5803a04890d0', '2024-08-28 01:45:25.433', '2024-08-28 01:45:25.433', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d5', '019194ba-562b-a6bc-b7e9-42d21e566111');
+        ('019194ba-5638-dbea-365d-5803a04890d0', '2024-08-28 01:45:25.433', '2024-08-28 01:45:25.433', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d5', '019194ba-562b-a6bc-b7e9-42d21e566111'),
+        ('01919901-10a6-2c7c-4591-7b8fe17c8fb6', '2024-08-28 12:41:09.544', '2024-08-28 12:41:09.544', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1', '01919901-105d-b5b2-cbaf-912f20281ce8'),
+        ('01919901-10a6-2c7c-4591-7b8fe17c8fb7', '2024-08-28 12:41:09.547', '2024-08-28 12:41:09.547', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d3', '01919901-105d-b5b2-cbaf-912f20281ce8'),
+        ('01919901-10a6-2c7c-4591-7b8fe17c8fb8', '2024-08-28 12:41:09.549', '2024-08-28 12:41:09.549', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d4', '01919901-105d-b5b2-cbaf-912f20281ce8'),
+        ('01919906-7fbc-f2f0-2a5c-92bef16c2425', '2024-08-28 12:47:05.661', '2024-08-28 12:47:05.661', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d1', '01919906-7fb9-6552-3819-91a5295bb3e6'),
+        ('01919906-7fbc-f2f0-2a5c-92bef16c2426', '2024-08-28 12:47:05.661', '2024-08-28 12:47:05.661', false, '017f20d0-4f3c-8f4d-9e15-7ff0c3a876d5', '01919906-7fb9-6552-3819-91a5295bb3e6');
 
 -- Show Search
 insert into public.show_search (id, created_at, updated_at, is_deleted, show_id, name)
-values  ('0191948f-0bd8-fa0c-106b-e847dcdc0f75', '2024-08-28 00:58:08.346', '2024-08-28 00:58:08.346', false, '0191948f-0ba0-2a3b-9b19-bd42694ecf58', 'meagaintourinseoul'),
-        ('019194a4-e4c6-ac2b-355a-d7459f2baae7', '2024-08-28 01:22:00.137', '2024-08-28 01:22:00.137', false, '019194a4-e4ba-f2d1-79d6-23088c9c3112', 'radicaloptimismtour2024'),
-        ('019194a9-c1c2-28f5-abb3-c029205ee7bf', '2024-08-28 01:27:18.851', '2024-08-28 01:27:18.851', false, '019194a9-c1b5-407a-fae8-324bc240db6d', '콜드플레이공연'),
+values  ('019194a9-c1c2-28f5-abb3-c029205ee7bf', '2024-08-28 01:27:18.851', '2024-08-28 01:27:18.851', false, '019194a9-c1b5-407a-fae8-324bc240db6d', '콜드플레이공연'),
         ('019194aa-d307-d47f-a08d-b91905345d16', '2024-08-28 01:28:28.808', '2024-08-28 01:28:28.808', false, '019194aa-d2fd-e29f-96c7-df9101dfd1b6', '포스트말론공연'),
         ('019194ac-7588-735b-be34-778cbf7b2f94', '2024-08-28 01:30:15.947', '2024-08-28 01:30:15.947', false, '019194ac-757e-265a-a639-0f20626ad748', '이브공연'),
         ('019194ad-166c-d001-737f-1f9fd051c74b', '2024-08-28 01:30:57.133', '2024-08-28 01:30:57.133', false, '019194ad-1663-4319-c525-12ece13f18ad', '스파이에어공연'),
@@ -1215,13 +1222,16 @@ values  ('0191948f-0bd8-fa0c-106b-e847dcdc0f75', '2024-08-28 00:58:08.346', '202
         ('019194b7-b2ad-c6a9-a7cd-7e3caf94a75a', '2024-08-28 01:42:32.493', '2024-08-28 01:42:32.493', false, '019194b7-b2a8-33d0-6f93-dcdcfbd7fdea', 'ajr공연'),
         ('019194b8-79f9-5aab-c656-3780a016047f', '2024-08-28 01:43:23.514', '2024-08-28 01:43:23.514', false, '019194b8-79f5-e976-7be4-1a07018ad0ee', '크리스토퍼공연'),
         ('019194b9-a3c8-95df-33c1-bcdf6184cf63', '2024-08-28 01:44:39.754', '2024-08-28 01:44:39.754', false, '019194b9-a3c3-5cd7-b35d-2c133907812d', '스트록스공연'),
-        ('019194ba-5636-cf7e-8f1a-15c74bd16a6b', '2024-08-28 01:45:25.431', '2024-08-28 01:45:25.431', false, '019194ba-562b-a6bc-b7e9-42d21e566111', '벤슨분공연');
+        ('019194ba-5636-cf7e-8f1a-15c74bd16a6b', '2024-08-28 01:45:25.431', '2024-08-28 01:45:25.431', false, '019194ba-562b-a6bc-b7e9-42d21e566111', '벤슨분공연'),
+        ('01919901-1092-dd7c-9687-1407ba5285cc', '2024-08-28 12:41:09.524', '2024-08-28 12:41:09.524', false, '01919901-105d-b5b2-cbaf-912f20281ce8', '2024오피셜히게단디즘내한공연'),
+        ('01919906-7fba-c50f-1e26-27caec7378c4', '2024-08-28 12:47:05.659', '2024-08-28 12:47:05.659', false, '01919906-7fb9-6552-3819-91a5295bb3e6', '올리비아로드리고첫내한공연'),
+        ('0191990b-dee6-3fe6-bd3d-2f7f7e6a761a', '2024-08-28 12:52:57.718', '2024-08-28 12:52:57.718', false, '0191948f-0ba0-2a3b-9b19-bd42694ecf58', '코난그레이내한공연'),
+        ('01919916-b556-af78-d936-850cc3a9898d', '2024-08-28 13:04:47.979', '2024-08-28 13:04:47.979', false, '019194a4-e4ba-f2d1-79d6-23088c9c3112', '두아리파내한공연');
+
 
 -- Show Ticketing Time
 insert into public.show_ticketing_time (id, created_at, is_deleted, updated_at, ticketing_at, show_id, type)
-values  ('0191948f-0be4-e58d-fc44-20b0dac99a95', '2024-08-28 00:58:08.357', false, '2024-08-28 00:58:08.357', '2024-05-08 00:53:00.000', '0191948f-0ba0-2a3b-9b19-bd42694ecf58', 'NORMAL'),
-        ('019194a4-e4cc-18b8-addf-572b39a219a2', '2024-08-28 01:22:00.141', false, '2024-08-28 01:22:00.141', '2024-06-20 00:00:00.000', '019194a4-e4ba-f2d1-79d6-23088c9c3112', 'NORMAL'),
-        ('019194a9-c1c8-05eb-4e47-69366c8cd4c4', '2024-08-28 01:27:18.857', false, '2024-08-28 01:27:18.857', '2024-08-28 01:26:00.000', '019194a9-c1b5-407a-fae8-324bc240db6d', 'NORMAL'),
+values  ('019194a9-c1c8-05eb-4e47-69366c8cd4c4', '2024-08-28 01:27:18.857', false, '2024-08-28 01:27:18.857', '2024-08-28 01:26:00.000', '019194a9-c1b5-407a-fae8-324bc240db6d', 'NORMAL'),
         ('019194ab-a292-cd17-86cc-3204f9df0fbd', '2024-08-28 01:29:21.939', false, '2024-08-28 01:29:21.939', '2024-08-31 01:29:00.000', '019194aa-d2fd-e29f-96c7-df9101dfd1b6', 'NORMAL'),
         ('019194aa-d315-0a40-dbfe-4506a23f8387', '2024-08-28 01:28:28.822', true, '2024-08-28 01:29:21.940', '2024-08-31 01:28:00.000', '019194aa-d2fd-e29f-96c7-df9101dfd1b6', 'NORMAL'),
         ('019194ac-758f-6a17-f775-88c9f6bf6877', '2024-08-28 01:30:15.952', false, '2024-08-28 01:30:15.952', '2024-08-31 01:30:00.000', '019194ac-757e-265a-a639-0f20626ad748', 'NORMAL'),
@@ -1240,4 +1250,8 @@ values  ('0191948f-0be4-e58d-fc44-20b0dac99a95', '2024-08-28 00:58:08.357', fals
         ('019194b7-b2af-1c1c-1d97-02fc80d5776d', '2024-08-28 01:42:32.495', false, '2024-08-28 01:42:32.495', '2024-08-31 01:42:00.000', '019194b7-b2a8-33d0-6f93-dcdcfbd7fdea', 'NORMAL'),
         ('019194b8-79fa-f5df-11ba-d61dba7ac60a', '2024-08-28 01:43:23.515', false, '2024-08-28 01:43:23.515', '2024-08-31 01:43:00.000', '019194b8-79f5-e976-7be4-1a07018ad0ee', 'NORMAL'),
         ('019194b9-a3cb-d100-2b33-66a0e3d277dd', '2024-08-28 01:44:39.756', false, '2024-08-28 01:44:39.756', '2024-08-31 01:44:00.000', '019194b9-a3c3-5cd7-b35d-2c133907812d', 'NORMAL'),
-        ('019194ba-5639-1c51-d80e-2c1bc5352cc0', '2024-08-28 01:45:25.434', false, '2024-08-28 01:45:25.434', '2024-08-31 01:45:00.000', '019194ba-562b-a6bc-b7e9-42d21e566111', 'NORMAL');
+        ('019194ba-5639-1c51-d80e-2c1bc5352cc0', '2024-08-28 01:45:25.434', false, '2024-08-28 01:45:25.434', '2024-08-31 01:45:00.000', '019194ba-562b-a6bc-b7e9-42d21e566111', 'NORMAL'),
+        ('01919901-10ae-8324-814b-92e4613b30ef', '2024-08-28 12:41:09.552', false, '2024-08-28 12:41:09.552', '2024-08-28 21:40:00.000', '01919901-105d-b5b2-cbaf-912f20281ce8', 'NORMAL'),
+        ('01919906-7fbd-b22b-822e-5f715f6ada3a', '2024-08-28 12:47:05.662', false, '2024-08-28 12:47:05.662', '2024-05-17 00:00:00.000', '01919906-7fb9-6552-3819-91a5295bb3e6', 'NORMAL'),
+        ('0191990e-3c54-47e1-f67b-0cb6257d13fc', '2024-08-28 12:55:32.693', false, '2024-08-28 12:55:32.693', '2024-05-08 00:00:00.000', '0191948f-0ba0-2a3b-9b19-bd42694ecf58', 'NORMAL'),
+        ('01919916-b579-20e8-3c67-305ccfdd8b16', '2024-08-28 13:04:47.994', false, '2024-08-28 13:04:47.994', '2024-06-20 00:00:00.000', '019194a4-e4ba-f2d1-79d6-23088c9c3112', 'NORMAL');
