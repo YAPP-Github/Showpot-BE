@@ -18,6 +18,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -151,6 +152,12 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
 
     private Predicate getShowAlertsInCursorPagination(ShowPaginationDomainRequest request) {
         BooleanExpression wherePredicate = getDefaultPredicateExpression();
+
+        if (request.onlyOpenSchedule()) {
+            return wherePredicate.and(showTicketingTime.ticketingAt.after(request.now()));
+        } else {
+            wherePredicate.and(show.endDate.after(LocalDate.now()));
+        }
 
         if (request.cursorId() == null) {
             return wherePredicate;
