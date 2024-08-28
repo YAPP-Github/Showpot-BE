@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -112,11 +113,14 @@ public class ShowController {
     @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
+        @AuthenticationPrincipal AuthenticatedUser user,
         @PathVariable("showId") UUID showId,
         @RequestHeader(value = "viewIdentifier") String viewIdentifier
     ) {
+        UUID userId = ValidatorUser.getUserId(user);
+
         return ResponseEntity.ok(
-            ShowDetailApiResponse.from(showService.getShow(showId, viewIdentifier))
+            ShowDetailApiResponse.from(showService.getShow(userId, showId, viewIdentifier))
         );
     }
 

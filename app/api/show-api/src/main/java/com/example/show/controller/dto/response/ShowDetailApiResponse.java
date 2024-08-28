@@ -28,6 +28,9 @@ public record ShowDetailApiResponse(
     @Schema(description = "공연 포스터 주소")
     String posterImageURL,
 
+    @Schema(description = "공연 포스터 주소")
+    boolean isInterested,
+
     @Schema(description = "아티스트 정보")
     List<ShowArtistApiResponse> artists,
 
@@ -52,6 +55,7 @@ public record ShowDetailApiResponse(
             .endDate(DateTimeUtil.formatDate(show.endDate()))
             .location(show.location())
             .posterImageURL(show.posterImageURL())
+            .isInterested(show.isInterested())
             .artists(
                 show.artists().stream()
                     .map(ShowArtistApiResponse::from)

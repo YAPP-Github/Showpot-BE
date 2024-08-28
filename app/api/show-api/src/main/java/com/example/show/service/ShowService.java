@@ -48,15 +48,17 @@ public class ShowService {
     private final MessagePublisher messagePublisher;
     private final ViewCountComponent viewCountComponent;
 
-    public ShowDetailServiceResponse getShow(UUID id, String viewIdentifier) {
-        ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(id);
+    public ShowDetailServiceResponse getShow(UUID userId, UUID showId, String viewIdentifier) {
+        ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(showId);
 
-        boolean upViewCount = viewCountComponent.validateViewCount(id, viewIdentifier);
-        if (upViewCount) {
-            showUseCase.view(id);
+        boolean isInterested =
+            userId != null && userShowUseCase.findByShowIdAndUserId(showId, userId).isPresent();
+
+        if (viewCountComponent.validateViewCount(showId, viewIdentifier)) {
+            showUseCase.view(showId);
         }
 
-        return ShowDetailServiceResponse.from(showDetail);
+        return ShowDetailServiceResponse.from(showDetail, isInterested);
     }
 
     public PaginationServiceResponse<ShowSearchPaginationServiceParam> searchShow(
@@ -161,7 +163,8 @@ public class ShowService {
     public PaginationServiceResponse<ShowAlertPaginationServiceParam> findAlertShows(
         ShowAlertPaginationServiceRequest request
     ) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(request.userId());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
+            request.userId());
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
             .map(TicketingAlert::getShowId)
             .distinct()
@@ -178,7 +181,8 @@ public class ShowService {
     }
 
     public TerminatedTicketingShowCountServiceResponse countTerminatedTicketingShow(UUID userId) {
-        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(userId);
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlertsByUserId(
+            userId);
         List<UUID> showIdsToAlert = ticketingAlerts.stream()
             .map(TicketingAlert::getShowId)
             .distinct()

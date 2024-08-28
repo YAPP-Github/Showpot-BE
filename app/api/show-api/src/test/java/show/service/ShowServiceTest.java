@@ -38,6 +38,7 @@ class ShowServiceTest {
     @DisplayName("공연 상세 조회할 때 조회수를 올리고 데이터를 반환한다.")
     void showDetailWithUpViewCount() {
         //given
+        UUID userId = UUID.randomUUID();
         UUID showId = UUID.randomUUID();
         String viewIdentifier = "testIdentifier";
         given(
@@ -51,7 +52,7 @@ class ShowServiceTest {
         ).willReturn(true);
 
         //when
-        var result = showService.getShow(showId, viewIdentifier);
+        var result = showService.getShow(userId, showId, viewIdentifier);
 
         //then
         verify(showUseCase, times(1)).view(showId);
@@ -62,6 +63,7 @@ class ShowServiceTest {
     @DisplayName("공연 상세 조회할 때 조회수를 올리지 않고 데이터를 반환한다.")
     void showDetailNoneUpViewCount() {
         //given
+        UUID userId = UUID.randomUUID();
         UUID showId = UUID.randomUUID();
         String viewIdentifier = "testIdentifier";
         given(
@@ -75,7 +77,7 @@ class ShowServiceTest {
         ).willReturn(false);
 
         //when
-        var result = showService.getShow(showId, viewIdentifier);
+        var result = showService.getShow(userId, showId, viewIdentifier);
 
         //then
         verify(showUseCase, times(0)).view(showId);

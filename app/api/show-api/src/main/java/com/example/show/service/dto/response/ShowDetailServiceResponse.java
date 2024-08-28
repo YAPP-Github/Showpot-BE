@@ -16,6 +16,7 @@ public record ShowDetailServiceResponse(
     LocalDate endDate,
     String location,
     String posterImageURL,
+    boolean isInterested,
     List<ShowArtistServiceResponse> artists,
     List<ShowGenreServiceResponse> genres,
     List<ShowTicketingTimeServiceResponse> ticketingTimes,
@@ -23,7 +24,10 @@ public record ShowDetailServiceResponse(
     ShowTicketingSiteServiceResponse ticketingSites
 ) {
 
-    public static ShowDetailServiceResponse from(ShowDetailDomainResponse show) {
+    public static ShowDetailServiceResponse from(
+        ShowDetailDomainResponse show,
+        boolean isInterested
+    ) {
         return ShowDetailServiceResponse.builder()
             .id(show.show().id())
             .title(show.show().title())
@@ -32,6 +36,7 @@ public record ShowDetailServiceResponse(
             .endDate(show.show().endDate())
             .location(show.show().location())
             .posterImageURL(show.show().image())
+            .isInterested(isInterested)
             .artists(
                 show.artists().stream()
                     .map(ShowArtistServiceResponse::from)
