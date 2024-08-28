@@ -26,10 +26,7 @@ public class UserShowUseCase {
 
     @Transactional
     public InterestShow interest(InterestShowDomainRequest request) {
-        Optional<InterestShow> optInterestShow = interestShowRepository.findByShowIdAndUserId(
-            request.showId(),
-            request.userId()
-        );
+        Optional<InterestShow> optInterestShow = findByShowIdAndUserId(request.showId(), request.userId());
 
         if (optInterestShow.isEmpty()) {
             return interestShowRepository.save(
@@ -44,6 +41,10 @@ public class UserShowUseCase {
         interestShow.interest();
 
         return interestShow;
+    }
+
+    public Optional<InterestShow> findByShowIdAndUserId(UUID showId, UUID userId) {
+        return interestShowRepository.findByShowIdAndUserId(showId, userId);
     }
 
     public List<ArtistSubscription> findArtistSubscriptionByUserId(UUID userId) {
