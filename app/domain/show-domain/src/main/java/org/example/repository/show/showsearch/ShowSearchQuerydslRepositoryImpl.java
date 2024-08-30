@@ -40,7 +40,7 @@ public class ShowSearchQuerydslRepositoryImpl implements ShowSearchQuerydslRepos
             )
             .from(showSearch)
             .join(showSearch.show, show)
-            .where(showSearch.name.like(request.search() + "%")
+            .where(showSearch.name.like("%" + request.search() + "%")
                 .and(getDefaultPredicateInCursorPagination(request.cursor()))
             )
             .fetch();
