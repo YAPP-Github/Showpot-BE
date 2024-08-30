@@ -42,7 +42,7 @@ public enum RandomNickname {
     public static String makeRandomNickName() {
         return NICK.value.get(randomNumber()) + " "
             + NAME.value.get(randomNumber())
-            + getUniqueNumber() + "님";
+            + getUniqueNumber();
     }
 
     private static int randomNumber() {
