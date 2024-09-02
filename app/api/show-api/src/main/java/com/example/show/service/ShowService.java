@@ -4,6 +4,7 @@ import com.example.component.ViewCountComponent;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
+import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.param.ShowSearchPaginationServiceParam;
 import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
@@ -33,6 +34,7 @@ import org.example.entity.InterestShow;
 import org.example.entity.TicketingAlert;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
+import org.example.exception.BusinessException;
 import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserShowUseCase;
 import org.example.usecase.show.ShowUseCase;
@@ -149,13 +151,16 @@ public class ShowService {
             ticketingAlertReservationRequest.type().toDomainType()
         );
 
-        var domainResponse = ticketingAlertUseCase.alertReservation(
-            ticketingAlertReservationRequest.toDomainRequest(
-                showTicketingTime.getShow().getTitle(),
-                showTicketingTime.getTicketingAt()
-            )
+        var request = ticketingAlertReservationRequest.toDomainRequest(
+            showTicketingTime.getShow().getTitle(),
+            showTicketingTime.getTicketingAt()
         );
 
+        if (request.alertTimes().isEmpty()) {
+            throw new BusinessException(ShowError.TICKETING_ALERT_RESERVED_ERROR);
+        }
+
+        var domainResponse = ticketingAlertUseCase.alertReservation(request);
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
             TicketingAlertsToReserveServiceMessage.from(domainResponse)
