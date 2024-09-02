@@ -111,8 +111,10 @@ public class ShowService {
     }
 
     public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {
+        Show show = showUseCase.findShowOrThrowNoSuchElementException(request.showId());
+
         return ShowInterestServiceResponse.from(
-            userShowUseCase.interest(request.toDomainRequest())
+            userShowUseCase.interest(request.toDomainRequest(show.getId()))
         );
     }
 
