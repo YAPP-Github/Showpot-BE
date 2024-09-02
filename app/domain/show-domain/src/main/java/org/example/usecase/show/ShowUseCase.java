@@ -79,6 +79,6 @@ public class ShowUseCase {
     }
 
     public Show findShowOrThrowNoSuchElementException(UUID id) {
-        return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return showRepository.findByIdAndIsDeletedFalse(id).orElseThrow(NoSuchElementException::new);
     }
 }
