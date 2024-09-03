@@ -54,7 +54,7 @@ public class ShowService {
         ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(showId);
 
         boolean isInterested =
-            userId != null && userShowUseCase.findByShowIdAndUserId(showId, userId).isPresent();
+            userId != null && userShowUseCase.findInterestShow(showId, userId).isPresent();
 
         if (viewCountComponent.validateViewCount(showId, viewIdentifier)) {
             showUseCase.view(showId);
