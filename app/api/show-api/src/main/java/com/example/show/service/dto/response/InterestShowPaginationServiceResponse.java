@@ -28,7 +28,7 @@ public record InterestShowPaginationServiceResponse(
             .interestShowId(interestShow.getId())
             .interestedAt(interestShow.getUpdatedAt())
             .title(show.getTitle())
-            .location(show.getTitle())
+            .location(show.getLocation())
             .posterImageURL(show.getImage())
             .startAt(show.getStartDate())
             .endAt(show.getEndDate())

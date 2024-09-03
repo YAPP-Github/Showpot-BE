@@ -10,9 +10,9 @@ public record ShowInterestServiceRequest(
     UUID userId
 ) {
 
-    public InterestShowDomainRequest toDomainRequest() {
+    public InterestShowDomainRequest toDomainRequest(UUID showId) {
         return InterestShowDomainRequest.builder()
-            .showId(showId())
+            .showId(showId)
             .userId(userId())
             .build();
     }

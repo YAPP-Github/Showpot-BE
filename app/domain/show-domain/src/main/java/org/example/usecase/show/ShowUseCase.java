@@ -78,7 +78,7 @@ public class ShowUseCase {
         return showRepository.findTerminatedTicketingShowsCount(showIds, now);
     }
 
-    private Show findShowOrThrowNoSuchElementException(UUID id) {
-        return showRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public Show findShowOrThrowNoSuchElementException(UUID id) {
+        return showRepository.findByIdAndIsDeletedFalse(id).orElseThrow(NoSuchElementException::new);
     }
 }
