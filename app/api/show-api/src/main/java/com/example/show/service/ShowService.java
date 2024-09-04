@@ -151,16 +151,16 @@ public class ShowService {
             ticketingAlertReservationRequest.type().toDomainType()
         );
 
-        var request = ticketingAlertReservationRequest.toDomainRequest(
-            showTicketingTime.getShow().getTitle(),
-            showTicketingTime.getTicketingAt()
-        );
-
-        if (request.alertTimes().isEmpty()) {
+        if (showTicketingTime.getTicketingAt().isBefore(LocalDateTime.now())) {
             throw new BusinessException(ShowError.TICKETING_ALERT_RESERVED_ERROR);
         }
 
-        var domainResponse = ticketingAlertUseCase.alertReservation(request);
+        var domainResponse = ticketingAlertUseCase.alertReservation(
+            ticketingAlertReservationRequest.toDomainRequest(
+                showTicketingTime.getShow().getTitle(),
+                showTicketingTime.getTicketingAt()
+            )
+        );
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
             TicketingAlertsToReserveServiceMessage.from(domainResponse)
