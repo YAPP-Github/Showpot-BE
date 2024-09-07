@@ -12,4 +12,6 @@ public interface SocialLoginRepository extends JpaRepository<SocialLogin, UUID> 
         SocialLoginType socialLoginType,
         String identifier
     );
+
+    void deleteAllByUserId(UUID userId);
 }

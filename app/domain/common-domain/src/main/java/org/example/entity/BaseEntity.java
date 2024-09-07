@@ -44,7 +44,7 @@ public abstract class BaseEntity implements Persistable<UUID> {
 
     @Override
     public boolean isNew() {
-        return id != null;
+        return createdAt == null;
     }
 
     @Override

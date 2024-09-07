@@ -13,4 +13,6 @@ public interface ArtistSubscriptionRepository
     List<ArtistSubscription> findAllByUserIdAndIsDeletedFalse(UUID userId);
 
     Long countByUserIdAndIsDeletedFalse(UUID userId);
+
+    void deleteAllByUserId(UUID userId);
 }
