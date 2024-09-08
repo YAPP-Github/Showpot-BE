@@ -5,7 +5,7 @@ spring:
     show-sql: true
     open-in-view: false
     generate-ddl: false
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     properties:
       hibernate:
         format_sql: true
