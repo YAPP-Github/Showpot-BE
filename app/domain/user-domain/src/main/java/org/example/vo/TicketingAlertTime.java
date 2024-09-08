@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public enum TicketingAlertTime {
-    BEFORE_24(24),
-    BEFORE_6(6),
-    BEFORE_1(1);
+    BEFORE_A_DAY(24),
+    BEFORE_SIX_HOURS(6),
+    BEFORE_A_HOUR(1);
 
     private final long time;
 
