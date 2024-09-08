@@ -12,4 +12,6 @@ public interface InterestShowRepository extends JpaRepository<InterestShow, UUID
     Optional<InterestShow> findByShowIdAndUserIdAndIsDeletedFalse(UUID showId, UUID userId);
 
     Long countInterestShowByUserIdAndIsDeletedFalse(UUID userId);
+
+    void deleteAllByUserId(UUID userId);
 }
