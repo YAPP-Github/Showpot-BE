@@ -4,8 +4,8 @@ spring:
       ddl-auto: none
     show-sql: true
     open-in-view: false
-    generate-ddl: true
-    defer-datasource-initialization: true
+    generate-ddl: false
+    defer-datasource-initialization: false
     properties:
       hibernate:
         format_sql: true
@@ -19,4 +19,4 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: never
