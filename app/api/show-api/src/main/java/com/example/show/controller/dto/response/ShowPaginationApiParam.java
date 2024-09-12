@@ -2,15 +2,15 @@ package com.example.show.controller.dto.response;
 
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
 import lombok.Builder;
+import org.example.dto.response.CursorApiResponse;
 import org.example.util.DateTimeUtil;
 
 @Builder
 public record ShowPaginationApiParam(
 
-    @Schema(description = "공연 ID")
-    UUID id,
+    @Schema(description = "공연 Cursor")
+    CursorApiResponse cursor,
 
     @Schema(description = "공연 이름")
     String title,
@@ -30,7 +30,7 @@ public record ShowPaginationApiParam(
 
     public static ShowPaginationApiParam from(ShowPaginationServiceResponse response) {
         return ShowPaginationApiParam.builder()
-            .id(response.id())
+            .cursor(CursorApiResponse.toCursorId(response.id()))
             .title(response.title())
             .location(response.location())
             .posterImageURL(response.image())

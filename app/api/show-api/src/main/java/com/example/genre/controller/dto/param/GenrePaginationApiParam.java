@@ -2,12 +2,12 @@ package com.example.genre.controller.dto.param;
 
 import com.example.genre.service.dto.param.GenrePaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
+import org.example.dto.response.CursorApiResponse;
 
 public record GenrePaginationApiParam(
 
-    @Schema(description = "장르 ID")
-    UUID id,
+    @Schema(description = "장르 Cursor")
+    CursorApiResponse cursor,
 
     @Schema(description = "장르 이름")
     String name,
@@ -18,7 +18,7 @@ public record GenrePaginationApiParam(
 
     public GenrePaginationApiParam(GenrePaginationServiceParam param) {
         this(
-            param.id(),
+            CursorApiResponse.toCursorId(param.id()),
             param.name(),
             param.isSubscribed()
         );

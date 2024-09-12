@@ -7,11 +7,12 @@ import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.UUID;
 import org.example.util.ValidateStatus;
 
-@Schema
 public record ArtistUnsubscriptionPaginationApiRequest(
     @Parameter(
         description = "정렬 기준, default: ENGLISH_NAME_ASC",
@@ -28,10 +29,12 @@ public record ArtistUnsubscriptionPaginationApiRequest(
     @Parameter(description = "장르 ID 목록")
     List<UUID> genreIds,
 
-    @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
-    UUID cursor,
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 cursorId / 최초 조회라면 null")
+    UUID cursorId,
 
     @Parameter(description = "조회하는 데이터 개수", required = true)
+    @Min(value = 10, message = "조회하는 데이터 개수는 최소 10개 이어야 합니다.")
+    @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.")
     int size
 ) {
 
@@ -40,7 +43,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         List<ArtistGenderApiType> artistGenderApiTypes,
         List<ArtistApiType> artistApiTypes,
         List<UUID> genreIds,
-        UUID cursor,
+        UUID cursorId,
         int size
     ) {
         this.sortStandard =
@@ -48,7 +51,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         this.artistGenderApiTypes = ValidateStatus.checkNullOrEmpty(artistGenderApiTypes);
         this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
         this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);
-        this.cursor = cursor;
+        this.cursorId = cursorId;
         this.size = size;
     }
 
@@ -61,7 +64,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
             .artistApiTypes(artistApiTypes)
             .genreIds(genreIds)
             .userId(userId)
-            .cursor(cursor)
+            .cursor(cursorId)
             .size(size)
             .build();
     }
@@ -74,7 +77,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
             .artistApiTypes(artistApiTypes)
             .genreIds(genreIds)
             .userId(null)
-            .cursor(cursor)
+            .cursor(cursorId)
             .size(size)
             .build();
     }

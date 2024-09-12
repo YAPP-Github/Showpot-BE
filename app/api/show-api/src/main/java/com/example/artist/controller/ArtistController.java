@@ -41,7 +41,7 @@ public class ArtistController {
     @Operation(summary = "구독하지 않은 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
         var response =
             (user == null)
@@ -68,7 +68,7 @@ public class ArtistController {
     @Operation(summary = "구독한 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> getSubscribedArtists(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject ArtistSubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistSubscriptionPaginationApiRequest request
     ) {
         var response = artistService.findArtistSubscriptions(
             request.toServiceRequest(user.userId()));
@@ -126,7 +126,7 @@ public class ArtistController {
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject ArtistSearchPaginationApiRequest request
+        @Valid @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
         var response = artistService.searchArtist(request.toServiceRequest(user));
         var data = response.data().stream()

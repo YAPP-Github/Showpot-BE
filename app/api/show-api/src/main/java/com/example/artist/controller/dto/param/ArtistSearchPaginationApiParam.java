@@ -2,11 +2,11 @@ package com.example.artist.controller.dto.param;
 
 import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
+import org.example.dto.response.CursorApiResponse;
 
 public record ArtistSearchPaginationApiParam(
-    @Schema(description = "아티스트 ID")
-    UUID id,
+    @Schema(description = "아티스트 Cursor")
+    CursorApiResponse cursor,
 
     @Schema(description = "아티스트 이미지 URL")
     String imageURL,
@@ -23,7 +23,7 @@ public record ArtistSearchPaginationApiParam(
 
     public static ArtistSearchPaginationApiParam from(ArtistSearchPaginationServiceParam param) {
         return new ArtistSearchPaginationApiParam(
-            param.artistId(),
+            CursorApiResponse.toCursorId(param.artistId()),
             param.artistImageUrl(),
             param.artistKoreanName(),
             param.artistEnglishName(),

@@ -64,8 +64,8 @@ public class UserShowController {
     @GetMapping("/interests")
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
-        @ParameterObject ShowInterestPaginationApiRequest request,
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedUser user,
+        @Valid @ParameterObject ShowInterestPaginationApiRequest request
     ) {
         var serviceResponse = userShowService.findInterestShows(
             request.toServiceRequest(user.userId())

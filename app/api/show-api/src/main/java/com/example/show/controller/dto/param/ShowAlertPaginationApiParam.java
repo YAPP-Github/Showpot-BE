@@ -2,8 +2,8 @@ package com.example.show.controller.dto.param;
 
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import java.util.UUID;
+import org.example.dto.response.CursorApiResponse;
 import org.example.util.DateTimeUtil;
 
 public record ShowAlertPaginationApiParam(
@@ -19,17 +19,17 @@ public record ShowAlertPaginationApiParam(
     @Schema(description = "공연 마지막 날짜")
     String endAt,
 
+    @Schema(description = "가장 근접한 티케팅 예매 시간")
+    String ticketingAt,
+
     @Schema(description = "공연 장소")
     String location,
 
     @Schema(description = "공연 이미지 URL")
     String imageURL,
 
-    @Schema(description = "cursorID")
-    UUID cursorId,
-
-    @Schema(description = "cursorValue")
-    LocalDateTime cursorValue
+    @Schema(description = "조회한 데이터의 Cursor")
+    CursorApiResponse cursor
 ) {
 
     public static ShowAlertPaginationApiParam from(ShowAlertPaginationServiceParam serviceParam) {
@@ -38,10 +38,10 @@ public record ShowAlertPaginationApiParam(
             serviceParam.title(),
             DateTimeUtil.formatDate(serviceParam.startAt()),
             DateTimeUtil.formatDate(serviceParam.endAt()),
+            DateTimeUtil.formatDateTime(serviceParam.ticketingAt()),
             serviceParam.location(),
             serviceParam.image(),
-            serviceParam.showTicketingTimeId(),
-            serviceParam.ticketingAt()
+            CursorApiResponse.toCursor(serviceParam.showTicketingTimeId(),  serviceParam.ticketingAt())
         );
     }
 }

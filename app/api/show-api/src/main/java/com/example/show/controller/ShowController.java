@@ -9,6 +9,7 @@ import com.example.show.service.ShowService;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
@@ -35,7 +36,7 @@ public class ShowController {
     @GetMapping
     @Operation(summary = "공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
-        @ParameterObject ShowPaginationApiRequest request
+        @Valid @ParameterObject ShowPaginationApiRequest request
     ) {
         PaginationServiceResponse<ShowPaginationServiceResponse> response = showService.findShows(
             request.toServiceRequest()

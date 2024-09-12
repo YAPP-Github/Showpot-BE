@@ -39,7 +39,7 @@ public class GenreController {
     @Operation(summary = "장르 전체 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject GenrePaginationApiRequest request
+        @Valid @ParameterObject GenrePaginationApiRequest request
     ) {
         var response = genreService.findGenres(request.toServiceRequest(user));
         var data = response.data().stream()
@@ -58,7 +58,7 @@ public class GenreController {
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject GenreUnsubscriptionPaginationApiRequest request
+        @Valid @ParameterObject GenreUnsubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreUnSubscriptions(
             request.toServiceRequest(user.userId()));
@@ -78,7 +78,7 @@ public class GenreController {
     @Operation(summary = "구독한 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreSubscriptionPaginationApiParam>> getSubscribedGenres(
         @AuthenticationPrincipal AuthenticatedUser user,
-        @ParameterObject GenreSubscriptionPaginationApiRequest request
+        @Valid @ParameterObject GenreSubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreSubscriptions(request.toServiceRequest(user.userId()));
         var data = response.data().stream()
