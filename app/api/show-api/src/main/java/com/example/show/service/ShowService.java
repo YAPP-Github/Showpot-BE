@@ -24,13 +24,13 @@ public class ShowService {
     private final InterestShowUseCase interestShowUseCase;
     private final ViewCountComponent viewCountComponent;
 
-    public ShowDetailServiceResponse getShow(UUID userId, UUID showId, String viewIdentifier) {
+    public ShowDetailServiceResponse getShow(UUID userId, UUID showId, String deviceToken) {
         ShowDetailDomainResponse showDetail = showUseCase.findShowDetail(showId);
 
         boolean isInterested =
             userId != null && interestShowUseCase.findInterestShow(showId, userId).isPresent();
 
-        if (viewCountComponent.validateViewCount(showId, viewIdentifier)) {
+        if (viewCountComponent.validateViewCount(showId, deviceToken)) {
             showUseCase.view(showId);
         }
 

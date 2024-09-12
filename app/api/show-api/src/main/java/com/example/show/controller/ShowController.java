@@ -59,12 +59,12 @@ public class ShowController {
     public ResponseEntity<ShowDetailApiResponse> getShow(
         @AuthenticationPrincipal AuthenticatedUser user,
         @PathVariable("showId") UUID showId,
-        @RequestHeader(value = "viewIdentifier") String viewIdentifier
+        @RequestHeader(value = "Device-Token") String deviceToken
     ) {
         UUID userId = ValidatorUser.getUserId(user);
 
         return ResponseEntity.ok(
-            ShowDetailApiResponse.from(showService.getShow(userId, showId, viewIdentifier))
+            ShowDetailApiResponse.from(showService.getShow(userId, showId, deviceToken))
         );
     }
 
