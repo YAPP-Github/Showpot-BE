@@ -1,6 +1,5 @@
 package org.example.usecase.interest;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,10 @@ public class InterestShowUseCase {
 
     @Transactional
     public InterestShow interest(InterestShowDomainRequest request) {
-        Optional<InterestShow> optInterestShow = findInterestShowByShowIdAndUserId(request.showId(), request.userId());
+        Optional<InterestShow> optInterestShow = findInterestShowByShowIdAndUserId(
+            request.showId(),
+            request.userId()
+        );
 
         if (optInterestShow.isEmpty()) {
             return interestShowRepository.save(
@@ -44,10 +46,6 @@ public class InterestShowUseCase {
     public InterestShowPaginationDomainResponse findInterestShows(
         InterestShowPaginationDomainRequest request) {
         return interestShowRepository.findInterestShowList(request);
-    }
-
-    public long countAlertShows(UUID userId, LocalDateTime now) {
-        return interestShowRepository.countValidTicketingAlerts(userId, now);
     }
 
     public long countInterestShows(UUID userId) {

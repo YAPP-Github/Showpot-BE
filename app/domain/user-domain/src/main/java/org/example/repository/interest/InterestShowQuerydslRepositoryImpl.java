@@ -1,12 +1,9 @@
 package org.example.repository.interest;
 
 import static org.example.entity.QInterestShow.interestShow;
-import static org.example.entity.QTicketingAlert.ticketingAlert;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
@@ -42,21 +39,9 @@ public class InterestShowQuerydslRepositoryImpl implements InterestShowQuerydslR
             .build();
     }
 
-    @Override
-    public long countValidTicketingAlerts(UUID userId, LocalDateTime now) {
-        Long result = jpaQueryFactory.select(ticketingAlert.showId.countDistinct())
-            .from(ticketingAlert)
-            .where(
-                ticketingAlert.isDeleted.isFalse()
-                    .and(ticketingAlert.userId.eq(userId))
-                    .and(ticketingAlert.alertTime.gt(now))
-            )
-            .fetchOne();
-
-        return result == null ? 0 : result;
-    }
-
-    private BooleanExpression getInterestShowPaginationConditions(InterestShowPaginationDomainRequest request) {
+    private BooleanExpression getInterestShowPaginationConditions(
+        InterestShowPaginationDomainRequest request
+    ) {
         BooleanExpression whereConditions = interestShow.userId.eq(request.userId())
             .and(interestShow.isDeleted.isFalse());
 

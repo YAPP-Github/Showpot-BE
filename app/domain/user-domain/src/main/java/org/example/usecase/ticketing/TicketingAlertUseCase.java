@@ -34,6 +34,10 @@ public class TicketingAlertUseCase {
         return ticketingAlertRepository.findAllByUserIdAndIsDeletedFalse(userId);
     }
 
+    public long countAlertShows(UUID userId, LocalDateTime now) {
+        return ticketingAlertRepository.countValidTicketingAlerts(userId, now);
+    }
+
     @Transactional
     public TicketingAlertsDomainResponse alertReservation(
         TicketingAlertReservationDomainRequest ticketingAlertReservation

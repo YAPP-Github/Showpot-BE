@@ -1,6 +1,10 @@
 package org.example.repository.ticketing;
 
+import static org.example.entity.QTicketingAlert.ticketingAlert;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +14,17 @@ public class TicketingAlertQuerydslRepositoryImpl implements TicketingAlertQuery
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Override
+    public long countValidTicketingAlerts(UUID userId, LocalDateTime now) {
+        Long result = jpaQueryFactory.select(ticketingAlert.showId.countDistinct())
+            .from(ticketingAlert)
+            .where(
+                ticketingAlert.isDeleted.isFalse()
+                    .and(ticketingAlert.userId.eq(userId))
+                    .and(ticketingAlert.alertTime.gt(now))
+            )
+            .fetchOne();
+
+        return result == null ? 0 : result;
+    }
 }

@@ -145,7 +145,7 @@ public class UserShowService {
     }
 
     public NumberOfTicketingAlertServiceResponse countAlertShows(UUID userId, LocalDateTime now) {
-        long numberOfTicketingAlert = interestShowUseCase.countAlertShows(userId, now);
+        long numberOfTicketingAlert = ticketingAlertUseCase.countAlertShows(userId, now);
 
         return NumberOfTicketingAlertServiceResponse.from(numberOfTicketingAlert);
     }
