@@ -15,9 +15,11 @@ import com.example.genre.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,7 +43,8 @@ public class GenreController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject GenrePaginationApiRequest request
     ) {
-        var response = genreService.findGenres(request.toServiceRequest(user));
+        UUID userId = ValidatorUser.getUserId(user);
+        var response = genreService.findGenres(request.toServiceRequest(userId));
         var data = response.data().stream()
             .map(GenrePaginationApiParam::new)
             .toList();

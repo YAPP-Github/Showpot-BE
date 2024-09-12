@@ -457,13 +457,13 @@ class ArtistServiceTest {
 
         given(
             artistUseCase.findAllArtistInCursorPagination(
-                request.toNonUserDomainRequest())
+                request.toDomainRequest(List.of()))
         ).willReturn(
             ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
         );
 
         //when
-        var result = artistService.findArtistUnsubscriptionsForNonUser(request);
+        var result = artistService.findArtistUnsubscriptions(request);
 
         //then
         SoftAssertions.assertSoftly(

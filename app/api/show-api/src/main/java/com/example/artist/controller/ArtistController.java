@@ -17,9 +17,11 @@ import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedUser;
+import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,15 +45,8 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
-        var response =
-            (user == null)
-                ? artistService.findArtistUnsubscriptionsForNonUser(
-                    request.toNonUserServiceRequest()
-                )
-                : artistService.findArtistUnsubscriptions(
-                    request.toServiceRequest(user.userId())
-                );
-
+        UUID userId = ValidatorUser.getUserId(user);
+        var response = artistService.findArtistUnsubscriptions(request.toServiceRequest(userId));
         var data = response.data().stream()
             .map(ArtistUnsubscriptionPaginationApiParam::from)
             .toList();
@@ -128,7 +123,8 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedUser user,
         @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
-        var response = artistService.searchArtist(request.toServiceRequest(user));
+        UUID userId = ValidatorUser.getUserId(user);
+        var response = artistService.searchArtist(request.toServiceRequest(userId));
         var data = response.data().stream()
             .map(ArtistSearchPaginationApiParam::from)
             .toList();

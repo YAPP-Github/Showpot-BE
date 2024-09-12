@@ -5,7 +5,6 @@ import com.example.artist.vo.ArtistSortApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
-import org.example.security.dto.AuthenticatedUser;
 
 public record ArtistSearchPaginationApiRequest(
 
@@ -31,12 +30,7 @@ public record ArtistSearchPaginationApiRequest(
         }
     }
 
-    public ArtistSearchPaginationServiceRequest toServiceRequest(AuthenticatedUser user) {
-        UUID userId = null;
-        if (user != null) {
-            userId = user.userId();
-        }
-
+    public ArtistSearchPaginationServiceRequest toServiceRequest(UUID userId) {
         return ArtistSearchPaginationServiceRequest.builder()
             .userId(userId)
             .sortStandard(sortStandard)
