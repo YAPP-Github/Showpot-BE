@@ -12,9 +12,6 @@ import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
 import org.example.security.token.TokenProcessor;
 import org.example.service.dto.request.LoginServiceRequest;
-import org.example.service.dto.request.LogoutServiceRequest;
-import org.example.service.dto.request.ReissueServiceRequest;
-import org.example.service.dto.request.WithdrawalServiceRequest;
 import org.example.service.dto.response.UserProfileServiceResponse;
 import org.example.usecase.user.UserUseCase;
 import org.springframework.stereotype.Service;
@@ -34,24 +31,25 @@ public class UserService {
         return jwtGenerator.generate(userParam, new Date());
     }
 
-    public void logout(LogoutServiceRequest request) {
+    public void logout(UUID userId, String accessToken) {
+        User user = userUseCase.findById(userId);
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
-            request.accessToken(),
-            request.userId()
+            accessToken,
+            user.getId()
         );
     }
 
-    public void withdraw(WithdrawalServiceRequest request) {
-        userUseCase.deleteUser(request.userId());
-
+    public void withdraw(UUID userId, String accessToken) {
+        userUseCase.deleteUser(userId);
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
-            request.accessToken(),
-            request.userId()
+            accessToken,
+            userId
         );
     }
 
-    public TokenParam reissue(ReissueServiceRequest request) {
-        return tokenProcessor.reissueToken(request.refreshToken());
+    public TokenParam reissue(UUID userId, String refreshToken) {
+        userUseCase.findById(userId);
+        return tokenProcessor.reissueToken(refreshToken);
     }
 
     public UserProfileServiceResponse findUserProfile(UUID userId) {

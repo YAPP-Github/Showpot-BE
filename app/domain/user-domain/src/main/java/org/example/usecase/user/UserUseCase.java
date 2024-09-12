@@ -60,7 +60,7 @@ public class UserUseCase {
 
     @Transactional
     public void deleteUser(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        User user = findById(userId);
         userRepository.delete(user);
         deleteAssociatedWith(user);
     }
@@ -71,6 +71,10 @@ public class UserUseCase {
 
     public String findUserFcmTokensByUserId(UUID userId) {
         return userRepository.findUserFcmTokensByUserId(userId).orElseThrow(NoSuchElementException::new);
+    }
+
+    public User findById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
     }
 
     private void deleteAssociatedWith(User user) {
