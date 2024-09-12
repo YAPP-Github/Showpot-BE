@@ -1,4 +1,4 @@
-package org.example.service.dto.response;
+package com.example.show.service.dto.usershow.response;
 
 public record NumberOfTicketingAlertServiceResponse(
     long count

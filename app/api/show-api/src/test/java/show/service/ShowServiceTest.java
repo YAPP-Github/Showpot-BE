@@ -7,12 +7,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.component.ViewCountComponent;
-import com.example.publish.MessagePublisher;
 import com.example.show.service.ShowService;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
-import org.example.usecase.TicketingAlertUseCase;
-import org.example.usecase.UserShowUseCase;
+import org.example.usecase.interest.InterestShowUseCase;
 import org.example.usecase.show.ShowUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,15 +20,11 @@ import show.fixture.dto.ShowResponseDtoFixture;
 class ShowServiceTest {
 
     private final ShowUseCase showUseCase = mock(ShowUseCase.class);
-    private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
-    private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
-    private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
+    private final InterestShowUseCase interestShowUseCase = mock(InterestShowUseCase.class);
     private final ViewCountComponent viewCountComponent = mock(ViewCountComponent.class);
     private final ShowService showService = new ShowService(
         showUseCase,
-        ticketingAlertUseCase,
-        userShowUseCase,
-        messagePublisher,
+        interestShowUseCase,
         viewCountComponent
     );
 

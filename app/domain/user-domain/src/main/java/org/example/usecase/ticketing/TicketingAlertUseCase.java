@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.ticketing;
 
 import java.time.LocalDateTime;
 import java.util.List;

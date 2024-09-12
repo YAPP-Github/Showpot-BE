@@ -1,4 +1,4 @@
-package org.example.service.dto.response;
+package com.example.genre.service.dto.response;
 
 public record NumberOfSubscribedGenreServiceResponse(
     long count

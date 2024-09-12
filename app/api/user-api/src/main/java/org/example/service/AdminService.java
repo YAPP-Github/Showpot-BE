@@ -2,7 +2,7 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.service.dto.request.AdminLoginServiceRequest;
-import org.example.usecase.AdminUseCase;
+import org.example.usecase.admin.AdminUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

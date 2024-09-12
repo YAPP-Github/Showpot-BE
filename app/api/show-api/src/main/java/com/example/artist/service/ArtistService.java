@@ -12,6 +12,7 @@ import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest
 import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
+import com.example.artist.service.dto.response.NumberOfSubscribedArtistServiceResponse;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.ArtistServiceMessage;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
@@ -22,10 +23,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
-import org.example.usecase.ArtistSubscriptionUseCase;
-import org.example.usecase.UserShowUseCase;
-import org.example.usecase.UserUseCase;
 import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.subscription.ArtistSubscriptionUseCase;
+import org.example.usecase.user.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +35,6 @@ public class ArtistService {
 
     private final ArtistUseCase artistUseCase;
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
-    private final UserShowUseCase userShowUseCase;
     private final UserUseCase userUseCase;
     private final MessagePublisher messagePublisher;
 
@@ -46,7 +45,7 @@ public class ArtistService {
 
         List<UUID> subscribedArtistIds = request.userId() == null
             ? List.of()
-            : userShowUseCase.findArtistSubscriptionByUserId(request.userId()).stream()
+            : artistSubscriptionUseCase.findArtistSubscriptionByUserId(request.userId()).stream()
                 .map(ArtistSubscription::getArtistId)
                 .toList();
 
@@ -123,7 +122,6 @@ public class ArtistService {
             .map(ArtistServiceMessage::toUnsubscribe)
             .toList();
 
-
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
 
         messagePublisher.publishArtistSubscription(
@@ -189,6 +187,12 @@ public class ArtistService {
             .toList();
 
         return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public NumberOfSubscribedArtistServiceResponse countSubscribedArtists(UUID userId) {
+        return NumberOfSubscribedArtistServiceResponse.from(
+            artistSubscriptionUseCase.countSubscribedArtists(userId)
+        );
     }
 
     private List<UUID> getSubscriptionArtistIds(UUID userId) {

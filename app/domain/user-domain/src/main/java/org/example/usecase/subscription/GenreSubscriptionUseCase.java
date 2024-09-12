@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +58,10 @@ public class GenreSubscriptionUseCase {
         filteredSubscriptions.forEach(GenreSubscription::unsubscribe);
 
         return filteredSubscriptions;
+    }
+
+    public long countSubscribedGenres(UUID userId) {
+        Long result = genreSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
+        return result == null ? 0 : result;
     }
 }

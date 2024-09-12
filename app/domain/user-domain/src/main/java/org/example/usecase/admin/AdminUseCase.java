@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.example.entity.Admin;

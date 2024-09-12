@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +58,15 @@ public class ArtistSubscriptionUseCase {
         filteredSubscription.forEach(ArtistSubscription::unsubscribe);
 
         return filteredSubscription;
+    }
+
+    public List<ArtistSubscription> findArtistSubscriptionByUserId(UUID userId) {
+        return artistSubscriptionRepository.findAllByUserIdAndIsDeletedFalse(userId);
+    }
+
+
+    public long countSubscribedArtists(UUID userId) {
+        Long result = artistSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
+        return result == null ? 0 : result;
     }
 }
