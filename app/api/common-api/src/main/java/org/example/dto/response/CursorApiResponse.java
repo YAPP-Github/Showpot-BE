@@ -11,7 +11,7 @@ public record CursorApiResponse(
     @Schema(description = "조회한 데이터의 Cursor Value")
     Object value
 ) {
-    public static CursorApiResponse toCursor(UUID id, Object value) {
+    public static CursorApiResponse toCursorResponse(UUID id, Object value) {
         return new CursorApiResponse(id, value);
     }
 

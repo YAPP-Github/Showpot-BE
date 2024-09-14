@@ -41,7 +41,7 @@ public record InterestShowPaginationApiResponse(
             .endAt(DateTimeUtil.formatDate(response.endAt()))
             .location(response.location())
             .posterImageURL(response.posterImageURL())
-            .cursor(CursorApiResponse.toCursor(response.interestShowId(), response.interestedAt()))
+            .cursor(CursorApiResponse.toCursorResponse(response.interestShowId(), response.interestedAt()))
             .build();
     }
 }

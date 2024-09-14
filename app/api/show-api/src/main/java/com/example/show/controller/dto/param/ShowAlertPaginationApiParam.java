@@ -41,7 +41,7 @@ public record ShowAlertPaginationApiParam(
             DateTimeUtil.formatDateTime(serviceParam.ticketingAt()),
             serviceParam.location(),
             serviceParam.image(),
-            CursorApiResponse.toCursor(serviceParam.showTicketingTimeId(),  serviceParam.ticketingAt())
+            CursorApiResponse.toCursorResponse(serviceParam.showTicketingTimeId(),  serviceParam.ticketingAt())
         );
     }
 }

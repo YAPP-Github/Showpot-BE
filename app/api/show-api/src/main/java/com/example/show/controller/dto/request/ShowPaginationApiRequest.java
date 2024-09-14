@@ -4,8 +4,8 @@ import com.example.show.controller.vo.ShowSortApiType;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import java.util.UUID;
+import org.example.util.ValidatorCursorSize;
 import org.springdoc.core.annotations.ParameterObject;
 
 @ParameterObject
@@ -21,9 +21,8 @@ public record ShowPaginationApiRequest(
     UUID cursorId,
 
     @Parameter(required = true, description = "조회하려는 데이터 개수")
-    @Min(value = 10, message = "조회하는 데이터 개수는 최소 10개 이어야 합니다.")
     @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.")
-    int size
+    Integer size
 ) {
 
     public ShowPaginationServiceRequest toServiceRequest() {
@@ -31,7 +30,7 @@ public record ShowPaginationApiRequest(
             .sort(sort)
             .onlyOpenSchedule(onlyOpenSchedule)
             .cursorId(cursorId)
-            .size(size)
+            .size(ValidatorCursorSize.getDefaultSize(size))
             .build();
     }
 }

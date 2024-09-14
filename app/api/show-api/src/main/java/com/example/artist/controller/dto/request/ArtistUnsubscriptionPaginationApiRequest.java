@@ -8,10 +8,10 @@ import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.UUID;
 import org.example.util.ValidateStatus;
+import org.example.util.ValidatorCursorSize;
 
 public record ArtistUnsubscriptionPaginationApiRequest(
     @Parameter(
@@ -33,9 +33,8 @@ public record ArtistUnsubscriptionPaginationApiRequest(
     UUID cursorId,
 
     @Parameter(description = "조회하는 데이터 개수", required = true)
-    @Min(value = 10, message = "조회하는 데이터 개수는 최소 10개 이어야 합니다.")
     @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.")
-    int size
+    Integer size
 ) {
 
     public ArtistUnsubscriptionPaginationApiRequest(
@@ -44,7 +43,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         List<ArtistApiType> artistApiTypes,
         List<UUID> genreIds,
         UUID cursorId,
-        int size
+        Integer size
     ) {
         this.sortStandard =
             sortStandard == null ? ArtistSortApiType.ENGLISH_NAME_ASC : sortStandard;
@@ -52,7 +51,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
         this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);
         this.cursorId = cursorId;
-        this.size = size;
+        this.size = ValidatorCursorSize.getDefaultSize(size);
     }
 
 
