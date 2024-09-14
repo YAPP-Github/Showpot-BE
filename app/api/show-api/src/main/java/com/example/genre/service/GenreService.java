@@ -21,9 +21,9 @@ import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
-import org.example.usecase.genre.GenreUseCase;
-import org.example.usecase.subscription.GenreSubscriptionUseCase;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.GenreUseCase;
+import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

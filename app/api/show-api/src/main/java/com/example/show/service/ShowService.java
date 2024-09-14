@@ -12,8 +12,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.dto.show.response.ShowDetailDomainResponse;
-import org.example.usecase.interest.InterestShowUseCase;
-import org.example.usecase.show.ShowUseCase;
+import org.example.usecase.InterestShowUseCase;
+import org.example.usecase.ShowUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

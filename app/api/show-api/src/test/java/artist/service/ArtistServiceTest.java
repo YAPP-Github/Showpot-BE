@@ -23,9 +23,9 @@ import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
 import org.example.fixture.ArtistSubscriptionFixture;
 import org.example.fixture.domain.ArtistFixture;
-import org.example.usecase.artist.ArtistUseCase;
-import org.example.usecase.subscription.ArtistSubscriptionUseCase;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.ArtistUseCase;
+import org.example.usecase.UserUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package org.example.usecase.show;
+package org.example.usecase;
 
 import java.util.List;
 import java.util.NoSuchElementException;

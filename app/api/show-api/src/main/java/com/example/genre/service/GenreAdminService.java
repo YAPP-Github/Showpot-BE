@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.genre.Genre;
-import org.example.usecase.genre.GenreUseCase;
+import org.example.usecase.GenreUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

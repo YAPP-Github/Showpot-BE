@@ -1,4 +1,4 @@
-package org.example.usecase.interest;
+package org.example.usecase;
 
 import java.util.Optional;
 import java.util.UUID;

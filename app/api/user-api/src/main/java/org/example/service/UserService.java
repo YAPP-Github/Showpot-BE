@@ -16,7 +16,7 @@ import org.example.service.dto.request.LogoutServiceRequest;
 import org.example.service.dto.request.ReissueServiceRequest;
 import org.example.service.dto.request.WithdrawalServiceRequest;
 import org.example.service.dto.response.UserProfileServiceResponse;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -22,9 +22,9 @@ import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
 import org.example.fixture.GenreSubscriptionFixture;
 import org.example.fixture.domain.GenreFixture;
-import org.example.usecase.genre.GenreUseCase;
-import org.example.usecase.subscription.GenreSubscriptionUseCase;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.GenreUseCase;
+import org.example.usecase.UserUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
