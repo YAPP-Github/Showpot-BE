@@ -1,4 +1,4 @@
-package org.example.usecase.subscription;
+package org.example.usecase;
 
 import java.util.ArrayList;
 import java.util.List;

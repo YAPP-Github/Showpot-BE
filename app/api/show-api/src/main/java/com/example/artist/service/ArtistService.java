@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
-import org.example.usecase.artist.ArtistUseCase;
-import org.example.usecase.subscription.ArtistSubscriptionUseCase;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.ArtistUseCase;
+import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

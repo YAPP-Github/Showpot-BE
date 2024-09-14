@@ -1,4 +1,4 @@
-package org.example.usecase.user;
+package org.example.usecase;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;

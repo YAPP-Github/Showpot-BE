@@ -30,9 +30,9 @@ import org.example.entity.TicketingAlert;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
 import org.example.exception.BusinessException;
-import org.example.usecase.interest.InterestShowUseCase;
-import org.example.usecase.show.ShowUseCase;
-import org.example.usecase.ticketing.TicketingAlertUseCase;
+import org.example.usecase.InterestShowUseCase;
+import org.example.usecase.ShowUseCase;
+import org.example.usecase.TicketingAlertUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -15,7 +15,7 @@ import org.example.fixture.dto.UserRequestDtoFixture;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
 import org.example.security.token.TokenProcessor;
-import org.example.usecase.user.UserUseCase;
+import org.example.usecase.UserUseCase;
 import org.example.vo.SocialLoginApiType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
