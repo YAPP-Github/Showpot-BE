@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public class ArtistController {
     @GetMapping("/unsubscriptions")
     @Operation(summary = "구독하지 않은 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(user);
@@ -62,7 +62,7 @@ public class ArtistController {
     @GetMapping("/subscriptions")
     @Operation(summary = "구독한 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> getSubscribedArtists(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject ArtistSubscriptionPaginationApiRequest request
     ) {
         var response = artistService.findArtistSubscriptions(
@@ -82,7 +82,7 @@ public class ArtistController {
     @GetMapping("/subscriptions/count")
     @Operation(summary = "구독한 아티스트 수")
     public ResponseEntity<NumberOfSubscribedArtistApiResponse> getNumberOfSubscribedArtist(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
         return ResponseEntity.ok(
             NumberOfSubscribedArtistApiResponse.from(
@@ -94,7 +94,7 @@ public class ArtistController {
     @PostMapping("/subscribe")
     @Operation(summary = "구독하기")
     public ResponseEntity<ArtistSubscriptionApiResponse> subscribe(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @Valid @RequestBody ArtistSubscriptionApiRequest request
     ) {
         return ResponseEntity.ok(
@@ -107,7 +107,7 @@ public class ArtistController {
     @PostMapping("/unsubscribe")
     @Operation(summary = "구독 취소하기")
     public ResponseEntity<ArtistUnsubscriptionApiResponse> unsubscribe(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @Valid @RequestBody ArtistUnsubscriptionApiRequest request
     ) {
         return ResponseEntity.ok(
@@ -120,7 +120,7 @@ public class ArtistController {
     @GetMapping("/search")
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(user);
@@ -140,7 +140,7 @@ public class ArtistController {
     @GetMapping("/filter-total-count")
     @Operation(summary = "필터링한 데이터의 총 개수 가져오기")
     public ResponseEntity<ArtistFilterTotalCountApiResponse> filterTotalCount(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @Valid @RequestBody ArtistFilterTotalCountApiRequest request
     ) {
         var response = artistService.filterArtistTotalCount(

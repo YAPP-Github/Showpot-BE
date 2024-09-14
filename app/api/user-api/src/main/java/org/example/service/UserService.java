@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public void logout(UUID userId, String accessToken) {
-        User user = userUseCase.findById(userId);
+        User user = userUseCase.findByIdOrElseThrow(userId);
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
             accessToken,
             user.getId()
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public TokenParam reissue(UUID userId, String refreshToken) {
-        userUseCase.findById(userId);
+        userUseCase.findByIdOrElseThrow(userId);
         return tokenProcessor.reissueToken(refreshToken);
     }
 

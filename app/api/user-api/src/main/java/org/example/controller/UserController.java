@@ -8,16 +8,14 @@ import org.example.controller.dto.request.LoginApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
 import org.example.controller.dto.response.ReissueApiResponse;
 import org.example.controller.dto.response.UserProfileApiResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
-import org.example.util.ParseToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,30 +43,27 @@ public class UserController {
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestHeader(value = "Authorization") String accessToken
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
-        userService.logout(user.userId(), ParseToken.getAccessToken(accessToken));
+        userService.logout(user.userId(), user.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/withdrawal")
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestHeader(value = "Authorization") String accessToken
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
-        userService.withdraw(user.userId(), ParseToken.getAccessToken(accessToken));
+        userService.withdraw(user.userId(), user.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급")
     public ResponseEntity<ReissueApiResponse> reissue(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @RequestHeader(value = "Refresh") String refreshToken
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
-        TokenParam reissueToken = userService.reissue(user.userId(), refreshToken);
+        TokenParam reissueToken = userService.reissue(user.userId(), user.refreshToken());
 
         return ResponseEntity.ok(
             ReissueApiResponse.builder()
@@ -81,7 +76,7 @@ public class UserController {
     @GetMapping("/profile")
     @Operation(summary = "회원 정보")
     public ResponseEntity<UserProfileApiResponse> profile(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
         var profile = userService.findUserProfile(user.userId());
 

@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class GenreController {
     @GetMapping
     @Operation(summary = "장르 전체 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject GenrePaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(user);
@@ -60,7 +60,7 @@ public class GenreController {
     @GetMapping("/unsubscriptions")
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject GenreUnsubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreUnSubscriptions(
@@ -80,7 +80,7 @@ public class GenreController {
     @GetMapping("/subscriptions")
     @Operation(summary = "구독한 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreSubscriptionPaginationApiParam>> getSubscribedGenres(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @ParameterObject GenreSubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreSubscriptions(request.toServiceRequest(user.userId()));
@@ -99,7 +99,7 @@ public class GenreController {
     @GetMapping("/subscriptions/count")
     @Operation(summary = "구독한 장르 수")
     public ResponseEntity<NumberOfSubscribedGenreApiResponse> getNumberOfSubscribedGenre(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo user
     ) {
         return ResponseEntity.ok(
             NumberOfSubscribedGenreApiResponse.from(
@@ -111,7 +111,7 @@ public class GenreController {
     @PostMapping("/subscribe")
     @Operation(summary = "구독하기")
     public ResponseEntity<GenreSubscriptionApiResponse> subscribe(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @Valid @RequestBody GenreSubscriptionApiRequest request
     ) {
         return ResponseEntity.ok(
@@ -124,7 +124,7 @@ public class GenreController {
     @PostMapping("/unsubscribe")
     @Operation(summary = "구독 취소하기")
     public ResponseEntity<GenreUnsubscriptionApiResponse> unsubscribe(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo user,
         @Valid @RequestBody GenreUnsubscriptionApiRequest request
     ) {
         return ResponseEntity.ok(
