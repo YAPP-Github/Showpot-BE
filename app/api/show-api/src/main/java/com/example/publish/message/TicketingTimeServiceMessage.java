@@ -19,5 +19,4 @@ public record TicketingTimeServiceMessage(
             .time(TicketingAlertTimeApiType.getTicketingAlertTime(response.time()))
             .build();
     }
-
 }
