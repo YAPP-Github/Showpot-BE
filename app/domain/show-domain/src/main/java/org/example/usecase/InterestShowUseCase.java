@@ -3,6 +3,7 @@ package org.example.usecase;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.show.request.UninterestedShowDomainRequest;
 import org.example.dto.usershow.request.InterestShowDomainRequest;
 import org.example.dto.usershow.request.InterestShowPaginationDomainRequest;
 import org.example.dto.usershow.response.InterestShowPaginationDomainResponse;
@@ -18,25 +19,25 @@ public class InterestShowUseCase {
     private final InterestShowRepository interestShowRepository;
 
     @Transactional
-    public InterestShow interest(InterestShowDomainRequest request) {
-        Optional<InterestShow> optInterestShow = findInterestShowByShowIdAndUserId(
+    public void interest(InterestShowDomainRequest request) {
+        findOptionalInterestShowByShowIdAndUserId(request.showId(), request.userId())
+            .ifPresentOrElse(
+                InterestShow::interest,
+                () -> interestShowRepository.save(
+                    InterestShow.builder()
+                        .showId(request.showId())
+                        .userId(request.userId())
+                        .build()
+                )
+            );
+    }
+
+    @Transactional
+    public void notInterest(UninterestedShowDomainRequest request) {
+        findOptionalInterestShowByShowIdAndUserId(
             request.showId(),
             request.userId()
-        );
-
-        if (optInterestShow.isEmpty()) {
-            return interestShowRepository.save(
-                InterestShow.builder()
-                    .showId(request.showId())
-                    .userId(request.userId())
-                    .build()
-            );
-        }
-
-        InterestShow interestShow = optInterestShow.get();
-        interestShow.interest();
-
-        return interestShow;
+        ).ifPresent(InterestShow::uninterested);
     }
 
     public Optional<InterestShow> findInterestShow(UUID showId, UUID userId) {
@@ -57,7 +58,7 @@ public class InterestShowUseCase {
         interestShowRepository.deleteAllByUserId(userId);
     }
 
-    private Optional<InterestShow> findInterestShowByShowIdAndUserId(UUID showId, UUID userId) {
+    private Optional<InterestShow> findOptionalInterestShowByShowIdAndUserId(UUID showId, UUID userId) {
         return interestShowRepository.findByShowIdAndUserId(showId, userId);
     }
 }

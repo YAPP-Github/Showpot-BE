@@ -8,6 +8,7 @@ import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.request.InterestShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowAlertPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
+import com.example.show.service.dto.request.ShowUninterestedServiceRequest;
 import com.example.show.service.dto.request.TicketingAlertReservationServiceRequest;
 import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
 import com.example.show.service.dto.response.ShowInterestServiceResponse;
@@ -44,12 +45,14 @@ public class UserShowService {
     private final InterestShowUseCase interestShowUseCase;
     private final MessagePublisher messagePublisher;
 
-    public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {
+    public void interest(ShowInterestServiceRequest request) {
         Show show = showUseCase.findShowOrThrowNoSuchElementException(request.showId());
+        interestShowUseCase.interest(request.toDomainRequest(show.getId()));
+    }
 
-        return ShowInterestServiceResponse.from(
-            interestShowUseCase.interest(request.toDomainRequest(show.getId()))
-        );
+    public void notInterest(ShowUninterestedServiceRequest request) {
+        Show show = showUseCase.findShowOrThrowNoSuchElementException(request.showId());
+        interestShowUseCase.notInterest(request.toDomainRequest(show.getId()));
     }
 
     public PaginationServiceResponse<InterestShowPaginationServiceResponse> findInterestShows(
