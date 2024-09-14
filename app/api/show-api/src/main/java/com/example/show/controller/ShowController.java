@@ -21,6 +21,7 @@ import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -131,9 +132,10 @@ public class ShowController {
         @PathVariable("showId") UUID showId,
         @RequestParam("ticketingApiType") TicketingApiType type
     ) {
+        var now = LocalDateTime.now();
         return ResponseEntity.ok(
             TicketingAlertReservationApiResponse.from(
-                showService.findAlertsReservations(user.userId(), showId, type)
+                showService.findAlertsReservations(user.userId(), showId, type, now)
             )
         );
     }
