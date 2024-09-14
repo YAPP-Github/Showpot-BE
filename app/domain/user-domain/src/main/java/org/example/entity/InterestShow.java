@@ -36,6 +36,10 @@ public class InterestShow extends BaseEntity {
         this.softDelete();
     }
 
+    public void uninterested() {
+        this.softDelete();
+    }
+
     public boolean hasInterest() {
         return !this.getIsDeleted();
     }

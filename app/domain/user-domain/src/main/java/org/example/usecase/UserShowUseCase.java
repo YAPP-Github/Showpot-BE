@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.InterestShowDomainRequest;
 import org.example.dto.request.InterestShowPaginationDomainRequest;
+import org.example.dto.request.UninterestedShowDomainRequest;
 import org.example.dto.response.InterestShowPaginationDomainResponse;
 import org.example.entity.ArtistSubscription;
 import org.example.entity.InterestShow;
@@ -25,22 +26,25 @@ public class UserShowUseCase {
     private final GenreSubscriptionRepository genreSubscriptionRepository;
 
     @Transactional
-    public InterestShow interest(InterestShowDomainRequest request) {
-        Optional<InterestShow> optInterestShow = findInterestShowByShowIdAndUserId(request.showId(), request.userId());
-
-        if (optInterestShow.isEmpty()) {
-            return interestShowRepository.save(
-                InterestShow.builder()
-                    .showId(request.showId())
-                    .userId(request.userId())
-                    .build()
+    public void interest(InterestShowDomainRequest request) {
+        findOptionalInterestShowByShowIdAndUserId(request.showId(), request.userId())
+            .ifPresentOrElse(
+                InterestShow::interest,
+                () -> interestShowRepository.save(
+                    InterestShow.builder()
+                        .showId(request.showId())
+                        .userId(request.userId())
+                        .build()
+                )
             );
-        }
+    }
 
-        InterestShow interestShow = optInterestShow.get();
-        interestShow.interest();
-
-        return interestShow;
+    @Transactional
+    public void notInterest(UninterestedShowDomainRequest request) {
+        findOptionalInterestShowByShowIdAndUserId(
+            request.showId(),
+            request.userId()
+        ).ifPresent(InterestShow::uninterested);
     }
 
     public Optional<InterestShow> findInterestShow(UUID showId, UUID userId) {
@@ -74,7 +78,7 @@ public class UserShowUseCase {
         return result == null ? 0 : result;
     }
 
-    private Optional<InterestShow> findInterestShowByShowIdAndUserId(UUID showId, UUID userId) {
+    private Optional<InterestShow> findOptionalInterestShowByShowIdAndUserId(UUID showId, UUID userId) {
         return interestShowRepository.findByShowIdAndUserId(showId, userId);
     }
 }

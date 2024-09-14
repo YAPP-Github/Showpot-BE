@@ -12,10 +12,10 @@ import com.example.show.service.dto.request.ShowAlertPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import com.example.show.service.dto.request.ShowSearchPaginationServiceRequest;
+import com.example.show.service.dto.request.ShowUninterestedServiceRequest;
 import com.example.show.service.dto.request.TicketingAlertReservationServiceRequest;
 import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
-import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
@@ -110,12 +110,14 @@ public class ShowService {
         );
     }
 
-    public ShowInterestServiceResponse interest(ShowInterestServiceRequest request) {
+    public void interest(ShowInterestServiceRequest request) {
         Show show = showUseCase.findShowOrThrowNoSuchElementException(request.showId());
+        userShowUseCase.interest(request.toDomainRequest(show.getId()));
+    }
 
-        return ShowInterestServiceResponse.from(
-            userShowUseCase.interest(request.toDomainRequest(show.getId()))
-        );
+    public void notInterest(ShowUninterestedServiceRequest request) {
+        Show show = showUseCase.findShowOrThrowNoSuchElementException(request.showId());
+        userShowUseCase.notInterest(request.toDomainRequest(show.getId()));
     }
 
     public TicketingAlertReservationServiceResponse findAlertsReservations(

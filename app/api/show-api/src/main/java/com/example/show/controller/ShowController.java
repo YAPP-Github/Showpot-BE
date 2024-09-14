@@ -9,7 +9,6 @@ import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.request.TicketingAlertReservationApiRequest;
 import com.example.show.controller.dto.response.InterestShowPaginationApiResponse;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
-import com.example.show.controller.dto.response.ShowInterestApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.controller.dto.response.TerminatedTicketingShowCountApiResponse;
 import com.example.show.controller.dto.response.TicketingAlertReservationApiResponse;
@@ -17,6 +16,7 @@ import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.ShowService;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
+import com.example.show.service.dto.request.ShowUninterestedServiceRequest;
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -72,21 +72,33 @@ public class ShowController {
     }
 
     @PostMapping("/{showId}/interests")
-    @Operation(summary = "공연 관심 등록 / 취소")
-    public ResponseEntity<ShowInterestApiResponse> interest(
+    @Operation(summary = "공연 관심 등록")
+    public ResponseEntity<Void> interest(
         @PathVariable("showId") UUID showId,
         @AuthenticationPrincipal AuthenticatedUser user
     ) {
-        return ResponseEntity.ok(
-            ShowInterestApiResponse.from(
-                showService.interest(
-                    ShowInterestServiceRequest.builder()
-                        .showId(showId)
-                        .userId(user.userId())
-                        .build()
-                )
-            )
+        showService.interest(
+            ShowInterestServiceRequest.builder()
+                .showId(showId)
+                .userId(user.userId())
+                .build()
         );
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{showId}/uninterested")
+    @Operation(summary = "공연 관심 취소")
+    public ResponseEntity<Void> uninterested(
+        @PathVariable("showId") UUID showId,
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        showService.notInterest(
+            ShowUninterestedServiceRequest.builder()
+                .showId(showId)
+                .userId(user.userId())
+                .build()
+        );
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/interests")
