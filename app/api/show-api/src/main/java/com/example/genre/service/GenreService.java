@@ -10,6 +10,7 @@ import com.example.genre.service.dto.request.GenreUnsubscriptionPaginationServic
 import com.example.genre.service.dto.request.GenreUnsubscriptionServiceRequest;
 import com.example.genre.service.dto.response.GenreSubscriptionServiceResponse;
 import com.example.genre.service.dto.response.GenreUnsubscriptionServiceResponse;
+import com.example.genre.service.dto.response.NumberOfSubscribedGenreServiceResponse;
 import com.example.publish.MessagePublisher;
 import com.example.publish.message.GenreServiceMessage;
 import com.example.publish.message.GenreSubscriptionServiceMessage;
@@ -18,11 +19,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.response.GenrePaginationDomainResponse;
 import org.example.dto.response.PaginationServiceResponse;
-import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
+import org.example.entity.usershow.GenreSubscription;
 import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.GenreUseCase;
 import org.example.usecase.UserUseCase;
-import org.example.usecase.genre.GenreUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -100,7 +101,9 @@ public class GenreService {
             .build();
     }
 
-    public PaginationServiceResponse<GenrePaginationServiceParam> findGenres(GenrePaginationServiceRequest request) {
+    public PaginationServiceResponse<GenrePaginationServiceParam> findGenres(
+        GenrePaginationServiceRequest request
+    ) {
         List<UUID> subscriptionGenreIds = request.userId() == null
             ? List.of()
             : getSubscriptionGenreIds(request.userId());
@@ -144,6 +147,12 @@ public class GenreService {
             .map(GenreUnsubscriptionPaginationServiceParam::new)
             .toList();
         return PaginationServiceResponse.of(data, response.hasNext());
+    }
+
+    public NumberOfSubscribedGenreServiceResponse countSubscribedGenres(UUID uuid) {
+        return NumberOfSubscribedGenreServiceResponse.from(
+            genreSubscriptionUseCase.countSubscribedGenres(uuid)
+        );
     }
 
     private List<UUID> getSubscriptionGenreIds(UUID userId) {

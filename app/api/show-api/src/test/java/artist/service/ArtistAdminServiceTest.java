@@ -15,7 +15,7 @@ import com.example.artist.service.dto.request.ArtistUpdateServiceRequest;
 import com.example.component.FileUploadComponent;
 import java.util.UUID;
 import org.example.entity.artist.Artist;
-import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

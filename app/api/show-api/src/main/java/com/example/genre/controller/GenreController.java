@@ -10,6 +10,7 @@ import com.example.genre.controller.dto.request.GenreUnsubscriptionApiRequest;
 import com.example.genre.controller.dto.request.GenreUnsubscriptionPaginationApiRequest;
 import com.example.genre.controller.dto.response.GenreSubscriptionApiResponse;
 import com.example.genre.controller.dto.response.GenreUnsubscriptionApiResponse;
+import com.example.genre.controller.dto.response.NumberOfSubscribedGenreApiResponse;
 import com.example.genre.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -89,6 +90,18 @@ public class GenreController {
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()
+        );
+    }
+
+    @GetMapping("/subscriptions/count")
+    @Operation(summary = "구독한 장르 수")
+    public ResponseEntity<NumberOfSubscribedGenreApiResponse> getNumberOfSubscribedGenre(
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        return ResponseEntity.ok(
+            NumberOfSubscribedGenreApiResponse.from(
+                genreService.countSubscribedGenres(user.userId())
+            )
         );
     }
 

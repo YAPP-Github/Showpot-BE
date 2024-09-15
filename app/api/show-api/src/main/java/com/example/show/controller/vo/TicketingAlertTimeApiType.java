@@ -46,11 +46,11 @@ public enum TicketingAlertTimeApiType {
         LocalDateTime ticketingAt,
         List<TicketingAlertTimeApiType> alertTimes
     ) {
-        long hoursDifference = Duration.between(LocalDateTime.now(), ticketingAt).toHours();
+        long minutesDifference = Duration.between(LocalDateTime.now(), ticketingAt).toMinutes();
 
         return alertTimes.stream()
             .filter(alertTime -> switch (alertTime) {
-                case BEFORE_A_DAY, BEFORE_SIX_HOURS, BEFORE_A_HOUR -> hoursDifference >= alertTime.minutes;
+                case BEFORE_A_DAY, BEFORE_SIX_HOURS, BEFORE_A_HOUR -> minutesDifference >= alertTime.minutes;
             })
             .map(TicketingAlertTimeApiType::toDomainType)
             .toList();

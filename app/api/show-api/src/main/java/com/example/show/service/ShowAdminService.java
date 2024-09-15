@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
-import org.example.usecase.artist.ArtistUseCase;
-import org.example.usecase.genre.GenreUseCase;
-import org.example.usecase.show.ShowAdminUseCase;
+import org.example.usecase.ArtistUseCase;
+import org.example.usecase.GenreUseCase;
+import org.example.usecase.ShowAdminUseCase;
 import org.springframework.stereotype.Service;
 
 @Service

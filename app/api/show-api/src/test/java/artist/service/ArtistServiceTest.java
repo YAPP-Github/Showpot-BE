@@ -19,14 +19,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
-import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
-import org.example.fixture.ArtistSubscriptionFixture;
+import org.example.entity.usershow.ArtistSubscription;
 import org.example.fixture.domain.ArtistFixture;
+import org.example.fixture.domain.ArtistSubscriptionFixture;
 import org.example.usecase.ArtistSubscriptionUseCase;
-import org.example.usecase.UserShowUseCase;
+import org.example.usecase.ArtistUseCase;
 import org.example.usecase.UserUseCase;
-import org.example.usecase.artist.ArtistUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,14 +35,12 @@ class ArtistServiceTest {
     private final ArtistSubscriptionUseCase artistSubscriptionUseCase = mock(
         ArtistSubscriptionUseCase.class
     );
-    private final UserShowUseCase userShowUseCase = mock(UserShowUseCase.class);
     private final UserUseCase userUseCase = mock(UserUseCase.class);
     private final MessagePublisher messagePublisher = mock(MessagePublisher.class);
 
     private final ArtistService artistService = new ArtistService(
         artistUseCase,
         artistSubscriptionUseCase,
-        userShowUseCase,
         userUseCase,
         messagePublisher
     );

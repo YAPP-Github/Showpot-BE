@@ -16,16 +16,26 @@ import org.example.service.dto.request.LogoutServiceRequest;
 import org.example.service.dto.request.ReissueServiceRequest;
 import org.example.service.dto.request.WithdrawalServiceRequest;
 import org.example.service.dto.response.UserProfileServiceResponse;
+import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.InterestShowUseCase;
+import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserUseCase userUseCase;
+    private final ArtistSubscriptionUseCase artistSubscriptionUseCase;
+    private final GenreSubscriptionUseCase genreSubscriptionUseCase;
+    private final InterestShowUseCase interestShowUseCase;
+    private final TicketingAlertUseCase ticketingAlertUseCase;
     private final JWTGenerator jwtGenerator;
     private final TokenProcessor tokenProcessor;
+    private final TransactionTemplate transactionTemplate;
 
     public TokenParam login(LoginServiceRequest loginServiceRequest) {
         User user = getUser(loginServiceRequest);
@@ -42,7 +52,10 @@ public class UserService {
     }
 
     public void withdraw(WithdrawalServiceRequest request) {
-        userUseCase.deleteUser(request.userId());
+        transactionTemplate.executeWithoutResult(status -> {
+            User user = userUseCase.deleteUser(request.userId());
+            deleteAssociatedWithUser(user);
+        });
 
         tokenProcessor.makeAccessTokenBlacklistAndDeleteRefreshToken(
             request.accessToken(),
@@ -77,5 +90,12 @@ public class UserService {
             .build();
 
         return userUseCase.createNewUser(user, socialLogin);
+    }
+
+    private void deleteAssociatedWithUser(User user) {
+        artistSubscriptionUseCase.deleteAllByUserId(user.getId());
+        genreSubscriptionUseCase.deleteAllByUserId(user.getId());
+        interestShowUseCase.deleteAllByUserId(user.getId());
+        ticketingAlertUseCase.deleteAllByUserId(user.getId());
     }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.entity.artist.Artist;
-import org.example.usecase.artist.ArtistUseCase;
+import org.example.usecase.ArtistUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
