@@ -69,4 +69,8 @@ public class ArtistSubscriptionUseCase {
         Long result = artistSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
         return result == null ? 0 : result;
     }
+
+    public void deleteAllByUserId(UUID userId) {
+        artistSubscriptionRepository.deleteAllByUserId(userId);
+    }
 }

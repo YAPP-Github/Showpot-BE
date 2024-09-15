@@ -64,4 +64,8 @@ public class GenreSubscriptionUseCase {
         Long result = genreSubscriptionRepository.countByUserIdAndIsDeletedFalse(userId);
         return result == null ? 0 : result;
     }
+
+    public void deleteAllByUserId(UUID userId) {
+        genreSubscriptionRepository.deleteAllByUserId(userId);
+    }
 }

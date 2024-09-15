@@ -50,11 +50,11 @@ public class UserUseCase {
         return user;
     }
 
-    @Transactional
-    public void deleteUser(UUID userId) {
+    public User deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         userRepository.delete(user);
-        deleteAssociatedWith(user);
+        socialLoginRepository.deleteAllByUserId(user.getId());
+        return user;
     }
 
     public UserProfileDomainResponse findUserProfile(UUID userId) {
@@ -63,10 +63,5 @@ public class UserUseCase {
 
     public String findUserFcmTokensByUserId(UUID userId) {
         return userRepository.findUserFcmTokensByUserId(userId).orElseThrow(NoSuchElementException::new);
-    }
-
-    private void deleteAssociatedWith(User user) {
-        socialLoginRepository.deleteAllByUserId(user.getId());
-        //TODO : 유저 연관 데이터 삭제
     }
 }

@@ -68,6 +68,10 @@ public class TicketingAlertUseCase {
             .build();
     }
 
+    public void deleteAllByUserId(UUID userId) {
+        ticketingAlertRepository.deleteAllByUserId(userId);
+    }
+
     private List<TicketingTimeDomainResponse> addAlerts(
         TicketingAlertReservationDomainRequest ticketingAlertReservation,
         List<LocalDateTime> requestedAlertTimes,
