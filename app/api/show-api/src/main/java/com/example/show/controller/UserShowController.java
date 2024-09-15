@@ -47,14 +47,14 @@ public class UserShowController {
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
         @PathVariable("showId") UUID showId,
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         return ResponseEntity.ok(
             ShowInterestApiResponse.from(
                 userShowService.interest(
                     ShowInterestServiceRequest.builder()
                         .showId(showId)
-                        .userId(user.userId())
+                        .userId(info.userId())
                         .build()
                 )
             )
@@ -65,10 +65,10 @@ public class UserShowController {
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
         @ParameterObject ShowInterestPaginationApiRequest request,
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         var serviceResponse = userShowService.findInterestShows(
-            request.toServiceRequest(user.userId())
+            request.toServiceRequest(info.userId())
         );
 
         List<InterestShowPaginationApiResponse> response = serviceResponse.data().stream()
@@ -86,11 +86,11 @@ public class UserShowController {
     @GetMapping("/interests/count")
     @Operation(summary = "관심 공연 개수")
     public ResponseEntity<NumberOfInterestShowApiResponse> getNumberOfInterestShow(
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         return ResponseEntity.ok(
             NumberOfInterestShowApiResponse.from(
-                userShowService.countInterestShows(user.userId())
+                userShowService.countInterestShows(info.userId())
             )
         );
     }
