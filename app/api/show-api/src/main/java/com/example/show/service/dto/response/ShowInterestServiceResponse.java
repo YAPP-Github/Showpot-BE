@@ -1,6 +1,6 @@
 package com.example.show.service.dto.response;
 
-import org.example.entity.InterestShow;
+import org.example.entity.usershow.InterestShow;
 
 public record ShowInterestServiceResponse(
     boolean hasInterest

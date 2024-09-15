@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.InterestShow;
 import org.example.entity.show.Show;
+import org.example.entity.usershow.InterestShow;
 
 @Builder
 public record InterestShowPaginationServiceResponse(

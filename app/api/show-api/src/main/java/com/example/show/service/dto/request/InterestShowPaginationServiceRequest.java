@@ -3,7 +3,7 @@ package com.example.show.service.dto.request;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.request.InterestShowPaginationDomainRequest;
+import org.example.dto.usershow.request.InterestShowPaginationDomainRequest;
 
 @Builder
 public record InterestShowPaginationServiceRequest(

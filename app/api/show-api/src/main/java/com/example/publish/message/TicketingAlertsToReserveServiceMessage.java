@@ -3,7 +3,7 @@ package com.example.publish.message;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.response.TicketingAlertsDomainResponse;
+import org.example.dto.usershow.response.TicketingAlertsDomainResponse;
 
 @Builder
 public record TicketingAlertsToReserveServiceMessage(

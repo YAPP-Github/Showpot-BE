@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.request.TicketingAlertReservationDomainRequest;
+import org.example.dto.usershow.request.TicketingAlertReservationDomainRequest;
 
 @Builder
 public record TicketingAlertReservationServiceRequest(
