@@ -36,10 +36,9 @@ public class ShowController {
     @GetMapping
     @Operation(summary = "공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
-        @Valid @ParameterObject ShowPaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @Valid @ParameterObject ShowPaginationApiRequest request
     ) {
-        var response = showService.findShows(request.toServiceRequest(size));
+        var response = showService.findShows(request.toServiceRequest());
         var data = response.data().stream()
             .map(ShowPaginationApiParam::from)
             .toList();

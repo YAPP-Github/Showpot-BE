@@ -16,7 +16,6 @@ import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -64,11 +63,10 @@ public class UserShowController {
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @Valid @ParameterObject ShowInterestPaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @Valid @ParameterObject ShowInterestPaginationApiRequest request
     ) {
         var serviceResponse = userShowService.findInterestShows(
-            request.toServiceRequest(info.userId(), size)
+            request.toServiceRequest(info.userId())
         );
 
         List<InterestShowPaginationApiResponse> response = serviceResponse.data().stream()
@@ -117,11 +115,11 @@ public class UserShowController {
     @Operation(summary = "공연 알림 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ShowAlertPaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @ParameterObject ShowAlertPaginationApiRequest request
     ) {
         var alertShows = userShowService.findAlertShows(
-            request.toServiceRequest(info.userId(), size));
+            request.toServiceRequest(info.userId())
+        );
         var showAlertPaginationApiParams = alertShows.data().stream()
             .map(ShowAlertPaginationApiParam::from)
             .toList();

@@ -15,7 +15,6 @@ import com.example.genre.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,11 +41,10 @@ public class GenreController {
     @Operation(summary = "장르 전체 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject GenrePaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @ParameterObject GenrePaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(info);
-        var response = genreService.findGenres(request.toServiceRequest(userId, size));
+        var response = genreService.findGenres(request.toServiceRequest(userId));
         var data = response.data().stream()
             .map(GenrePaginationApiParam::new)
             .toList();
@@ -64,11 +61,10 @@ public class GenreController {
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @Valid @ParameterObject GenreUnsubscriptionPaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @Valid @ParameterObject GenreUnsubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreUnSubscriptions(
-            request.toServiceRequest(info.userId(), size)
+            request.toServiceRequest(info.userId())
         );
         var data = response.data().stream()
             .map(GenreUnsubscriptionPaginationApiParam::new)
@@ -86,11 +82,10 @@ public class GenreController {
     @Operation(summary = "구독한 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreSubscriptionPaginationApiParam>> getSubscribedGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @Valid @ParameterObject GenreSubscriptionPaginationApiRequest request,
-        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
+        @Valid @ParameterObject GenreSubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreSubscriptions(
-            request.toServiceRequest(info.userId(), size)
+            request.toServiceRequest(info.userId())
         );
         var data = response.data().stream()
             .map(GenreSubscriptionPaginationApiParam::new)
