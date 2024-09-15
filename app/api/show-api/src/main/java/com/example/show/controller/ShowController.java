@@ -57,11 +57,11 @@ public class ShowController {
     @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
-        @AuthenticationPrincipal AuthenticatedInfo user,
+        @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
         @RequestHeader(value = "Device-Token") String deviceToken
     ) {
-        UUID userId = ValidatorUser.getUserId(user);
+        UUID userId = ValidatorUser.getUserId(info);
 
         return ResponseEntity.ok(
             ShowDetailApiResponse.from(showService.getShow(userId, showId, deviceToken))

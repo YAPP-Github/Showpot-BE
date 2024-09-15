@@ -457,7 +457,8 @@ class ArtistServiceTest {
 
         given(
             artistUseCase.findAllArtistInCursorPagination(
-                request.toDomainRequest(List.of()))
+                request.toDomainRequest(List.of())
+            )
         ).willReturn(
             ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
         );

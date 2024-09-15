@@ -43,27 +43,27 @@ public class UserController {
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        userService.logout(user.userId(), user.accessToken());
+        userService.logout(info.userId(), info.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/withdrawal")
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        userService.withdraw(user.userId(), user.accessToken());
+        userService.withdraw(info.userId(), info.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급")
     public ResponseEntity<ReissueApiResponse> reissue(
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        TokenParam reissueToken = userService.reissue(user.userId(), user.refreshToken());
+        TokenParam reissueToken = userService.reissue(info.userId(), info.refreshToken());
 
         return ResponseEntity.ok(
             ReissueApiResponse.builder()
@@ -76,9 +76,9 @@ public class UserController {
     @GetMapping("/profile")
     @Operation(summary = "회원 정보")
     public ResponseEntity<UserProfileApiResponse> profile(
-        @AuthenticationPrincipal AuthenticatedInfo user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        var profile = userService.findUserProfile(user.userId());
+        var profile = userService.findUserProfile(info.userId());
 
         return ResponseEntity.ok(
             UserProfileApiResponse.from(profile)
