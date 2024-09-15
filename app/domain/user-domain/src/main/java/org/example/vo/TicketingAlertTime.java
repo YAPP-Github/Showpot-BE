@@ -5,22 +5,22 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public enum TicketingAlertTime {
-    BEFORE_24(24),
-    BEFORE_6(6),
-    BEFORE_1(1);
+    BEFORE_A_DAY(1440),
+    BEFORE_SIX_HOURS(360),
+    BEFORE_A_HOUR(60);
 
-    private final long time;
+    private final long minutes;
 
-    TicketingAlertTime(long time) {
-        this.time = time;
+    TicketingAlertTime(long minutes) {
+        this.minutes = minutes;
     }
 
     public static TicketingAlertTime getAlertTime(LocalDateTime ticketingAt, LocalDateTime alertAt) {
-        long hoursDifference = Duration.between(alertAt, ticketingAt).toHours();
+        long minutesDifference = Duration.between(alertAt, ticketingAt).toMinutes();
 
         return Arrays.stream(TicketingAlertTime.values())
-            .filter(alertTime -> alertTime.time == hoursDifference)
+            .filter(alertTime -> alertTime.minutes == minutesDifference)
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("일치하지 않은 시간입니다.: " + hoursDifference));
+            .orElseThrow(() -> new IllegalArgumentException("일치하지 않은 시간입니다.: " + minutesDifference));
     }
 }
