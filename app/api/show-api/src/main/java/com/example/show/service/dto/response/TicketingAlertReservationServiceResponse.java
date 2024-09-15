@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Builder;
-import org.example.entity.TicketingAlert;
+import org.example.entity.usershow.TicketingAlert;
 
 @Builder
 public record TicketingAlertReservationServiceResponse(

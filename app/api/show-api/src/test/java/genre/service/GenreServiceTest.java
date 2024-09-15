@@ -18,13 +18,13 @@ import genre.fixture.GenreResponseDtoFixture;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
-import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
-import org.example.fixture.GenreSubscriptionFixture;
+import org.example.entity.usershow.GenreSubscription;
 import org.example.fixture.domain.GenreFixture;
+import org.example.fixture.domain.GenreSubscriptionFixture;
 import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.GenreUseCase;
 import org.example.usecase.UserUseCase;
-import org.example.usecase.genre.GenreUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -2,8 +2,8 @@ package com.example.publish.message;
 
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.GenreSubscription;
 import org.example.entity.genre.Genre;
+import org.example.entity.usershow.GenreSubscription;
 
 @Builder
 public record GenreServiceMessage(

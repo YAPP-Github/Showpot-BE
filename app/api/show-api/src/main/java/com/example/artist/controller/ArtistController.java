@@ -12,6 +12,7 @@ import com.example.artist.controller.dto.request.ArtistUnsubscriptionPaginationA
 import com.example.artist.controller.dto.response.ArtistFilterTotalCountApiResponse;
 import com.example.artist.controller.dto.response.ArtistSubscriptionApiResponse;
 import com.example.artist.controller.dto.response.ArtistUnsubscriptionApiResponse;
+import com.example.artist.controller.dto.response.NumberOfSubscribedArtistApiResponse;
 import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -80,6 +81,18 @@ public class ArtistController {
                 .hasNext(response.hasNext())
                 .data(data)
                 .build()
+        );
+    }
+
+    @GetMapping("/subscriptions/count")
+    @Operation(summary = "구독한 아티스트 수")
+    public ResponseEntity<NumberOfSubscribedArtistApiResponse> getNumberOfSubscribedArtist(
+        @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+        return ResponseEntity.ok(
+            NumberOfSubscribedArtistApiResponse.from(
+                artistService.countSubscribedArtists(user.userId())
+            )
         );
     }
 

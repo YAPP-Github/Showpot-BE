@@ -2,8 +2,8 @@ package com.example.publish.message;
 
 import java.util.UUID;
 import lombok.Builder;
-import org.example.entity.ArtistSubscription;
 import org.example.entity.artist.Artist;
+import org.example.entity.usershow.ArtistSubscription;
 
 @Builder
 public record ArtistServiceMessage(
