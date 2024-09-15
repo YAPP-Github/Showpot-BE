@@ -4,7 +4,6 @@ import com.example.genre.service.dto.request.GenrePaginationServiceRequest;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.UUID;
-import org.example.security.dto.AuthenticatedUser;
 
 public record GenrePaginationApiRequest(
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
@@ -14,9 +13,7 @@ public record GenrePaginationApiRequest(
     int size
 ) {
 
-    public GenrePaginationServiceRequest toServiceRequest(AuthenticatedUser user) {
-        UUID userId = user == null ? null : user.userId();
-
+    public GenrePaginationServiceRequest toServiceRequest(UUID userId) {
         return GenrePaginationServiceRequest.builder()
             .type(SubscriptionStatusApiType.DEFAULTED)
             .cursor(cursor)

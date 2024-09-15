@@ -13,7 +13,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.dto.response.PaginationServiceResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -57,14 +57,14 @@ public class ShowController {
     @GetMapping("/{showId}")
     @Operation(summary = "공연 상세 조회")
     public ResponseEntity<ShowDetailApiResponse> getShow(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
-        @RequestHeader(value = "viewIdentifier") String viewIdentifier
+        @RequestHeader(value = "Device-Token") String deviceToken
     ) {
-        UUID userId = ValidatorUser.getUserId(user);
+        UUID userId = ValidatorUser.getUserId(info);
 
         return ResponseEntity.ok(
-            ShowDetailApiResponse.from(showService.getShow(userId, showId, viewIdentifier))
+            ShowDetailApiResponse.from(showService.getShow(userId, showId, deviceToken))
         );
     }
 

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTHandler;
 import org.example.security.token.TokenProcessor;
@@ -34,6 +34,10 @@ public class JWTFilter extends OncePerRequestFilter {
             handleAccessToken(request);
         }
 
+        if (request.getHeader("Refresh") != null) {
+            handleRefreshToken(request);
+        }
+
         filterChain.doFilter(request, response);
     }
 
@@ -41,20 +45,35 @@ public class JWTFilter extends OncePerRequestFilter {
         String accessToken = jwtHandler.extractAccessToken(request);
         UserParam userParam = jwtHandler.extractUserFrom(accessToken);
         tokenProcessor.verifyAccessTokenBlacklist(userParam, accessToken);
-        saveOnSecurityContextHolder(userParam);
+        saveOnSecurityContextHolder(userParam, accessToken);
     }
 
-    private void saveOnSecurityContextHolder(UserParam userParam) {
-        AuthenticatedUser authenticatedUser = AuthenticatedUser.builder()
-            .userId(userParam.userId())
-            .role(userParam.role())
-            .build();
+    private void saveOnSecurityContextHolder(UserParam userParam, String accessToken) {
+        var authenticatedInfo = AuthenticatedInfo.getUserWithAccessToken(userParam, accessToken);
 
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
-                authenticatedUser,
+                authenticatedInfo,
                 null,
-                List.of(new SimpleGrantedAuthority(authenticatedUser.role().getAuthority()))
+                List.of(new SimpleGrantedAuthority(authenticatedInfo.role().getAuthority()))
+            )
+        );
+    }
+
+    private void handleRefreshToken(HttpServletRequest request) {
+        String refreshToken = jwtHandler.extractRefreshToken(request);
+        UserParam userParam = jwtHandler.extractUserFrom(refreshToken);
+        saveOnSecurityContextHolderWithRefreshToken(userParam, refreshToken);
+    }
+
+    private void saveOnSecurityContextHolderWithRefreshToken(UserParam userParam, String refreshToken) {
+        var authenticatedInfo = AuthenticatedInfo.getUserWithRefreshToken(userParam, refreshToken);
+
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(
+                authenticatedInfo,
+                null,
+                List.of(new SimpleGrantedAuthority(authenticatedInfo.role().getAuthority()))
             )
         );
     }

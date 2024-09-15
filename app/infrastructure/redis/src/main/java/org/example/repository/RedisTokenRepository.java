@@ -41,7 +41,12 @@ public class RedisTokenRepository implements TokenRepository {
     }
 
     @Override
-    public void deleteRefreshToken(UUID userId) {
-        stringRedisTemplate.delete("RT:" + userId);
+    public boolean deleteRefreshToken(UUID userId) {
+        Boolean result = stringRedisTemplate.delete("RT:" + userId);
+
+        if (result == null) {
+            return false;
+        }
+        return result;
     }
 }

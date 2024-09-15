@@ -23,7 +23,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.dto.response.PaginationServiceResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,14 +47,14 @@ public class UserShowController {
     @Operation(summary = "공연 관심 등록 / 취소")
     public ResponseEntity<ShowInterestApiResponse> interest(
         @PathVariable("showId") UUID showId,
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         return ResponseEntity.ok(
             ShowInterestApiResponse.from(
                 userShowService.interest(
                     ShowInterestServiceRequest.builder()
                         .showId(showId)
-                        .userId(user.userId())
+                        .userId(info.userId())
                         .build()
                 )
             )
@@ -65,10 +65,10 @@ public class UserShowController {
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
         @ParameterObject ShowInterestPaginationApiRequest request,
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         var serviceResponse = userShowService.findInterestShows(
-            request.toServiceRequest(user.userId())
+            request.toServiceRequest(info.userId())
         );
 
         List<InterestShowPaginationApiResponse> response = serviceResponse.data().stream()
@@ -86,11 +86,11 @@ public class UserShowController {
     @GetMapping("/interests/count")
     @Operation(summary = "관심 공연 개수")
     public ResponseEntity<NumberOfInterestShowApiResponse> getNumberOfInterestShow(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         return ResponseEntity.ok(
             NumberOfInterestShowApiResponse.from(
-                userShowService.countInterestShows(user.userId())
+                userShowService.countInterestShows(info.userId())
             )
         );
     }
@@ -101,13 +101,13 @@ public class UserShowController {
         description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
     )
     public ResponseEntity<Void> alert(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
         @RequestParam("ticketingApiType") TicketingApiType type,
         @Valid @RequestBody TicketingAlertReservationApiRequest ticketingAlertReservationRequest
     ) {
         userShowService.alertReservation(
-            ticketingAlertReservationRequest.toServiceRequest(user.userId(), showId, type)
+            ticketingAlertReservationRequest.toServiceRequest(info.userId(), showId, type)
         );
 
         return ResponseEntity.noContent().build();
@@ -116,11 +116,11 @@ public class UserShowController {
     @GetMapping("/alerts")
     @Operation(summary = "공연 알림 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo info,
         @ParameterObject ShowAlertPaginationApiRequest request
     ) {
         PaginationServiceResponse<ShowAlertPaginationServiceParam> alertShows = userShowService.findAlertShows(
-            request.toServiceRequest(user.userId()));
+            request.toServiceRequest(info.userId()));
 
         var showAlertPaginationApiParams = alertShows.data().stream()
             .map(ShowAlertPaginationApiParam::from)
@@ -137,14 +137,14 @@ public class UserShowController {
     @GetMapping("/{showId}/alert/reservations")
     @Operation(summary = "공연 티켓팅 알림 예약 조회")
     public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
-        @AuthenticationPrincipal AuthenticatedUser user,
+        @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
         @RequestParam("ticketingApiType") TicketingApiType type
     ) {
         var now = LocalDateTime.now();
         return ResponseEntity.ok(
             TicketingAlertReservationApiResponse.from(
-                userShowService.findAlertsReservations(user.userId(), showId, type, now)
+                userShowService.findAlertsReservations(info.userId(), showId, type, now)
             )
         );
     }
@@ -152,12 +152,12 @@ public class UserShowController {
     @GetMapping("/alerts/count")
     @Operation(summary = "알림 설정한 공연 개수")
     public ResponseEntity<NumberOfTicketingAlertApiResponse> getNumberOfAlertShow(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         LocalDateTime now = LocalDateTime.now();
         return ResponseEntity.ok(
             NumberOfTicketingAlertApiResponse.from(
-                userShowService.countAlertShows(user.userId(), now)
+                userShowService.countAlertShows(info.userId(), now)
             )
         );
     }
@@ -165,11 +165,11 @@ public class UserShowController {
     @GetMapping("/terminated/ticketing/count")
     @Operation(summary = "티켓팅 알림 설정 후 공연이 종료된 개수")
     public ResponseEntity<TerminatedTicketingShowCountApiResponse> getNumberOfTerminatedTicketingShowCount(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
         return ResponseEntity.ok(
             TerminatedTicketingShowCountApiResponse.from(
-                userShowService.countTerminatedTicketingShow(user.userId())
+                userShowService.countTerminatedTicketingShow(info.userId())
             )
         );
     }
