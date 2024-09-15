@@ -57,10 +57,7 @@ public class TicketingAlertUseCase {
             .map(TicketingAlert::getAlertTime)
             .toList();
 
-        // TODO : FCM Token 쿼리 질의
-
         return TicketingAlertsDomainResponse.builder()
-            .userFcmToken("")
             .name(ticketingAlertReservation.name())
             .showId(ticketingAlertReservation.showId())
             .addAts(addAlerts(ticketingAlertReservation, requestedAlertTimes, existingAlertTimes))

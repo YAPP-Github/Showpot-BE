@@ -14,11 +14,12 @@ public record TicketingAlertsToReserveServiceMessage(
     List<TicketingTimeServiceMessage> deleteAts
 ) {
 
-    public static TicketingAlertsToReserveServiceMessage from(
-        TicketingAlertsDomainResponse responses
+    public static TicketingAlertsToReserveServiceMessage of(
+        TicketingAlertsDomainResponse responses,
+        String userFcmToken
     ) {
         return TicketingAlertsToReserveServiceMessage.builder()
-            .userFcmToken(responses.userFcmToken())
+            .userFcmToken(userFcmToken)
             .name(responses.name())
             .showId(responses.showId())
             .addAts(responses.addAts().stream().map(TicketingTimeServiceMessage::from).toList())

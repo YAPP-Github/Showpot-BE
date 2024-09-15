@@ -31,6 +31,7 @@ import org.example.exception.BusinessException;
 import org.example.usecase.InterestShowUseCase;
 import org.example.usecase.ShowUseCase;
 import org.example.usecase.TicketingAlertUseCase;
+import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 public class UserShowService {
 
     private final ShowUseCase showUseCase;
+    private final UserUseCase userUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final InterestShowUseCase interestShowUseCase;
     private final MessagePublisher messagePublisher;
@@ -76,11 +78,11 @@ public class UserShowService {
     }
 
     public void alertReservation(
-        TicketingAlertReservationServiceRequest ticketingAlertReservationRequest
+        TicketingAlertReservationServiceRequest request
     ) {
         ShowTicketingTime showTicketingTime = showUseCase.findTicketingTimeWithShow(
-            ticketingAlertReservationRequest.showId(),
-            ticketingAlertReservationRequest.type().toDomainType()
+            request.showId(),
+            request.type().toDomainType()
         );
 
         if (showTicketingTime.getTicketingAt().isBefore(LocalDateTime.now())) {
@@ -88,14 +90,17 @@ public class UserShowService {
         }
 
         var domainResponse = ticketingAlertUseCase.alertReservation(
-            ticketingAlertReservationRequest.toDomainRequest(
+            request.toDomainRequest(
                 showTicketingTime.getShow().getTitle(),
                 showTicketingTime.getTicketingAt()
             )
         );
+
+        String userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
-            TicketingAlertsToReserveServiceMessage.from(domainResponse)
+            TicketingAlertsToReserveServiceMessage.of(domainResponse, userFcmToken)
         );
     }
 
