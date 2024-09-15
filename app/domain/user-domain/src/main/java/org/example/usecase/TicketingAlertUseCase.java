@@ -118,9 +118,9 @@ public class TicketingAlertUseCase {
 
     private LocalDateTime calculateAlertTime(LocalDateTime showTime, TicketingAlertTime alertTime) {
         return switch (alertTime) {
-            case BEFORE_24 -> showTime.minusHours(24);
-            case BEFORE_6 -> showTime.minusHours(6);
-            case BEFORE_1 -> showTime.minusHours(1);
+            case BEFORE_A_DAY -> showTime.minusHours(24);
+            case BEFORE_SIX_HOURS -> showTime.minusHours(6);
+            case BEFORE_A_HOUR -> showTime.minusHours(1);
         };
     }
 }

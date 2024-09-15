@@ -12,9 +12,7 @@ import com.example.show.service.dto.request.TicketingAlertReservationServiceRequ
 import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
 import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
-import com.example.show.service.dto.response.TicketingAlertReservationAvailabilityServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
-import com.example.show.service.dto.response.TicketingAlertReservationStatusServiceResponse;
 import com.example.show.service.dto.usershow.response.NumberOfInterestShowServiceResponse;
 import com.example.show.service.dto.usershow.response.NumberOfTicketingAlertServiceResponse;
 import java.time.LocalDateTime;
@@ -124,24 +122,17 @@ public class UserShowService {
     public TicketingAlertReservationServiceResponse findAlertsReservations(
         UUID userId,
         UUID showId,
-        TicketingApiType type
+        TicketingApiType type,
+        LocalDateTime now
     ) {
-        var ticketingAt = showUseCase
-            .findTicketingAlertReservation(showId, type.toDomainType())
-            .getTicketingAt();
+        ShowTicketingTime ticketingTime = showUseCase.findTicketingAlertReservation(showId, type.toDomainType());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlerts(userId, showId);
 
-        var reservedAlerts = ticketingAlertUseCase.findTicketingAlerts(userId, showId)
-            .stream()
-            .map(TicketingAlert::getAlertTime)
-            .toList();
-
-        var status = TicketingAlertReservationStatusServiceResponse.as(
-            reservedAlerts,
-            ticketingAt
+        return TicketingAlertReservationServiceResponse.as(
+            ticketingTime.getTicketingAt(),
+            ticketingAlerts,
+            now
         );
-        var availability = TicketingAlertReservationAvailabilityServiceResponse.as(ticketingAt);
-
-        return TicketingAlertReservationServiceResponse.as(status, availability);
     }
 
     public NumberOfTicketingAlertServiceResponse countAlertShows(UUID userId, LocalDateTime now) {
