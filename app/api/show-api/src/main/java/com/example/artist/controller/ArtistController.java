@@ -17,6 +17,7 @@ import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,10 +45,12 @@ public class ArtistController {
     @Operation(summary = "구독하지 않은 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistUnsubscriptionPaginationApiRequest request,
+        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
     ) {
-        UUID userId = ValidatorUser.getUserId(info);
-        var response = artistService.findArtistUnsubscriptions(request.toServiceRequest(userId));
+        var response = artistService.findArtistUnsubscriptions(
+            request.toServiceRequest(info.userId(), size)
+        );
         var data = response.data().stream()
             .map(ArtistUnsubscriptionPaginationApiParam::from)
             .toList();
@@ -63,10 +67,12 @@ public class ArtistController {
     @Operation(summary = "구독한 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> getSubscribedArtists(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistSubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistSubscriptionPaginationApiRequest request,
+        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
     ) {
         var response = artistService.findArtistSubscriptions(
-            request.toServiceRequest(info.userId()));
+            request.toServiceRequest(info.userId(), size)
+        );
         var data = response.data().stream()
             .map(ArtistSubscriptionPaginationApiParam::from)
             .toList();
@@ -121,10 +127,11 @@ public class ArtistController {
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistSearchPaginationApiRequest request
+        @Valid @ParameterObject ArtistSearchPaginationApiRequest request,
+        @RequestParam(defaultValue = "30") @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.") int size
     ) {
         UUID userId = ValidatorUser.getUserId(info);
-        var response = artistService.searchArtist(request.toServiceRequest(userId));
+        var response = artistService.searchArtist(request.toServiceRequest(userId, size));
         var data = response.data().stream()
             .map(ArtistSearchPaginationApiParam::from)
             .toList();
@@ -144,7 +151,8 @@ public class ArtistController {
         @Valid @RequestBody ArtistFilterTotalCountApiRequest request
     ) {
         var response = artistService.filterArtistTotalCount(
-            request.toServiceRequest(info.userId()));
+            request.toServiceRequest(info.userId())
+        );
 
         return ResponseEntity.ok(
             ArtistFilterTotalCountApiResponse.from(response.totalCount())

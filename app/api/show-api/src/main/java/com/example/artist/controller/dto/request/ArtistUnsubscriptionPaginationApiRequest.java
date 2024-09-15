@@ -7,11 +7,9 @@ import com.example.artist.vo.ArtistSortApiType;
 import com.example.vo.SubscriptionStatusApiType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
 import org.example.util.ValidateStatus;
-import org.example.util.ValidatorCursorSize;
 
 public record ArtistUnsubscriptionPaginationApiRequest(
     @Parameter(
@@ -30,11 +28,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
     List<UUID> genreIds,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 cursorId / 최초 조회라면 null")
-    UUID cursorId,
-
-    @Parameter(description = "조회하는 데이터 개수", required = true)
-    @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.")
-    Integer size
+    UUID cursorId
 ) {
 
     public ArtistUnsubscriptionPaginationApiRequest(
@@ -42,8 +36,7 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         List<ArtistGenderApiType> artistGenderApiTypes,
         List<ArtistApiType> artistApiTypes,
         List<UUID> genreIds,
-        UUID cursorId,
-        Integer size
+        UUID cursorId
     ) {
         this.sortStandard =
             sortStandard == null ? ArtistSortApiType.ENGLISH_NAME_ASC : sortStandard;
@@ -51,11 +44,10 @@ public record ArtistUnsubscriptionPaginationApiRequest(
         this.artistApiTypes = ValidateStatus.checkNullOrEmpty(artistApiTypes);
         this.genreIds = ValidateStatus.checkNullOrEmpty(genreIds);
         this.cursorId = cursorId;
-        this.size = ValidatorCursorSize.getDefaultSize(size);
     }
 
 
-    public ArtistUnsubscriptionPaginationServiceRequest toServiceRequest(UUID userId) {
+    public ArtistUnsubscriptionPaginationServiceRequest toServiceRequest(UUID userId, int size) {
         return ArtistUnsubscriptionPaginationServiceRequest.builder()
             .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
             .sortStandard(sortStandard)
@@ -63,19 +55,6 @@ public record ArtistUnsubscriptionPaginationApiRequest(
             .artistApiTypes(artistApiTypes)
             .genreIds(genreIds)
             .userId(userId)
-            .cursor(cursorId)
-            .size(size)
-            .build();
-    }
-
-    public ArtistUnsubscriptionPaginationServiceRequest toNonUserServiceRequest() {
-        return ArtistUnsubscriptionPaginationServiceRequest.builder()
-            .subscriptionStatusApiType(SubscriptionStatusApiType.UNSUBSCRIBED)
-            .sortStandard(sortStandard)
-            .artistGenderApiTypes(artistGenderApiTypes)
-            .artistApiTypes(artistApiTypes)
-            .genreIds(genreIds)
-            .userId(null)
             .cursor(cursorId)
             .size(size)
             .build();

@@ -14,11 +14,8 @@ public record ArtistSearchPaginationApiRequest(
     )
     ArtistSortApiType sortStandard,
 
-    @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
-    UUID cursor,
-
-    @Parameter(description = "조회하는 데이터 개수", required = true)
-    int size,
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 cursorId / 최초 조회라면 null")
+    UUID cursorId,
 
     @Parameter(description = "검색어", required = true)
     String search
@@ -30,11 +27,11 @@ public record ArtistSearchPaginationApiRequest(
         }
     }
 
-    public ArtistSearchPaginationServiceRequest toServiceRequest(UUID userId) {
+    public ArtistSearchPaginationServiceRequest toServiceRequest(UUID userId, int size) {
         return ArtistSearchPaginationServiceRequest.builder()
             .userId(userId)
             .sortStandard(sortStandard)
-            .cursor(cursor)
+            .cursor(cursorId)
             .size(size)
             .search(search)
             .build();

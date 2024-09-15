@@ -3,9 +3,7 @@ package com.example.show.controller.dto.request;
 import com.example.show.controller.vo.ShowSortApiType;
 import com.example.show.service.dto.request.ShowPaginationServiceRequest;
 import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.validation.constraints.Max;
 import java.util.UUID;
-import org.example.util.ValidatorCursorSize;
 import org.springdoc.core.annotations.ParameterObject;
 
 @ParameterObject
@@ -18,19 +16,15 @@ public record ShowPaginationApiRequest(
     boolean onlyOpenSchedule,
 
     @Parameter(description = "이전 페이지네이션 마지막 데이터의 cursorId / 최초 조회라면 null")
-    UUID cursorId,
-
-    @Parameter(required = true, description = "조회하려는 데이터 개수")
-    @Max(value = 30, message = "조회하는 데이터 개수는 최대 30개 이어야 합니다.")
-    Integer size
+    UUID cursorId
 ) {
 
-    public ShowPaginationServiceRequest toServiceRequest() {
+    public ShowPaginationServiceRequest toServiceRequest(int size) {
         return ShowPaginationServiceRequest.builder()
             .sort(sort)
             .onlyOpenSchedule(onlyOpenSchedule)
             .cursorId(cursorId)
-            .size(ValidatorCursorSize.getDefaultSize(size))
+            .size(size)
             .build();
     }
 }

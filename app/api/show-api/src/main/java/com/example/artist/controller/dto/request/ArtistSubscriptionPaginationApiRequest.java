@@ -16,29 +16,24 @@ public record ArtistSubscriptionPaginationApiRequest(
     )
     ArtistSortApiType sort,
 
-    @Parameter(description = "이전 페이지네이션 마지막 데이터의 ID / 최초 조회라면 null")
-    UUID cursor,
-
-    @Parameter(description = "조회하는 데이터 개수", required = true)
-    int size
+    @Parameter(description = "이전 페이지네이션 마지막 데이터의 cursorId / 최초 조회라면 null")
+    UUID cursorId
 ) {
 
     public ArtistSubscriptionPaginationApiRequest(
         ArtistSortApiType sort,
-        UUID cursor,
-        int size
+        UUID cursorId
     ) {
         this.sort = sort == null ? ArtistSortApiType.ENGLISH_NAME_ASC : sort;
-        this.cursor = cursor;
-        this.size = size;
+        this.cursorId = cursorId;
     }
 
-    public ArtistSubscriptionPaginationServiceRequest toServiceRequest(UUID userId) {
+    public ArtistSubscriptionPaginationServiceRequest toServiceRequest(UUID userId, int size) {
         return ArtistSubscriptionPaginationServiceRequest.builder()
             .subscriptionStatusApiType(SubscriptionStatusApiType.SUBSCRIBED)
             .size(size)
             .sortStandard(sort)
-            .cursor(cursor)
+            .cursor(cursorId)
             .userId(userId)
             .build();
     }
