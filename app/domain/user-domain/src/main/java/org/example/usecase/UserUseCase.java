@@ -9,10 +9,6 @@ import org.example.entity.SocialLogin;
 import org.example.entity.User;
 import org.example.error.UserError;
 import org.example.exception.BusinessException;
-import org.example.repository.interest.InterestShowRepository;
-import org.example.repository.subscription.artistsubscription.ArtistSubscriptionRepository;
-import org.example.repository.subscription.genresubscription.GenreSubscriptionRepository;
-import org.example.repository.ticketing.TicketingAlertRepository;
 import org.example.repository.user.SocialLoginRepository;
 import org.example.repository.user.UserRepository;
 import org.springframework.stereotype.Component;
@@ -24,10 +20,6 @@ public class UserUseCase {
 
     private final UserRepository userRepository;
     private final SocialLoginRepository socialLoginRepository;
-    private final ArtistSubscriptionRepository artistSubscriptionRepository;
-    private final GenreSubscriptionRepository genreSubscriptionRepository;
-    private final InterestShowRepository interestShowRepository;
-    private final TicketingAlertRepository ticketingAlertRepository;
 
     @Transactional
     public User createNewUser(User user, SocialLogin socialLogin) {
@@ -46,8 +38,7 @@ public class UserUseCase {
             request.identifier()
         ).orElseThrow(NoSuchElementException::new);
 
-        User user = userRepository.findById(socialLogin.getUserId())
-            .orElseThrow(NoSuchElementException::new);
+        User user = findByIdOrElseThrow(socialLogin.getUserId());
 
         if (user.isWithdrew()) {
             throw new BusinessException(UserError.WITHDREW_USER_LOGIN);
@@ -58,11 +49,11 @@ public class UserUseCase {
         return user;
     }
 
-    @Transactional
-    public void deleteUser(UUID userId) {
+    public User deleteUser(UUID userId) {
         User user = findByIdOrElseThrow(userId);
         userRepository.delete(user);
-        deleteAssociatedWith(user);
+        socialLoginRepository.deleteAllByUserId(user.getId());
+        return user;
     }
 
     public UserProfileDomainResponse findUserProfile(UUID userId) {
@@ -75,13 +66,5 @@ public class UserUseCase {
 
     public User findByIdOrElseThrow(UUID userId) {
         return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
-    }
-
-    private void deleteAssociatedWith(User user) {
-        socialLoginRepository.deleteAllByUserId(user.getId());
-        artistSubscriptionRepository.deleteAllByUserId(user.getId());
-        genreSubscriptionRepository.deleteAllByUserId(user.getId());
-        interestShowRepository.deleteAllByUserId(user.getId());
-        ticketingAlertRepository.deleteAllByUserId(user.getId());
     }
 }

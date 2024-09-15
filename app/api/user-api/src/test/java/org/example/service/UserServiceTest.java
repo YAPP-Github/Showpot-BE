@@ -15,6 +15,10 @@ import org.example.fixture.dto.UserRequestDtoFixture;
 import org.example.security.dto.UserParam;
 import org.example.security.token.JWTGenerator;
 import org.example.security.token.TokenProcessor;
+import org.example.usecase.ArtistSubscriptionUseCase;
+import org.example.usecase.GenreSubscriptionUseCase;
+import org.example.usecase.InterestShowUseCase;
+import org.example.usecase.TicketingAlertUseCase;
 import org.example.usecase.UserUseCase;
 import org.example.vo.SocialLoginApiType;
 import org.junit.jupiter.api.DisplayName;
@@ -22,17 +26,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.EnumSource.Mode;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class UserServiceTest {
 
     private final UserUseCase userUseCase = mock(UserUseCase.class);
+    private final ArtistSubscriptionUseCase artistSubscriptionUseCase = mock(ArtistSubscriptionUseCase.class);
+    private final GenreSubscriptionUseCase genreSubscriptionUseCase = mock(GenreSubscriptionUseCase.class);
+    private final InterestShowUseCase interestShowUseCase = mock(InterestShowUseCase.class);
+    private final TicketingAlertUseCase ticketingAlertUseCase = mock(TicketingAlertUseCase.class);
     private final JWTGenerator jwtGenerator = mock(JWTGenerator.class);
     private final TokenProcessor tokenProcessor = mock(TokenProcessor.class);
+    private final TransactionTemplate transactionTemplate = mock(TransactionTemplate.class);
 
     private final UserService userService = new UserService(
         userUseCase,
+        artistSubscriptionUseCase,
+        genreSubscriptionUseCase,
+        interestShowUseCase,
+        ticketingAlertUseCase,
         jwtGenerator,
-        tokenProcessor
+        tokenProcessor,
+        transactionTemplate
     );
 
     @ParameterizedTest

@@ -3,7 +3,7 @@ package com.example.publish.message;
 import com.example.show.controller.vo.TicketingAlertTimeApiType;
 import java.time.LocalDateTime;
 import lombok.Builder;
-import org.example.dto.response.TicketingTimeDomainResponse;
+import org.example.dto.usershow.response.TicketingTimeDomainResponse;
 
 @Builder
 public record TicketingTimeServiceMessage(
@@ -19,5 +19,4 @@ public record TicketingTimeServiceMessage(
             .time(TicketingAlertTimeApiType.getTicketingAlertTime(response.time()))
             .build();
     }
-
 }

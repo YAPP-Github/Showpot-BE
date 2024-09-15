@@ -12,9 +12,7 @@ import com.example.show.service.dto.request.TicketingAlertReservationServiceRequ
 import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
 import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
-import com.example.show.service.dto.response.TicketingAlertReservationAvailabilityServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
-import com.example.show.service.dto.response.TicketingAlertReservationStatusServiceResponse;
 import com.example.show.service.dto.usershow.response.NumberOfInterestShowServiceResponse;
 import com.example.show.service.dto.usershow.response.NumberOfTicketingAlertServiceResponse;
 import java.time.LocalDateTime;
@@ -25,14 +23,15 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.dto.show.response.ShowAlertPaginationDomainResponse;
-import org.example.entity.InterestShow;
-import org.example.entity.TicketingAlert;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowTicketingTime;
+import org.example.entity.usershow.InterestShow;
+import org.example.entity.usershow.TicketingAlert;
 import org.example.exception.BusinessException;
 import org.example.usecase.InterestShowUseCase;
 import org.example.usecase.ShowUseCase;
 import org.example.usecase.TicketingAlertUseCase;
+import org.example.usecase.UserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +39,7 @@ import org.springframework.stereotype.Service;
 public class UserShowService {
 
     private final ShowUseCase showUseCase;
+    private final UserUseCase userUseCase;
     private final TicketingAlertUseCase ticketingAlertUseCase;
     private final InterestShowUseCase interestShowUseCase;
     private final MessagePublisher messagePublisher;
@@ -78,11 +78,11 @@ public class UserShowService {
     }
 
     public void alertReservation(
-        TicketingAlertReservationServiceRequest ticketingAlertReservationRequest
+        TicketingAlertReservationServiceRequest request
     ) {
         ShowTicketingTime showTicketingTime = showUseCase.findTicketingTimeWithShow(
-            ticketingAlertReservationRequest.showId(),
-            ticketingAlertReservationRequest.type().toDomainType()
+            request.showId(),
+            request.type().toDomainType()
         );
 
         if (showTicketingTime.getTicketingAt().isBefore(LocalDateTime.now())) {
@@ -90,14 +90,17 @@ public class UserShowService {
         }
 
         var domainResponse = ticketingAlertUseCase.alertReservation(
-            ticketingAlertReservationRequest.toDomainRequest(
+            request.toDomainRequest(
                 showTicketingTime.getShow().getTitle(),
                 showTicketingTime.getTicketingAt()
             )
         );
+
+        String userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
+
         messagePublisher.publishTicketingReservation(
             "ticketingAlert",
-            TicketingAlertsToReserveServiceMessage.from(domainResponse)
+            TicketingAlertsToReserveServiceMessage.of(domainResponse, userFcmToken)
         );
     }
 
@@ -124,24 +127,17 @@ public class UserShowService {
     public TicketingAlertReservationServiceResponse findAlertsReservations(
         UUID userId,
         UUID showId,
-        TicketingApiType type
+        TicketingApiType type,
+        LocalDateTime now
     ) {
-        var ticketingAt = showUseCase
-            .findTicketingAlertReservation(showId, type.toDomainType())
-            .getTicketingAt();
+        ShowTicketingTime ticketingTime = showUseCase.findTicketingAlertReservation(showId, type.toDomainType());
+        List<TicketingAlert> ticketingAlerts = ticketingAlertUseCase.findTicketingAlerts(userId, showId);
 
-        var reservedAlerts = ticketingAlertUseCase.findTicketingAlerts(userId, showId)
-            .stream()
-            .map(TicketingAlert::getAlertTime)
-            .toList();
-
-        var status = TicketingAlertReservationStatusServiceResponse.as(
-            reservedAlerts,
-            ticketingAt
+        return TicketingAlertReservationServiceResponse.as(
+            ticketingTime.getTicketingAt(),
+            ticketingAlerts,
+            now
         );
-        var availability = TicketingAlertReservationAvailabilityServiceResponse.as(ticketingAt);
-
-        return TicketingAlertReservationServiceResponse.as(status, availability);
     }
 
     public NumberOfTicketingAlertServiceResponse countAlertShows(UUID userId, LocalDateTime now) {
