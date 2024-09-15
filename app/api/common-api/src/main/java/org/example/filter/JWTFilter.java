@@ -49,13 +49,13 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private void saveOnSecurityContextHolder(UserParam userParam, String accessToken) {
-        var authenticatedUser = AuthenticatedInfo.getUserWithAccessToken(userParam, accessToken);
+        var authenticatedInfo = AuthenticatedInfo.getUserWithAccessToken(userParam, accessToken);
 
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
-                authenticatedUser,
+                authenticatedInfo,
                 null,
-                List.of(new SimpleGrantedAuthority(authenticatedUser.role().getAuthority()))
+                List.of(new SimpleGrantedAuthority(authenticatedInfo.role().getAuthority()))
             )
         );
     }
@@ -67,13 +67,13 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private void saveOnSecurityContextHolderWithRefreshToken(UserParam userParam, String refreshToken) {
-        var authenticatedUser = AuthenticatedInfo.getUserWithRefreshToken(userParam, refreshToken);
+        var authenticatedInfo = AuthenticatedInfo.getUserWithRefreshToken(userParam, refreshToken);
 
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
-                authenticatedUser,
+                authenticatedInfo,
                 null,
-                List.of(new SimpleGrantedAuthority(authenticatedUser.role().getAuthority()))
+                List.of(new SimpleGrantedAuthority(authenticatedInfo.role().getAuthority()))
             )
         );
     }
