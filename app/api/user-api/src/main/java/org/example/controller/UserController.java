@@ -5,13 +5,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.request.LoginApiRequest;
-import org.example.controller.dto.request.LogoutApiRequest;
-import org.example.controller.dto.request.ReissueApiRequest;
-import org.example.controller.dto.request.WithdrawalApiRequest;
 import org.example.controller.dto.response.LoginApiResponse;
 import org.example.controller.dto.response.ReissueApiResponse;
 import org.example.controller.dto.response.UserProfileApiResponse;
-import org.example.security.dto.AuthenticatedUser;
+import org.example.security.dto.AuthenticatedInfo;
 import org.example.security.dto.TokenParam;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -46,29 +43,27 @@ public class UserController {
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
     public ResponseEntity<Void> logout(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @Valid @RequestBody LogoutApiRequest request
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        userService.logout(request.toServiceRequest(user.userId()));
+        userService.logout(info.userId(), info.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/withdrawal")
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<Void> withdraw(
-        @AuthenticationPrincipal AuthenticatedUser user,
-        @Valid @RequestBody WithdrawalApiRequest request
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        userService.withdraw(request.toServiceRequest(user.userId()));
+        userService.withdraw(info.userId(), info.accessToken());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급")
     public ResponseEntity<ReissueApiResponse> reissue(
-        @Valid @RequestBody ReissueApiRequest request
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        TokenParam reissueToken = userService.reissue(request.toServiceRequest());
+        TokenParam reissueToken = userService.reissue(info.userId(), info.refreshToken());
 
         return ResponseEntity.ok(
             ReissueApiResponse.builder()
@@ -81,9 +76,9 @@ public class UserController {
     @GetMapping("/profile")
     @Operation(summary = "회원 정보")
     public ResponseEntity<UserProfileApiResponse> profile(
-        @AuthenticationPrincipal AuthenticatedUser user
+        @AuthenticationPrincipal AuthenticatedInfo info
     ) {
-        var profile = userService.findUserProfile(user.userId());
+        var profile = userService.findUserProfile(info.userId());
 
         return ResponseEntity.ok(
             UserProfileApiResponse.from(profile)

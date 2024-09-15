@@ -15,5 +15,5 @@ public interface TokenRepository {
 
     boolean existAccessTokenInBlacklist(UUID userId, String accessToken);
 
-    void deleteRefreshToken(UUID userId);
+    boolean deleteRefreshToken(UUID userId);
 }

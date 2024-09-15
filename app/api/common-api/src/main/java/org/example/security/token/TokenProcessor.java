@@ -40,7 +40,10 @@ public class TokenProcessor {
         UUID userId
     ) {
         tokenRepository.saveBlacklistAccessToken(userId, accessToken);
-        tokenRepository.deleteRefreshToken(userId);
+
+        if (!tokenRepository.deleteRefreshToken(userId)) {
+            throw new BusinessException(TokenError.INVALID_TOKEN);
+        }
     }
 
     private String getExistRefreshToken(UserParam userParam) {

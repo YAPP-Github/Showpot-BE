@@ -14,12 +14,12 @@ public class RedisViewCountComponent implements ViewCountComponent {
     private final StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public boolean validateViewCount(UUID showId, String viewIdentifier) {
-        String viewStatus = stringRedisTemplate.opsForValue().get("VC:" + viewIdentifier + showId);
+    public boolean validateViewCount(UUID showId, String deviceToken) {
+        String viewStatus = stringRedisTemplate.opsForValue().get("VC:" + deviceToken + showId);
 
         if (viewStatus == null) {
             stringRedisTemplate.opsForValue()
-                .set("VC:" + viewIdentifier + showId, "1", 1, TimeUnit.DAYS);
+                .set("VC:" + deviceToken + ":" + showId, "1", 1, TimeUnit.DAYS);
             return true;
         }
 

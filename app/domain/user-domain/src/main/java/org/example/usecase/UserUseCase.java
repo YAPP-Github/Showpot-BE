@@ -38,8 +38,7 @@ public class UserUseCase {
             request.identifier()
         ).orElseThrow(NoSuchElementException::new);
 
-        User user = userRepository.findById(socialLogin.getUserId())
-            .orElseThrow(NoSuchElementException::new);
+        User user = findByIdOrElseThrow(socialLogin.getUserId());
 
         if (user.isWithdrew()) {
             throw new BusinessException(UserError.WITHDREW_USER_LOGIN);
@@ -51,7 +50,7 @@ public class UserUseCase {
     }
 
     public User deleteUser(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        User user = findByIdOrElseThrow(userId);
         userRepository.delete(user);
         socialLoginRepository.deleteAllByUserId(user.getId());
         return user;
@@ -63,5 +62,9 @@ public class UserUseCase {
 
     public String findUserFcmTokensByUserId(UUID userId) {
         return userRepository.findUserFcmTokensByUserId(userId).orElseThrow(NoSuchElementException::new);
+    }
+
+    public User findByIdOrElseThrow(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
     }
 }
