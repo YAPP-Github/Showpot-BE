@@ -11,7 +11,6 @@ import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.request.ShowUninterestedServiceRequest;
 import com.example.show.service.dto.request.TicketingAlertReservationServiceRequest;
 import com.example.show.service.dto.response.InterestShowPaginationServiceResponse;
-import com.example.show.service.dto.response.ShowInterestServiceResponse;
 import com.example.show.service.dto.response.TerminatedTicketingShowCountServiceResponse;
 import com.example.show.service.dto.response.TicketingAlertReservationServiceResponse;
 import com.example.show.service.dto.usershow.response.NumberOfInterestShowServiceResponse;
