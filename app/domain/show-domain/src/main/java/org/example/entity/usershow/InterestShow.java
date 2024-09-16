@@ -29,11 +29,10 @@ public class InterestShow extends BaseEntity {
     }
 
     public void interest() {
-        if (this.getIsDeleted()) {
-            this.revive();
-            return;
-        }
+        this.revive();
+    }
 
+    public void uninterested() {
         this.softDelete();
     }
 

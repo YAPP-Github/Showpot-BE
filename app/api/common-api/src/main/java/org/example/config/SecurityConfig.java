@@ -96,6 +96,7 @@ public class SecurityConfig {
             antMatcher(HttpMethod.GET, "/api/v1/shows/interests"),
             antMatcher(HttpMethod.GET, "/api/v1/users/shows/interests/count"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/{showId}/interests"),
+            antMatcher(HttpMethod.POST, "/api/v1/shows/{showId}/uninterested"),
             antMatcher(HttpMethod.POST, "/api/v1/shows/{showId}/alert"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/alerts"),
             antMatcher(HttpMethod.GET, "/api/v1/shows/{showId}/alert/reservations"),
