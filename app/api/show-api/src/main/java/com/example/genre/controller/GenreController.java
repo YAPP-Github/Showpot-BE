@@ -41,7 +41,7 @@ public class GenreController {
     @Operation(summary = "장르 전체 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject GenrePaginationApiRequest request
+        @Valid @ParameterObject GenrePaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(info);
         var response = genreService.findGenres(request.toServiceRequest(userId));
@@ -61,10 +61,11 @@ public class GenreController {
     @Operation(summary = "구독하지 않은 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreUnsubscriptionPaginationApiParam>> getUnsubscribedGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject GenreUnsubscriptionPaginationApiRequest request
+        @Valid @ParameterObject GenreUnsubscriptionPaginationApiRequest request
     ) {
         var response = genreService.findGenreUnSubscriptions(
-            request.toServiceRequest(info.userId()));
+            request.toServiceRequest(info.userId())
+        );
         var data = response.data().stream()
             .map(GenreUnsubscriptionPaginationApiParam::new)
             .toList();
@@ -81,9 +82,11 @@ public class GenreController {
     @Operation(summary = "구독한 장르 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenreSubscriptionPaginationApiParam>> getSubscribedGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject GenreSubscriptionPaginationApiRequest request
+        @Valid @ParameterObject GenreSubscriptionPaginationApiRequest request
     ) {
-        var response = genreService.findGenreSubscriptions(request.toServiceRequest(info.userId()));
+        var response = genreService.findGenreSubscriptions(
+            request.toServiceRequest(info.userId())
+        );
         var data = response.data().stream()
             .map(GenreSubscriptionPaginationApiParam::new)
             .toList();

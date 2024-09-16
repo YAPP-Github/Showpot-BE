@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - develop
-      - temp-develop
 
 jobs:
   build:

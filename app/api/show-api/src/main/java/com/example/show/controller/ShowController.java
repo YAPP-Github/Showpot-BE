@@ -6,13 +6,12 @@ import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
 import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.service.ShowService;
-import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
-import org.example.dto.response.PaginationServiceResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
 import org.springdoc.core.annotations.ParameterObject;
@@ -35,12 +34,9 @@ public class ShowController {
     @GetMapping
     @Operation(summary = "공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowPaginationApiParam>> getShows(
-        @ParameterObject ShowPaginationApiRequest request
+        @Valid @ParameterObject ShowPaginationApiRequest request
     ) {
-        PaginationServiceResponse<ShowPaginationServiceResponse> response = showService.findShows(
-            request.toServiceRequest()
-        );
-
+        var response = showService.findShows(request.toServiceRequest());
         var data = response.data().stream()
             .map(ShowPaginationApiParam::from)
             .toList();
@@ -71,7 +67,7 @@ public class ShowController {
     @GetMapping("/search")
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ShowSearchPaginationApiParam>> search(
-        @ParameterObject ShowSearchPaginationApiRequest request
+        @Valid @ParameterObject ShowSearchPaginationApiRequest request
     ) {
         var response = showService.searchShow(request.toServiceRequest());
 

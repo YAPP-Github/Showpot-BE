@@ -12,7 +12,6 @@ import com.example.show.controller.dto.usershow.response.NumberOfInterestShowApi
 import com.example.show.controller.dto.usershow.response.NumberOfTicketingAlertApiResponse;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.service.UserShowService;
-import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationApiResponse;
-import org.example.dto.response.PaginationServiceResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -64,8 +62,8 @@ public class UserShowController {
     @GetMapping("/interests")
     @Operation(summary = "공연 관심 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
-        @ParameterObject ShowInterestPaginationApiRequest request,
-        @AuthenticationPrincipal AuthenticatedInfo info
+        @AuthenticationPrincipal AuthenticatedInfo info,
+        @Valid @ParameterObject ShowInterestPaginationApiRequest request
     ) {
         var serviceResponse = userShowService.findInterestShows(
             request.toServiceRequest(info.userId())
@@ -117,11 +115,11 @@ public class UserShowController {
     @Operation(summary = "공연 알림 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ShowAlertPaginationApiRequest request
+        @Valid @ParameterObject ShowAlertPaginationApiRequest request
     ) {
-        PaginationServiceResponse<ShowAlertPaginationServiceParam> alertShows = userShowService.findAlertShows(
-            request.toServiceRequest(info.userId()));
-
+        var alertShows = userShowService.findAlertShows(
+            request.toServiceRequest(info.userId())
+        );
         var showAlertPaginationApiParams = alertShows.data().stream()
             .map(ShowAlertPaginationApiParam::from)
             .toList();
