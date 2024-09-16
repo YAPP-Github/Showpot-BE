@@ -22,7 +22,7 @@ public record ShowSearchPaginationApiRequest(
         }
     }
 
-    public ShowSearchPaginationServiceRequest toServiceRequest(int size) {
+    public ShowSearchPaginationServiceRequest toServiceRequest() {
         return ShowSearchPaginationServiceRequest.builder()
             .cursor(cursorId)
             .size(size)

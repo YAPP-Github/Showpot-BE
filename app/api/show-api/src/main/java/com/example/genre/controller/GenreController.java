@@ -41,7 +41,7 @@ public class GenreController {
     @Operation(summary = "장르 전체 목록 조회")
     public ResponseEntity<PaginationApiResponse<GenrePaginationApiParam>> getGenres(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject GenrePaginationApiRequest request
+        @Valid @ParameterObject GenrePaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(info);
         var response = genreService.findGenres(request.toServiceRequest(userId));

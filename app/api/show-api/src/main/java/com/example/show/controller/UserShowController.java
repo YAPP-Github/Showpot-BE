@@ -115,7 +115,7 @@ public class UserShowController {
     @Operation(summary = "공연 알림 목록 조회")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ShowAlertPaginationApiRequest request
+        @Valid @ParameterObject ShowAlertPaginationApiRequest request
     ) {
         var alertShows = userShowService.findAlertShows(
             request.toServiceRequest(info.userId())
