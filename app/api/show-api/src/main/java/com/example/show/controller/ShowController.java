@@ -47,7 +47,6 @@ public class ShowController {
                 .hasNext(response.hasNext())
                 .build()
         );
-
     }
 
     @GetMapping("/{showId}")
