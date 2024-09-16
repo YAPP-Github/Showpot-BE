@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,12 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    @Operation(summary = "로그아웃")
+    @Operation(
+        summary = "로그아웃",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        }
+    )
     public ResponseEntity<Void> logout(
         @AuthenticationPrincipal AuthenticatedInfo info
     ) {
@@ -50,7 +56,12 @@ public class UserController {
     }
 
     @PostMapping("/withdrawal")
-    @Operation(summary = "회원탈퇴")
+    @Operation(
+        summary = "회원탈퇴",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        }
+    )
     public ResponseEntity<Void> withdraw(
         @AuthenticationPrincipal AuthenticatedInfo info
     ) {
