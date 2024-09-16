@@ -43,10 +43,11 @@ public class ArtistController {
     @Operation(summary = "구독하지 않은 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistUnsubscriptionPaginationApiParam>> getUnsubscribedArtists(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
-        UUID userId = ValidatorUser.getUserId(info);
-        var response = artistService.findArtistUnsubscriptions(request.toServiceRequest(userId));
+        var response = artistService.findArtistUnsubscriptions(
+            request.toServiceRequest(info.userId())
+        );
         var data = response.data().stream()
             .map(ArtistUnsubscriptionPaginationApiParam::from)
             .toList();
@@ -63,10 +64,11 @@ public class ArtistController {
     @Operation(summary = "구독한 아티스트 목록 조회")
     public ResponseEntity<PaginationApiResponse<ArtistSubscriptionPaginationApiParam>> getSubscribedArtists(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistSubscriptionPaginationApiRequest request
+        @Valid @ParameterObject ArtistSubscriptionPaginationApiRequest request
     ) {
         var response = artistService.findArtistSubscriptions(
-            request.toServiceRequest(info.userId()));
+            request.toServiceRequest(info.userId())
+        );
         var data = response.data().stream()
             .map(ArtistSubscriptionPaginationApiParam::from)
             .toList();
@@ -121,7 +123,7 @@ public class ArtistController {
     @Operation(summary = "검색하기")
     public ResponseEntity<PaginationApiResponse<ArtistSearchPaginationApiParam>> search(
         @AuthenticationPrincipal AuthenticatedInfo info,
-        @ParameterObject ArtistSearchPaginationApiRequest request
+        @Valid @ParameterObject ArtistSearchPaginationApiRequest request
     ) {
         UUID userId = ValidatorUser.getUserId(info);
         var response = artistService.searchArtist(request.toServiceRequest(userId));
@@ -144,7 +146,8 @@ public class ArtistController {
         @Valid @RequestBody ArtistFilterTotalCountApiRequest request
     ) {
         var response = artistService.filterArtistTotalCount(
-            request.toServiceRequest(info.userId()));
+            request.toServiceRequest(info.userId())
+        );
 
         return ResponseEntity.ok(
             ArtistFilterTotalCountApiResponse.from(response.totalCount())
