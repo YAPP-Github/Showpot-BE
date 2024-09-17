@@ -14,6 +14,7 @@ import com.example.show.service.UserShowService;
 import com.example.show.service.dto.request.ShowInterestServiceRequest;
 import com.example.show.service.dto.request.ShowUninterestedServiceRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
@@ -42,7 +43,12 @@ public class UserShowController {
     private final UserShowService userShowService;
 
     @PostMapping("/{showId}/interests")
-    @Operation(summary = "공연 관심 등록")
+    @Operation(
+        summary = "공연 관심 등록",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        }
+    )
     public ResponseEntity<Void> interest(
         @PathVariable("showId") UUID showId,
         @AuthenticationPrincipal AuthenticatedInfo info
@@ -57,7 +63,12 @@ public class UserShowController {
     }
 
     @PostMapping("/{showId}/uninterested")
-    @Operation(summary = "공연 관심 취소")
+    @Operation(
+        summary = "공연 관심 취소",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        }
+    )
     public ResponseEntity<Void> uninterested(
         @PathVariable("showId") UUID showId,
         @AuthenticationPrincipal AuthenticatedInfo info
@@ -108,7 +119,10 @@ public class UserShowController {
     @PostMapping("/{showId}/alert")
     @Operation(
         summary = "공연 티켓팅 알림 등록 / 취소",
-        description = "요청한 알람 시간으로 기존 내용을 덮어쓴다."
+        description = "요청한 알람 시간으로 기존 내용을 덮어쓴다.",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content")
+        }
     )
     public ResponseEntity<Void> alert(
         @AuthenticationPrincipal AuthenticatedInfo info,
