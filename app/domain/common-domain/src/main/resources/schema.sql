@@ -1,11 +1,14 @@
 alter table if exists artist_search
-    drop constraint if exists fk_artist_artist_search;
+drop
+constraint if exists fk_artist_artist_search;
 
 alter table if exists show_search
-    drop constraint if exists fk_show_show_search;
+drop
+constraint if exists fk_show_show_search;
 
 alter table if exists show_ticketing_time
-    drop constraint if exists fk_show_show_ticketing_time;
+drop
+constraint if exists fk_show_show_ticketing_time;
 
 drop table if exists admin cascade;
 drop table if exists artist cascade;
@@ -47,6 +50,7 @@ create table artist
     type         varchar(255) not null check (type in ('SOLO', 'GROUP')),
     country      varchar(255) not null,
     image        varchar(255) not null,
+    spotify_id   varchar(255),
     primary key (id)
 );
 
@@ -181,13 +185,13 @@ create table show_ticketing_time
 
 create table social_login
 (
-    id                uuid         not null,
-    created_at        timestamp(3) not null,
-    updated_at        timestamp(3) not null,
-    is_deleted        boolean      not null,
-    user_id           uuid         not null,
+    id                uuid          not null,
+    created_at        timestamp(3)  not null,
+    updated_at        timestamp(3)  not null,
+    is_deleted        boolean       not null,
+    user_id           uuid          not null,
     identifier        varchar(1000) not null,
-    social_login_type varchar(255) not null check (social_login_type in ('GOOGLE', 'KAKAO', 'APPLE')),
+    social_login_type varchar(255)  not null check (social_login_type in ('GOOGLE', 'KAKAO', 'APPLE')),
     primary key (id),
     constraint unq_social_login_type_identifier unique (social_login_type, identifier)
 );
@@ -207,32 +211,32 @@ create table ticketing_alert
 
 create table users
 (
-    id         uuid         not null,
-    created_at timestamp(3) not null,
-    updated_at timestamp(3) not null,
-    is_deleted boolean      not null,
-    birth      date         not null,
+    id         uuid          not null,
+    created_at timestamp(3)  not null,
+    updated_at timestamp(3)  not null,
+    is_deleted boolean       not null,
+    birth      date          not null,
     fcm_token  varchar(1000) not null,
-    gender     varchar(255) not null check (gender in ('MAN', 'WOMAN', 'NOT_CHOSEN')),
-    nickname   varchar(255) not null unique,
-    role       varchar(255) not null check (role in ('GUEST', 'USER', 'ADMIN')),
+    gender     varchar(255)  not null check (gender in ('MAN', 'WOMAN', 'NOT_CHOSEN')),
+    nickname   varchar(255)  not null unique,
+    role       varchar(255)  not null check (role in ('GUEST', 'USER', 'ADMIN')),
     primary key (id)
 );
 
 alter table if exists artist_search
     add constraint fk_artist_artist_search
-        foreign key (artist_id)
-            references artist;
+    foreign key (artist_id)
+    references artist;
 
 alter table if exists show_search
     add constraint fk_show_show_search
-        foreign key (show_id)
-            references show;
+    foreign key (show_id)
+    references show;
 
 alter table if exists show_ticketing_time
     add constraint fk_show_show_ticketing_time
-        foreign key (show_id)
-            references show;
+    foreign key (show_id)
+    references show;
 
 
 --- alarm schema ---
@@ -269,14 +273,14 @@ create table alarm.genre_subscription
 
 create table alarm.ticketing_alert
 (
-    is_deleted          boolean      not null,
-    created_at          timestamp(3) not null,
-    schedule_alert_time timestamp(3) not null,
-    updated_at          timestamp(3) not null,
-    id                  uuid         not null,
-    show_id             uuid         not null,
+    is_deleted           boolean      not null,
+    created_at           timestamp(3) not null,
+    schedule_alert_time  timestamp(3) not null,
+    updated_at           timestamp(3) not null,
+    id                   uuid         not null,
+    show_id              uuid         not null,
     ticketing_alert_time varchar(255) not null,
-    name                varchar(255) not null,
-    user_fcm_token      varchar(255) not null,
+    name                 varchar(255) not null,
+    user_fcm_token       varchar(255) not null,
     primary key (id)
 );
