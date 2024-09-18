@@ -17,8 +17,10 @@ import com.example.artist.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
@@ -52,10 +54,15 @@ public class ArtistController {
             .map(ArtistUnsubscriptionPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ArtistUnsubscriptionPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
@@ -73,10 +80,15 @@ public class ArtistController {
             .map(ArtistSubscriptionPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ArtistSubscriptionPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
@@ -131,10 +143,15 @@ public class ArtistController {
             .map(ArtistSearchPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
