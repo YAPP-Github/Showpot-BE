@@ -45,7 +45,8 @@ public class ArtistService {
 
         List<UUID> subscribedArtistIds = request.userId() == null
             ? List.of()
-            : artistSubscriptionUseCase.findArtistSubscriptionByUserId(request.userId()).stream()
+            : artistSubscriptionUseCase.findArtistSubscriptionByUserId(request.userId())
+                .stream()
                 .map(ArtistSubscription::getArtistId)
                 .toList();
 

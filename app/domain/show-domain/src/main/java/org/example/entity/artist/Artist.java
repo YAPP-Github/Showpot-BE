@@ -42,6 +42,9 @@ public class Artist extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private ArtistType artistType;
 
+    @Column(name = "spotify_id", nullable = true)
+    private String spotifyId;
+
     @Builder
     private Artist(
         String koreanName,

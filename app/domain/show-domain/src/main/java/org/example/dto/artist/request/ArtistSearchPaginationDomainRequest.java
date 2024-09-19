@@ -9,9 +9,9 @@ public record ArtistSearchPaginationDomainRequest(
 
     UUID userId,
     ArtistSortType sortStandard,
-    UUID cursor,
-    int size,
-    String search
+    String search,
+    int limit,
+    int offset
 ) {
 
 }
