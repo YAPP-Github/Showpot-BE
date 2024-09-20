@@ -12,7 +12,7 @@ import org.spotify.property.SpotifyProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class SpotifyClient {
     private final SpotifyProperty spotifyProperty;
 
     public ResponseEntity<SpotifyAccessTokenResponse> requestToken() {
-        ResponseEntity<SpotifyAccessTokenResponse> result = WebClient.builder()
+        ResponseEntity<SpotifyAccessTokenResponse> result = RestClient.builder()
             .baseUrl(spotifyProperty.tokenApiURL())
             .build()
             .post()
@@ -32,35 +32,29 @@ public class SpotifyClient {
                     .clientId(spotifyProperty.clientId())
                     .clientSecret(spotifyProperty.clientSecret())
                     .build()
-                    .getFormInserter()
+                    .toHttpRequestMap()
             )
             .retrieve()
-            .toEntity(SpotifyAccessTokenResponse.class)
-            .block();
+            .toEntity(SpotifyAccessTokenResponse.class);
 
-        if (result == null
-            || !result.getStatusCode().is2xxSuccessful()
-        ) {
+        if (!result.getStatusCode().is2xxSuccessful()) {
             log.error("Spotify API request access token failed: {}", result);
             throw new RuntimeException("Spotify API request access token failed");
         }
 
-        // TODO: handle error
         return result;
     }
 
     public SpotifySearchResponse searchArtist(ArtistSearchSpotifyRequest request) {
-        ResponseEntity<SpotifySearchResponse> result = WebClient.builder()
+        ResponseEntity<SpotifySearchResponse> result = RestClient.builder()
             .defaultHeader("Authorization", "Bearer " + request.accessToken())
             .baseUrl(spotifyProperty.apiURL() + "/search?" + request.toQueryParameter())
             .build()
             .get()
             .retrieve()
-            .toEntity(SpotifySearchResponse.class)
-            .block();
+            .toEntity(SpotifySearchResponse.class);
 
-        if (result == null
-            || result.getStatusCode() == HttpStatus.UNAUTHORIZED
+        if (result.getStatusCode() == HttpStatus.UNAUTHORIZED
             || result.getStatusCode() == HttpStatus.FORBIDDEN
             || result.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS
         ) {
