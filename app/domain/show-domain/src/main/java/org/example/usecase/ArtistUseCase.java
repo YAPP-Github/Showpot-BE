@@ -19,14 +19,12 @@ import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
-import org.example.entity.artist.ArtistSearch;
 import org.example.entity.show.ShowArtist;
 import org.example.port.ArtistSearchPort;
 import org.example.port.dto.request.ArtistSearchPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
-import org.example.repository.artist.artistsearch.ArtistSearchRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArtistUseCase {
 
     private final ArtistRepository artistRepository;
-    private final ArtistSearchRepository artistSearchRepository;
     private final ArtistGenreRepository artistGenreRepository;
     private final ShowArtistRepository showArtistRepository;
     private final ArtistSearchPort artistSearchPort;
@@ -44,9 +41,6 @@ public class ArtistUseCase {
     @Transactional
     public void save(Artist artist, List<UUID> genreIds) {
         artistRepository.save(artist);
-
-        List<ArtistSearch> artistSearches = artist.toArtistSearch();
-        artistSearchRepository.saveAll(artistSearches);
 
         List<ArtistGenre> artistGenres = artist.toArtistGenre(genreIds);
         artistGenreRepository.saveAll(artistGenres);
@@ -91,24 +85,7 @@ public class ArtistUseCase {
         Artist artist = findArtistById(id);
         artist.changeArtistInfo(newArtist);
 
-        updateArtistSearch(artist);
         updateArtistGenre(newGenreIds, artist);
-    }
-
-    private void updateArtistSearch(Artist artist) {
-        List<ArtistSearch> newArtistSearches = artist.toArtistSearch();
-        List<ArtistSearch> currentArtistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(
-            artist.getId());
-
-        List<ArtistSearch> artistSearchesToAdd = newArtistSearches.stream()
-            .filter(newArtistSearch -> !currentArtistSearches.contains(newArtistSearch))
-            .toList();
-        artistSearchRepository.saveAll(artistSearchesToAdd);
-
-        List<ArtistSearch> artistSearchesToRemove = currentArtistSearches.stream()
-            .filter(curArtistSearch -> !newArtistSearches.contains(curArtistSearch))
-            .toList();
-        artistSearchesToRemove.forEach(BaseEntity::softDelete);
     }
 
     private void updateArtistGenre(List<UUID> newGenreIds, Artist artist) {
@@ -143,10 +120,6 @@ public class ArtistUseCase {
         List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(
             artist.getId());
         showArtists.forEach(BaseEntity::softDelete);
-
-        List<ArtistSearch> artistSearches = artistSearchRepository.findAllByArtistIdAndIsDeletedFalse(
-            artist.getId());
-        artistSearches.forEach(BaseEntity::softDelete);
     }
 
     public ArtistSearchPaginationDomainResponse searchArtist(

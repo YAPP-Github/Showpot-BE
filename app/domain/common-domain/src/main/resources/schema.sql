@@ -1,7 +1,3 @@
-alter table if exists artist_search
-drop
-constraint if exists fk_artist_artist_search;
-
 alter table if exists show_search
 drop
 constraint if exists fk_show_show_search;
@@ -13,7 +9,6 @@ constraint if exists fk_show_show_ticketing_time;
 drop table if exists admin cascade;
 drop table if exists artist cascade;
 drop table if exists artist_genre cascade;
-drop table if exists artist_search cascade;
 drop table if exists artist_subscription cascade;
 drop table if exists genre cascade;
 drop table if exists genre_subscription cascade;
@@ -62,17 +57,6 @@ create table artist_genre
     is_deleted boolean      not null,
     artist_id  uuid         not null,
     genre_id   uuid         not null,
-    primary key (id)
-);
-
-create table artist_search
-(
-    id         uuid         not null,
-    created_at timestamp(3) not null,
-    updated_at timestamp(3) not null,
-    is_deleted boolean      not null,
-    name       varchar(255) not null,
-    artist_id  uuid         not null,
     primary key (id)
 );
 
@@ -222,11 +206,6 @@ create table users
     role       varchar(255)  not null check (role in ('GUEST', 'USER', 'ADMIN')),
     primary key (id)
 );
-
-alter table if exists artist_search
-    add constraint fk_artist_artist_search
-    foreign key (artist_id)
-    references artist;
 
 alter table if exists show_search
     add constraint fk_show_show_search
