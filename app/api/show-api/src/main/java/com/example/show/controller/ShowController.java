@@ -9,8 +9,10 @@ import com.example.show.service.ShowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
@@ -41,10 +43,15 @@ public class ShowController {
             .map(ShowPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ShowPaginationApiParam>builder()
                 .data(data)
                 .hasNext(response.hasNext())
+                .cursor(cursor)
                 .build()
         );
     }
@@ -69,15 +76,19 @@ public class ShowController {
         @Valid @ParameterObject ShowSearchPaginationApiRequest request
     ) {
         var response = showService.searchShow(request.toServiceRequest());
-
         var data = response.data().stream()
             .map(ShowSearchPaginationApiParam::from)
             .toList();
+
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
 
         return ResponseEntity.ok(
             PaginationApiResponse.<ShowSearchPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }

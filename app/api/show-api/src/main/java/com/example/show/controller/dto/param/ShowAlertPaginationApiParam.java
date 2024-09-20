@@ -3,7 +3,6 @@ package com.example.show.controller.dto.param;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
-import org.example.dto.response.CursorApiResponse;
 import org.example.util.DateTimeUtil;
 
 public record ShowAlertPaginationApiParam(
@@ -26,10 +25,7 @@ public record ShowAlertPaginationApiParam(
     String location,
 
     @Schema(description = "공연 이미지 URL")
-    String imageURL,
-
-    @Schema(description = "조회한 데이터의 Cursor")
-    CursorApiResponse cursor
+    String imageURL
 ) {
 
     public static ShowAlertPaginationApiParam from(ShowAlertPaginationServiceParam serviceParam) {
@@ -40,8 +36,7 @@ public record ShowAlertPaginationApiParam(
             DateTimeUtil.formatDate(serviceParam.endAt()),
             DateTimeUtil.formatDateTime(serviceParam.ticketingAt()),
             serviceParam.location(),
-            serviceParam.image(),
-            CursorApiResponse.toCursorResponse(serviceParam.showTicketingTimeId(),  serviceParam.ticketingAt())
+            serviceParam.image()
         );
     }
 }
