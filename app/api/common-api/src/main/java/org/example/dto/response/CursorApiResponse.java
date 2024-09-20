@@ -18,11 +18,11 @@ public record CursorApiResponse(
     }
 
     public static CursorApiResponse toCursorId(UUID id) {
-        return new CursorApiResponse(id, "");
+        return new CursorApiResponse(id, null);
     }
 
     public static CursorApiResponse noneCursor() {
-        return new CursorApiResponse(null, "");
+        return new CursorApiResponse(null, null);
     }
 
     public static <T> T getLastElement(List<T> list) {
