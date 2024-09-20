@@ -18,9 +18,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.springdoc.core.annotations.ParameterObject;
@@ -91,15 +92,23 @@ public class UserShowController {
         var serviceResponse = userShowService.findInterestShows(
             request.toServiceRequest(info.userId())
         );
-
-        List<InterestShowPaginationApiResponse> response = serviceResponse.data().stream()
+        var response = serviceResponse.data().stream()
             .map(InterestShowPaginationApiResponse::from)
             .toList();
+
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(serviceResponse.data()))
+            .map(element -> CursorApiResponse.toCursorResponse(
+                    element.interestShowId(),
+                    element.interestedAt()
+                )
+            )
+            .orElse(CursorApiResponse.noneCursor());
 
         return ResponseEntity.ok(
             PaginationApiResponse.<InterestShowPaginationApiResponse>builder()
                 .data(response)
                 .hasNext(serviceResponse.hasNext())
+                .cursor(cursor)
                 .build()
         );
     }
@@ -146,14 +155,23 @@ public class UserShowController {
         var alertShows = userShowService.findAlertShows(
             request.toServiceRequest(info.userId())
         );
-        var showAlertPaginationApiParams = alertShows.data().stream()
+        var response = alertShows.data().stream()
             .map(ShowAlertPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(alertShows.data()))
+            .map(element -> CursorApiResponse.toCursorResponse(
+                    element.showTicketingTimeId(),
+                    element.ticketingAt()
+                )
+            )
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ShowAlertPaginationApiParam>builder()
-                .data(showAlertPaginationApiParams)
+                .data(response)
                 .hasNext(alertShows.hasNext())
+                .cursor(cursor)
                 .build()
         );
     }

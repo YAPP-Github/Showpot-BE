@@ -15,8 +15,10 @@ import com.example.genre.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.example.util.ValidatorUser;
@@ -49,10 +51,15 @@ public class GenreController {
             .map(GenrePaginationApiParam::new)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<GenrePaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
@@ -70,10 +77,15 @@ public class GenreController {
             .map(GenreUnsubscriptionPaginationApiParam::new)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<GenreUnsubscriptionPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
@@ -91,10 +103,15 @@ public class GenreController {
             .map(GenreSubscriptionPaginationApiParam::new)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
+            .map(element -> CursorApiResponse.toCursorId(element.id()))
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<GenreSubscriptionPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
+                .cursor(cursor)
                 .build()
         );
     }
