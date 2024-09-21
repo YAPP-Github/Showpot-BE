@@ -3,13 +3,11 @@ package com.example.artist.service;
 import com.example.artist.service.dto.param.ArtistSearchPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistSubscriptionPaginationServiceParam;
 import com.example.artist.service.dto.param.ArtistUnsubscriptionPaginationServiceParam;
-import com.example.artist.service.dto.request.ArtistFilterTotalCountServiceRequest;
 import com.example.artist.service.dto.request.ArtistSearchPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionPaginationServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
-import com.example.artist.service.dto.response.ArtistFilterTotalCountServiceResponse;
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import com.example.artist.service.dto.response.NumberOfSubscribedArtistServiceResponse;
@@ -17,7 +15,6 @@ import com.example.publish.MessagePublisher;
 import com.example.publish.message.ArtistServiceMessage;
 import com.example.publish.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.response.PaginationServiceResponse;
@@ -61,23 +58,9 @@ public class ArtistService {
         return PaginationServiceResponse.of(data, response.hasNext());
     }
 
-    public ArtistFilterTotalCountServiceResponse filterArtistTotalCount(
-        ArtistFilterTotalCountServiceRequest request
-    ) {
-        List<UUID> subscriptionArtistIds = getSubscriptionArtistIds(request.userId());
-
-        try {
-            return new ArtistFilterTotalCountServiceResponse(
-                artistUseCase.findFilterArtistTotalCount(
-                    request.toDomainRequest(subscriptionArtistIds)
-                )
-            );
-        } catch (NoSuchElementException e) {
-            return ArtistFilterTotalCountServiceResponse.noneTotalCount();
-        }
-    }
-
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
+        // TODO : spotifyArtsit ID로 존재하는지 확인
+        //
         var existArtistsInRequest = artistUseCase.findAllArtistInIds(request.artistIds());
         var existArtistIdsInRequest = existArtistsInRequest.stream()
             .map(Artist::getId)
@@ -187,7 +170,8 @@ public class ArtistService {
     }
 
     private List<UUID> getSubscriptionArtistIds(UUID userId) {
-        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(userId);
+        List<ArtistSubscription> subscriptions = artistSubscriptionUseCase.findSubscriptionList(
+            userId);
 
         return subscriptions.stream()
             .map(ArtistSubscription::getArtistId)

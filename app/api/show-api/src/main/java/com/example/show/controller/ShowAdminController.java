@@ -1,6 +1,6 @@
 package com.example.show.controller;
 
-import com.example.artist.controller.dto.response.ArtistKoreanNameApiResponse;
+import com.example.artist.controller.dto.response.ArtistNameApiResponse;
 import com.example.artist.service.ArtistAdminService;
 import com.example.genre.controller.dto.response.GenreNameApiResponse;
 import com.example.genre.service.GenreAdminService;
@@ -33,9 +33,9 @@ public class ShowAdminController {
 
     @GetMapping
     public String createShow(Model model) {
-        List<ArtistKoreanNameApiResponse> artists = artistAdminService.findAllArtistKoreanName()
+        List<ArtistNameApiResponse> artists = artistAdminService.findAllArtistName()
             .stream()
-            .map(ArtistKoreanNameApiResponse::new)
+            .map(ArtistNameApiResponse::new)
             .toList();
 
         List<GenreNameApiResponse> genres = genreAdminService.findAllGenres()
@@ -68,9 +68,9 @@ public class ShowAdminController {
 
     @GetMapping("/{id}")
     public String findShow(@PathVariable("id") UUID id, Model model) {
-        List<ArtistKoreanNameApiResponse> artists = artistAdminService.findAllArtistKoreanName()
+        List<ArtistNameApiResponse> artists = artistAdminService.findAllArtistName()
             .stream()
-            .map(ArtistKoreanNameApiResponse::new)
+            .map(ArtistNameApiResponse::new)
             .toList();
 
         List<GenreNameApiResponse> genres = genreAdminService.findAllGenres()

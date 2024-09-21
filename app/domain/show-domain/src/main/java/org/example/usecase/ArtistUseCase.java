@@ -7,19 +7,15 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.request.ArtistFilterTotalCountDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
-import org.example.dto.artist.response.ArtistFilterTotalCountDomainResponse;
-import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
-import org.example.dto.artist.response.ArtistKoreanNamesWithShowIdDomainResponse;
+import org.example.dto.artist.response.ArtistNameDomainResponse;
+import org.example.dto.artist.response.ArtistNamesWithShowIdDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
-import org.example.entity.BaseEntity;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
-import org.example.entity.show.ShowArtist;
 import org.example.port.ArtistSearchPort;
 import org.example.port.dto.request.ArtistSearchPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
@@ -50,16 +46,12 @@ public class ArtistUseCase {
         return artistRepository.findAllWithGenreNames();
     }
 
-    public List<ArtistKoreanNameDomainResponse> findAllArtistKoreanName() {
+    public List<ArtistNameDomainResponse> findAllArtistKoreanName() {
         return artistRepository.findAllArtistKoreanName();
     }
 
-    public ArtistDetailDomainResponse findArtistDetailById(UUID id) {
-        return artistRepository.findArtistWithGenreNamesById(id)
-            .orElseThrow(NoSuchElementException::new);
-    }
 
-    public List<ArtistKoreanNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
+    public List<ArtistNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
         return showArtistRepository.findArtistKoreanNamesWithShowId();
     }
 
@@ -71,55 +63,6 @@ public class ArtistUseCase {
         ArtistPaginationDomainRequest request
     ) {
         return artistRepository.findAllWithCursorPagination(request);
-    }
-
-    public ArtistFilterTotalCountDomainResponse findFilterArtistTotalCount(
-        ArtistFilterTotalCountDomainRequest request
-    ) {
-        return artistRepository.findFilterArtistTotalCount(request)
-            .orElseThrow(NoSuchElementException::new);
-    }
-
-    @Transactional
-    public void updateArtist(UUID id, Artist newArtist, List<UUID> newGenreIds) {
-        Artist artist = findArtistById(id);
-        artist.changeArtistInfo(newArtist);
-
-        updateArtistGenre(newGenreIds, artist);
-    }
-
-    private void updateArtistGenre(List<UUID> newGenreIds, Artist artist) {
-        List<ArtistGenre> currentGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(
-            artist.getId());
-
-        List<UUID> currentGenreIds = currentGenres.stream()
-            .map(ArtistGenre::getGenreId)
-            .toList();
-
-        List<UUID> genreIdsToAdd = newGenreIds.stream()
-            .filter(newGenreId -> !currentGenreIds.contains(newGenreId))
-            .toList();
-        List<ArtistGenre> artistGenresToAdd = artist.toArtistGenre(genreIdsToAdd);
-        artistGenreRepository.saveAll(artistGenresToAdd);
-
-        List<ArtistGenre> artistGenresToRemove = currentGenres.stream()
-            .filter(ag -> !newGenreIds.contains(ag.getGenreId()))
-            .toList();
-        artistGenresToRemove.forEach(BaseEntity::softDelete);
-    }
-
-    @Transactional
-    public void deleteArtist(UUID id) {
-        Artist artist = findArtistById(id);
-        artist.softDelete();
-
-        List<ArtistGenre> artistGenres = artistGenreRepository.findAllByArtistIdAndIsDeletedFalse(
-            artist.getId());
-        artistGenres.forEach(BaseEntity::softDelete);
-
-        List<ShowArtist> showArtists = showArtistRepository.findAllByArtistIdAndIsDeletedFalse(
-            artist.getId());
-        showArtists.forEach(BaseEntity::softDelete);
     }
 
     public ArtistSearchPaginationDomainResponse searchArtist(
@@ -134,7 +77,9 @@ public class ArtistUseCase {
                 .build()
         );
 
-        Map<String, Artist> artistBySpotifyId = getArtistBySpotifyId(response.getSpotifyArtistIds());
+        Map<String, Artist> artistBySpotifyId = getArtistBySpotifyId(
+            response.getSpotifyArtistIds()
+        );
 
         return ArtistSearchPaginationDomainResponse.builder()
             .data(

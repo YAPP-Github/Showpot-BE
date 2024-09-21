@@ -39,13 +39,9 @@ create table artist
     created_at   timestamp(3) not null,
     updated_at   timestamp(3) not null,
     is_deleted   boolean      not null,
-    korean_name  varchar(255) not null,
-    english_name varchar(255) not null,
-    gender       varchar(255) not null check (gender in ('MAN', 'WOMAN', 'MIXED')),
-    type         varchar(255) not null check (type in ('SOLO', 'GROUP')),
-    country      varchar(255) not null,
+    name         varchar(255) not null,
     image        varchar(255) not null,
-    spotify_id   varchar(255),
+    spotify_id   varchar(255) not null unique,
     primary key (id)
 );
 

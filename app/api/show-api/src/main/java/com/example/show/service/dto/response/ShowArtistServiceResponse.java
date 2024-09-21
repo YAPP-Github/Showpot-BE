@@ -7,16 +7,14 @@ import org.example.dto.artist.response.ArtistDomainResponse;
 @Builder
 public record ShowArtistServiceResponse(
     UUID id,
-    String koreanName,
-    String englishName,
+    String name,
     String image
 ) {
 
     public static ShowArtistServiceResponse from(ArtistDomainResponse artist) {
         return ShowArtistServiceResponse.builder()
             .id(artist.id())
-            .koreanName(artist.koreanName())
-            .englishName(artist.englishName())
+            .name(artist.name())
             .image(artist.image())
             .build();
     }

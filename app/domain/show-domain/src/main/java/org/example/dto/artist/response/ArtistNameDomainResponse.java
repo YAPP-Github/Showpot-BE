@@ -2,9 +2,9 @@ package org.example.dto.artist.response;
 
 import java.util.UUID;
 
-public record ArtistKoreanNameDomainResponse(
+public record ArtistNameDomainResponse(
     UUID id,
-    String koreanName
+    String name
 ) {
 
 }

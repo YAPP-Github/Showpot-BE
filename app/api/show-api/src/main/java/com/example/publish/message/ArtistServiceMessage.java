@@ -14,7 +14,7 @@ public record ArtistServiceMessage(
     public static ArtistServiceMessage from(Artist artist) {
         return ArtistServiceMessage.builder()
             .id(artist.getId())
-            .name(artist.getEnglishName())
+            .name(artist.getName())
             .build();
     }
 

@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.response.ArtistDomainResponse;
-import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
+import org.example.dto.artist.response.ArtistNameDomainResponse;
 import org.example.dto.genre.response.GenreDomainResponse;
 import org.example.dto.genre.response.GenreNameDomainResponse;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
@@ -241,12 +241,8 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
                 Projections.constructor(
                     ArtistDomainResponse.class,
                     artist.id,
-                    artist.koreanName,
-                    artist.englishName,
-                    artist.image,
-                    artist.country,
-                    artist.artistGender,
-                    artist.artistType
+                    artist.name,
+                    artist.image
                 )
             ),
             set(
@@ -285,9 +281,9 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
             ),
             set(
                 Projections.constructor(
-                    ArtistKoreanNameDomainResponse.class,
+                    ArtistNameDomainResponse.class,
                     artist.id,
-                    artist.koreanName
+                    artist.name
                 )
             ),
             set(
