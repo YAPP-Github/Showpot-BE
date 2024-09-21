@@ -11,4 +11,5 @@ dependencies {
     implementation project(":app:infrastructure:redis")
     implementation project(":app:infrastructure:s3")
     implementation project(":app:infrastructure:message-queue")
+    implementation project(":app:infrastructure:spotify")
 }

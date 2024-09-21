@@ -4,6 +4,6 @@ spring:
   profiles:
     active: local
     group:
-      local: domain-local, cloud-local
-      dev: domain-dev, cloud-dev
-      prod: domain-prod, cloud-prod
+      local: domain-local, cloud-local, spotify-local
+      dev: domain-dev, cloud-dev, spotify-dev
+      prod: domain-prod, cloud-prod, spotify-prod

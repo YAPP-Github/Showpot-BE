@@ -143,15 +143,11 @@ public class ArtistController {
             .map(ArtistSearchPaginationApiParam::from)
             .toList();
 
-        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(data))
-            .map(element -> CursorApiResponse.toCursorId(element.id()))
-            .orElse(CursorApiResponse.noneCursor());
-
         return ResponseEntity.ok(
             PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
-                .cursor(cursor)
+                .cursor(CursorApiResponse.toCursorId(request.cursorId() + 1))
                 .build()
         );
     }
