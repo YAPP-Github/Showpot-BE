@@ -84,7 +84,7 @@ public class UserShowController {
     }
 
     @GetMapping("/interests")
-    @Operation(summary = "공연 관심 목록 조회")
+    @Operation(summary = "관심 등록한 공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @Valid @ParameterObject ShowInterestPaginationApiRequest request
@@ -147,7 +147,7 @@ public class UserShowController {
     }
 
     @GetMapping("/alerts")
-    @Operation(summary = "공연 알림 목록 조회")
+    @Operation(summary = "알림 설정한 공연 목록")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @Valid @ParameterObject ShowAlertPaginationApiRequest request
@@ -177,7 +177,7 @@ public class UserShowController {
     }
 
     @GetMapping("/{showId}/alert/reservations")
-    @Operation(summary = "공연 티켓팅 알림 예약 조회")
+    @Operation(summary = "티켓팅한 공연의 알림 예약 현황")
     public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
