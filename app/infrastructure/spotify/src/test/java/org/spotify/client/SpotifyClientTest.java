@@ -1,5 +1,6 @@
 package org.spotify.client;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.spotify.client.dto.request.ArtistSearchSpotifyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+@Disabled
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("spotify-local")

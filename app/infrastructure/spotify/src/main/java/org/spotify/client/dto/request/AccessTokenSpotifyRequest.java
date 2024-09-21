@@ -1,8 +1,7 @@
 package org.spotify.client.dto.request;
 
 import lombok.Builder;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.BodyInserters.FormInserter;
+import org.springframework.util.LinkedMultiValueMap;
 
 public record AccessTokenSpotifyRequest(
     String grantType,
@@ -25,9 +24,13 @@ public record AccessTokenSpotifyRequest(
         );
     }
 
-    public FormInserter<String> getFormInserter() {
-        return BodyInserters.fromFormData("grant_type", grantType)
-            .with("client_id", clientId)
-            .with("client_secret", clientSecret);
+    public LinkedMultiValueMap<String, String> toHttpRequestMap() {
+        return new LinkedMultiValueMap<>() {
+            {
+                add("grant_type", grantType);
+                add("client_id", clientId);
+                add("client_secret", clientSecret);
+            }
+        };
     }
 }
