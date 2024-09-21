@@ -45,8 +45,9 @@ public class ArtistController {
         @AuthenticationPrincipal AuthenticatedInfo info,
         @Valid @ParameterObject ArtistUnsubscriptionPaginationApiRequest request
     ) {
+        UUID userId = ValidatorUser.getUserId(info);
         var response = artistService.findArtistUnsubscriptions(
-            request.toServiceRequest(info.userId())
+            request.toServiceRequest(userId)
         );
         var data = response.data().stream()
             .map(ArtistUnsubscriptionPaginationApiParam::from)
