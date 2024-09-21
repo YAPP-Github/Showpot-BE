@@ -4,7 +4,6 @@ import com.example.show.service.dto.response.InterestShowPaginationServiceRespon
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 import lombok.Builder;
-import org.example.dto.response.CursorApiResponse;
 import org.example.util.DateTimeUtil;
 
 @Builder
@@ -25,10 +24,7 @@ public record InterestShowPaginationApiResponse(
     String location,
 
     @Schema(description = "공연 포스터 이미지 주소")
-    String posterImageURL,
-
-    @Schema(description = "조회한 데이터의 Cursor")
-    CursorApiResponse cursor
+    String posterImageURL
 ) {
 
     public static InterestShowPaginationApiResponse from(
@@ -41,7 +37,6 @@ public record InterestShowPaginationApiResponse(
             .endAt(DateTimeUtil.formatDate(response.endAt()))
             .location(response.location())
             .posterImageURL(response.posterImageURL())
-            .cursor(CursorApiResponse.toCursorResponse(response.interestShowId(), response.interestedAt()))
             .build();
     }
 }

@@ -18,9 +18,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.springdoc.core.annotations.ParameterObject;
@@ -83,7 +84,7 @@ public class UserShowController {
     }
 
     @GetMapping("/interests")
-    @Operation(summary = "공연 관심 목록 조회")
+    @Operation(summary = "관심 등록한 공연 목록 조회")
     public ResponseEntity<PaginationApiResponse<InterestShowPaginationApiResponse>> getInterests(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @Valid @ParameterObject ShowInterestPaginationApiRequest request
@@ -91,15 +92,23 @@ public class UserShowController {
         var serviceResponse = userShowService.findInterestShows(
             request.toServiceRequest(info.userId())
         );
-
-        List<InterestShowPaginationApiResponse> response = serviceResponse.data().stream()
+        var response = serviceResponse.data().stream()
             .map(InterestShowPaginationApiResponse::from)
             .toList();
+
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(serviceResponse.data()))
+            .map(element -> CursorApiResponse.toCursorResponse(
+                    element.interestShowId(),
+                    element.interestedAt()
+                )
+            )
+            .orElse(CursorApiResponse.noneCursor());
 
         return ResponseEntity.ok(
             PaginationApiResponse.<InterestShowPaginationApiResponse>builder()
                 .data(response)
                 .hasNext(serviceResponse.hasNext())
+                .cursor(cursor)
                 .build()
         );
     }
@@ -138,7 +147,7 @@ public class UserShowController {
     }
 
     @GetMapping("/alerts")
-    @Operation(summary = "공연 알림 목록 조회")
+    @Operation(summary = "알림 설정한 공연 목록")
     public ResponseEntity<PaginationApiResponse<ShowAlertPaginationApiParam>> getAlerts(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @Valid @ParameterObject ShowAlertPaginationApiRequest request
@@ -146,20 +155,29 @@ public class UserShowController {
         var alertShows = userShowService.findAlertShows(
             request.toServiceRequest(info.userId())
         );
-        var showAlertPaginationApiParams = alertShows.data().stream()
+        var response = alertShows.data().stream()
             .map(ShowAlertPaginationApiParam::from)
             .toList();
 
+        CursorApiResponse cursor = Optional.ofNullable(CursorApiResponse.getLastElement(alertShows.data()))
+            .map(element -> CursorApiResponse.toCursorResponse(
+                    element.showTicketingTimeId(),
+                    element.ticketingAt()
+                )
+            )
+            .orElse(CursorApiResponse.noneCursor());
+
         return ResponseEntity.ok(
             PaginationApiResponse.<ShowAlertPaginationApiParam>builder()
-                .data(showAlertPaginationApiParams)
+                .data(response)
                 .hasNext(alertShows.hasNext())
+                .cursor(cursor)
                 .build()
         );
     }
 
     @GetMapping("/{showId}/alert/reservations")
-    @Operation(summary = "공연 티켓팅 알림 예약 조회")
+    @Operation(summary = "티켓팅한 공연의 알림 예약 현황")
     public ResponseEntity<TicketingAlertReservationApiResponse> getAlertsReservations(
         @AuthenticationPrincipal AuthenticatedInfo info,
         @PathVariable("showId") UUID showId,
