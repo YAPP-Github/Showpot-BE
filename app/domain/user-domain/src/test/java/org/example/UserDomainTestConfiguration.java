@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import(value = {UserDomainConfig.class})
-public class ShowDomainTestConfiguration {
+public class UserDomainTestConfiguration {
 
 }
