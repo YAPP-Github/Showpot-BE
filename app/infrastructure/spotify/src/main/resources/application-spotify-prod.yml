@@ -1,0 +1,5 @@
+spotify:
+  client-id: ${SPOTIFY_CLIENT_ID}
+  client-secret: ${SPOTIFY_CLIENT_SECRET}
+  token-api-url: https://accounts.spotify.com/api/token
+  api-url: https://api.spotify.com/v1

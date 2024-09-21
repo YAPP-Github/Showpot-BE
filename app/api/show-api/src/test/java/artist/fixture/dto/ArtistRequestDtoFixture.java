@@ -53,8 +53,7 @@ public class ArtistRequestDtoFixture {
         String search
     ) {
         return ArtistSearchPaginationServiceRequest.builder()
-            .sortStandard(ArtistSortApiType.ENGLISH_NAME_ASC)
-            .cursor(UUID.randomUUID())
+            .cursor(0)
             .size(size)
             .search(search)
             .build();
