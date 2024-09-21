@@ -21,7 +21,7 @@ public class SpotifyClient {
 
     private final SpotifyProperty spotifyProperty;
 
-    public ResponseEntity<SpotifyAccessTokenResponse> requestToken() {
+    public String requestAccessToken() {
         ResponseEntity<SpotifyAccessTokenResponse> result = RestClient.builder()
             .baseUrl(spotifyProperty.tokenApiURL())
             .build()
@@ -37,12 +37,13 @@ public class SpotifyClient {
             .retrieve()
             .toEntity(SpotifyAccessTokenResponse.class);
 
-        if (!result.getStatusCode().is2xxSuccessful()) {
+        if (result.getBody() == null || !result.getStatusCode().is2xxSuccessful()
+        ) {
             log.error("Spotify API request access token failed: {}", result);
             throw new RuntimeException("Spotify API request access token failed");
         }
 
-        return result;
+        return result.getBody().accessToken();
     }
 
     public SpotifySearchResponse searchArtist(ArtistSearchSpotifyRequest request) {

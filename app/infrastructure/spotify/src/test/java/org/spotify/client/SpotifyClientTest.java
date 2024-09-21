@@ -19,13 +19,13 @@ class SpotifyClientTest {
 
     @Test
     void requestToken() {
-        var result = spotifyClient.requestToken();
-        System.out.println(result.getBody().accessToken());
+        var accessToken = spotifyClient.requestAccessToken();
+        System.out.println(accessToken);
     }
 
     @Test
     void searchArtist() {
-        String accessToken = spotifyClient.requestToken().getBody().accessToken();
+        String accessToken = spotifyClient.requestAccessToken();
         var result = spotifyClient.searchArtist(
             ArtistSearchSpotifyRequest.builder()
                 .accessToken(accessToken)

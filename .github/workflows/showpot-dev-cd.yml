@@ -30,7 +30,8 @@ jobs:
           files: |
             ./app/src/main/resources/application-dev.yml, 
             ./app/src/main/resources/application-cloud-dev.yml, 
-            ./app/domain/common-domain/src/main/resources/application-domain-dev.yml
+            ./app/domain/common-domain/src/main/resources/application-domain-dev.yml,
+            ./app/infrastructure/spotify/src/main/resources/application-spotify-dev.yml
         env:
           token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
           cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
@@ -40,6 +41,8 @@ jobs:
           spring.datasource.url: ${{ secrets.APPLICATION_DATASOURCE_URL_DEV }}
           spring.datasource.username: ${{ secrets.APPLICATION_DATASOURCE_USERNAME }}
           spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
+          spotify.client-id: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          spotify.client-secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build -Dspring.profiles.active=dev

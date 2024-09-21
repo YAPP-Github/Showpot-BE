@@ -12,4 +12,7 @@ public record SpotifyArtistSearchResponse(
     List<SpotifyArtistItemSearchResponse> items
 ) {
 
+    public boolean hasNext() {
+        return limit * (offset + 1) <= total;
+    }
 }

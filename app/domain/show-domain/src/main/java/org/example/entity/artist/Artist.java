@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.entity.BaseEntity;
-import org.example.util.StringNormalizer;
 import org.example.vo.ArtistGender;
 import org.example.vo.ArtistType;
 
@@ -42,6 +41,9 @@ public class Artist extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private ArtistType artistType;
 
+    @Column(name = "spotify_id", nullable = true)
+    private String spotifyId;
+
     @Builder
     private Artist(
         String koreanName,
@@ -66,20 +68,6 @@ public class Artist extends BaseEntity {
                 .genreId(genreId)
                 .build())
             .toList();
-    }
-
-    public List<ArtistSearch> toArtistSearch() {
-        return List.of(
-            createArtistSearch(StringNormalizer.removeWhitespaceAndLowerCase(koreanName)),
-            createArtistSearch(StringNormalizer.removeWhitespaceAndLowerCase(englishName))
-        );
-    }
-
-    private ArtistSearch createArtistSearch(String name) {
-        return ArtistSearch.builder()
-            .name(name)
-            .artist(this)
-            .build();
     }
 
     public void changeArtistInfo(Artist newArtist) {
