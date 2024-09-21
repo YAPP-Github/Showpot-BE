@@ -19,7 +19,6 @@ public record ArtistSearchPaginationApiRequest(
 ) {
 
     public ArtistSearchPaginationApiRequest {
-
         if (cursorId == null) {
             cursorId = 0;
         }
