@@ -165,12 +165,12 @@ class ArtistServiceTest {
     @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 반환한다.")
     void artistSubscribe() {
         //given
-        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        List<String> spotifyArtistsId = List.of("123", "456");
         UUID userId = UUID.randomUUID();
-        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
-        var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
+        var request = new ArtistSubscriptionServiceRequest(spotifyArtistsId, userId);
+        var existArtistsInRequest = ArtistFixture.manSoloArtists(2);
         given(
-            artistUseCase.findAllArtistInIds(request.artistIds())
+            artistUseCase.findOrCreateArtistBySpotifyId(request.spotifyArtistIds())
         ).willReturn(
             existArtistsInRequest
         );
@@ -178,7 +178,7 @@ class ArtistServiceTest {
         var existArtistIdsInRequest = existArtistsInRequest.stream()
             .map(Artist::getId)
             .toList();
-        int artistSubscriptionCount = 2;
+        int artistSubscriptionCount = 3;
         given(
             artistSubscriptionUseCase.subscribe(existArtistIdsInRequest, userId)
         ).willReturn(
@@ -193,7 +193,7 @@ class ArtistServiceTest {
             soft -> {
                 soft.assertThat(result).isNotNull();
                 soft.assertThat(result.successSubscriptionArtistIds().size())
-                    .isEqualTo(artistSubscriptionCount);
+                    .isEqualTo(existArtistsInRequest.size());
             }
         );
     }
@@ -202,12 +202,12 @@ class ArtistServiceTest {
     @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 메시지 발행한다.")
     void artistSubscribePublishMessage() {
         //given
-        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        List<String> spotifyArtistsId = List.of("123", "456");
         UUID userId = UUID.randomUUID();
-        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
+        var request = new ArtistSubscriptionServiceRequest(spotifyArtistsId, userId);
         var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
         given(
-            artistUseCase.findAllArtistInIds(request.artistIds())
+            artistUseCase.findOrCreateArtistBySpotifyId(request.spotifyArtistIds())
         ).willReturn(
             existArtistsInRequest
         );

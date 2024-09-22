@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record ArtistSubscriptionServiceRequest(
-    List<UUID> artistIds,
+    List<String> spotifyArtistIds,
     UUID userId
 ) {
 

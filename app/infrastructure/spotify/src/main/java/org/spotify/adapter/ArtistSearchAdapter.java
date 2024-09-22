@@ -1,12 +1,17 @@
 package org.spotify.adapter;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.port.ArtistSearchPort;
+import org.example.port.dto.param.ArtistSearchPortParam;
 import org.example.port.dto.request.ArtistSearchPortRequest;
+import org.example.port.dto.request.FindArtistsPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
 import org.example.vo.ArtistSearchAdapterType;
 import org.spotify.client.SpotifyClient;
 import org.spotify.client.dto.request.ArtistSearchSpotifyRequest;
+import org.spotify.client.dto.request.FindArtistsSpotifyRequest;
+import org.spotify.client.dto.response.FindSpotifyResponse;
 import org.spotify.client.dto.response.SpotifySearchResponse;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +39,20 @@ public class ArtistSearchAdapter implements ArtistSearchPort {
                 .search(request.search())
                 .limit(request.limit())
                 .offset(request.offset())
+                .build()
+        );
+
+        return response.toPortResponse();
+    }
+
+    @Override
+    public List<ArtistSearchPortParam> findArtistsBySpotifyArtistId(
+        FindArtistsPortRequest request
+    ) {
+        FindSpotifyResponse response = spotifyClient.findArtistsBySpotifyArtistId(
+            FindArtistsSpotifyRequest.builder()
+                .accessToken(request.accessToken())
+                .spotifyArtistIds(request.spotifyArtistIds())
                 .build()
         );
 

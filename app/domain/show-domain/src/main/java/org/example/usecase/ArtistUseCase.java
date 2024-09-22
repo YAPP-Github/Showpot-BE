@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
@@ -17,7 +18,9 @@ import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
 import org.example.port.ArtistSearchPort;
+import org.example.port.dto.param.ArtistSearchPortParam;
 import org.example.port.dto.request.ArtistSearchPortRequest;
+import org.example.port.dto.request.FindArtistsPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
@@ -57,6 +60,48 @@ public class ArtistUseCase {
 
     public List<Artist> findAllArtistInIds(List<UUID> ids) {
         return artistRepository.findAllInIds(ids);
+    }
+
+    public List<Artist> findOrCreateArtistBySpotifyId(List<String> spotifyIds) {
+        List<Artist> existArtists = artistRepository.findArtistsBySpotifyIdIn(spotifyIds);
+
+        List<String> existSpotifyIds = existArtists.stream()
+            .map(Artist::getSpotifyId)
+            .toList();
+
+        List<String> notExistSpotifyIds = spotifyIds.stream()
+            .filter(id -> !existSpotifyIds.contains(id))
+            .toList();
+
+        if (notExistSpotifyIds.isEmpty()) {
+            return existArtists;
+        }
+
+        List<ArtistSearchPortParam> response = artistSearchPort.findArtistsBySpotifyArtistId(
+            FindArtistsPortRequest.builder()
+                .accessToken(artistSearchPort.getAccessToken())
+                .spotifyArtistIds(notExistSpotifyIds)
+                .build()
+        );
+
+        return getArtists(existArtists, response);
+    }
+
+    @Transactional
+    public List<Artist> getArtists(
+        List<Artist> existArtists,
+        List<ArtistSearchPortParam> response
+    ) {
+        List<Artist> newArtists = response.stream()
+            .map(artistParam -> {
+                Artist newArtist = artistParam.toArtist();
+                artistRepository.save(newArtist);
+
+                return newArtist;
+            })
+            .toList();
+
+        return Stream.concat(existArtists.stream(), newArtists.stream()).toList();
     }
 
     public ArtistPaginationDomainResponse findAllArtistInCursorPagination(

@@ -21,4 +21,12 @@ public record ArtistSearchPortParam(
             .spotifyId(id)
             .build();
     }
+
+    public Artist toArtist() {
+        return Artist.builder()
+            .name(name)
+            .spotifyId(id)
+            .image(imageURL)
+            .build();
+    }
 }

@@ -59,23 +59,23 @@ public class ArtistService {
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {
-        // TODO : spotifyArtsit ID로 존재하는지 확인
-        //
-        var existArtistsInRequest = artistUseCase.findAllArtistInIds(request.artistIds());
-        var existArtistIdsInRequest = existArtistsInRequest.stream()
+        List<Artist> requestArtist = artistUseCase.findOrCreateArtistBySpotifyId(
+            request.spotifyArtistIds()
+        );
+
+        List<UUID> requestArtistIds = requestArtist.stream()
             .map(Artist::getId)
             .toList();
 
-        var subscriptions = artistSubscriptionUseCase.subscribe(
-            existArtistIdsInRequest,
-            request.userId()
-        );
-        var subscribedArtistIds = subscriptions.stream()
+        var subscribedArtistIds = artistSubscriptionUseCase
+            .subscribe(requestArtistIds, request.userId()).stream()
             .map(ArtistSubscription::getArtistId)
             .toList();
 
-        var subscribedArtistMessage = artistUseCase.findAllArtistInIds(subscribedArtistIds)
-            .stream().map(ArtistServiceMessage::from)
+        var subscribedArtistMessage = requestArtist
+            .stream()
+            .filter(artist -> subscribedArtistIds.contains(artist.getId()))
+            .map(ArtistServiceMessage::from)
             .toList();
         var userFcmToken = userUseCase.findUserFcmTokensByUserId(request.userId());
 
@@ -89,8 +89,8 @@ public class ArtistService {
 
         return ArtistSubscriptionServiceResponse.builder()
             .successSubscriptionArtistIds(
-                subscriptions.stream()
-                    .map(ArtistSubscription::getArtistId)
+                subscribedArtistMessage.stream()
+                    .map(ArtistServiceMessage::id)
                     .toList()
             ).build();
     }
