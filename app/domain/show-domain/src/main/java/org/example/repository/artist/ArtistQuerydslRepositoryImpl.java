@@ -10,7 +10,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,11 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
 
     @Override
     public List<ArtistDetailDomainResponse> findAllWithGenreNames() {
-        return createArtistJoinArtistGenreAndGenreQuery()
+        return jpaQueryFactory
+            .selectFrom(artist)
+            .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
+            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
+            .where(artist.isDeleted.isFalse())
             .transform(
                 groupBy(artist.id).list(
                     Projections.constructor(
@@ -104,14 +107,6 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
             .data(responses.getContent())
             .hasNext(responses.hasNext())
             .build();
-    }
-
-    private JPAQuery<?> createArtistJoinArtistGenreAndGenreQuery() {
-        return jpaQueryFactory
-            .selectFrom(artist)
-            .join(artistGenre).on(isArtistGenreEqualArtistIdAndIsDeletedFalse())
-            .join(genre).on(isArtistGenreEqualGenreIdAndIsDeletedFalse())
-            .where(artist.isDeleted.isFalse());
     }
 
     private BooleanExpression isArtistGenreEqualArtistIdAndIsDeletedFalse() {
