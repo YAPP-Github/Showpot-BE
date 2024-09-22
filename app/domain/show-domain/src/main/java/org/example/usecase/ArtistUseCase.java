@@ -2,7 +2,6 @@ package org.example.usecase;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -17,8 +16,10 @@ import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
 import org.example.entity.artist.Artist;
 import org.example.entity.artist.ArtistGenre;
+import org.example.port.ArtistCreatePort;
 import org.example.port.ArtistSearchPort;
 import org.example.port.dto.param.ArtistSearchPortParam;
+import org.example.port.dto.request.ArtistCreatePortRequest;
 import org.example.port.dto.request.ArtistSearchPortRequest;
 import org.example.port.dto.request.FindArtistsPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
@@ -36,6 +37,8 @@ public class ArtistUseCase {
     private final ArtistGenreRepository artistGenreRepository;
     private final ShowArtistRepository showArtistRepository;
     private final ArtistSearchPort artistSearchPort;
+    private final ArtistCreatePort artistCreatePort;
+
 
     @Transactional
     public void save(Artist artist, List<UUID> genreIds) {
@@ -53,13 +56,8 @@ public class ArtistUseCase {
         return artistRepository.findAllArtistKoreanName();
     }
 
-
     public List<ArtistNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
         return showArtistRepository.findArtistKoreanNamesWithShowId();
-    }
-
-    public List<Artist> findAllArtistInIds(List<UUID> ids) {
-        return artistRepository.findAllInIds(ids);
     }
 
     public List<Artist> findOrCreateArtistBySpotifyId(List<String> spotifyIds) {
@@ -84,22 +82,14 @@ public class ArtistUseCase {
                 .build()
         );
 
-        return getArtists(existArtists, response);
-    }
-
-    @Transactional
-    public List<Artist> getArtists(
-        List<Artist> existArtists,
-        List<ArtistSearchPortParam> response
-    ) {
         List<Artist> newArtists = response.stream()
-            .map(artistParam -> {
-                Artist newArtist = artistParam.toArtist();
-                artistRepository.save(newArtist);
-
-                return newArtist;
-            })
+            .map(ArtistSearchPortParam::toArtist)
             .toList();
+
+        artistCreatePort.createArtist(
+            "createArtist",
+            ArtistCreatePortRequest.from(response, newArtists)
+        );
 
         return Stream.concat(existArtists.stream(), newArtists.stream()).toList();
     }
@@ -141,11 +131,6 @@ public class ArtistUseCase {
             .offset(response.offset())
             .hasNext(response.hasNext())
             .build();
-    }
-
-    private Artist findArtistById(UUID id) {
-        return artistRepository.findById(id)
-            .orElseThrow(NoSuchElementException::new);
     }
 
     private Map<String, Artist> getArtistBySpotifyId(List<String> spotifyIds) {

@@ -41,8 +41,8 @@ public class SpotifyClient {
 
         if (result.getBody() == null || !result.getStatusCode().is2xxSuccessful()
         ) {
-            log.error("Spotify API request access token failed: {}", result);
-            throw new RuntimeException("Spotify API request access token failed");
+            log.error("Spotify API artist access token failed: {}", result);
+            throw new RuntimeException("Spotify API artist access token failed");
         }
 
         return result.getBody().accessToken();
@@ -62,7 +62,7 @@ public class SpotifyClient {
             || result.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS
         ) {
             log.error("Spotify API search artist failed: {}", result);
-            throw new RuntimeException("Spotify API request search artist failed");
+            throw new RuntimeException("Spotify API artist search artist failed");
         }
 
         return result.getBody();
@@ -82,7 +82,7 @@ public class SpotifyClient {
             || result.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS
         ) {
             log.error("Spotify API find artists failed: {}", result);
-            throw new RuntimeException("Spotify API request find artists failed");
+            throw new RuntimeException("Spotify API artist find artists failed");
         }
 
         return result.getBody();

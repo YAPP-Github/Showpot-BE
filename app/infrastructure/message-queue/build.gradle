@@ -1,5 +1,6 @@
 dependencies {
     implementation project(":app:api:show-api")
+    implementation project(":app:domain:show-domain")
 
     //redis pub & sub
     implementation project(":app:infrastructure:redis")
