@@ -2,11 +2,13 @@ package org.example.usecase;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.request.ArtistCreateDomainRequest;
+import org.example.dto.artist.request.ArtistGenreDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
@@ -15,7 +17,7 @@ import org.example.dto.artist.response.ArtistNamesWithShowIdDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
 import org.example.entity.artist.Artist;
-import org.example.entity.artist.ArtistGenre;
+import org.example.entity.genre.Genre;
 import org.example.port.ArtistCreatePort;
 import org.example.port.ArtistSearchPort;
 import org.example.port.dto.param.ArtistSearchPortParam;
@@ -25,7 +27,9 @@ import org.example.port.dto.request.FindArtistsPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
+import org.example.repository.genre.GenreRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
+import org.example.util.ReflectionUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +40,23 @@ public class ArtistUseCase {
     private final ArtistRepository artistRepository;
     private final ArtistGenreRepository artistGenreRepository;
     private final ShowArtistRepository showArtistRepository;
+    private final GenreRepository genreRepository;
     private final ArtistSearchPort artistSearchPort;
     private final ArtistCreatePort artistCreatePort;
 
 
     @Transactional
-    public void save(Artist artist, List<UUID> genreIds) {
-        artistRepository.save(artist);
+    public void save(ArtistCreateDomainRequest request) {
+        for (ArtistGenreDomainRequest artistGenre : request.artistGenres()) {
+            Artist newArtist = artistGenre.toArtist();
+            ReflectionUtil.setSuperClassId(newArtist, artistGenre.artistId());
+            artistRepository.save(newArtist);
 
-        List<ArtistGenre> artistGenres = artist.toArtistGenre(genreIds);
-        artistGenreRepository.saveAll(artistGenres);
+            Genre genre = genreRepository.findByName(artistGenre.genreName())
+                .orElseThrow(NoSuchElementException::new);
+
+            artistGenreRepository.save(newArtist.toArtistGenre(genre.getId()));
+        }
     }
 
     public List<ArtistDetailDomainResponse> findAllWithGenreNames() {

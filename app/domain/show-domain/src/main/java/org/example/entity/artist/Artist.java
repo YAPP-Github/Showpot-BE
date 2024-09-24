@@ -3,7 +3,6 @@ package org.example.entity.artist;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,12 +36,10 @@ public class Artist extends BaseEntity {
         this.spotifyId = spotifyId;
     }
 
-    public List<ArtistGenre> toArtistGenre(List<UUID> genreIds) {
-        return genreIds.stream()
-            .map(genreId -> ArtistGenre.builder()
-                .artistId(getId())
-                .genreId(genreId)
-                .build())
-            .toList();
+    public ArtistGenre toArtistGenre(UUID genreId) {
+        return ArtistGenre.builder()
+            .artistId(getId())
+            .genreId(genreId)
+            .build();
     }
 }

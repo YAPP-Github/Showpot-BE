@@ -19,11 +19,11 @@ public class SubscriptionMessageConverter {
             );
             log.info("Message published successfully to topic: {}",
                 new String(message.getChannel()));
-            log.info("Subscribe Message Contents ( ArtistCreateServiceRequest : {} )", message);
+            log.info("Subscribe Message Contents ( ArtistCreateMessageRequest : {} )", message);
 
             return convertedMessage;
         } catch (IOException e) {
-            log.error("Failed to convert message to ArtistCreateServiceRequest", e);
+            log.error("Failed to convert message to ArtistCreateMessageRequest", e);
             throw new IllegalArgumentException("메시지를 받지 못했습니다.");
         }
     }

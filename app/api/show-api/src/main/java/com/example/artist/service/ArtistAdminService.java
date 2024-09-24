@@ -27,6 +27,6 @@ public class ArtistAdminService {
     }
 
     public void saveArtist(ArtistCreateServiceRequest request) {
-
+        artistUseCase.save(request.toDomainRequest());
     }
 }
