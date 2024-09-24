@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.publish.message.ArtistServiceMessage;
+import com.example.pub.message.ArtistServiceMessage;
 import java.util.UUID;
 import lombok.Builder;
 

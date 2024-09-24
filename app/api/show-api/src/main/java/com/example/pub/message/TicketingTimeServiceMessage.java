@@ -1,4 +1,4 @@
-package com.example.publish.message;
+package com.example.pub.message;
 
 import com.example.show.controller.vo.TicketingAlertTimeApiType;
 import java.time.LocalDateTime;

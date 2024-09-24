@@ -1,5 +1,6 @@
 package com.example.artist.service;
 
+import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.artist.service.dto.response.ArtistNameServiceResponse;
 import java.util.List;
@@ -23,5 +24,9 @@ public class ArtistAdminService {
         return artistUseCase.findAllWithGenreNames().stream()
             .map(ArtistDetailServiceResponse::new)
             .toList();
+    }
+
+    public void saveArtist(ArtistCreateServiceRequest request) {
+
     }
 }

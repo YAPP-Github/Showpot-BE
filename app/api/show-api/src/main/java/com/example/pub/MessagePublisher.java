@@ -1,9 +1,9 @@
-package com.example.publish;
+package com.example.pub;
 
-import com.example.publish.message.ArtistSubscriptionServiceMessage;
-import com.example.publish.message.GenreSubscriptionServiceMessage;
-import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
-import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
+import com.example.pub.message.ArtistSubscriptionServiceMessage;
+import com.example.pub.message.GenreSubscriptionServiceMessage;
+import com.example.pub.message.ShowRelationArtistAndGenreServiceMessage;
+import com.example.pub.message.TicketingAlertsToReserveServiceMessage;
 
 public interface MessagePublisher {
 

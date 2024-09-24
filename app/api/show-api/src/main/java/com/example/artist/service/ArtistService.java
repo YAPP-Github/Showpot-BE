@@ -11,9 +11,9 @@ import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest
 import com.example.artist.service.dto.response.ArtistSubscriptionServiceResponse;
 import com.example.artist.service.dto.response.ArtistUnsubscriptionServiceResponse;
 import com.example.artist.service.dto.response.NumberOfSubscribedArtistServiceResponse;
-import com.example.publish.MessagePublisher;
-import com.example.publish.message.ArtistServiceMessage;
-import com.example.publish.message.ArtistSubscriptionServiceMessage;
+import com.example.pub.MessagePublisher;
+import com.example.pub.message.ArtistServiceMessage;
+import com.example.pub.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

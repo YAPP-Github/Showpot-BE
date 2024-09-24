@@ -1,4 +1,4 @@
-package com.example.publish.message;
+package com.example.pub.message;
 
 import java.util.List;
 import lombok.Builder;

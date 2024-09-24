@@ -10,8 +10,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.component.FileUploadComponent;
-import com.example.publish.MessagePublisher;
-import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
+import com.example.pub.MessagePublisher;
+import com.example.pub.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.ShowAdminService;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
