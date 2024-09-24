@@ -168,7 +168,7 @@ class ArtistServiceTest {
         List<String> spotifyArtistsId = List.of("123", "456");
         UUID userId = UUID.randomUUID();
         var request = new ArtistSubscriptionServiceRequest(spotifyArtistsId, userId);
-        var existArtistsInRequest = ArtistFixture.manSoloArtists(2);
+        var existArtistsInRequest = ArtistFixture.manSoloArtistsSetId(2);
         given(
             artistUseCase.findOrCreateArtistBySpotifyId(request.spotifyArtistIds())
         ).willReturn(
