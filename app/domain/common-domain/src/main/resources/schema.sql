@@ -259,3 +259,16 @@ create table alarm.ticketing_alert
     user_fcm_token       varchar(255) not null,
     primary key (id)
 );
+
+create table alarm.show_alarm
+(
+    is_deleted           boolean      not null,
+    created_at           timestamp(3) not null,
+    updated_at           timestamp(3) not null,
+    id                   uuid         not null,
+    user_fcm_token       varchar(255) not null,
+    title                varchar(255) not null,
+    content              varchar(255) not null,
+    checked              boolean      not null,
+    primary key (id)
+);
