@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.spotify.client.dto.request.AccessTokenSpotifyRequest;
 import org.spotify.client.dto.request.ArtistSearchSpotifyRequest;
-import org.spotify.client.dto.request.FindArtistsSpotifyRequest;
-import org.spotify.client.dto.response.FindSpotifyResponse;
+import org.spotify.client.dto.request.ArtistsSpotifyRequest;
 import org.spotify.client.dto.response.SpotifyAccessTokenResponse;
+import org.spotify.client.dto.response.SpotifyArtistsResponse;
 import org.spotify.client.dto.response.SpotifySearchResponse;
 import org.spotify.property.SpotifyProperty;
 import org.springframework.http.HttpStatus;
@@ -68,14 +68,14 @@ public class SpotifyClient {
         return result.getBody();
     }
 
-    public FindSpotifyResponse findArtistsBySpotifyArtistId(FindArtistsSpotifyRequest request) {
-        ResponseEntity<FindSpotifyResponse> result = RestClient.builder()
+    public SpotifyArtistsResponse findArtistsBySpotifyArtistId(ArtistsSpotifyRequest request) {
+        ResponseEntity<SpotifyArtistsResponse> result = RestClient.builder()
             .defaultHeader("Authorization", "Bearer " + request.accessToken())
             .baseUrl(spotifyProperty.apiURL() + "/artists?" + request.toQueryParameter())
             .build()
             .get()
             .retrieve()
-            .toEntity(FindSpotifyResponse.class);
+            .toEntity(SpotifyArtistsResponse.class);
 
         if (result.getStatusCode() == HttpStatus.UNAUTHORIZED
             || result.getStatusCode() == HttpStatus.FORBIDDEN

@@ -23,8 +23,9 @@ import org.example.port.ArtistSearchPort;
 import org.example.port.dto.param.ArtistSearchPortParam;
 import org.example.port.dto.request.ArtistCreatePortRequest;
 import org.example.port.dto.request.ArtistSearchPortRequest;
-import org.example.port.dto.request.FindArtistsPortRequest;
+import org.example.port.dto.request.ArtistsDetailPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
+import org.example.port.dto.response.ArtistsDetailPortResponse;
 import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
@@ -84,20 +85,20 @@ public class ArtistUseCase {
             return existArtists;
         }
 
-        List<ArtistSearchPortParam> response = artistSearchPort.findArtistsBySpotifyArtistId(
-            FindArtistsPortRequest.builder()
+        ArtistsDetailPortResponse response = artistSearchPort.findArtistsBySpotifyArtistId(
+            ArtistsDetailPortRequest.builder()
                 .accessToken(artistSearchPort.getAccessToken())
                 .spotifyArtistIds(notExistSpotifyIds)
                 .build()
         );
 
-        List<Artist> newArtists = response.stream()
+        List<Artist> newArtists = response.artists().stream()
             .map(ArtistSearchPortParam::toArtist)
             .toList();
 
         artistCreatePort.createArtist(
             "createArtist",
-            ArtistCreatePortRequest.from(response, newArtists)
+            ArtistCreatePortRequest.from(response.artists(), newArtists)
         );
 
         return Stream.concat(existArtists.stream(), newArtists.stream()).toList();

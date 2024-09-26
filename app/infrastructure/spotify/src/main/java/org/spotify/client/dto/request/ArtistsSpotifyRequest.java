@@ -8,7 +8,7 @@ import lombok.Builder;
  * @param spotifyArtistIds Spotify Artist Id들
  */
 @Builder
-public record FindArtistsSpotifyRequest(
+public record ArtistsSpotifyRequest(
     String accessToken,
     List<String> spotifyArtistIds
 ) {

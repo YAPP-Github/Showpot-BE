@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record FindArtistsPortRequest(
+public record ArtistsDetailPortRequest(
     String accessToken,
     List<String> spotifyArtistIds
 ) {
