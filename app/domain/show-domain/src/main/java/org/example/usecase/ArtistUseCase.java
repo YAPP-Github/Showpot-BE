@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dto.artist.param.ArtistNamesWithShowIdDomainParam;
 import org.example.dto.artist.request.ArtistGenreDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
@@ -33,6 +34,7 @@ import org.example.repository.show.showartist.ShowArtistRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ArtistUseCase {
@@ -51,10 +53,14 @@ public class ArtistUseCase {
             Artist newArtist = artistGenre.toArtist();
             artistRepository.save(newArtist);
 
-            Genre genre = genreRepository.findByName(artistGenre.genreName())
-                .orElseThrow(NoSuchElementException::new);
+            try {
+                Genre genre = genreRepository.findByName(artistGenre.genreName())
+                    .orElseThrow(NoSuchElementException::new);
 
-            artistGenreRepository.save(newArtist.toArtistGenre(genre.getId()));
+                artistGenreRepository.save(newArtist.toArtistGenre(genre.getId()));
+            } catch (NoSuchElementException e) {
+                log.warn("해당하는 장르가 존재하지 않습니다.");
+            }
         }
     }
 
