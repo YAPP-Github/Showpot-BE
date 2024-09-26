@@ -1,5 +1,8 @@
 package com.example.show.service.dto.response;
 
+import com.example.show.service.dto.param.ShowArtistServiceParam;
+import com.example.show.service.dto.param.ShowGenreServiceParam;
+import com.example.show.service.dto.param.ShowTicketingTimeServiceParam;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -17,9 +20,9 @@ public record ShowDetailServiceResponse(
     String location,
     String posterImageURL,
     boolean isInterested,
-    List<ShowArtistServiceResponse> artists,
-    List<ShowGenreServiceResponse> genres,
-    List<ShowTicketingTimeServiceResponse> ticketingTimes,
+    List<ShowArtistServiceParam> artists,
+    List<ShowGenreServiceParam> genres,
+    List<ShowTicketingTimeServiceParam> ticketingTimes,
     ShowSeatServiceResponse seats,
     ShowTicketingSiteServiceResponse ticketingSites
 ) {
@@ -39,16 +42,16 @@ public record ShowDetailServiceResponse(
             .isInterested(isInterested)
             .artists(
                 show.artists().stream()
-                    .map(ShowArtistServiceResponse::from)
+                    .map(ShowArtistServiceParam::from)
                     .toList()
             )
             .genres(
                 show.genres().stream()
-                    .map(ShowGenreServiceResponse::from)
+                    .map(ShowGenreServiceParam::from)
                     .toList()
             )
             .ticketingTimes(show.showTicketingTimes().stream()
-                .map(ShowTicketingTimeServiceResponse::from)
+                .map(ShowTicketingTimeServiceParam::from)
                 .toList()
             )
             .seats(ShowSeatServiceResponse.from(show.show().seatPrices()))

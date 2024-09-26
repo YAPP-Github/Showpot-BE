@@ -1,6 +1,6 @@
 package com.example.artist.controller.dto.response;
 
-import com.example.artist.service.dto.response.ArtistNameServiceResponse;
+import com.example.artist.service.dto.param.ArtistNameServiceParam;
 import java.util.UUID;
 
 public record ArtistNameApiResponse(
@@ -9,7 +9,7 @@ public record ArtistNameApiResponse(
 ) {
 
     public ArtistNameApiResponse(
-        ArtistNameServiceResponse artistKoreanNameServiceResponse
+        ArtistNameServiceParam artistKoreanNameServiceResponse
     ) {
         this(
             artistKoreanNameServiceResponse.id(),

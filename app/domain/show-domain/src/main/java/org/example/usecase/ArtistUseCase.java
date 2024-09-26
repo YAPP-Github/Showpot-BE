@@ -7,13 +7,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.artist.param.ArtistNamesWithShowIdDomainParam;
 import org.example.dto.artist.request.ArtistGenreDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistWithGenreCreateDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistNameDomainResponse;
-import org.example.dto.artist.response.ArtistNamesWithShowIdDomainResponse;
 import org.example.dto.artist.response.ArtistPaginationDomainResponse;
 import org.example.dto.artist.response.ArtistSearchPaginationDomainResponse;
 import org.example.entity.artist.Artist;
@@ -65,7 +65,7 @@ public class ArtistUseCase {
         return artistRepository.findAllArtistKoreanName();
     }
 
-    public List<ArtistNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
+    public List<ArtistNamesWithShowIdDomainParam> findArtistKoreanNamesWithShowId() {
         return showArtistRepository.findArtistKoreanNamesWithShowId();
     }
 

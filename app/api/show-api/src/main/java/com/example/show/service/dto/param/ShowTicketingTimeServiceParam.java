@@ -1,4 +1,4 @@
-package com.example.show.service.dto.response;
+package com.example.show.service.dto.param;
 
 import com.example.show.controller.vo.TicketingApiType;
 import java.time.LocalDateTime;

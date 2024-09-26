@@ -1,13 +1,13 @@
-package com.example.artist.service.dto.response;
+package com.example.artist.service.dto.param;
 
 import java.util.UUID;
 import org.example.dto.artist.response.ArtistNameDomainResponse;
 
-public record ArtistNameServiceResponse(
+public record ArtistNameServiceParam(
     UUID id,
     String name
 ) {
-    public ArtistNameServiceResponse(ArtistNameDomainResponse artistKoreanNameResponse) {
+    public ArtistNameServiceParam(ArtistNameDomainResponse artistKoreanNameResponse) {
         this(
             artistKoreanNameResponse.id(),
             artistKoreanNameResponse.name()

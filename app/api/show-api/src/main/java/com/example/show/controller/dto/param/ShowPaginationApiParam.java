@@ -1,4 +1,4 @@
-package com.example.show.controller.dto.response;
+package com.example.show.controller.dto.param;
 
 import com.example.show.service.dto.response.ShowPaginationServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;

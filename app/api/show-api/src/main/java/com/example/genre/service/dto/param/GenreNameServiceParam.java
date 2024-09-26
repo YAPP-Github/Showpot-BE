@@ -1,14 +1,14 @@
-package com.example.genre.service.dto.response;
+package com.example.genre.service.dto.param;
 
 import java.util.UUID;
 import org.example.dto.genre.response.GenreNameDomainResponse;
 
-public record GenreNameServiceResponse(
+public record GenreNameServiceParam(
     UUID id,
     String name
 ) {
 
-    public GenreNameServiceResponse(GenreNameDomainResponse genreNameResponse) {
+    public GenreNameServiceParam(GenreNameDomainResponse genreNameResponse) {
         this(
             genreNameResponse.id(),
             genreNameResponse.name()

@@ -4,7 +4,7 @@ import com.example.genre.controller.dto.request.GenreCreateApiForm;
 import com.example.genre.controller.dto.request.GenreUpdateApiForm;
 import com.example.genre.controller.dto.response.GenreNameApiResponse;
 import com.example.genre.service.GenreAdminService;
-import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.genre.service.dto.param.GenreNameServiceParam;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +48,7 @@ public class GenreAdminController {
 
     @GetMapping("/{id}")
     public String findGenre(@PathVariable("id") UUID id, Model model) {
-        GenreNameServiceResponse genreNameServiceResponse = genreAdminService.findGenreById(
+        GenreNameServiceParam genreNameServiceResponse = genreAdminService.findGenreById(
             id);
         GenreNameApiResponse genreNameApiFormResponse = new GenreNameApiResponse(
             genreNameServiceResponse.id(),

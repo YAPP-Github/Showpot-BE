@@ -1,12 +1,12 @@
-package com.example.show.controller.dto.response;
+package com.example.show.controller.dto.param;
 
-import com.example.show.service.dto.response.ShowGenreServiceResponse;
+import com.example.show.service.dto.param.ShowGenreServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record ShowGenreApiResponse(
+public record ShowGenreApiParam(
 
     @Schema(description = "장르 ID")
     UUID id,
@@ -15,8 +15,8 @@ public record ShowGenreApiResponse(
     String name
 ) {
 
-    public static ShowGenreApiResponse from(ShowGenreServiceResponse genre) {
-        return ShowGenreApiResponse.builder()
+    public static ShowGenreApiParam from(ShowGenreServiceParam genre) {
+        return ShowGenreApiParam.builder()
             .id(genre.id())
             .name(genre.name())
             .build();

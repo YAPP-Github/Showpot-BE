@@ -1,12 +1,12 @@
-package com.example.show.controller.dto.response;
+package com.example.show.controller.dto.param;
 
-import com.example.show.service.dto.response.ShowArtistServiceResponse;
+import com.example.show.service.dto.param.ShowArtistServiceParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record ShowArtistApiResponse(
+public record ShowArtistApiParam(
 
     @Schema(description = "아티스트 ID")
     UUID id,
@@ -18,8 +18,8 @@ public record ShowArtistApiResponse(
     String imageURL
 ) {
 
-    public static ShowArtistApiResponse from(ShowArtistServiceResponse artists) {
-        return ShowArtistApiResponse.builder()
+    public static ShowArtistApiParam from(ShowArtistServiceParam artists) {
+        return ShowArtistApiParam.builder()
             .id(artists.id())
             .name(artists.name())
             .imageURL(artists.image())

@@ -28,6 +28,7 @@ import org.example.dto.artist.response.ArtistDomainResponse;
 import org.example.dto.artist.response.ArtistNameDomainResponse;
 import org.example.dto.genre.response.GenreDomainResponse;
 import org.example.dto.genre.response.GenreNameDomainResponse;
+import org.example.dto.show.param.ShowWithTicketingTimesDomainParam;
 import org.example.dto.show.request.ShowPaginationDomainRequest;
 import org.example.dto.show.response.ShowDetailDomainResponse;
 import org.example.dto.show.response.ShowDomainResponse;
@@ -35,7 +36,6 @@ import org.example.dto.show.response.ShowInfoDomainResponse;
 import org.example.dto.show.response.ShowTicketingDomainResponse;
 import org.example.dto.show.response.ShowTicketingPaginationDomainResponse;
 import org.example.dto.show.response.ShowTicketingTimeDomainResponse;
-import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.show.Show;
 import org.example.util.SliceUtil;
 import org.springframework.data.domain.Slice;
@@ -60,14 +60,14 @@ public class ShowQuerydslRepositoryImpl implements ShowQuerydslRepository {
     }
 
     @Override
-    public List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes() {
+    public List<ShowWithTicketingTimesDomainParam> findShowDetailWithTicketingTimes() {
         return jpaQueryFactory.selectFrom(show)
             .join(showTicketingTime).on(isShowTicketingEqualShowAndIsDeletedFalse())
             .where(show.isDeleted.isFalse())
             .transform(
                 groupBy(show.id).list(
                     Projections.constructor(
-                        ShowWithTicketingTimesDomainResponse.class,
+                        ShowWithTicketingTimesDomainParam.class,
                         Projections.constructor(
                             ShowDomainResponse.class,
                             show.id,

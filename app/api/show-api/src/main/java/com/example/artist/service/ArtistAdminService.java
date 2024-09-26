@@ -1,8 +1,8 @@
 package com.example.artist.service;
 
+import com.example.artist.service.dto.param.ArtistNameServiceParam;
 import com.example.artist.service.dto.request.ArtistWithGenreCreateServiceRequest;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
-import com.example.artist.service.dto.response.ArtistNameServiceResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.usecase.ArtistUseCase;
@@ -14,9 +14,9 @@ public class ArtistAdminService {
 
     private final ArtistUseCase artistUseCase;
 
-    public List<ArtistNameServiceResponse> findAllArtistName() {
+    public List<ArtistNameServiceParam> findAllArtistName() {
         return artistUseCase.findAllArtistKoreanName().stream()
-            .map(ArtistNameServiceResponse::new)
+            .map(ArtistNameServiceParam::new)
             .toList();
     }
 
