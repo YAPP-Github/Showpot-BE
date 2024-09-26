@@ -5,5 +5,5 @@ import org.example.dto.artist.param.ArtistNamesWithShowIdDomainParam;
 
 public interface ShowArtistQuerydslRepository {
 
-    List<ArtistNamesWithShowIdDomainParam> findArtistKoreanNamesWithShowId();
+    List<ArtistNamesWithShowIdDomainParam> findArtistNamesWithShowId();
 }

@@ -12,7 +12,7 @@ public interface ArtistQuerydslRepository {
 
     List<ArtistDetailDomainResponse> findAllWithGenreNames();
 
-    List<ArtistNameDomainResponse> findAllArtistKoreanName();
+    List<ArtistNameDomainResponse> findAllArtistName();
 
     List<Artist> findAllInIds(List<UUID> ids);
 

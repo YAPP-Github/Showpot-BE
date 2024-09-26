@@ -62,12 +62,12 @@ public class ArtistUseCase {
         return artistRepository.findAllWithGenreNames();
     }
 
-    public List<ArtistNameDomainResponse> findAllArtistKoreanName() {
-        return artistRepository.findAllArtistKoreanName();
+    public List<ArtistNameDomainResponse> findAllArtistName() {
+        return artistRepository.findAllArtistName();
     }
 
-    public List<ArtistNamesWithShowIdDomainParam> findArtistKoreanNamesWithShowId() {
-        return showArtistRepository.findArtistKoreanNamesWithShowId();
+    public List<ArtistNamesWithShowIdDomainParam> findArtistNamesWithShowId() {
+        return showArtistRepository.findArtistNamesWithShowId();
     }
 
     public List<Artist> findOrCreateArtistBySpotifyId(List<String> spotifyIds) {

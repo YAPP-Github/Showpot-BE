@@ -21,7 +21,7 @@ public record ShowInfoApiResponse(
     ShowSeatApiResponse seatInfoApiResponse,
     ShowTicketingSiteApiResponse ticketingSiteApiResponse,
     List<ShowTicketingTimeApiParam> ticketingTimes,
-    List<ArtistNameApiResponse> artistKoreanNameResponses,
+    List<ArtistNameApiResponse> artistNameResponses,
     List<GenreNameApiResponse> genreNameResponses
 ) {
 
@@ -40,7 +40,7 @@ public record ShowInfoApiResponse(
             showInfoServiceResponse.ticketingSites().stream()
                 .map(ShowTicketingTimeApiParam::from)
                 .toList(),
-            showInfoServiceResponse.artistKoreanNameResponses().stream()
+            showInfoServiceResponse.artistNameResponses().stream()
                 .map(ArtistNameApiResponse::new)
                 .toList(),
             showInfoServiceResponse.genreNameResponses().stream()

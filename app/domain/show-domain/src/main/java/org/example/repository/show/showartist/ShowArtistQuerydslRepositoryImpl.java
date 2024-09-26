@@ -21,7 +21,7 @@ public class ShowArtistQuerydslRepositoryImpl implements ShowArtistQuerydslRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ArtistNamesWithShowIdDomainParam> findArtistKoreanNamesWithShowId() {
+    public List<ArtistNamesWithShowIdDomainParam> findArtistNamesWithShowId() {
         return jpaQueryFactory.selectFrom(showArtist)
             .join(show).on(show.id.eq(showArtist.showId), show.isDeleted.isFalse())
             .join(artist).on(artist.id.eq(showArtist.artistId), artist.isDeleted.isFalse())

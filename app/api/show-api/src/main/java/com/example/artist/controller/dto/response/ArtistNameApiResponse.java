@@ -9,11 +9,11 @@ public record ArtistNameApiResponse(
 ) {
 
     public ArtistNameApiResponse(
-        ArtistNameServiceParam artistKoreanNameServiceResponse
+        ArtistNameServiceParam artistNameServiceResponse
     ) {
         this(
-            artistKoreanNameServiceResponse.id(),
-            artistKoreanNameServiceResponse.name()
+            artistNameServiceResponse.id(),
+            artistNameServiceResponse.name()
         );
     }
 

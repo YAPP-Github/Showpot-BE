@@ -44,12 +44,12 @@ public class ShowAdminService {
 
     public List<ShowInfoServiceResponse> findShowDetailWithTicketingTimes() {
         var showWithTicketingTimesDomainResponses = showAdminUseCase.findShowDetailWithTicketingTimes();
-        var artistKoreanNameWithShowIdDomainResponses = artistUseCase.findArtistKoreanNamesWithShowId();
+        var artistNameWithShowIdDomainResponses = artistUseCase.findArtistNamesWithShowId();
         var genreNameWithShowIdDomainResponses = genreUseCase.findGenreNamesWithShowId();
 
         return ShowInfoServiceResponse.as(
             showWithTicketingTimesDomainResponses,
-            artistKoreanNameWithShowIdDomainResponses,
+            artistNameWithShowIdDomainResponses,
             genreNameWithShowIdDomainResponses
         );
 

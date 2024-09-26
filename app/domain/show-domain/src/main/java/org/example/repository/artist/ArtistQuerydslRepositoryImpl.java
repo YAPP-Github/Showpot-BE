@@ -54,7 +54,7 @@ public class ArtistQuerydslRepositoryImpl implements ArtistQuerydslRepository {
     }
 
     @Override
-    public List<ArtistNameDomainResponse> findAllArtistKoreanName() {
+    public List<ArtistNameDomainResponse> findAllArtistName() {
         return jpaQueryFactory
             .select(
                 Projections.constructor(

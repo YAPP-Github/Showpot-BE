@@ -29,7 +29,7 @@ public record ShowInfoServiceResponse(
     ShowSeatServiceResponse seats,
     ShowTicketingSiteServiceResponse ticketingSiteInfos,
     List<ShowTicketingTimeServiceParam> ticketingSites,
-    List<ArtistNameServiceParam> artistKoreanNameResponses,
+    List<ArtistNameServiceParam> artistNameResponses,
     List<GenreNameServiceParam> genreNameResponses
 ) {
 
@@ -46,7 +46,7 @@ public record ShowInfoServiceResponse(
             ShowSeatServiceResponse.from(showInfo.show().seatPrices()),
             ShowTicketingSiteServiceResponse.from(showInfo.show().ticketingSites()),
             toShowTicketingTimeServiceResponses(showInfo.ticketingTimes()),
-            toArtistKoreanNameServiceResponses(showInfo.artistKoreanNameResponses()),
+            toArtistNameServiceResponses(showInfo.artistNameResponses()),
             toGenreNameServiceResponses(showInfo.genreNameResponses())
         );
     }
@@ -58,7 +58,7 @@ public record ShowInfoServiceResponse(
     ) {
         return showWithTicketingTimes.stream()
             .map(showWithTicketingTime -> {
-                var artistKoreanNameResponses = getArtistKoreanNameResponses(
+                var artistNameResponses = getArtistNameResponses(
                     artistNamesWithShowId,
                     showWithTicketingTime
                 );
@@ -83,7 +83,7 @@ public record ShowInfoServiceResponse(
                     showWithTicketingTime.ticketingTimes().stream()
                         .map(ShowTicketingTimeServiceParam::from)
                         .toList(),
-                    artistKoreanNameResponses,
+                    artistNameResponses,
                     genreNameResponses
                 );
             })
@@ -98,9 +98,10 @@ public record ShowInfoServiceResponse(
             .toList();
     }
 
-    private static List<ArtistNameServiceParam> toArtistKoreanNameServiceResponses(
-        Set<ArtistNameDomainResponse> artistKoreanNameResponses) {
-        return artistKoreanNameResponses
+    private static List<ArtistNameServiceParam> toArtistNameServiceResponses(
+        Set<ArtistNameDomainResponse> artistNameResponses
+    ) {
+        return artistNameResponses
             .stream()
             .map(ArtistNameServiceParam::new)
             .toList();
@@ -114,14 +115,14 @@ public record ShowInfoServiceResponse(
             .toList();
     }
 
-    private static List<ArtistNameServiceParam> getArtistKoreanNameResponses(
+    private static List<ArtistNameServiceParam> getArtistNameResponses(
         List<ArtistNamesWithShowIdDomainParam> artistNamesWithShowId,
         ShowWithTicketingTimesDomainParam showWitTicketingTimes
     ) {
         return artistNamesWithShowId.stream()
             .filter(
                 artistResponse -> artistResponse.showId().equals(showWitTicketingTimes.show().id()))
-            .flatMap(artistResponse -> artistResponse.koreanNameDomainResponses().stream())
+            .flatMap(artistResponse -> artistResponse.artistNameDomainResponses().stream())
             .map(ArtistNameServiceParam::new)
             .toList();
     }

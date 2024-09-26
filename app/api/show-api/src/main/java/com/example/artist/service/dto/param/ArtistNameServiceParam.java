@@ -7,10 +7,10 @@ public record ArtistNameServiceParam(
     UUID id,
     String name
 ) {
-    public ArtistNameServiceParam(ArtistNameDomainResponse artistKoreanNameResponse) {
+    public ArtistNameServiceParam(ArtistNameDomainResponse artistNameResponse) {
         this(
-            artistKoreanNameResponse.id(),
-            artistKoreanNameResponse.name()
+            artistNameResponse.id(),
+            artistNameResponse.name()
         );
     }
 

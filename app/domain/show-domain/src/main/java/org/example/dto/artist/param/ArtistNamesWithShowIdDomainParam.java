@@ -6,7 +6,7 @@ import org.example.dto.artist.response.ArtistNameDomainResponse;
 
 public record ArtistNamesWithShowIdDomainParam(
     UUID showId,
-    List<ArtistNameDomainResponse> koreanNameDomainResponses
+    List<ArtistNameDomainResponse> artistNameDomainResponses
 ) {
 
 }

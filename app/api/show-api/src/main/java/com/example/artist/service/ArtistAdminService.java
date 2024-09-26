@@ -15,7 +15,7 @@ public class ArtistAdminService {
     private final ArtistUseCase artistUseCase;
 
     public List<ArtistNameServiceParam> findAllArtistName() {
-        return artistUseCase.findAllArtistKoreanName().stream()
+        return artistUseCase.findAllArtistName().stream()
             .map(ArtistNameServiceParam::new)
             .toList();
     }

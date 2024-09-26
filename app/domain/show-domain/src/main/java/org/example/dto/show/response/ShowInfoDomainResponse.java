@@ -6,7 +6,7 @@ import org.example.dto.genre.response.GenreNameDomainResponse;
 
 public record ShowInfoDomainResponse(
     ShowDomainResponse show,
-    Set<ArtistNameDomainResponse> artistKoreanNameResponses,
+    Set<ArtistNameDomainResponse> artistNameResponses,
     Set<GenreNameDomainResponse> genreNameResponses,
     Set<ShowTicketingTimeDomainResponse> ticketingTimes
 ) {
