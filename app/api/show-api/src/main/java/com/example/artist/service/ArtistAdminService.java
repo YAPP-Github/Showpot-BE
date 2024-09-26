@@ -1,6 +1,6 @@
 package com.example.artist.service;
 
-import com.example.artist.service.dto.request.ArtistCreateServiceRequest;
+import com.example.artist.service.dto.request.ArtistWithGenreCreateServiceRequest;
 import com.example.artist.service.dto.response.ArtistDetailServiceResponse;
 import com.example.artist.service.dto.response.ArtistNameServiceResponse;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ArtistAdminService {
             .toList();
     }
 
-    public void saveArtist(ArtistCreateServiceRequest request) {
+    public void saveArtist(ArtistWithGenreCreateServiceRequest request) {
         artistUseCase.save(request.toDomainRequest());
     }
 }

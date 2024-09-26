@@ -7,10 +7,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.request.ArtistCreateDomainRequest;
 import org.example.dto.artist.request.ArtistGenreDomainRequest;
 import org.example.dto.artist.request.ArtistPaginationDomainRequest;
 import org.example.dto.artist.request.ArtistSearchPaginationDomainRequest;
+import org.example.dto.artist.request.ArtistWithGenreCreateDomainRequest;
 import org.example.dto.artist.response.ArtistDetailDomainResponse;
 import org.example.dto.artist.response.ArtistNameDomainResponse;
 import org.example.dto.artist.response.ArtistNamesWithShowIdDomainResponse;
@@ -29,7 +29,6 @@ import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
-import org.example.util.ReflectionUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,10 +45,9 @@ public class ArtistUseCase {
 
 
     @Transactional
-    public void save(ArtistCreateDomainRequest request) {
+    public void save(ArtistWithGenreCreateDomainRequest request) {
         for (ArtistGenreDomainRequest artistGenre : request.artistGenres()) {
             Artist newArtist = artistGenre.toArtist();
-            ReflectionUtil.setSuperClassId(newArtist, artistGenre.artistId());
             artistRepository.save(newArtist);
 
             Genre genre = genreRepository.findByName(artistGenre.genreName())

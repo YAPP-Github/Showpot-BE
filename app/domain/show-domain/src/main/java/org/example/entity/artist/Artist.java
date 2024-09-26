@@ -36,6 +36,11 @@ public class Artist extends BaseEntity {
         this.spotifyId = spotifyId;
     }
 
+    public Artist changeId(UUID id) {
+        this.setId(id);
+        return this;
+    }
+
     public ArtistGenre toArtistGenre(UUID genreId) {
         return ArtistGenre.builder()
             .artistId(getId())

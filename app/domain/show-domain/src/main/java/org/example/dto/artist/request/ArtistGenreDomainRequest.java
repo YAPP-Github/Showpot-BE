@@ -18,7 +18,8 @@ public record ArtistGenreDomainRequest(
             .name(name)
             .image(image)
             .spotifyId(spotifyId)
-            .build();
+            .build()
+            .changeId(artistId);
     }
 
 
