@@ -1,4 +1,4 @@
-package org.example.adapter.request;
+package org.example.message;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import org.example.port.dto.request.ArtistDomainPortRequest;
 
 @Builder
-public record ArtistDomainInfraRequest(
+public record ArtistGenreDomainInfraMessage(
 
     UUID id,
     String name,
@@ -15,8 +15,8 @@ public record ArtistDomainInfraRequest(
     List<String> genres
 ) {
 
-    public static ArtistDomainInfraRequest from(ArtistDomainPortRequest request) {
-        return ArtistDomainInfraRequest.builder()
+    public static ArtistGenreDomainInfraMessage from(ArtistDomainPortRequest request) {
+        return ArtistGenreDomainInfraMessage.builder()
             .id(request.id())
             .name(request.name())
             .image(request.image())
