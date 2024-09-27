@@ -1,11 +1,11 @@
-package org.example.controller.dto.response;
+package org.example.controller.dto.param;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record SimpleNotificationApiResponse(
+public record SimpleNotificationApiParam(
     @Schema(description = "알림 제목")
     String title,
     @Schema(description = "알림 본문")
