@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.show.param.ShowWithTicketingTimesDomainParam;
 import org.example.dto.show.request.ShowCreationDomainRequest;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.dto.show.response.ShowInfoDomainResponse;
-import org.example.dto.show.response.ShowWithTicketingTimesDomainResponse;
 import org.example.entity.BaseEntity;
 import org.example.entity.show.Show;
 import org.example.entity.show.ShowArtist;
@@ -50,7 +50,7 @@ public class ShowAdminUseCase {
         showTicketingTimeRepository.saveAll(showTicketingTimes);
     }
 
-    public List<ShowWithTicketingTimesDomainResponse> findShowDetailWithTicketingTimes() {
+    public List<ShowWithTicketingTimesDomainParam> findShowDetailWithTicketingTimes() {
         return showRepository.findShowDetailWithTicketingTimes();
     }
 

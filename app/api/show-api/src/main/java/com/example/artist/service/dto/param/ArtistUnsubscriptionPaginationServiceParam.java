@@ -4,18 +4,16 @@ import java.util.UUID;
 import org.example.dto.artist.response.ArtistSimpleDomainResponse;
 
 public record ArtistUnsubscriptionPaginationServiceParam(
-    UUID artistId,
-    String artistImageUrl,
-    String artistKoreanName,
-    String artistEnglishName
+    UUID id,
+    String image,
+    String name
 ) {
 
     public ArtistUnsubscriptionPaginationServiceParam(ArtistSimpleDomainResponse response) {
         this(
             response.id(),
             response.image(),
-            response.koreanName(),
-            response.englishName()
+            response.name()
         );
     }
 }

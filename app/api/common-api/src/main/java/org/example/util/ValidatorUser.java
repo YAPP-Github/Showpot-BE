@@ -5,12 +5,12 @@ import org.example.security.dto.AuthenticatedInfo;
 
 public final class ValidatorUser {
 
-    public static UUID getUserId(AuthenticatedInfo user) {
-        if (user == null) {
+    public static UUID getUserId(AuthenticatedInfo info) {
+        if (info == null) {
             return null;
         }
 
-        return user.userId();
+        return info.userId();
     }
 
 }

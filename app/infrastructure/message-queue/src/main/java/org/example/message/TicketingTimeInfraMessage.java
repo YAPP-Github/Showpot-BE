@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.publish.message.TicketingTimeServiceMessage;
+import com.example.pub.message.TicketingTimeServiceMessage;
 import com.example.show.controller.vo.TicketingAlertTimeApiType;
 import lombok.Builder;
 

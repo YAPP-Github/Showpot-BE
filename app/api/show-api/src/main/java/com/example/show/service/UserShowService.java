@@ -1,7 +1,7 @@
 package com.example.show.service;
 
-import com.example.publish.MessagePublisher;
-import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
+import com.example.pub.MessagePublisher;
+import com.example.pub.message.TicketingAlertsToReserveServiceMessage;
 import com.example.show.controller.vo.TicketingApiType;
 import com.example.show.error.ShowError;
 import com.example.show.service.dto.param.ShowAlertPaginationServiceParam;

@@ -2,8 +2,8 @@ package com.example.show.service;
 
 
 import com.example.component.FileUploadComponent;
-import com.example.publish.MessagePublisher;
-import com.example.publish.message.ShowRelationArtistAndGenreServiceMessage;
+import com.example.pub.MessagePublisher;
+import com.example.pub.message.ShowRelationArtistAndGenreServiceMessage;
 import com.example.show.service.dto.request.ShowCreateServiceRequest;
 import com.example.show.service.dto.request.ShowUpdateServiceRequest;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
@@ -44,12 +44,12 @@ public class ShowAdminService {
 
     public List<ShowInfoServiceResponse> findShowDetailWithTicketingTimes() {
         var showWithTicketingTimesDomainResponses = showAdminUseCase.findShowDetailWithTicketingTimes();
-        var artistKoreanNameWithShowIdDomainResponses = artistUseCase.findArtistKoreanNamesWithShowId();
+        var artistNameWithShowIdDomainResponses = artistUseCase.findArtistNamesWithShowId();
         var genreNameWithShowIdDomainResponses = genreUseCase.findGenreNamesWithShowId();
 
         return ShowInfoServiceResponse.as(
             showWithTicketingTimesDomainResponses,
-            artistKoreanNameWithShowIdDomainResponses,
+            artistNameWithShowIdDomainResponses,
             genreNameWithShowIdDomainResponses
         );
 

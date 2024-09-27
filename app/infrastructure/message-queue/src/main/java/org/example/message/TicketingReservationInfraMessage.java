@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.publish.message.TicketingAlertsToReserveServiceMessage;
+import com.example.pub.message.TicketingAlertsToReserveServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;

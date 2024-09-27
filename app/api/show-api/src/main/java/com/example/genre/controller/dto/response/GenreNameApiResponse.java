@@ -1,6 +1,6 @@
 package com.example.genre.controller.dto.response;
 
-import com.example.genre.service.dto.response.GenreNameServiceResponse;
+import com.example.genre.service.dto.param.GenreNameServiceParam;
 import java.util.UUID;
 
 public record GenreNameApiResponse(
@@ -8,7 +8,7 @@ public record GenreNameApiResponse(
     String name
 ) {
 
-    public GenreNameApiResponse(GenreNameServiceResponse genreNameServiceResponse) {
+    public GenreNameApiResponse(GenreNameServiceParam genreNameServiceResponse) {
         this (
             genreNameServiceResponse.id(),
             genreNameServiceResponse.name()

@@ -1,10 +1,10 @@
 package com.example.show.controller;
 
+import com.example.show.controller.dto.param.ShowPaginationApiParam;
 import com.example.show.controller.dto.param.ShowSearchPaginationApiParam;
 import com.example.show.controller.dto.request.ShowPaginationApiRequest;
 import com.example.show.controller.dto.request.ShowSearchPaginationApiRequest;
 import com.example.show.controller.dto.response.ShowDetailApiResponse;
-import com.example.show.controller.dto.response.ShowPaginationApiParam;
 import com.example.show.service.ShowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

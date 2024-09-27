@@ -1,6 +1,6 @@
 package org.example.message;
 
-import com.example.publish.message.GenreSubscriptionServiceMessage;
+import com.example.pub.message.GenreSubscriptionServiceMessage;
 import java.util.List;
 import lombok.Builder;
 

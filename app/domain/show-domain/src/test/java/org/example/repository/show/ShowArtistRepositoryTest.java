@@ -26,7 +26,7 @@ public class ShowArtistRepositoryTest extends QueryTest {
 
     @Test
     @DisplayName("공연과 연관된 아티스트 이름을 함께 가져온다.")
-    void findArtistKoreanNamesWithShowId() {
+    void findArtistNamesWithShowId() {
         //given
         var artists = ArtistFixture.manSoloArtists(2);
         artistRepository.saveAll(artists);
@@ -42,13 +42,13 @@ public class ShowArtistRepositoryTest extends QueryTest {
         showArtistRepository.saveAll(showArtist);
 
         //when
-        var result = showArtistRepository.findArtistKoreanNamesWithShowId();
+        var result = showArtistRepository.findArtistNamesWithShowId();
 
         //then
         SoftAssertions.assertSoftly(
             soft -> {
                 soft.assertThat(result.size()).isEqualTo(2);
-                soft.assertThat(result.get(0).koreanNameDomainResponses().size()).isEqualTo(1);
+                soft.assertThat(result.get(0).artistNameDomainResponses().size()).isEqualTo(1);
             }
         );
     }

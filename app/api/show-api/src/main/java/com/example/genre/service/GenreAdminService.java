@@ -1,8 +1,8 @@
 package com.example.genre.service;
 
+import com.example.genre.service.dto.param.GenreNameServiceParam;
 import com.example.genre.service.dto.request.GenreCreateServiceRequest;
 import com.example.genre.service.dto.request.GenreUpdateServiceRequest;
-import com.example.genre.service.dto.response.GenreNameServiceResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,10 @@ public class GenreAdminService {
         genreUseCase.save(genreCreateServiceRequest.toGenre());
     }
 
-    public List<GenreNameServiceResponse> findAllGenres() {
+    public List<GenreNameServiceParam> findAllGenres() {
         List<Genre> genres = genreUseCase.findAllGenres();
         return genres.stream()
-            .map(genre -> new GenreNameServiceResponse(genre.getId(), genre.getName()))
+            .map(genre -> new GenreNameServiceParam(genre.getId(), genre.getName()))
             .toList();
     }
 
@@ -35,9 +35,9 @@ public class GenreAdminService {
         genreUseCase.deleteGenre(id);
     }
 
-    public GenreNameServiceResponse findGenreById(UUID id) {
+    public GenreNameServiceParam findGenreById(UUID id) {
         Genre genre = genreUseCase.findGenreById(id);
 
-        return new GenreNameServiceResponse(genre.getId(), genre.getName());
+        return new GenreNameServiceParam(genre.getId(), genre.getName());
     }
 }
