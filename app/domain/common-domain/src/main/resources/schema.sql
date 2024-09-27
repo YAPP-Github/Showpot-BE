@@ -39,13 +39,9 @@ create table artist
     created_at   timestamp(3) not null,
     updated_at   timestamp(3) not null,
     is_deleted   boolean      not null,
-    korean_name  varchar(255) not null,
-    english_name varchar(255) not null,
-    gender       varchar(255) not null check (gender in ('MAN', 'WOMAN', 'MIXED')),
-    type         varchar(255) not null check (type in ('SOLO', 'GROUP')),
-    country      varchar(255) not null,
+    name         varchar(255) not null,
     image        varchar(255) not null,
-    spotify_id   varchar(255),
+    spotify_id   varchar(255) not null unique,
     primary key (id)
 );
 
@@ -261,5 +257,18 @@ create table alarm.ticketing_alert
     ticketing_alert_time varchar(255) not null,
     name                 varchar(255) not null,
     user_fcm_token       varchar(255) not null,
+    primary key (id)
+);
+
+create table alarm.show_alarm
+(
+    is_deleted           boolean      not null,
+    created_at           timestamp(3) not null,
+    updated_at           timestamp(3) not null,
+    id                   uuid         not null,
+    user_fcm_token       varchar(255) not null,
+    title                varchar(255) not null,
+    content              varchar(255) not null,
+    checked              boolean      not null,
     primary key (id)
 );

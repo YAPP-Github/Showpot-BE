@@ -42,6 +42,10 @@ public abstract class BaseEntity implements Persistable<UUID> {
         isDeleted = false;
     }
 
+    protected void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public boolean isNew() {
         return createdAt == null;

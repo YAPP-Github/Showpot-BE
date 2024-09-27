@@ -1,7 +1,8 @@
 package com.example.show.controller.dto.response;
 
-import com.example.artist.controller.dto.response.ArtistKoreanNameApiResponse;
+import com.example.artist.controller.dto.response.ArtistNameApiResponse;
 import com.example.genre.controller.dto.response.GenreNameApiResponse;
+import com.example.show.controller.dto.param.ShowTicketingTimeApiParam;
 import com.example.show.service.dto.response.ShowInfoServiceResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +20,8 @@ public record ShowInfoApiResponse(
     int viewCount,
     ShowSeatApiResponse seatInfoApiResponse,
     ShowTicketingSiteApiResponse ticketingSiteApiResponse,
-    List<ShowTicketingTimeApiResponse> ticketingTimes,
-    List<ArtistKoreanNameApiResponse> artistKoreanNameResponses,
+    List<ShowTicketingTimeApiParam> ticketingTimes,
+    List<ArtistNameApiResponse> artistNameResponses,
     List<GenreNameApiResponse> genreNameResponses
 ) {
 
@@ -37,10 +38,10 @@ public record ShowInfoApiResponse(
             ShowSeatApiResponse.from(showInfoServiceResponse.seats()),
             ShowTicketingSiteApiResponse.from(showInfoServiceResponse.ticketingSiteInfos()),
             showInfoServiceResponse.ticketingSites().stream()
-                .map(ShowTicketingTimeApiResponse::from)
+                .map(ShowTicketingTimeApiParam::from)
                 .toList(),
-            showInfoServiceResponse.artistKoreanNameResponses().stream()
-                .map(ArtistKoreanNameApiResponse::new)
+            showInfoServiceResponse.artistNameResponses().stream()
+                .map(ArtistNameApiResponse::new)
                 .toList(),
             showInfoServiceResponse.genreNameResponses().stream()
                 .map(GenreNameApiResponse::new)

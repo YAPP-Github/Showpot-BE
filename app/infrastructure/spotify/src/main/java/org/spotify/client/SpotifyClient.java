@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.spotify.client.dto.request.AccessTokenSpotifyRequest;
 import org.spotify.client.dto.request.ArtistSearchSpotifyRequest;
+import org.spotify.client.dto.request.ArtistsSpotifyRequest;
 import org.spotify.client.dto.response.SpotifyAccessTokenResponse;
+import org.spotify.client.dto.response.SpotifyArtistsResponse;
 import org.spotify.client.dto.response.SpotifySearchResponse;
 import org.spotify.property.SpotifyProperty;
 import org.springframework.http.HttpStatus;
@@ -39,8 +41,8 @@ public class SpotifyClient {
 
         if (result.getBody() == null || !result.getStatusCode().is2xxSuccessful()
         ) {
-            log.error("Spotify API request access token failed: {}", result);
-            throw new RuntimeException("Spotify API request access token failed");
+            log.error("Spotify API artist access token failed: {}", result);
+            throw new RuntimeException("Spotify API artist access token failed");
         }
 
         return result.getBody().accessToken();
@@ -60,7 +62,27 @@ public class SpotifyClient {
             || result.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS
         ) {
             log.error("Spotify API search artist failed: {}", result);
-            throw new RuntimeException("Spotify API request search artist failed");
+            throw new RuntimeException("Spotify API artist search artist failed");
+        }
+
+        return result.getBody();
+    }
+
+    public SpotifyArtistsResponse findArtistsBySpotifyArtistId(ArtistsSpotifyRequest request) {
+        ResponseEntity<SpotifyArtistsResponse> result = RestClient.builder()
+            .defaultHeader("Authorization", "Bearer " + request.accessToken())
+            .baseUrl(spotifyProperty.apiURL() + "/artists?" + request.toQueryParameter())
+            .build()
+            .get()
+            .retrieve()
+            .toEntity(SpotifyArtistsResponse.class);
+
+        if (result.getStatusCode() == HttpStatus.UNAUTHORIZED
+            || result.getStatusCode() == HttpStatus.FORBIDDEN
+            || result.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS
+        ) {
+            log.error("Spotify API find artists failed: {}", result);
+            throw new RuntimeException("Spotify API artist find artists failed");
         }
 
         return result.getBody();

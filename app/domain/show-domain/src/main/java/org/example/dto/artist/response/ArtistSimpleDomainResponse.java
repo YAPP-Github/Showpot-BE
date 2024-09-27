@@ -6,8 +6,7 @@ import lombok.Builder;
 @Builder
 public record ArtistSimpleDomainResponse(
     UUID id,
-    String koreanName,
-    String englishName,
+    String name,
     String image
 ) {
 

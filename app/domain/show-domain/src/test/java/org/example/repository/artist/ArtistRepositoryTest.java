@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.example.QueryTest;
-import org.example.dto.artist.request.ArtistFilterDomain;
 import org.example.entity.artist.Artist;
 import org.example.fixture.domain.ArtistFixture;
 import org.example.fixture.domain.ArtistGenreFixture;
@@ -14,9 +13,6 @@ import org.example.fixture.domain.GenreFixture;
 import org.example.fixture.dto.ArtistRequestDtoFixture;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
-import org.example.vo.ArtistGender;
-import org.example.vo.ArtistSortType;
-import org.example.vo.ArtistType;
 import org.example.vo.SubscriptionStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -39,10 +35,7 @@ class ArtistRepositoryTest extends QueryTest {
     @DisplayName("findAllInIds 메서드가 의도대로 동작하는지 확인한다.")
     void find_all_in() {
         var artists = artistRepository.saveAll(
-            List.of(
-                ArtistFixture.womanGroup(),
-                ArtistFixture.womanGroup()
-            )
+            ArtistFixture.manSoloArtists(2)
         );
 
         ArrayList<UUID> ids = new ArrayList<>(artists.stream().map(Artist::getId).toList());
@@ -81,10 +74,8 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.SUBSCRIBED,
             size,
-            ArtistSortType.ENGLISH_NAME_ASC,
             null,
-            artists.stream().map(Artist::getId).toList(),
-            ArtistFilterDomain.defaultArtistFilterDomain()
+            artists.stream().map(Artist::getId).toList()
         );
 
         //when
@@ -106,10 +97,8 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortType.ENGLISH_NAME_ASC,
             null,
-            artists.stream().map(Artist::getId).toList(),
-            ArtistFilterDomain.defaultArtistFilterDomain()
+            artists.stream().map(Artist::getId).toList()
         );
 
         //when
@@ -131,10 +120,8 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortType.ENGLISH_NAME_ASC,
             null,
-            List.of(),
-            ArtistFilterDomain.defaultArtistFilterDomain()
+            List.of()
         );
 
         //when
@@ -164,14 +151,8 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortType.ENGLISH_NAME_ASC,
             null,
-            List.of(),
-            ArtistFilterDomain.builder()
-                .artistGenders(List.of(ArtistGender.MAN))
-                .artistTypes(List.of(ArtistType.SOLO))
-                .genreIds(List.of())
-                .build()
+            List.of()
         );
 
         //when
@@ -201,14 +182,8 @@ class ArtistRepositoryTest extends QueryTest {
         var request = ArtistRequestDtoFixture.artistPaginationDomainRequest(
             SubscriptionStatus.UNSUBSCRIBED,
             size,
-            ArtistSortType.ENGLISH_NAME_ASC,
             null,
-            artists.stream().map(Artist::getId).toList(),
-            ArtistFilterDomain.builder()
-                .artistGenders(List.of(ArtistGender.MAN, ArtistGender.WOMAN))
-                .artistTypes(List.of(ArtistType.SOLO, ArtistType.GROUP))
-                .genreIds(List.of())
-                .build()
+            artists.stream().map(Artist::getId).toList()
         );
 
         //when
@@ -216,35 +191,5 @@ class ArtistRepositoryTest extends QueryTest {
 
         //then
         assertThat(result.data()).isEmpty();
-    }
-
-    @Test
-    @DisplayName("구독한 아티스트가 없다면 필터링 후 구독하지 않은 아티스트 총 개수를 반환한다.")
-    void findArtisTotalCountNoneSubscribedArtistIds() {
-        int artistSize = 3;
-        var artists = ArtistFixture.manSoloArtists(artistSize);
-        artistRepository.saveAll(artists);
-
-        var genres = GenreFixture.genres(1);
-        genreRepository.saveAll(genres);
-
-        artists.forEach(
-            artist -> artistGenreRepository.save(
-                ArtistGenreFixture.artistGenre(artist.getId(), genres.get(0).getId())
-            )
-        );
-
-        var request = ArtistRequestDtoFixture.artistFilterTotalCountDomainRequest(
-            List.of(ArtistGender.MAN, ArtistGender.WOMAN),
-            List.of(ArtistType.SOLO, ArtistType.GROUP),
-            List.of(),
-            List.of()
-        );
-
-        //when
-        var result = artistRepository.findFilterArtistTotalCount(request).orElseThrow();
-
-        //then
-        assertThat(result.totalCount()).isEqualTo(artistSize);
     }
 }

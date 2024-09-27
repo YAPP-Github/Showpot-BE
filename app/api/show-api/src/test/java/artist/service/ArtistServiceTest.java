@@ -13,10 +13,9 @@ import artist.fixture.dto.ArtistResponseDtoFixture;
 import com.example.artist.service.ArtistService;
 import com.example.artist.service.dto.request.ArtistSubscriptionServiceRequest;
 import com.example.artist.service.dto.request.ArtistUnsubscriptionServiceRequest;
-import com.example.publish.MessagePublisher;
-import com.example.publish.message.ArtistSubscriptionServiceMessage;
+import com.example.pub.MessagePublisher;
+import com.example.pub.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.example.entity.artist.Artist;
@@ -55,11 +54,6 @@ class ArtistServiceTest {
         int size = 3;
         boolean hasNext = true;
         var request = ArtistRequestDtoFixture.artistSearchPaginationServiceRequest(size, search);
-        // given(
-        //     artistUseCase.searchArtist(request.toDomainRequest())
-        // ).willReturn(
-        //     ArtistResponseDtoFixture.artistPaginationDomainResponse(size, hasNext)
-        // );
 
         //when
         var result = artistService.searchArtist(request);
@@ -81,11 +75,6 @@ class ArtistServiceTest {
         String search = "testArtistName";
         int size = 3;
         var request = ArtistRequestDtoFixture.artistSearchPaginationServiceRequest(size, search);
-        // given(
-        //     artistUseCase.searchArtist(request.toDomainRequest())
-        // ).willReturn(
-        //     ArtistResponseDtoFixture.emptyDataArtistPaginationDomainResponse()
-        // );
 
         //when
         var result = artistService.searchArtist(request);
@@ -173,72 +162,15 @@ class ArtistServiceTest {
     }
 
     @Test
-    @DisplayName("아티스트 필터링한 총 개수를 반환한다.")
-    void artistFilterToTalCount() {
-        //given
-        var request = ArtistRequestDtoFixture.artistFilterTotalCountServiceRequest();
-        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(2);
-        given(
-            artistSubscriptionUseCase.findSubscriptionList(request.userId())
-        ).willReturn(
-            subscriptions
-        );
-
-        var subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
-        int totalCount = 3;
-        given(
-            artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
-        ).willReturn(
-            ArtistResponseDtoFixture.artistFilterTotalCountDomainResponse(totalCount)
-        );
-
-        //when
-        var result = artistService.filterArtistTotalCount(request);
-
-        //then
-        assertThat(result.totalCount()).isEqualTo(totalCount);
-    }
-
-    @Test
-    @DisplayName("아티스트 필터링 후 결과가 없다면 0을 반환한다.")
-    void artistFilterTotalCountZero() {
-        //given
-        var request = ArtistRequestDtoFixture.artistFilterTotalCountServiceRequest();
-        var subscriptions = ArtistSubscriptionFixture.artistSubscriptions(2);
-        given(
-            artistSubscriptionUseCase.findSubscriptionList(request.userId())
-        ).willReturn(
-            subscriptions
-        );
-
-        var subscriptionArtistIds = subscriptions.stream()
-            .map(ArtistSubscription::getArtistId)
-            .toList();
-        given(
-            artistUseCase.findFilterArtistTotalCount(request.toDomainRequest(subscriptionArtistIds))
-        ).willThrow(
-            NoSuchElementException.class
-        );
-
-        //when
-        var result = artistService.filterArtistTotalCount(request);
-
-        //then
-        assertThat(result.totalCount()).isZero();
-    }
-
-    @Test
     @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 반환한다.")
     void artistSubscribe() {
         //given
-        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        List<String> spotifyArtistsId = List.of("123", "456");
         UUID userId = UUID.randomUUID();
-        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
-        var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
+        var request = new ArtistSubscriptionServiceRequest(spotifyArtistsId, userId);
+        var existArtistsInRequest = ArtistFixture.manSoloArtistsSetId(2);
         given(
-            artistUseCase.findAllArtistInIds(request.artistIds())
+            artistUseCase.findOrCreateArtistBySpotifyId(request.spotifyArtistIds())
         ).willReturn(
             existArtistsInRequest
         );
@@ -246,7 +178,7 @@ class ArtistServiceTest {
         var existArtistIdsInRequest = existArtistsInRequest.stream()
             .map(Artist::getId)
             .toList();
-        int artistSubscriptionCount = 2;
+        int artistSubscriptionCount = 3;
         given(
             artistSubscriptionUseCase.subscribe(existArtistIdsInRequest, userId)
         ).willReturn(
@@ -261,7 +193,7 @@ class ArtistServiceTest {
             soft -> {
                 soft.assertThat(result).isNotNull();
                 soft.assertThat(result.successSubscriptionArtistIds().size())
-                    .isEqualTo(artistSubscriptionCount);
+                    .isEqualTo(existArtistsInRequest.size());
             }
         );
     }
@@ -270,12 +202,12 @@ class ArtistServiceTest {
     @DisplayName("아티스트를 구독하면 구독 성공한 아티스트 ID들을 메시지 발행한다.")
     void artistSubscribePublishMessage() {
         //given
-        List<UUID> artistsId = List.of(UUID.randomUUID(), UUID.randomUUID());
+        List<String> spotifyArtistsId = List.of("123", "456");
         UUID userId = UUID.randomUUID();
-        var request = new ArtistSubscriptionServiceRequest(artistsId, userId);
+        var request = new ArtistSubscriptionServiceRequest(spotifyArtistsId, userId);
         var existArtistsInRequest = ArtistFixture.manSoloArtists(3);
         given(
-            artistUseCase.findAllArtistInIds(request.artistIds())
+            artistUseCase.findOrCreateArtistBySpotifyId(request.spotifyArtistIds())
         ).willReturn(
             existArtistsInRequest
         );

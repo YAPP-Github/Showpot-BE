@@ -1,5 +1,10 @@
 package com.example.show.controller.dto.response;
 
+import com.example.show.controller.dto.param.SeatTypePriceApiParam;
+import com.example.show.controller.dto.param.ShowArtistApiParam;
+import com.example.show.controller.dto.param.ShowGenreApiParam;
+import com.example.show.controller.dto.param.ShowTicketingTimeApiParam;
+import com.example.show.controller.dto.param.TicketingSiteApiParam;
 import com.example.show.service.dto.response.ShowDetailServiceResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -32,19 +37,19 @@ public record ShowDetailApiResponse(
     boolean isInterested,
 
     @Schema(description = "아티스트 정보")
-    List<ShowArtistApiResponse> artists,
+    List<ShowArtistApiParam> artists,
 
     @Schema(description = "장르 정보")
-    List<ShowGenreApiResponse> genres,
+    List<ShowGenreApiParam> genres,
 
     @Schema(description = "티켓팅 예매 시간 정보")
-    List<ShowTicketingTimeApiResponse> ticketingTimes,
+    List<ShowTicketingTimeApiParam> ticketingTimes,
 
     @Schema(description = "좌석별 가격 정보")
-    List<SeatTypePriceApiResponse> seats,
+    List<SeatTypePriceApiParam> seats,
 
     @Schema(description = "티켓팅 사이트별 링크")
-    List<TicketingSiteApiResponse> ticketingSites
+    List<TicketingSiteApiParam> ticketingSites
 ) {
 
     public static ShowDetailApiResponse from(ShowDetailServiceResponse show) {
@@ -58,27 +63,27 @@ public record ShowDetailApiResponse(
             .isInterested(show.isInterested())
             .artists(
                 show.artists().stream()
-                    .map(ShowArtistApiResponse::from)
+                    .map(ShowArtistApiParam::from)
                     .toList()
             )
             .genres(
                 show.genres().stream()
-                    .map(ShowGenreApiResponse::from)
+                    .map(ShowGenreApiParam::from)
                     .toList()
             )
             .ticketingTimes(
                 show.ticketingTimes().stream()
-                    .map(ShowTicketingTimeApiResponse::from)
+                    .map(ShowTicketingTimeApiParam::from)
                     .toList()
             )
             .seats(
                 show.seats().priceBySeat().entrySet().stream()
-                .map(entry -> SeatTypePriceApiResponse.of(entry.getKey(), entry.getValue()))
+                .map(entry -> SeatTypePriceApiParam.of(entry.getKey(), entry.getValue()))
                 .toList()
             )
             .ticketingSites(
                 show.ticketingSites().siteByURL().entrySet().stream()
-                .map(entry -> TicketingSiteApiResponse.of(entry.getKey(), entry.getValue()))
+                .map(entry -> TicketingSiteApiParam.of(entry.getKey(), entry.getValue()))
                 .toList()
             )
             .build();

@@ -2,7 +2,9 @@ package org.example.fixture.port;
 
 import org.example.port.ArtistSearchPort;
 import org.example.port.dto.request.ArtistSearchPortRequest;
+import org.example.port.dto.request.ArtistsDetailPortRequest;
 import org.example.port.dto.response.ArtistSearchPortResponse;
+import org.example.port.dto.response.ArtistsDetailPortResponse;
 import org.example.vo.ArtistSearchAdapterType;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,13 @@ public class ArtistSearchPortFixture implements ArtistSearchPort {
 
     @Override
     public ArtistSearchPortResponse searchArtist(ArtistSearchPortRequest request) {
+        return null;
+    }
+
+    @Override
+    public ArtistsDetailPortResponse findArtistsBySpotifyArtistId(
+        ArtistsDetailPortRequest request
+    ) {
         return null;
     }
 }

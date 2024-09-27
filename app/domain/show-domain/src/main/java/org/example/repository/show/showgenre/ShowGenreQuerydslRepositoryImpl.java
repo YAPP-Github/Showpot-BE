@@ -11,7 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.genre.response.GenreNameDomainResponse;
-import org.example.dto.genre.response.GenreNamesWithShowIdDomainResponse;
+import org.example.dto.genre.response.GenreNamesWithShowIdDomainParam;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,7 +21,7 @@ public class ShowGenreQuerydslRepositoryImpl implements ShowGenreQuerydslReposit
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<GenreNamesWithShowIdDomainResponse> findGenreNamesWithShowId() {
+    public List<GenreNamesWithShowIdDomainParam> findGenreNamesWithShowId() {
         return jpaQueryFactory.selectFrom(showGenre)
             .join(show).on(show.id.eq(showGenre.showId), show.isDeleted.isFalse())
             .join(genre).on(genre.id.eq(showGenre.genreId), genre.isDeleted.isFalse())
@@ -29,7 +29,7 @@ public class ShowGenreQuerydslRepositoryImpl implements ShowGenreQuerydslReposit
             .transform(
                 groupBy(showGenre.id).list(
                     Projections.constructor(
-                        GenreNamesWithShowIdDomainResponse.class,
+                        GenreNamesWithShowIdDomainParam.class,
                         show.id,
                         list(
                             Projections.constructor(

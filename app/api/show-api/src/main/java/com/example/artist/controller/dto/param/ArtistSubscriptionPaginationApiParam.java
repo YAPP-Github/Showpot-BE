@@ -9,18 +9,15 @@ public record ArtistSubscriptionPaginationApiParam(
     UUID id,
     @Schema(description = "아티스트 이미지 URL")
     String imageURL,
-    @Schema(description = "아티스트 한글 이름")
-    String koreanName,
-    @Schema(description = "아티스트 영문 이름")
-    String englishName
+    @Schema(description = "아티스트 이름")
+    String name
 ) {
 
     public static ArtistSubscriptionPaginationApiParam from(ArtistSubscriptionPaginationServiceParam param) {
         return new ArtistSubscriptionPaginationApiParam(
-            param.artistId(),
-            param.artistImageUrl(),
-            param.artistKoreanName(),
-            param.artistEnglishName()
+            param.id(),
+            param.image(),
+            param.name()
         );
     }
 }

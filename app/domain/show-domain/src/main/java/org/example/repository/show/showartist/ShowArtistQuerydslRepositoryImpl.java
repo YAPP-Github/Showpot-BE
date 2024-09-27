@@ -10,8 +10,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.dto.artist.response.ArtistKoreanNameDomainResponse;
-import org.example.dto.artist.response.ArtistKoreanNamesWithShowIdDomainResponse;
+import org.example.dto.artist.param.ArtistNamesWithShowIdDomainParam;
+import org.example.dto.artist.response.ArtistNameDomainResponse;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,7 +21,7 @@ public class ShowArtistQuerydslRepositoryImpl implements ShowArtistQuerydslRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ArtistKoreanNamesWithShowIdDomainResponse> findArtistKoreanNamesWithShowId() {
+    public List<ArtistNamesWithShowIdDomainParam> findArtistNamesWithShowId() {
         return jpaQueryFactory.selectFrom(showArtist)
             .join(show).on(show.id.eq(showArtist.showId), show.isDeleted.isFalse())
             .join(artist).on(artist.id.eq(showArtist.artistId), artist.isDeleted.isFalse())
@@ -29,13 +29,13 @@ public class ShowArtistQuerydslRepositoryImpl implements ShowArtistQuerydslRepos
             .transform(
                 groupBy(showArtist.id).list(
                     Projections.constructor(
-                        ArtistKoreanNamesWithShowIdDomainResponse.class,
+                        ArtistNamesWithShowIdDomainParam.class,
                         show.id,
                         list(
                             Projections.constructor(
-                                ArtistKoreanNameDomainResponse.class,
+                                ArtistNameDomainResponse.class,
                                 artist.id,
-                                artist.koreanName
+                                artist.name
                             )
                         )
                     )
