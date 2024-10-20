@@ -220,6 +220,7 @@ create schema if not exists alarm;
 drop table if exists alarm.artist_subscription cascade;
 drop table if exists alarm.genre_subscription cascade;
 drop table if exists alarm.ticketing_alert cascade;
+drop table if exists alarm.show_alarm cascade;
 
 
 create table alarm.artist_subscription
