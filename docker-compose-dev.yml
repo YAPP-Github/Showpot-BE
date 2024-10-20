@@ -8,6 +8,9 @@ services:
     environment:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
+      APPLICATION_DATASOURCE_URL_DEV: jdbc:postgresql://postgresql:5432/yapp
+      APPLICATION_DATASOURCE_USERNAME: yapp
+      APPLICATION_DATASOURCE_PASSWORD: yapp
     ports:
       - '8080:8080'
     networks:
