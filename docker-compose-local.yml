@@ -1,7 +1,7 @@
 services:
   postgresql:
     container_name: yapp_postgresql
-    image: postgres:14
+    image: postgres:alpine
     environment:
       POSTGRES_DB: yapp
       POSTGRES_USER: yapp
@@ -10,7 +10,7 @@ services:
       - '5432:5432'
     restart: always
     networks:
-      - app-network
+      - yapp-network
 
   redis:
     container_name: yapp_redis
@@ -18,7 +18,8 @@ services:
     ports:
       - '6379:6379'
     networks:
-      - app-network
+      - yapp-network
 
 networks:
-  app-network:
+  yapp-network:
+    driver: bridge

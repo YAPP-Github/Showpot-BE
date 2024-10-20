@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - hotfix/**
+      - feat/change-dev-environment
 
 jobs:
   build-and-deploy:
@@ -100,7 +101,7 @@ jobs:
         with:
           title: ✅ 개발 서버 배포 프로세스가 완료되었습니다! ✅
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          content: "<@1084774841460215839> <@281597829636423682> 배포가 정상적으로 이뤄졌는지 확인해주세요!"
+          content: "<@1084774841460215839> 배포가 정상적으로 이뤄졌는지 확인해주세요!"
           color: 00FF00
           username: showPot-Bot
           avatar_url: ${{ secrets.DISCORD_NOTIFICATION_SUCCESS_AVATAR_URL }}

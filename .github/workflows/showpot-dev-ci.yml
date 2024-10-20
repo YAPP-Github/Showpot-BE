@@ -52,7 +52,7 @@ jobs:
         with:
           title: ✅ Backend CI success ✅
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          content: "<@1084774841460215839> <@281597829636423682> ShoPot 이슈 혹은 PR을 확인해주세요!"
+          content: "<@1084774841460215839> ShoPot 이슈 혹은 PR을 확인해주세요!"
           color: 00FF00
           username: showPot-Bot
           avatar_url: ${{ secrets.DISCORD_NOTIFICATION_SUCCESS_AVATAR_URL }}
