@@ -29,4 +29,4 @@ token:
   refresh-token-expiration-seconds: 1209600000 # 2weeks = 1000(=1s) * 60 * 60 * 24 * 14
 
 alarm:
-  api-url: http://localhost:8081/api/v1/
+  api-url: http://localhost:8081/api/v1

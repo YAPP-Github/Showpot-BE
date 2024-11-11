@@ -38,7 +38,7 @@ public class ShowUseCase {
     }
 
     public List<Show> findShowsInIds(List<UUID> showIds) {
-        return showRepository.findShowsByIdIn(showIds);
+        return showRepository.findShowsByIdInAndIsDeletedFalse(showIds);
     }
 
     @Transactional

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShowRepository extends JpaRepository<Show, UUID>, ShowQuerydslRepository {
 
-    List<Show> findShowsByIdIn(List<UUID> showIds);
+    List<Show> findShowsByIdInAndIsDeletedFalse(List<UUID> showIds);
 
     Optional<Show> findByIdAndIsDeletedFalse(UUID showId);
 }

@@ -2,19 +2,19 @@ package org.example.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.LocalDateTime;
-import java.util.List;
+import jakarta.validation.constraints.Max;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.param.SimpleNotificationApiParam;
 import org.example.controller.dto.response.NotificationExistApiResponse;
-import org.example.controller.dto.response.NotificationsApiResponse;
+import org.example.dto.response.PaginationApiResponse;
 import org.example.security.dto.AuthenticatedInfo;
 import org.example.service.UserAlarmService;
-import org.example.util.DateTimeUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "유저 알림")
@@ -39,39 +39,23 @@ public class UserAlarmController {
 
     @GetMapping("/notifications")
     @Operation(summary = "알림 목록")
-    public ResponseEntity<NotificationsApiResponse> getNotifications(
+    public ResponseEntity<PaginationApiResponse<SimpleNotificationApiParam>> getNotifications(
+        @RequestParam(value = "cursorId", required = false) UUID cursorId,
+        @RequestParam(value = "size") @Max(value = 30, message = "조회하는 데이터의 최대 개수는 30입니다.")
+        Integer size,
         @AuthenticationPrincipal AuthenticatedInfo info
+
     ) {
+        var response = userAlarmService.findNotifications(info.userId(), cursorId, size);
+        var data = response.data().stream()
+            .map(SimpleNotificationApiParam::from)
+            .toList();
+
         return ResponseEntity.ok(
-            NotificationsApiResponse.builder()
-                .notifications(
-                    List.of(
-                        SimpleNotificationApiParam.builder()
-                            .title("오하요 고자이마스")
-                            .message("본문 데스")
-                            .notifiedAt(
-                                DateTimeUtil.formatDateTime(LocalDateTime.of(2021, 9, 27, 0, 0, 0)))
-                            .showId(java.util.UUID.randomUUID())
-                            .showImageURL("https://example.com/show.jpg")
-                            .build(),
-                        SimpleNotificationApiParam.builder()
-                            .title("알림알림제목제목알림알림제목제목")
-                            .message("알림본문본문알림본문본문알림본문본문")
-                            .notifiedAt(DateTimeUtil.formatDateTime(
-                                LocalDateTime.of(2021, 9, 27, 12, 0, 0)))
-                            .showId(java.util.UUID.randomUUID())
-                            .showImageURL("https://example.com/show.jpg")
-                            .build(),
-                        SimpleNotificationApiParam.builder()
-                            .title("알림 제목")
-                            .message("알림 본문")
-                            .notifiedAt(DateTimeUtil.formatDateTime(
-                                LocalDateTime.of(2021, 9, 27, 23, 0, 0)))
-                            .showId(java.util.UUID.randomUUID())
-                            .showImageURL("https://example.com/show.jpg")
-                            .build()
-                    )
-                )
+            PaginationApiResponse.<SimpleNotificationApiParam>builder()
+                .hasNext(response.hasNext())
+                .data(data)
+                .cursor(response.cursor())
                 .build()
         );
     }
