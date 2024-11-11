@@ -4,7 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import org.example.dto.show.request.ShowUpdateDomainRequest;
 import org.example.fixture.domain.ShowArtistFixture;
+import org.example.fixture.domain.ShowFixture;
 import org.example.fixture.domain.ShowGenreFixture;
 import org.example.usecase.ArtistUseCase;
 import org.example.usecase.GenreUseCase;
@@ -48,12 +48,16 @@ class ShowAdminServiceTest {
     void showCreateWithUploadedImageUrl() {
         //given
         ShowCreateServiceRequest showCreateServiceRequest = ShowRequestDtoFixture.showCreateServiceRequest();
+        String url = "test_imageUrl";
         given(
             fileUploadComponent.uploadFile(
-                "artist",
+                "show",
                 showCreateServiceRequest.post()
             )
         ).willReturn("test_imageUrl");
+        given(
+            showAdminUseCase.save(any())
+        ).willReturn(ShowFixture.deafultShow());
 
         //when
         showAdminService.save(showCreateServiceRequest);
@@ -67,10 +71,9 @@ class ShowAdminServiceTest {
     void showCreateWithPublishRelationArtistIdsAndGenreIds() {
         //given
         var showCreateServiceRequest = ShowRequestDtoFixture.showCreateServiceRequest();
-        var showCreationDomainRequest = showCreateServiceRequest.toDomainRequest(
-            "test_imageUrl"
-        );
-        willDoNothing().given(showAdminUseCase).save(showCreationDomainRequest);
+        given(
+            showAdminUseCase.save(any())
+        ).willReturn(ShowFixture.deafultShow());
 
         //when
         showAdminService.save(showCreateServiceRequest);
@@ -90,7 +93,7 @@ class ShowAdminServiceTest {
         UUID showId = UUID.randomUUID();
         given(
             fileUploadComponent.uploadFile(
-                "artist",
+                "show",
                 showUpdateServiceRequest.post()
             )
         ).willReturn("test_imageUrl");
@@ -99,7 +102,8 @@ class ShowAdminServiceTest {
         showAdminService.updateShow(showId, showUpdateServiceRequest);
 
         //then
-        verify(showAdminUseCase, times(1)).updateShow(eq(showId), any(ShowUpdateDomainRequest.class));
+        verify(showAdminUseCase, times(1)).updateShow(eq(showId),
+            any(ShowUpdateDomainRequest.class));
     }
 
     @Test
