@@ -146,7 +146,7 @@ public class ArtistController {
             PaginationApiResponse.<ArtistSearchPaginationApiParam>builder()
                 .hasNext(response.hasNext())
                 .data(data)
-                .cursor(CursorApiResponse.toCursorId(request.cursorId() + 1))
+                .cursor(response.cursor())
                 .build()
         );
     }

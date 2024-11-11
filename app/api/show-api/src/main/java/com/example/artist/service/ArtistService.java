@@ -17,6 +17,7 @@ import com.example.pub.message.ArtistSubscriptionServiceMessage;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.response.CursorApiResponse;
 import org.example.dto.response.PaginationServiceResponse;
 import org.example.entity.artist.Artist;
 import org.example.entity.usershow.ArtistSubscription;
@@ -55,7 +56,9 @@ public class ArtistService {
             )
             .toList();
 
-        return PaginationServiceResponse.of(data, response.hasNext());
+        return PaginationServiceResponse.of(data, response.hasNext(),
+            CursorApiResponse.toCursorId(response.offset())
+        );
     }
 
     public ArtistSubscriptionServiceResponse subscribe(ArtistSubscriptionServiceRequest request) {

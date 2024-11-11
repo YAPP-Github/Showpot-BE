@@ -1,5 +1,6 @@
 package org.example.usecase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,6 +32,7 @@ import org.example.repository.artist.ArtistRepository;
 import org.example.repository.artist.artistgenre.ArtistGenreRepository;
 import org.example.repository.genre.GenreRepository;
 import org.example.repository.show.showartist.ShowArtistRepository;
+import org.example.vo.ArtistFilterType;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,37 +121,64 @@ public class ArtistUseCase {
     public ArtistSearchPaginationDomainResponse searchArtist(
         ArtistSearchPaginationDomainRequest request
     ) {
-        ArtistSearchPortResponse response = artistSearchPort.searchArtist(
-            ArtistSearchPortRequest.builder()
-                .accessToken(artistSearchPort.getAccessToken())
-                .search(request.search())
-                .limit(request.limit())
-                .offset(request.offset())
-                .build()
-        );
+        int requiredLimit = request.limit();
+        int offset = request.offset();
+        boolean hasNext = false;
+        String accessToken = artistSearchPort.getAccessToken();
+        List<ArtistSearchPortParam> filteredArtists = new ArrayList<>();
 
-        Map<String, Artist> artistBySpotifyId = getArtistBySpotifyId(
-            response.getSpotifyArtistIds()
-        );
+        for (int attempt = 0; attempt < 5 && filteredArtists.size() < requiredLimit; attempt++) {
+            ArtistSearchPortResponse response = artistSearchPort.searchArtist(
+                ArtistSearchPortRequest.builder()
+                    .accessToken(accessToken)
+                    .search(request.search())
+                    .limit(requiredLimit - filteredArtists.size())
+                    .offset(offset)
+                    .build()
+            );
+
+            filteredArtists.addAll(filterKoreanArtistSearch(response));
+            offset += response.artists().size();
+            hasNext = response.hasNext();
+
+            if (filteredArtists.size() >= requiredLimit) {
+                break;
+            }
+        }
+
+        Map<String, Artist> artistBySpotifyId = getArtistBySpotifyId(filteredArtists);
 
         return ArtistSearchPaginationDomainResponse.builder()
             .data(
-                response.artists().stream()
+                filteredArtists.stream()
+                    .limit(requiredLimit)
                     .map(it -> it.toDomainResponse(
-                            artistBySpotifyId.getOrDefault(
+                        artistBySpotifyId.getOrDefault(
                                 it.id(),
                                 null
                             )
                         )
                     ).toList()
             )
-            .limit(response.limit())
-            .offset(response.offset())
-            .hasNext(response.hasNext())
+            .limit(request.limit())
+            .offset(offset)
+            .hasNext(hasNext)
             .build();
     }
 
-    private Map<String, Artist> getArtistBySpotifyId(List<String> spotifyIds) {
+    private List<ArtistSearchPortParam> filterKoreanArtistSearch(
+        ArtistSearchPortResponse response
+    ) {
+        return response.artists().stream()
+            .filter(artist -> artist.genres().stream()
+                .noneMatch(ArtistFilterType::isKoreanArtist))
+            .toList();
+    }
+
+    //Key : spotifyId
+    private Map<String, Artist> getArtistBySpotifyId(List<ArtistSearchPortParam> filteredArtists) {
+        List<String> spotifyIds = filteredArtists.stream().map(ArtistSearchPortParam::id).toList();
+
         return artistRepository.findArtistsBySpotifyIdIn(spotifyIds)
             .stream()
             .collect(
