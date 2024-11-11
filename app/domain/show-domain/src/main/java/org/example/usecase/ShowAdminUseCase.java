@@ -33,7 +33,7 @@ public class ShowAdminUseCase {
     private final ShowTicketingTimeRepository showTicketingTimeRepository;
 
     @Transactional
-    public void save(
+    public Show save(
         ShowCreationDomainRequest request
     ) {
         Show show = request.toShow();
@@ -48,6 +48,8 @@ public class ShowAdminUseCase {
 
         var showTicketingTimes = show.toShowTicketingTime(request.showTicketingTimes());
         showTicketingTimeRepository.saveAll(showTicketingTimes);
+
+        return show;
     }
 
     public List<ShowWithTicketingTimesDomainParam> findShowDetailWithTicketingTimes() {

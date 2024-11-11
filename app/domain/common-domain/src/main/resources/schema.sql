@@ -267,6 +267,7 @@ create table alarm.show_alarm
     created_at           timestamp(3) not null,
     updated_at           timestamp(3) not null,
     id                   uuid         not null,
+    show_id              uuid         not null,
     user_fcm_token       varchar(255) not null,
     title                varchar(255) not null,
     content              varchar(255) not null,

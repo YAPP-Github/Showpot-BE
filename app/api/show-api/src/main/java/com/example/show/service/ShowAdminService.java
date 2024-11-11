@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.show.response.ShowInfoDomainResponse;
+import org.example.entity.show.Show;
 import org.example.usecase.ArtistUseCase;
 import org.example.usecase.GenreUseCase;
 import org.example.usecase.ShowAdminUseCase;
@@ -29,13 +30,14 @@ public class ShowAdminService {
     public void save(ShowCreateServiceRequest showCreateServiceRequest) {
         String imageURL = fileUploadComponent.uploadFile("show", showCreateServiceRequest.post());
 
-        showAdminUseCase.save(
+        Show show = showAdminUseCase.save(
             showCreateServiceRequest.toDomainRequest(imageURL)
         );
 
         messagePublisher.publishShow(
             "registerShow",
             ShowRelationArtistAndGenreServiceMessage.of(
+                show.getId(),
                 showCreateServiceRequest.artistIds(),
                 showCreateServiceRequest.genreIds()
             )
@@ -83,6 +85,7 @@ public class ShowAdminService {
             messagePublisher.publishShow(
                 "updateShow",
                 ShowRelationArtistAndGenreServiceMessage.of(
+                    id,
                     artistIdsToPublish,
                     genreIdsToPublish
                 )

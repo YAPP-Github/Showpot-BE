@@ -24,45 +24,30 @@ public class RedisMessagePublisher implements MessagePublisher {
     @Override
     public void publishShow(String topic, ShowRelationArtistAndGenreServiceMessage message) {
         var infraMessage = ShowRelationArtistAndGenreInfraMessage.from(message);
-
-        template.convertAndSend(topic, infraMessage);
-        log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( showRelationArtistAndGenreInfraMessage : {})", infraMessage);
+        publishMessage(topic, infraMessage);
     }
 
     @Override
-    public void publishArtistSubscription(
-        String topic,
-        ArtistSubscriptionServiceMessage message
-    ) {
+    public void publishArtistSubscription(String topic, ArtistSubscriptionServiceMessage message) {
         var infraMessage = ArtistSubscriptionInfraMessage.from(message);
-
-        template.convertAndSend(topic, infraMessage);
-        log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( artistSubscriptionMessage : {} )", infraMessage);
+        publishMessage(topic, infraMessage);
     }
 
     @Override
-    public void publishGenreSubscription(
-        String topic,
-        GenreSubscriptionServiceMessage message
-    ) {
+    public void publishGenreSubscription(String topic, GenreSubscriptionServiceMessage message) {
         var infraMessage = GenreSubscriptionInfraMessage.from(message);
-
-        template.convertAndSend(topic, infraMessage);
-        log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( genreSubscriptionMessage : {} )", infraMessage);
+        publishMessage(topic, infraMessage);
     }
 
     @Override
-    public void publishTicketingReservation(
-        String topic,
-        TicketingAlertsToReserveServiceMessage message
-    ) {
+    public void publishTicketingReservation(String topic, TicketingAlertsToReserveServiceMessage message) {
         var infraMessage = TicketingReservationInfraMessage.from(message);
+        publishMessage(topic, infraMessage);
+    }
 
+    private void publishMessage(String topic, Object infraMessage) {
         template.convertAndSend(topic, infraMessage);
         log.info("Message published successfully to topic: {}", topic);
-        log.info("Message Contents ( ticketingReservationMessage : {} )", infraMessage);
+        log.info("Message Contents ( {} : {} )", infraMessage.getClass().getName(), infraMessage);
     }
 }

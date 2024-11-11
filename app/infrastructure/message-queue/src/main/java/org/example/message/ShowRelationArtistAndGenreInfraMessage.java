@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record ShowRelationArtistAndGenreInfraMessage(
+    UUID showId,
     List<UUID> artistIds,
     List<UUID> genreIds
 ) {
@@ -15,6 +16,7 @@ public record ShowRelationArtistAndGenreInfraMessage(
         ShowRelationArtistAndGenreServiceMessage message
     ) {
         return ShowRelationArtistAndGenreInfraMessage.builder()
+            .showId(message.showId())
             .artistIds(message.artistIds())
             .genreIds(message.genreIds())
             .build();
