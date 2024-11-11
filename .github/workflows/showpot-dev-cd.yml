@@ -43,6 +43,7 @@ jobs:
           spring.datasource.password: ${{ secrets.APPLICATION_DATASOURCE_PASSWORD }}
           spotify.client-id: ${{ secrets.SPOTIFY_CLIENT_ID }}
           spotify.client-secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          alarm.api-url: ${{ secrets.ALARM_SERVER_API_URL }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build -Dspring.profiles.active=dev
