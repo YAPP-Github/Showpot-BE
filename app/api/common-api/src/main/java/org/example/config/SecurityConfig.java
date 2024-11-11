@@ -109,7 +109,7 @@ public class SecurityConfig {
             antMatcher(HttpMethod.POST, "/api/v1/artists/unsubscribe"),
             antMatcher(HttpMethod.GET, "/api/v1/artists/subscriptions"),
             antMatcher(HttpMethod.GET, "/api/v1/users/notifications"),
-            antMatcher(HttpMethod.GET, "/api/v1/users/notifications/unread")
+            antMatcher(HttpMethod.GET, "/api/v1/users/notifications/exist")
         );
     }
 }
